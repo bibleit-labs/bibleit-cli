@@ -199,6 +199,11 @@ a sibling checkout or local replacement.
 
 The real-server harness accepts `--go-client ../bibleit-go`; client integration
 tests compile from that checkout, while CLI integration tests compile here.
+It exercises public `NewClient(apiToken)` and `NewAuthClient()` constructors
+against an actual server at the fixed endpoint. If host port 8080 is busy, run
+`python3 scripts/check_server_container.py --baseline contract/server-baseline.json`.
+That runner freezes the sources and builds Linux NIFs in a disposable namespace,
+with no published ports and no access to the developer's running service.
 
 See the [item-by-item progress](docs/status.md),
 [operation inventory](contract/features.md), and [revised implementation plan](docs/plan.md), reviewed against the server

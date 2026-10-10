@@ -109,3 +109,25 @@ does not stop or replace an existing listener. See [endpoint policy](endpoint-po
 
 Publication and releases are paused. Before publication resumes, pin a real
 Go client version and validate builds with `GOWORK=off`, then rerun hosted checks.
+
+
+## Simple-client real-server checks (2026-10-10)
+
+The Go client and CLI passed local race tests, vet, and build after switching to
+`NewClient(apiToken)` and `NewAuthClient()`. The real-server harness also passed
+against the fixed service in a disposable Linux network namespace:
+
+```sh
+python3 scripts/check_server_container.py --baseline contract/server-baseline.json
+```
+
+The fixture server binds IPv4 loopback port 8080, so public constructors connect
+to their actual project-managed address. There is no client URL or destination
+remapping. The runner shares only the temporary database container's namespace;
+no ports are exposed on the host. NIFs are rebuilt for Linux from frozen source,
+and the original server checkout and existing host service remain untouched.
+
+Passing coverage: 27 decoder fixtures, 18 encoder fixtures, 7 targeted security
+cases, Go HTTP/domain/PKCE/token checks, actual CLI/OpenSSH subscription lifecycle,
+and 8 authentication/SSH EUnit cases. The baseline records the server working-tree
+fingerprints and fixed HTTP endpoint. Native Windows was not rerun.
