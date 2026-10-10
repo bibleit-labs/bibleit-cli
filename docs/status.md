@@ -1,9 +1,44 @@
 # Implementation status
 
-Updated 2026-10-10. Counts describe explicit acceptance items, not estimated
+Updated 2026-10-11. Counts describe explicit acceptance items, not estimated
 percentages of the entire project. The full plan is in `plan.md`.
 
-## Current increment: latest assessment translation validation
+## Current increment: Homebrew naming and assessment protocol fixes
+
+Branches: CLI/client `integration-refresh`, tap `formula-preparation`. Local only:
+no pushes, tags, releases or CI runs. Validation is captured by CLI `6d0ebf8`,
+Go client `2b68ccc` and tap `7834751`; the server remains assessment-owned.
+
+| Item | Status | Evidence / limits |
+| --- | --- | --- |
+| Prepare the separate Homebrew package | Complete | User selected homebrew-tap with formula bibleit-cli; generator and tap agree; actual install/test/reinstall/completions/uninstall pass in a disposable prefix |
+| Check quoting/SECRET SET and update the client | Complete | Server rejects malformed quoting, preserves literal/trailing backslashes and documents generated secrets; Go restrictions retained, README/contract clarified, seven additional request fixtures and builder regressions added |
+| Fresh integration, baselines and plan | Complete | 34 decoder/18 encoder fixtures, 7 security cases, 11 HTTP subtests, real OpenSSH checks, 17 auth/key/protocol EUnit tests, 10 import-access and 15 publication cases; Go/CLI race and vet pass |
+
+Progress: **3/3 requested items complete**. Milestone 1 is now **7/7 tracked core
+contract items complete**. The quote integrity and SECRET SET discrepancies are
+closed by verified rejection/documentation, not by introducing new request escapes
+or custom secret assignment. All other Go README behavior/limits remain valid.
+
+The future customer command is `brew install bibleit-labs/tap/bibleit-cli`; the
+installed executable is `bibleit`. The tap's development formula URLs remain
+unpublished. The checker uses local CLI archives and a disposable prefix; Homebrew
+still fetched developer gems and core metadata, so the report no longer claims
+fully offline execution. The user's normal Homebrew prefix was untouched.
+
+The synchronized baseline includes 63 source and 58 test fingerprints and matched
+the server working tree at completion. The baseline review date is UTC; this
+record uses the local date. Evidence is ignored locally under:
+
+- `build/validation/homebrew-cli-naming.json`
+- `build/validation/protocol-integration-2026-10-11.log`
+
+The assessment's full campaign is separate and was still running at verification.
+Production HTTPS/SSH addresses, a published/pinned Go client, standalone GOWORK=off
+validation and publication authorization remain release gates. Browser-only
+workspace/event contracts and the other language clients remain future work.
+
+## Previous increment: latest assessment translation validation
 
 Branch: `integration-refresh`. Local only: no pushes, tags, releases or CI runs.
 Inputs: CLI harness revision `26de771`, Go-client revision `5138077`, server HEAD

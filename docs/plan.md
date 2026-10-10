@@ -10,7 +10,7 @@ see [releases.md](releases.md). Before publishing, set the
 production HTTPS/SSH addresses, release the Go client, pin it in the CLI, and
 verify standalone builds without a workspace.
 
-Revised 2026-10-10 against the local `../bibleit-server` checkout. Its HEAD is
+Revised 2026-10-11 against the local `../bibleit-server` checkout. Its HEAD is
 `1a266cc`, with uncommitted assessment changes; this is a working-tree review,
 not a compatibility claim against a published server release. This revision
 supersedes the earlier sequence of extracting Go and immediately porting the
@@ -34,7 +34,7 @@ repositories and declare the tested server baseline with every release.
 
 | Milestone | Completed | Remaining |
 | --- | --- | --- |
-| 1. Verified integration contract | 6/7 tracked items; operation matrix, fresh 27 decoder/18 encoder fixtures and full tracked HTTP/auth/SSH integration | Server-owned SECRET SET/documentation discrepancy; duplicate stats field repaired and fixtures refreshed |
+| 1. Verified integration contract | 7/7 tracked items; operation matrix, fresh 34 decoder/18 encoder fixtures and full tracked HTTP/auth/SSH integration | Core protocol discrepancies resolved; browser-only API contracts and publication gates remain separate |
 | 2. Core Go client | 5/5 tracked items; typed discovery, account, tokens, translations, reading and Live results; `NewClient(apiToken)` and fixed service | Future workspace/event APIs are separate |
 | 3. CLI customer surface | 5/5 tracked items; profiles, authentication, stable output, completion and destructive UX | Fresh private Windows/Ubuntu/macOS matrix passed; production release gates remain |
 | Repository split and fixed endpoint | Complete; independent bibleit-go/bibleit-cli modules, no customer endpoint overrides, fresh fixed-endpoint HTTP/SSH integration passed | Production service addresses and standalone pinned dependency |
@@ -62,23 +62,23 @@ The HTTP command envelope still takes `{"command":"..."}` and returns protocol
 v1 records. Existing command builders, decoding, and HTTP tests remain useful.
 They do not establish coverage of the new organization/browser surfaces.
 
-## Contract gaps to resolve first
+## Verified constraints and remaining contract gaps
 
-1. The protocol reference documents `LIVE <id> SECRET SET <value>`, but
-   `src/protocol/bibleit_protocol.erl:live_secret/2` still accepts CREATE,
-   ROTATE, DELETE, and connection authentication only. The original CLI mapped
-   `secret set` to authentication; it now rejects that unsupported operation.
-   The server documentation/parser mismatch remains unresolved. Decide the server grammar and remove this ambiguity
-   before release; never silently turn management into authentication.
+1. The SECRET SET discrepancy is resolved: the reference now documents
+   server-generated CREATE/ROTATE secrets, DELETE and connection authentication.
+   Custom assignment remains unsupported. Client and CLI retain explicit rejection
+   of `secret set`; verified fixtures prevent management becoming authentication.
 2. Both WebSocket surfaces currently use browser cookies; management watching
    also checks Origin and revalidates management access. Neither is an existing
    bearer-token client event endpoint.
 3. Organization appears in domain authority, but the command parser provides no
    explicit organization/workspace selection or management commands. A profile
    preference cannot invent server-side workspace authorization.
-4. Request quoting still cannot represent embedded double quotes. V1 response
-   framing is implicit in known headers. Resolve or formally document these
-   constraints and test them against the server before freezing client APIs.
+4. V1 requests cannot represent embedded double quotes. This limit is now
+   documented and verified: malformed quote segments fail with `bad_command`,
+   while literal and trailing backslashes retain their values. Builders keep their
+   restrictions. Response framing is verified through command-aware fixtures;
+   any new escape or envelope grammar needs an explicit compatible version.
 5. The native CLI is explicitly described as unpublished/in development in the
    server documentation. Stable CLI output is now documented in `output.md`;
    publication remains paused. The unsupported `secret set` alias has been removed.
@@ -91,8 +91,9 @@ Inventory each candidate operation with its endpoint or command, authentication
 mode, authority, request/response, limits, errors, and supported server baseline.
 Add request fixtures beside existing response fixtures. Verify their wire
 semantics with server tests, including the secret mismatch and framing cases.
-The operation matrix and source-verified fixtures are complete. Resolve the
-remaining secret grammar and stats-field discrepancies with the server owner.
+The operation matrix and source-verified fixtures are complete. The assessment
+resolved the secret documentation, quoting integrity and stats-field discrepancies;
+all tracked core contract checks pass.
 
 Run integration tests using a disposable server/test database: PKCE success and
 failure, onboarding-required rejection, token revocation/expiry/scopes, quota
@@ -190,25 +191,29 @@ in authorized private CI. See `native-validation.md` for exact revisions/runs.
 
 ## Latest integration evidence
 
-The latest 2026-10-10 local refresh uses CLI harness `26de771` and Go client
-`5138077` against server HEAD `1a266cc8bf6aa726c4890b78ddf95a3aadda0ba0` plus its
-assessment changes. It includes immutable translation publication and the updated
-translation registry. `contract/server-baseline.json` records 63 source and 57
-test fingerprints; both sets matched the server at completion.
+The latest 2026-10-11 local refresh is recorded in CLI validation commit
+`6d0ebf8` and Go-client commit `2b68ccc`, against server HEAD
+`1a266cc8bf6aa726c4890b78ddf95a3aadda0ba0` plus assessment changes. The server
+snapshot includes fail-closed request quoting, the corrected generated-secret
+contract and immutable translation publication. `contract/server-baseline.json`
+records 63 source and 58 test fingerprints, matching at validation completion.
+Its review date uses UTC, while this progress record uses the local date.
 
-Passing coverage: 27 decoder/18 encoder fixtures, 7 targeted security cases,
-11 HTTP subtests, actual OpenSSH subscription/profile/output checks, 8 auth/key
-EUnit tests, 10 real-HTTP import-access cases and 14 publication cases. The optional
-`--imports` runner executes the assessment suite cases and their callbacks with
-local fixtures in the disposable namespace. Publication coverage includes
-concurrent archives, retained handles, install/delete races, generation/provenance
-retries, registry outage, legacy migration and pre/post-publication failures.
+Passing coverage: 34 decoder/18 encoder fixtures, 7 targeted security cases,
+11 HTTP subtests, actual OpenSSH subscription/profile/output checks, 17
+auth/key/protocol EUnit tests, 10 real-HTTP import-access cases and 15 publication
+cases. The optional `--imports` runner executes the assessment suite cases and
+callbacks with local fixtures in the disposable namespace. All checks passed;
+this is focused coverage, not the full server security campaign. Later assessment
+edits need a fresh snapshot. Browser-only workspace/event APIs and production
+release gates remain open.
 
-This closes the translation changes excluded by the previous snapshot. No new
-integration regression was found. Subsequent assessment edits need a new snapshot.
-The SECRET SET contract gap, browser-only workspace/event APIs and production
-release gates remain open. The focused case execution does not replace the full
-server security assessment or Common Test campaign.
+Homebrew preparation uses `bibleit-labs/homebrew-tap`, formula `bibleit-cli`,
+and executable `bibleit`. The future one-step installation command is
+`brew install bibleit-labs/tap/bibleit-cli`. Tap commit `7834751` passed isolated
+local install/test/reinstall/completions/uninstall using development archives.
+The generator emits `bibleit-cli.rb`; no formula or release was published.
+Homebrew itself may fetch developer gems/core metadata into the disposable prefix.
 
 ## Immediate next work
 
@@ -217,8 +222,8 @@ implementation, repository separation, request/response fixtures and real-server
 integration do not need to be restarted. Native Windows CLI/installer, Scoop and Homebrew lifecycle validation are
 complete. Private native Go-client CI also passes on all three platforms. Production
 HTTPS/SSH addresses, a published/pinned Go client and fresh GOWORK=off validation
-are required before publishing; publication remains paused. Server-owned contract
-discrepancies and workspace/event contracts remain outside CLI-only work. New
+are required before publishing; publication remains paused. The core server discrepancies are closed; public workspace/event contracts
+remain outside CLI-only work. New
 language clients follow the verified core contract in their separate repositories.
 
 ## Sources reviewed
