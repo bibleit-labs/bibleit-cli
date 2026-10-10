@@ -61,6 +61,13 @@ The service endpoint is project-managed; see [the endpoint policy](docs/endpoint
 Keep current work local. Do not push commits, tags or releases until the user
 explicitly resumes publication.
 
+Local candidates are built with `scripts/package_release.py --local --version
+v0.1.0-dev.1`; this creates no Git tags. Run `scripts/check_release.py --assets
+build/releases` to check archives and exercise your platform's installer offline.
+See [release preparation](docs/releases.md) for output paths, Windows checks,
+package-manager manifests, and the production gates. The prepared candidate
+workflow has read-only repository permissions and no publication steps.
+
 For real-server integration while the developer service occupies port 8080, run
 `python3 scripts/check_server_container.py --baseline contract/server-baseline.json`.
 This uses a disposable container namespace and database; it reads a frozen

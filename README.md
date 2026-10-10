@@ -79,8 +79,23 @@ to inspect the server to which it is authenticated:
     bibleit translation catalog <translation>
     # includes version=<server version> and protocol_version=1
 
-The CLI version is independent of the server version. Release version injection
-will be configured when publication resumes.
+The CLI version is independent of the server version. Local candidate packaging
+injects the chosen version; ordinary source builds continue to report `dev`.
+
+## Installation and release candidates
+
+Public installation is not available yet. Local packaging prepares six binary
+archives (macOS/Linux/Windows, amd64/arm64), SHA-256 checksums, Homebrew and Scoop
+manifests, and Bash/PowerShell installers. Everything stays local while
+publication is paused:
+
+```sh
+python3 scripts/package_release.py --local --version v0.1.0-dev.1 --output build/releases/local-dev-1
+python3 scripts/check_release.py --assets build/releases/local-dev-1
+```
+
+See [release packaging and distribution](docs/releases.md) for local installer
+tests, future Homebrew/cURL/PowerShell/Scoop commands, and remaining release gates.
 
 Commands:
 
