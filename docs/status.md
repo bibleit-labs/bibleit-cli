@@ -21,6 +21,12 @@ The next work needs production addresses and an agreed deployed server revision,
 plus the release version/customer access decision. Final standalone validation,
 real tap release-download/PR flow and customer install checks remain outstanding.
 
+Assessment follow-up: native libbibleit index/cache hardening and management
+WebSocket keepalive changes were reported after the review. Code inspection found
+no CLI/Go management WebSocket transport or ping cadence assumption, so no matching
+client code change is needed. Full server suite results were pending at notification;
+freeze server plus native submodule revisions and rerun compatibility before release.
+
 ## Previous increment: Homebrew updater access and permissions
 
 | Item | Status | Evidence / limits |

@@ -274,7 +274,7 @@ and automated release uploading are outside the initial release requirement.
 | --- | --- | --- | --- |
 | 1 | Confirm version, scope and customer access | Project decision; propose Go/CLI v0.1.0 for the existing core command surface, Homebrew/Bash/PowerShell/manual archives | Version and supported transports/architectures recorded; choose public customer artifacts or implement authenticated delivery; choose whether Scoop bucket ships now or later |
 | 2 | Configure production service and safe test fixtures | Blocked on actual HTTPS URL, SSH host/port and deployed service | Change project-owned constants without exposing endpoint overrides; isolate disposable fixtures from production; verify stored credential bindings safely reject the old service |
-| 3 | Freeze and validate server compatibility | Pending agreed committed/deployed server revision | Refresh synchronized client/CLI baseline only after full HTTP/SSH/auth/import integration passes; run explicit controlled production TLS, browser login/token revocation and SSH host verification checks |
+| 3 | Freeze and validate server compatibility | Pending agreed committed/deployed server revision | Record server and libbibleit revisions; refresh synchronized client/CLI baseline only after full HTTP/SSH/auth/import integration passes; run explicit controlled production TLS, browser login/token revocation and SSH host verification checks |
 | 4 | Release Go client and pin standalone CLI dependency | After gates 1–3; go.mod still requires v0.0.0 | Review/promote the client source, publish approved semantic version, pin it in CLI and record sums; clean-cache GOWORK=off test/vet/build succeeds without sibling checkout or replace directives; private access uses appropriate Git credentials/GOPRIVATE |
 | 5 | Validate exact production CLI candidate | After gate 4; current candidate workflow uses --local and go work | Add a standalone production candidate validation path using the released client, GOWORK=off and no --local; clean Go 1.27.1 source produces six archives, installer scripts, formula, Scoop manifest, checksums and provenance; rerun relevant native/platform/installer checks on those exact inputs |
 | 6 | Finalize release sources, notes and delivery policy | Before publishing CLI; release/default branches still need review | Promote reviewed source through normal review; notes name client version/server baseline, protocol limits, old-config migration/revocation, OpenSSH dependency and supported architectures; choose signing policy and test downloaded macOS binaries with normal OS protections; record manual release procedure or implement upload automation |
@@ -315,6 +315,24 @@ it on final changed release inputs rather than treating all tooling as unbuilt.
   approved source before release; do not accidentally tag stale default-branch
   code. Continue on integration-refresh (CLI/client) and formula-preparation (tap),
   using Conventional Commits and no codex prefix.
+
+### Assessment update after the readiness review
+
+The assessment chat reported package 21 native index/cache hardening with
+libbibleit f6fed37919c848b1aa0208900af992a5e8a507f2; the local server submodule
+points at that revision. Package 22 separates management WebSocket authorization
+checks from keepalive pings (30-second ping interval). The assessment reports a
+passing 120-second/48-client fanout soak and 30 reconnect cycles, with the full
+server suite still running at notification time. These are assessment-reported
+results, not new CLI integration evidence.
+
+Neither the CLI nor Go client implements management WebSockets; their contract
+marks both browser WebSocket surfaces outside bearer client transport. No client
+ping cadence assumption or corresponding code change was found. HTTP/SSH command
+semantics and schemas are reported unchanged. Before release, wait for the final
+assessment result, freeze the agreed committed/deployed server revision and exact
+native submodule revision, then rerun compatibility before refreshing fingerprints.
+Do not refresh the recorded baseline from this still-changing working tree.
 
 ### Next actionable increment
 
