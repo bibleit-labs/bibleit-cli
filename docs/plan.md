@@ -11,7 +11,7 @@ production HTTPS/SSH addresses, release the Go client, pin it in the CLI, and
 verify standalone builds without a workspace.
 
 Revised 2026-10-10 against the local `../bibleit-server` checkout. Its HEAD is
-`0482211`, with substantial uncommitted changes; this is a working-tree review,
+`1a266cc`, with uncommitted assessment changes; this is a working-tree review,
 not a compatibility claim against a published server release. This revision
 supersedes the earlier sequence of extracting Go and immediately porting the
 same surface into Python, Ruby, and Rust.
@@ -34,10 +34,10 @@ repositories and declare the tested server baseline with every release.
 
 | Milestone | Completed | Remaining |
 | --- | --- | --- |
-| 1. Verified integration contract | 6/7 tracked items; operation matrix, 27 decoder/18 encoder fixtures, isolated HTTP/auth/SSH checks | Server-owned SECRET SET/documentation discrepancy; duplicate stats field repaired and fixtures refreshed |
+| 1. Verified integration contract | 6/7 tracked items; operation matrix, fresh 27 decoder/18 encoder fixtures and full tracked HTTP/auth/SSH integration | Server-owned SECRET SET/documentation discrepancy; duplicate stats field repaired and fixtures refreshed |
 | 2. Core Go client | 5/5 tracked items; typed discovery, account, tokens, translations, reading and Live results; `NewClient(apiToken)` and fixed service | Future workspace/event APIs are separate |
 | 3. CLI customer surface | 5/5 tracked items; profiles, authentication, stable output, completion and destructive UX | Fresh private Windows/Ubuntu/macOS matrix passed; production release gates remain |
-| Repository split and fixed endpoint | Complete; independent bibleit-go/bibleit-cli modules, no customer endpoint overrides, real fixed-endpoint integration passed | Production service addresses and standalone pinned dependency |
+| Repository split and fixed endpoint | Complete; independent bibleit-go/bibleit-cli modules, no customer endpoint overrides, fresh fixed-endpoint HTTP/SSH integration passed | Production service addresses and standalone pinned dependency |
 | 4. Workspace/event APIs | Contract requirements recorded | Server bearer API contract and implementation |
 | 5. Python/Ruby/Rust clients | Separate repository naming decided | Implementation and portability checks |
 | 6. Release preparation | Local six-target packaging, checksums, version injection, Homebrew/Scoop manifests, Bash/PowerShell installers; isolated native Homebrew install/test/reinstall/uninstall passed | Native Windows PowerShell 7/5.1 and Scoop lifecycle passed; production gates, tags and releases remain paused |
@@ -187,6 +187,20 @@ and proposed distribution commands. No hosted script, formula, bucket or release
 has been published. The separate tap repository exists and local Homebrew lifecycle
 checks pass. Native Windows CLI, PowerShell 7/5.1 installer and Scoop lifecycle checks now pass
 in authorized private CI. See `native-validation.md` for exact revisions/runs.
+
+## Latest integration evidence
+
+The 2026-10-10 local refresh passed the full existing client/CLI HTTP/SSH harness
+against a frozen server working tree at HEAD `1a266cc8bf6aa726c4890b78ddf95a3aadda0ba0`. Inputs were CLI
+`045fd20` and Go client `9332d35`; exact server source fingerprints are in
+`contract/server-baseline.json`. Coverage: 27 decoder/18 encoder fixtures,
+7 targeted security cases, 11 Go HTTP subtests, actual OpenSSH subscription
+lifecycle and profile/output parity, and 8 auth/SSH EUnit tests. The fixture uses
+localhost:8080 inside a disposable network namespace and removes its database.
+No new integration regression was found. The assessment continues changing
+translation code; edits after the frozen snapshot require later validation.
+The SECRET SET contract gap remains;
+browser-only workspace/event APIs and production release gates stay open.
 
 ## Immediate next work
 

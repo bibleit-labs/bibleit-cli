@@ -3,7 +3,39 @@
 Updated 2026-10-10. Counts describe explicit acceptance items, not estimated
 percentages of the entire project. The full plan is in `plan.md`.
 
-## Current increment: package-manager and native Windows validation
+## Current increment: fresh full HTTP/SSH integration
+
+Branch: `integration-refresh`. Everything in this increment stays local; no pushes,
+tags, releases or hosted CI runs. The test used CLI source revision `045fd20` and
+Go-client revision `9332d35` (the canonical LIVE STATS fixture refresh), against
+server HEAD `1a266cc8bf6aa726c4890b78ddf95a3aadda0ba0` plus its uncommitted assessment changes. Exact server
+source fingerprints are recorded in `contract/server-baseline.json`.
+
+| Item | Status | Evidence / limits |
+| --- | --- | --- |
+| Baseline inspection and isolation | Complete | Go 1.27.1; clean CLI/client inputs; frozen server working tree; Linux fixture NIFs rebuilt; fixed localhost:8080 in a disposable network namespace |
+| Full tracked HTTP/SSH integration | Complete | 27 decoder/18 encoder fixtures; 7 targeted security cases; all 11 Go HTTP subtests; real CLI/OpenSSH subscription, pause/disconnect/reconnect/deletion closure and profile/output parity; 8 auth/key EUnit tests |
+| Evidence, plan and local commits | Complete | CLI/client server fingerprints refreshed; exact frozen snapshot recorded; disposable database removed; plan retains production and browser-only contract gates |
+
+Progress: **3/3 tracked integration-refresh items complete**. Log:
+`build/validation/full-integration-refresh-2026-10-10.log` (ignored local evidence).
+The first run also passed (`full-integration-2026-10-10.log`); a second run
+included a fetcher edit detected after its snapshot. The assessment continued
+editing `bibleit_translation.erl` and `bibleit_translation_registry.erl` after
+the second snapshot; those subsequent edits are outside this baseline.
+The repaired LIVE STATS encoder passed canonical fixtures and real subscriber
+statistics. There were no integration regressions requiring client or server fixes.
+The SSH algorithm-negative tests intentionally log rejected handshakes; all eight
+EUnit tests pass. This is the full existing client/CLI integration harness, not the
+entire server security assessment or coverage of browser-only organization APIs.
+
+Reproduce:
+
+```sh
+python3 scripts/check_server_container.py --baseline contract/server-baseline.json
+```
+
+## Previous increment: package-manager and native Windows validation
 
 The user authorized private CI validation after recreating `bibleit-cli` and
 `bibleit-go` privately. Validation branches have no codex prefix; no release tags
