@@ -46,8 +46,10 @@ source. Browser presence alone does not imply a supported bearer API.
 The assessment fixed duplicate `LIVE STATS` counts on 2026-10-10. Canonical
 fixtures now use one count derived from subscriber records; older identical
 values remain accepted by the client, and conflicting values are rejected.
-Fresh read-only checks pass 27 decoder and 18 encoder fixtures. Earlier full
-integration provenance remains historical until the next complete integration run.
+Fresh local full integration passes 27 decoder and 18 encoder fixtures,
+7 targeted security cases, all 11 Go HTTP subtests, real OpenSSH subscription
+lifecycle/profile output checks and 8 auth/SSH EUnit tests. Source fingerprints
+in `server-baseline.json` identify the tested working tree (2026-10-10).
 
 
 The assessment fixed token scope serialization using permission CSV. Real token

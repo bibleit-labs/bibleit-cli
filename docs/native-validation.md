@@ -166,3 +166,29 @@ revision `3d15ec6f54eba822129863e86e006d51deb07725`, ephemeral go.work and
 development-only artifacts. They do not validate GOWORK=off production builds
 or hosted public download URLs. The subsequent local client fixture/comment
 refresh for the server's LIVE STATS repair is outside these pinned CI runs.
+
+## Fresh full HTTP/SSH integration (2026-10-10)
+
+Local branch `integration-refresh`, CLI source `045fd20`, Go client `9332d35`:
+`python3 scripts/check_server_container.py --baseline contract/server-baseline.json`
+passed against server HEAD `[private digest withheld]` with uncommitted assessment changes.
+The baseline fingerprints identify the actual tested source; this is not a claim
+against a published server release. The assessment continues editing the server; source
+fingerprints identify the tested snapshot rather than its moving working tree.
+
+The harness passed 27 decoder and 18 encoder fixtures, seven targeted security
+cases, all 11 HTTP integration subtests, real OpenSSH subscription events,
+disconnect/reconnect and deletion closure, CLI profile/stable-output checks and
+eight authentication/SSH EUnit tests. The LIVE STATS repair passed both canonical
+encoding and real subscriber statistics. No regressions or new fixes were needed.
+Negative SSH algorithm tests intentionally produce rejected-handshake logs.
+
+Linux fixture NIFs were rebuilt from frozen source. The temporary database and
+server shared a disposable network namespace; no host ports were exposed, and
+the database container was removed. Full output is saved locally at
+`build/validation/full-integration-refresh-2026-10-10.log`. Both full runs passed;
+the second included a fetcher edit discovered after the first snapshot. Subsequent
+translation/registry edits from the ongoing assessment are outside this baseline.
+This refresh does not repeat
+native Windows/package-manager CI, validate production TLS/download addresses,
+or replace the server's broader security assessment.
