@@ -107,7 +107,7 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
         run(['go','test','-c','-o',str(cli_binary),'.'],cwd=root,env=go_env)
         env['BIBLEIT_CLI_TEST_BIN']=str(cli_binary)
         shutil.copy(server/'_build/default/lib/bibleit_server/ebin/bibleit_server.app', ebin)
-        suites = [server/'test/bibleit_test_database.erl', server/'test/bibleit_security_SUITE.erl', server/'test/http/bibleit_cli_auth_tests.erl', server/'test/ssh/bibleit_ssh_key_cb_tests.erl']
+        suites = [server/'test/bibleit_test_database.erl', server/'test/bibleit_security_SUITE.erl', server/'test/http/bibleit_cli_auth_tests.erl', server/'test/ssh/bibleit_ssh_key_cb_tests.erl', server/'test/unit/bibleit_protocol_request_tests.erl']
         if args.imports:
             suites += [server/'test/bibleit_import_access_SUITE.erl', server/'test/bibleit_import_publication_SUITE.erl']
         run(['erlc', *paths,'-o',str(ebin),*map(str,suites)],cwd=temporary)
@@ -202,7 +202,7 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
               after bibleit_security_SUITE:end_per_suite(Config) end,
               application:unset_env(bibleit_server,rate_limits),
               DB=bibleit_test_database:start(),
-              UnitResult=try eunit:test([bibleit_cli_auth_tests,bibleit_ssh_key_cb_tests],[verbose])
+              UnitResult=try eunit:test([bibleit_cli_auth_tests,bibleit_ssh_key_cb_tests,bibleit_protocol_request_tests],[verbose])
               after bibleit_test_database:stop(DB) end,
               case {Results,UnitResult} of
                 {{ok,ok},ok}->halt();

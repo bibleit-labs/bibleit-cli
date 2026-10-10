@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Exercise the generated formula in a disposable Homebrew prefix, offline."""
+"""Exercise the generated formula in a disposable Homebrew prefix using local CLI archives."""
 import argparse
 import hashlib
 import json
@@ -33,7 +33,8 @@ def main():
         scratch = Path(scratch)
         prefix = scratch / 'brew'
         subprocess.run(['git', 'clone', '--local', '--no-hardlinks', '--quiet', str(repository), str(prefix)], check=True)
-        # Reuse the installed interpreter read-only; no Ruby/package download.
+        # Reuse the installed interpreter read-only. Homebrew may still fetch
+        # developer gems or core metadata into the disposable prefix.
         ruby = repository / 'Library/Homebrew/vendor/portable-ruby/current'
         if ruby.exists():
             portable = prefix / 'Library/Homebrew/vendor/portable-ruby'
@@ -86,14 +87,14 @@ def main():
         assert hashlib.sha256(binary.read_bytes()).hexdigest() == before
         run('test', name)
         # The disposable prefix has no dependent packages. Avoid Homebrew's
-        # unrelated core-tap resolution during dependent checks/autoremove.
+        # dependent checks/autoremove where supported by the installed Homebrew.
         assert {p.name for p in (prefix / 'Cellar').iterdir() if p.is_dir()} == {formula_name}
         run('uninstall', '--formula', '--ignore-dependencies', name)
         assert not binary.exists() and not binary.is_symlink()
         assert not (prefix / 'Cellar' / formula_name).exists()
     report = Path(args.report)
     report.parent.mkdir(parents=True, exist_ok=True)
-    report.write_text(json.dumps({'platform': os.uname().sysname, 'architecture': os.uname().machine, 'version': version, 'offline': True, 'isolated_prefix': True, 'checks': evidence}, indent=2) + '\n')
+    report.write_text(json.dumps({'platform': os.uname().sysname, 'architecture': os.uname().machine, 'version': version, 'local_cli_archives': True, 'isolated_prefix': True, 'checks': evidence}, indent=2) + '\n')
     print(f'PASS: Homebrew install/test/reinstall/completions/uninstall; report {report}')
 
 

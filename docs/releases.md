@@ -172,7 +172,9 @@ python3 scripts/check_homebrew.py --assets build/releases/v0.1.0-dev.1 \
 
 The validation runner changes only archive URLs to local files. It uses the tap's
 real install/test methods and checksums and writes evidence to
-`build/validation/homebrew.json`. On Windows, run the Scoop counterpart with an
+`build/validation/homebrew.json`. CLI archives stay local; Homebrew may fetch
+its own developer gems or core metadata into the disposable prefix. This check
+is not a guarantee of offline execution. On Windows, run the Scoop counterpart with an
 existing/pinned source checkout:
 
 ```powershell
