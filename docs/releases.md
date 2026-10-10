@@ -183,8 +183,8 @@ See [Homebrew tap naming](https://docs.brew.sh/Taps) and the
 `bibleit-labs/homebrew-tap` owns `Formula/bibleit-cli.rb`, its README, license and
 contribution notes. The CLI generates versioned formulas with release archive
 checksums. After an authorized release, copy the matching formula into the tap,
-review and validate it, then commit its version update independently. There is
-no automatic tap publication in the CLI workflow.
+review and validate it, then commit its version update independently. The tap provides a separate manual update-formula workflow that verifies
+published artifacts and opens a PR; it never auto-merges.
 
 ```sh
 python3 scripts/check_homebrew.py --assets build/releases/v0.1.0-dev.1 \
@@ -205,3 +205,15 @@ python scripts/check_scoop.py --assets build/releases/<candidate> --scoop-source
 It runs real Scoop in a disposable root, checks the native executable shim and
 reset/reinstallation/uninstallation, then confirms incorrect hashes are rejected.
 Archive downloads use a loopback fixture; the client's fixed endpoint is unchanged.
+
+## Tap CI setup before the first formula update
+
+Tap syntax/style and formula-updater regression CI are prepared in homebrew-tap.
+Before dispatching its update workflow, publish bibleit-cli.rb, manifest.json and
+checksums.txt alongside the four macOS/Linux release archives. While CLI assets
+are private, configure BIBLEIT_CLI_READ_TOKEN in the tap with Contents: read only
+to bibleit-cli; allow Actions PR creation through repository/org policy. The
+workflow consumes a reviewed version, verifies production provenance and archive
+hashes, then opens a Conventional Commit release PR. It does not create CLI
+releases or automatically merge the formula. The updater has fixture regression
+evidence but no real-release download/PR evidence yet because no release exists.

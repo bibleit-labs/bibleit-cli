@@ -13,9 +13,9 @@ releases, automatic merges or repository visibility changes are performed.
 | --- | --- | --- |
 | Remove named profiles | Complete | One schema-v2 service-bound config; HTTP default, explicit --transport ssh; cached token and optional identity retained; no profile commands/flag/environment selection/output/completion; old files rejected and untouched |
 | Add Homebrew tap CI | Complete implementation | Tap syntax/style plus seven updater regressions; manually dispatched release updater verifies published CLI-generated formula/archives and opens a Conventional Commit PR without auto-merge |
-| Validate, update plan and push | In progress | Local race/vet, macOS process/PTY/Bash/Zsh, full real HTTP/SSH/auth/import integration pass; client baseline synchronized; fresh private native/candidate/tap CI and final records pending |
+| Validate, update plan and push | Complete | Local race/vet/process/PTY/Bash/Zsh and full frozen-server integration pass; synchronized client baseline; client/CLI native, candidate and tap matrices all green; prepared source and documentation pushed |
 
-Progress: **2/3 tracked items complete**. The local server integration log is
+Progress: **3/3 tracked items complete**. The local server integration log is
 build/validation/single-config-integration-2026-10-11.log (ignored): 34 decoder/18
 encoder fixtures, 7 security cases, 11 HTTP subtests, real SSH lifecycle and
 single-credential/output parity, 17 auth/key/protocol tests, 10 import-access and
@@ -29,6 +29,20 @@ release reads need BIBLEIT_CLI_READ_TOKEN (Contents: read only to bibleit-cli) i
 the tap; Actions PR-creation policy must permit the write job. These setup steps
 are documented in the tap. Tap syntax CI does not fetch unpublished candidate
 URLs; real lifecycle checks run through the CLI candidate workflow.
+
+Fresh hosted evidence for this increment:
+
+- [Client native matrix](https://github.com/bibleit-labs/bibleit-go/actions/runs/38091438398): all three platforms passed at 17e146b.
+- [CLI native matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38091481226): Windows/Ubuntu/macOS race/vet/build/process, config ACL/permissions, and Linux Bash/Zsh/Fish passed at fe719db with exact client 17e146b.
+- [Candidate matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38091481159): all three platforms passed at fe719db; six-target packaging, native installers, PowerShell 7/5.1, Scoop and Homebrew.
+- [Tap syntax/style and updater regressions](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38091389888): passed at d08561b. The updater publication workflow was not invoked; no actual release exists.
+
+Documentation-only commits follow the tested runtime commit. The assessment
+continued changing server sources/tests after the frozen run; those later edits
+are outside this baseline. Rerun against the agreed deployed baseline before
+release. The current increment introduces no server edits and found no client
+integration regression. Production addresses, released/pinned dependency,
+standalone production packaging and customer-accessible publication remain open.
 
 ## Previous increment: release readiness and private source publication
 

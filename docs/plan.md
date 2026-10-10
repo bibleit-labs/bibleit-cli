@@ -183,19 +183,21 @@ package-manager distribution after release artifacts and upgrade paths work.
 Local preparation now provides six versioned archives, checksums, license and
 completion files, Bash/PowerShell installers, generated Homebrew/Scoop manifests,
 and a manual candidate-validation workflow. See `releases.md` for offline testing
-and proposed distribution commands. No hosted script, formula, bucket or release
-has been published. The separate tap repository exists and local Homebrew lifecycle
+and proposed distribution commands. No hosted installer, customer-ready formula, bucket or release
+has been published; tap source and CI are pushed privately. The separate tap repository exists and local Homebrew lifecycle
 checks pass. Native Windows CLI, PowerShell 7/5.1 installer and Scoop lifecycle checks now pass
 in authorized private CI. See `native-validation.md` for exact revisions/runs.
 
 ## Latest integration evidence
 
 The latest 2026-10-11 local refresh is recorded in CLI validation commit
-`6d0ebf8` and Go-client commit `2b68ccc`, against server HEAD
+`fe719db` and Go-client commit `17e146b`, against server HEAD
 `1a266cc8bf6aa726c4890b78ddf95a3aadda0ba0` plus assessment changes. The server
 snapshot includes fail-closed request quoting, the corrected generated-secret
 contract and immutable translation publication. `contract/server-baseline.json`
-records 63 source and 58 test fingerprints, matching at validation completion.
+records 63 source and 59 test fingerprints. It freezes the tested assessment working
+tree, including later plan-support changes; subsequent edits require a fresh
+snapshot.
 Its review date uses UTC, while this progress record uses the local date.
 
 Passing coverage: 34 decoder/18 encoder fixtures, 7 targeted security cases,
@@ -209,7 +211,7 @@ release gates remain open.
 
 Homebrew preparation uses `bibleit-labs/homebrew-tap`, formula `bibleit-cli`,
 and executable `bibleit`. The future one-step installation command is
-`brew install bibleit-labs/tap/bibleit-cli`. Tap commit `7834751` passed isolated
+`brew install bibleit-labs/tap/bibleit-cli`. The formula at tap commit `7834751` passed isolated
 local install/test/reinstall/completions/uninstall using development archives.
 The generator emits `bibleit-cli.rb`; no customer-ready formula or release was published. The prepared tap source branch
 may now be pushed privately.
@@ -246,7 +248,7 @@ it cannot close production endpoint or standalone dependency gates.
 
 | Order | Next step | Status / owner input | Acceptance evidence |
 | --- | --- | --- | --- |
-| 1 | Push prepared client/CLI/tap sources and refresh draft CI pins | Authorized; this increment | Remote branches match local commits; CLI native/candidate workflows use the exact pushed client SHA; all native and development candidate jobs passed; see native-validation.md |
+| 1 | Push prepared client/CLI/tap sources and refresh draft CI pins | Complete; client/CLI native, candidate and tap CI green | Remote branches match local commits; CLI native/candidate workflows use the exact pushed client SHA; all native and development candidate jobs passed on the single-configuration implementation; see native-validation.md |
 | 2 | Choose first release scope/version and customer access model | Pending project decision; propose Go/CLI v0.1.0, existing core commands | Supported commands/transports and known v1 limits in release notes; public distribution or explicitly supported private delivery selected |
 | 3 | Set production HTTPS and SSH addresses; adapt endpoint-dependent tests | Blocked on actual addresses and deployed service | NewClient(apiToken), browser exchange/logout and CLI HTTP/SSH use project-owned destinations; no customer override; disposable tests never contact production accidentally; credential bindings fail safely after address changes |
 | 4 | Freeze the deployed server contract and run release integration | Pending deployed revision/configuration | Committed/deployed server revision plus relevant source fingerprints, full HTTP/SSH/auth/import compatibility pass; controlled production TLS/login/revocation and SSH host verification smoke checks |
@@ -260,7 +262,9 @@ Source publication order is Go client first, then CLI with its exact CI pin, and
 independent tap staging. Reuse `integration-refresh` and `formula-preparation`;
 do not merge into other/default branches or create release tags during this review.
 Fresh client and CLI native matrices pass on Windows/Ubuntu/macOS; the exact
-revisions and runs are in [native-validation.md](native-validation.md).
+revisions and runs are in [native-validation.md](native-validation.md). Tap
+syntax/style and updater regression CI passed at d08561b in
+[run 38091389888](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38091389888).
 Current default branches are CLI `package-manager-validation`, Go
 `private-platform-validation`, and tap `formula-preparation`. Before launch, review
 and promote the approved source into the chosen release/default branch through
@@ -288,6 +292,12 @@ normal review; changing branch defaults is separate from pushing the prepared wo
 - The staged Homebrew formula is v0.1.0-dev.1 with unpublished URLs. Push its source
   for review, then replace it with the exact released candidate before customer use.
   Scoop is generated/tested, but a customer bucket and publication are still pending.
+
+Profile removal and tap CI are complete. The new single-configuration CLI and
+client/candidate matrices passed at CLI fe719db and client 17e146b; tap validation
+passed at d08561b. Exact runs and limits are recorded in native-validation.md.
+The manual tap update path still needs its documented private-read secret and
+PR-creation policy before a real release update can be exercised.
 
 Next implementation increment: obtain the production addresses/deployment baseline,
 then update service constants and endpoint-dependent fixtures together. If deployment
