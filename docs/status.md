@@ -7,14 +7,15 @@ percentages of the entire project. The full plan is in `plan.md`.
 
 | Item | Status | Evidence / limits |
 | --- | --- | --- |
-| Private CLI access preflight | Blocked on scoped credential; implementation complete | Tap 04e8b16 adds a read-only manual workflow and checks release-list access before formula downloads; no releases, tags or PRs created |
+| Private CLI access preflight | Complete | BIBLEIT_CLI_READ_TOKEN configured; Actions verified private CLI metadata and release-list access at tap bf6a46b in [run 38092683138](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38092683138); no releases, tags or PRs created |
 | Actions PR permissions | Complete | Final API check confirms can_approve_pull_request_reviews=true with default_workflow_permissions=read; organization restriction was lifted during setup; update job alone requests write permissions |
-| Validate and record setup | Complete | Seven updater regressions, shell/YAML checks and hosted Homebrew syntax/style pass at tap 04e8b16 in [run 38092320412](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38092320412); no BIBLEIT_CLI_READ_TOKEN is configured yet |
+| Validate and record setup | Complete | Seven updater regressions, shell/YAML checks and hosted Homebrew syntax/style pass at tap 04e8b16 in [run 38092320412](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38092320412); actual secret access check also passed |
 
-Progress: **2/3 tracked items complete**; scoped credential setup remains blocked. User setup is needed for
-the tap secret scoped only to bibleit-cli with Contents: read. After saving the
-secret, dispatch Check updater access. A green read check cannot certify formula downloads or PR
-creation until the first real production CLI release exists.
+Progress: **3/3 tracked setup items complete**. The user confirmed the token is
+configured for only bibleit-cli with Contents: read-only; the Actions access check
+verifies it can read the private CLI, without exposing the credential. This does
+not independently inspect the token's full scope. Formula downloads and PR
+creation remain an end-to-end gate for the first real production CLI release.
 
 ## Previous increment: single credential configuration and tap CI
 

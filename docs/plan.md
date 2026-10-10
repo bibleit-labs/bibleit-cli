@@ -303,18 +303,20 @@ pass. Hosted Homebrew syntax/style and regression validation is green in
 [run 38092320412](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38092320412)
 at 04e8b16. The initial run identified shell formatting; this revision fixes it.
 
-Remaining tap setup, in order:
+Tap updater setup and remaining release validation:
 
 1. Actions PR policy: complete. The organization restriction was lifted during
    setup; the final repository API check confirms PR creation is enabled.
-2. Save BIBLEIT_CLI_READ_TOKEN in homebrew-tap: fine-grained token owned by
-   bibleit-labs, selecting only bibleit-cli, Contents: read-only. No secret exists
-   yet; keep broad interactive credentials out of Actions secrets.
+2. Private read secret: complete. The user confirmed BIBLEIT_CLI_READ_TOKEN in
+   homebrew-tap is configured for bibleit-labs, only bibleit-cli, Contents: read-only.
+   Keep it narrowly scoped and rotate before expiration.
 3. Repository PR setting: complete. The API confirms
    can_approve_pull_request_reviews=true and default_workflow_permissions=read;
    only the updater job requests write permissions.
-4. Dispatch Check updater access using the actual Actions secret; record the
-   green run and tap syntax validation. This check creates no releases or PRs.
+4. Actions access validation: complete. [Run 38092683138](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38092683138)
+   passed at tap bf6a46b using the configured secret. Private CLI metadata and
+   release-list reads succeeded; no tags, releases or PRs were created. This verifies
+   access, not the token's full permission scope. Tap syntax validation is green.
 5. After a production CLI release exists, dispatch its formula update, review
    the PR, approve/run validation and verify real archive installation. The
    workflow never approves or merges PRs despite GitHub's combined policy toggle.
