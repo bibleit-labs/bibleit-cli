@@ -115,7 +115,7 @@ python3 scripts/check_server.py
 python3 scripts/check_server.py --integration
 ```
 
-Identical repeated response fields are accepted for compatibility with current
+Identical repeated response fields are accepted for compatibility with older
 Live stats; conflicting repeated values are rejected.
 
 ## Translation metadata encoder issue

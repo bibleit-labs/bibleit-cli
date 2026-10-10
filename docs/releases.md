@@ -139,9 +139,13 @@ Local evidence for the packaging increment: macOS/arm64 and disposable Linux/arm
 installation/replacement and corrupt/missing/duplicate checksum checks; PowerShell
 parser/failure-path checks in a disposable Linux container; all six archive layouts,
 eight checksums and package manifest values; two identical archive builds. Native
-Windows and Scoop installation require their native validation results. Homebrew
-now passes actual macOS/arm64 install/test/completion/reinstall/uninstall checks
-in a disposable prefix; no package remains in the normal user prefix.
+Native Windows PowerShell 7/5.1 installers and Scoop lifecycle now pass, together
+with Linux/macOS installers and macOS Homebrew, in
+[private run 38088193158](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38088193158).
+Homebrew also passes local macOS/arm64 checks against the separate tap formula
+in a disposable prefix; no package remains in the normal user prefix. Public
+download URLs, production addresses and standalone pinned-client release builds
+remain unvalidated and publication remains paused.
 
 ## Separate Homebrew repository
 

@@ -145,6 +145,24 @@ using the generated development formula in a disposable Homebrew prefix. The
 normal user installation is unchanged. Report: `build/validation/homebrew.json`.
 The tap is a separate `bibleit-labs/homebrew-tap` repository, prepared locally.
 
-Native CLI Windows and Scoop results are pending the new private CI run. The
-scoped checkout secret is configured; the workflow uses an exact client SHA, ephemeral go.work and
-development-only artifacts; this does not validate GOWORK=off production builds.
+The native CLI matrix passed Windows/Ubuntu/macOS at
+`1e58c54adb21cb1bfb00e9c7e021b38278f72828` in
+[run 38088193147](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38088193147).
+Ubuntu also executed Bash/Zsh/Fish completion checks.
+
+The distribution matrix passed at the same CLI revision in
+[run 38088193158](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38088193158):
+Linux/macOS Bash installation/replacement/failure paths; native Windows
+PowerShell 7 and Windows PowerShell 5.1 installation/replacement/failure paths;
+PowerShell parser checks; real macOS Homebrew lifecycle; real native Windows
+Scoop install, executable shim, reset, reinstall, uninstall and hash rejection.
+Scoop engine: `e6aa3b366bdee8ed138c1e0f7b85192ebdd35d0f`. Hash rejection checks
+require the explicit failure and absence of an executable, current link and shim,
+independently of Scoop's pipeline exit status. Windows/arm64 remains cross-build
+only. Local evidence is under `build/validation/ci-38088193158`.
+
+The scoped checkout secret is configured; these workflows use exact Go-client
+revision `3d15ec6f54eba822129863e86e006d51deb07725`, ephemeral go.work and
+development-only artifacts. They do not validate GOWORK=off production builds
+or hosted public download URLs. The subsequent local client fixture/comment
+refresh for the server's LIVE STATS repair is outside these pinned CI runs.
