@@ -1,7 +1,8 @@
 # bibleit CLI
 
 The CLI module is `github.com/bibleit-labs/bibleit-cli` and requires Go 1.27.1.
-Development is currently local-only. The independent Go client is the sibling
+Development uses local checkouts and authorized private CI validation branches.
+Public releases and tags remain paused. The independent Go client is the sibling
 `../bibleit-go` checkout. Create a local workspace with `go work init . ../bibleit-go`
 if `go.work` does not already exist, then build with `go build -o build/bibleit .`.
 `go.mod` uses an unreleased `v0.0.0` placeholder; it must be replaced with a real

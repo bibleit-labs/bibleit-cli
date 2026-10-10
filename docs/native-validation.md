@@ -16,8 +16,9 @@ repository. Before publication was paused, the independent repositories also pas
 - [CLI](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38082843195), code commit `e46bfd6`.
 
 Those historical branches were `repository-split`, with no codex prefix. The
-user is clearing these repositories; hosted records may no longer be available.
-Current changes stay local on `fixed-service-endpoint`, and use a local workspace. Each matrix targets runner-default architectures, not all six
+repositories were recreated; earlier hosted records may no longer be available.
+At the publication pause, changes stayed local with a sibling workspace. Private
+CI is now authorized; see the latest validation section below. Each matrix targets runner-default architectures, not all six
 build targets. The original repository's remote main is unchanged.
 
 ## Historical evidence before fixed-endpoint changes
@@ -130,4 +131,20 @@ and the original server checkout and existing host service remain untouched.
 Passing coverage: 27 decoder fixtures, 18 encoder fixtures, 7 targeted security
 cases, Go HTTP/domain/PKCE/token checks, actual CLI/OpenSSH subscription lifecycle,
 and 8 authentication/SSH EUnit cases. The baseline records the server working-tree
-fingerprints and fixed HTTP endpoint. Native Windows was not rerun.
+fingerprints and fixed HTTP endpoint. Native Windows was not rerun for that increment.
+
+## Private package-manager validation (2026-10-10)
+
+The user recreated the Go-client and CLI repositories privately and authorized
+validation-branch pushes and CI. Releases/tags remain paused. The Go-client matrix
+passed Windows, Ubuntu and macOS at `3d15ec6f54eba822129863e86e006d51deb07725` in
+[run 38086747099](https://github.com/bibleit-labs/bibleit-go/actions/runs/38086747099).
+
+Real Homebrew macOS/arm64 install/test/completion/reinstall/uninstall checks pass
+using the generated development formula in a disposable Homebrew prefix. The
+normal user installation is unchanged. Report: `build/validation/homebrew.json`.
+The tap is a separate `bibleit-labs/homebrew-tap` repository, prepared locally.
+
+Native CLI Windows and Scoop results are pending the new private CI run. The
+scoped checkout secret is configured; the workflow uses an exact client SHA, ephemeral go.work and
+development-only artifacts; this does not validate GOWORK=off production builds.

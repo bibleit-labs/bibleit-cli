@@ -1,7 +1,9 @@
 # Bibleit clients and CLI: revised implementation plan
 
-Publication is paused by the user. All work stays local; the user is clearing the
-public repositories. Endpoint configuration is removed: every client targets the
+Public releases and tags remain paused. The user recreated `bibleit-cli` and
+`bibleit-go` as private repositories and authorized validation-branch pushes and
+CI on 2026-10-10. The separate `bibleit-labs/homebrew-tap` is now created; formula
+preparation stays local until a distributable CLI release exists. Endpoint configuration is removed: every client targets the
 project-managed service, currently `http://localhost:8080`. See
 [endpoint-policy.md](endpoint-policy.md). Local release preparation is complete;
 see [releases.md](releases.md). Before publishing, set the
@@ -38,7 +40,7 @@ repositories and declare the tested server baseline with every release.
 | Repository split and fixed endpoint | Complete; independent bibleit-go/bibleit-cli modules, no customer endpoint overrides, real fixed-endpoint integration passed | Production service addresses and standalone pinned dependency |
 | 4. Workspace/event APIs | Contract requirements recorded | Server bearer API contract and implementation |
 | 5. Python/Ruby/Rust clients | Separate repository naming decided | Implementation and portability checks |
-| 6. Release preparation | Local six-target packaging, checksums, version injection, Homebrew/Scoop manifests, Bash/PowerShell installers and manual validation workflow | Production gates, native Windows/package-manager checks, tags and publication; all publishing remains paused |
+| 6. Release preparation | Local six-target packaging, checksums, version injection, Homebrew/Scoop manifests, Bash/PowerShell installers; isolated native Homebrew install/test/reinstall/uninstall passed | Private Windows/Scoop CI in preparation; production gates, tags and releases remain paused |
 
 Completion describes tracked core scope, not all future product features. Detailed
 evidence and historical increments are in [status.md](status.md).
@@ -181,16 +183,17 @@ package-manager distribution after release artifacts and upgrade paths work.
 Local preparation now provides six versioned archives, checksums, license and
 completion files, Bash/PowerShell installers, generated Homebrew/Scoop manifests,
 and a manual candidate-validation workflow. See `releases.md` for offline testing
-and proposed distribution commands. No hosted script, tap, bucket or release has
-been published. Package-manager end-to-end checks and native Windows installer
-validation remain release gates.
+and proposed distribution commands. No hosted script, formula, bucket or release
+has been published. The separate tap repository exists and local Homebrew lifecycle
+checks pass. Native Windows/Scoop checks are being prepared in authorized private CI.
 
 ## Immediate next work
 
 The authorized local release-packaging increment is complete. Existing core
 implementation, repository separation, request/response fixtures and real-server
 integration do not need to be restarted. Remaining release preparation is native
-Windows installer execution and actual Homebrew/Scoop install/test. Production
+Windows CLI/installer and Scoop execution; Homebrew lifecycle validation is now
+complete. Private native Go-client CI also passes on all three platforms. Production
 HTTPS/SSH addresses, a published/pinned Go client and fresh GOWORK=off validation
 are required before publishing; publication remains paused. Server-owned contract
 discrepancies and workspace/event contracts remain outside CLI-only work. New

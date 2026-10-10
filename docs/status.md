@@ -3,7 +3,28 @@
 Updated 2026-10-10. Counts describe explicit acceptance items, not estimated
 percentages of the entire project. The full plan is in `plan.md`.
 
-## Current increment: local release packaging and installation paths
+## Current increment: package-manager and native Windows validation
+
+The user authorized private CI validation after recreating `bibleit-cli` and
+`bibleit-go` privately. Validation branches have no codex prefix; no release tags
+or distributed binaries/formulas are published. `homebrew-tap` is separate and
+its development formula preparation remains local.
+
+| Item | Status | Evidence / limits |
+| --- | --- | --- |
+| Homebrew install lifecycle | Complete on local macOS/arm64 | Real generated formula in disposable prefix: install, formula tests, completions, reinstall and uninstall passed; normal user prefix untouched |
+| Go-client native matrix | Complete | `private-platform-validation`, commit `3d15ec6`; Windows/Ubuntu/macOS race tests, vet and builds passed in private run 38086747099 |
+| CLI native and Scoop execution | Private CI starting | Exact client SHA in ephemeral CI workspace; scoped checkout secret configured; Scoop engine pinned at e6aa3b3; native executable/shim/reset/reinstall/uninstall/hash rejection checks ready |
+| Separate tap and verification records | In progress | Local `formula-preparation`; README/contribution/license and generated development formula; CLI docs reflect private CI authorization; final CLI results pending |
+
+Progress: **2/4 tracked validation items complete**. GitHub disables deploy keys
+on `bibleit-go`; user selected `BIBLEIT_CLIENT_READ_TOKEN` with contents-read only
+on that repository and configured it. The current production endpoint and standalone client-release
+gates are unchanged. See `docs/releases.md` for repeatable local checks.
+
+[Go-client native CI passed](https://github.com/bibleit-labs/bibleit-go/actions/runs/38086747099).
+
+## Previous increment: local release packaging and installation paths
 
 Branch: `local-release-packaging`. Everything stays local: no pushes, tags,
 GitHub Releases, hosted workflow runs, Homebrew tap or Scoop bucket changes.

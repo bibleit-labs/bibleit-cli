@@ -1,7 +1,9 @@
 # Local release packaging and distribution
 
-Publication is paused. The commands below prepare files locally; no release tag,
-GitHub Release, Homebrew tap, Scoop bucket or hosted installer is created.
+Release publication is paused. The commands below prepare files locally; no
+release tag, GitHub Release, distributed formula, Scoop bucket or hosted installer
+is created. Private validation branches and CI are authorized. The separate
+`bibleit-labs/homebrew-tap` exists; its formula preparation remains local.
 Production service addresses and a published Go-client dependency remain release
 gates. Local candidates still connect to `http://localhost:8080`.
 
@@ -118,10 +120,12 @@ The implementation here is written for Bibleit's Go release layout.
 3. Commit reviewed sources and use a semantic version. Running the packager without
    `--local` requires Go 1.27.1, a clean checkout, a pinned client and production
    addresses. It still does not publish or tag anything.
-4. Run the prepared `release-candidate.yml` workflow after publication is authorized.
-   It manually validates standalone candidates and native installers on macOS,
-   Linux and Windows; it saves a candidate artifact, with no Release/tag write
-   permission. The workflow has not been pushed or dispatched.
+4. The draft `release-candidate.yml` workflow validates development candidates in
+   private CI, using an exact private Go-client SHA and ephemeral workspace. Its
+   `BIBLEIT_CLIENT_READ_TOKEN` secret must have contents-read access only to
+   `bibleit-go`. It tests native installers, Homebrew and Scoop, saving private
+   validation artifacts with no Release/tag write permission. Restore standalone
+   packaging without `--local` and use GOWORK=off after the client is released.
 5. Validate actual native Windows installation/replacement, macOS downloaded-binary
    behavior/signing policy, Homebrew install/test and Scoop install. A Ruby syntax
    check and generated checksum validation are preparation, not package-manager
@@ -131,8 +135,36 @@ The implementation here is written for Bibleit's Go release layout.
    Obtain authorization to publish, then create the release and update tap/bucket.
    Consumers must never be directed to local-only candidates.
 
-Local evidence for this increment: macOS/arm64 and disposable Linux/arm64 offline
+Local evidence for the packaging increment: macOS/arm64 and disposable Linux/arm64 offline
 installation/replacement and corrupt/missing/duplicate checksum checks; PowerShell
 parser/failure-path checks in a disposable Linux container; all six archive layouts,
 eight checksums and package manifest values; two identical archive builds. Native
-Windows and actual Homebrew/Scoop installation remain pending.
+Windows and Scoop installation require their native validation results. Homebrew
+now passes actual macOS/arm64 install/test/completion/reinstall/uninstall checks
+in a disposable prefix; no package remains in the normal user prefix.
+
+## Separate Homebrew repository
+
+`bibleit-labs/homebrew-tap` owns `Formula/bibleit.rb`, its README, license and
+contribution notes. The CLI generates versioned formulas with release archive
+checksums. After an authorized release, copy the matching formula into the tap,
+review and validate it, then commit its version update independently. There is
+no automatic tap publication in the CLI workflow.
+
+```sh
+python3 scripts/check_homebrew.py --assets build/releases/v0.1.0-dev.1 \
+  --formula ../homebrew-tap/Formula/bibleit.rb
+```
+
+The validation runner changes only archive URLs to local files. It uses the tap's
+real install/test methods and checksums and writes evidence to
+`build/validation/homebrew.json`. On Windows, run the Scoop counterpart with an
+existing/pinned source checkout:
+
+```powershell
+python scripts/check_scoop.py --assets build/releases/<candidate> --scoop-source <Scoop-source-checkout>
+```
+
+It runs real Scoop in a disposable root, checks the native executable shim and
+reset/reinstallation/uninstallation, then confirms incorrect hashes are rejected.
+Archive downloads use a loopback fixture; the client's fixed endpoint is unchanged.

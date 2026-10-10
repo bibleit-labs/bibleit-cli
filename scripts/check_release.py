@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--assets', required=True)
+    parser.add_argument('--powershell', help='Windows installer runtime, e.g. powershell for 5.1 or pwsh for 7')
     args = parser.parse_args()
     assets = Path(args.assets).resolve()
     manifest = json.loads((assets / 'manifest.json').read_text())
@@ -62,7 +63,7 @@ def main():
         shutil.copytree(assets, copied)
         destination = scratch / 'installed'
         if os.name == 'nt':
-            installer = shutil.which('pwsh') or shutil.which('powershell')
+            installer = shutil.which(args.powershell) if args.powershell else shutil.which('pwsh') or shutil.which('powershell')
             assert installer, 'PowerShell required on Windows'
             def command(requested):
                 return [installer, '-NoProfile', '-File', str(ROOT / 'install.ps1'), '-Version', requested, '-AssetsDir', str(copied), '-InstallDir', str(destination)]

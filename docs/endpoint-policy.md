@@ -50,6 +50,7 @@ It requires that port to be free and fails if another service is listening; it
 never stops or replaces an existing service. Adapt that fixture strategy before
 switching the fixed endpoint to production.
 
-No release tags, binary publication, or Git pushes are authorized at this stage.
-Repository deletion/recreation is being handled by the user. Local Git bundles
+Release tags and binary publication remain paused. The user recreated the client
+repositories privately and authorized validation-branch pushes and CI; the
+fixed-endpoint rule remains in effect. Local Git bundles
 in the CLI's ignored `.local-backups/` directory preserve the pre-change histories.
