@@ -3,6 +3,26 @@
 Updated 2026-10-10. Counts describe explicit acceptance items, not estimated
 percentages of the entire project. The full plan is in `plan.md`.
 
+## Current increment: fixed service and local-only work
+
+The user paused all GitHub pushes, release tags and binary publication, and is
+handling deletion/recreation of the public repositories. Previous publication
+and hosted evidence below are historical. The server stays separate/private.
+
+| Item | Status | Evidence |
+| --- | --- | --- |
+| Fixed Go client/authentication service | Complete | No public Endpoint field; one `ServerEndpoint` constant at `http://localhost:8080`; request, exchange and logout routing verified; endpoint environment ignored |
+| Fixed CLI profiles and authentication | Complete | No endpoint flag/completion; account credentials and transport only; foreign bindings and unbound legacy bearer credentials rejected before requests or config writes |
+| Preserve local work and unpublished dependency | Complete | Both pre-change Git bundles verified in ignored `.local-backups/`; sibling workspace uses both modules; unreleased client `v0.0.0` placeholder |
+| Validate local draft | Complete | Both modules race/vet/build on macOS and Linux; native process/PTY; Linux Fish/Bash/Zsh; CLI six-target cross-build; both integration binaries compile |
+| Document and commit locally | Complete | Endpoint policy, examples, contribution notes and release hold updated; Conventional Commits on `fixed-service-endpoint`; no pushes |
+
+Progress: **5/5 fixed-service/local-only items complete**. Native Windows and
+real-server integration were not rerun for this draft. GitHub cleanup belongs
+to the user and is not included in this progress count. Before release, replace
+the placeholder with production HTTPS/SSH addresses, publish a reviewed Go
+client version, pin it in the CLI, and validate with `GOWORK=off` and hosted CI.
+
 ## Milestone 1: verify the integration contract
 
 | Item | Status | Evidence / remaining work |
@@ -32,7 +52,7 @@ assessment or future workspace/event APIs.
 | 3. Customer CLI profiles/auth/output | Complete for tracked scope | 5/5: profiles, credentials, output, completion/destructive UX and representative native platform validation |
 | 4. Workspace and event integration APIs | Pending server contract | Existing browser endpoints are not bearer-token client APIs |
 | 5. Python, Ruby, Rust clients | Not started | Wait for verified core contract |
-| 6. Independent publication | In progress | Public CLI and Go client extracted and validated; semantic-version tags and binary releases remain pending |
+| 6. Independent publication | Paused by user | Keep work local; user clearing public repositories; production endpoint, real client version and release checks pending |
 
 ## Reproduce verification
 

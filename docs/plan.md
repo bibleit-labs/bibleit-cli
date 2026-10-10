@@ -1,5 +1,12 @@
 # Bibleit clients and CLI: revised implementation plan
 
+Publication is paused by the user. All work stays local; the user is clearing the
+public repositories. Endpoint configuration is removed: every client targets the
+project-managed service, currently `http://localhost:8080`. See
+[endpoint-policy.md](endpoint-policy.md). Before resuming release work, set the
+production HTTPS/SSH addresses, release the Go client, pin it in the CLI, and
+verify standalone builds without a workspace.
+
 Revised 2026-10-10 against the local `../bibleit-server` checkout. Its HEAD is
 `0482211`, with substantial uncommitted changes; this is a working-tree review,
 not a compatibility claim against a published server release. This revision
@@ -94,7 +101,7 @@ and pass the server integration suite without personal/workspace authority leaks
 
 ### 3. Make CLI authentication and output ready for publication
 
-Named endpoint-bound profiles, explicit HTTP/SSH transport selection, stable
+Named account profiles at a project-managed service, explicit HTTP/SSH transport selection, stable
 output, shell completion and destructive-command confirmation are implemented;
 see `status.md` for progress and `output.md` for the stable contract. Native
 Windows, Ubuntu and macOS hosted checks now pass, alongside local Linux/arm64

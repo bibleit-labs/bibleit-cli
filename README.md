@@ -1,20 +1,30 @@
 # bibleit CLI
 
 The CLI module is `github.com/bibleit-labs/bibleit-cli` and requires Go 1.27.1.
-Build it with `go build -o build/bibleit .`. Its independent Go client is pinned
-in `go.mod`; client updates are explicit dependency updates.
+Development is currently local-only. The independent Go client is the sibling
+`../bibleit-go` checkout. Create a local workspace with `go work init . ../bibleit-go`
+if `go.work` does not already exist, then build with `go build -o build/bibleit .`.
+`go.mod` uses an unreleased `v0.0.0` placeholder; it must be replaced with a real
+client release before publishing standalone CLI builds. No tags or binary releases
+are being published yet.
 
 bibleit is the Go CLI for Bibleit Server protocol version 1, built on the
 [Go client](https://github.com/bibleit-labs/bibleit-go). It
 implements a useful, typed subset of the API instead of providing a raw-command
 escape hatch, so shell input cannot accidentally become protocol input.
 
-The CLI supports named profiles, each bound to one server endpoint and transport:
+The service address is controlled by the project, currently **`http://localhost:8080`**.
+Customers cannot select another endpoint through constructor options, CLI flags,
+environment variables, or saved profiles. The production HTTPS address will replace
+this placeholder in the Go client's `ServerEndpoint` constant. See the
+[endpoint policy](docs/endpoint-policy.md).
+
+Named profiles select credentials/accounts and a transport at that fixed service:
 
 ```sh
-bibleit profile add production --endpoint https://bibleit.example
+bibleit profile add production
 bibleit --profile production auth login
-bibleit profile add local-ssh --endpoint 127.0.0.1:2222 --transport ssh
+bibleit profile add local-ssh --transport ssh
 bibleit --profile local-ssh auth login --identity ~/.ssh/bibleit_local_dev
 bibleit profile use production
 bibleit profile list
@@ -23,8 +33,9 @@ bibleit profile list
 `--profile` selects a profile for one command. Otherwise `BIBLEIT_PROFILE`, then
 the saved active profile, selects it. Adding the first profile makes it active;
 adding another does not switch the active profile. Existing profile names cannot
-be overwritten with another endpoint. HTTP commands use only that profile's
-bearer credential; SSH commands use its endpoint and OpenSSH configuration/agent.
+be overwritten. HTTP commands use that profile's bearer credential at the fixed
+service. SSH uses the project-managed SSH address and OpenSSH configuration/agent.
+`--endpoint` is rejected and `BIBLEIT_ENDPOINT` is ignored.
 
 `auth login` opens browser authorization for an HTTP profile and verifies SSH
 for an SSH profile. `auth login ssh` remains an explicit SSH alias. Use
@@ -40,24 +51,24 @@ select an HTTP profile. It overrides the cached bearer for data commands and
 operate on cached credentials rather than the environment token. Use `--` before
 literal command arguments that would otherwise be interpreted as global flags.
 
-Use Go 1.27.1 or newer. Build and test it from the repository root:
+Use Go **1.27.1**. With the local workspace configured, build and test from the repository root:
 
-    go build -ldflags "-X main.cliVersion=$(cat VERSION)" -o cli .
+    go build -o cli .
     go test ./...
 
 ## Versioning
 
 The CLI and server are released independently:
 
-- [`VERSION`](VERSION) is the Bibleit CLI version.
-- [`bibleit-server/VERSION`](../bibleit-server/VERSION) is the Bibleit Server version.
+- Local CLI builds report `dev`; version tags and downloadable releases are paused.
+- The independent server version is reported by `bibleit server info`.
 - Protocol compatibility is reported separately as `protocol_version`.
 
 Use the local version command to inspect the installed client, and server info
 to inspect the server to which it is authenticated:
 
     bibleit version
-    # bibleit CLI version 0.1.0
+    # bibleit CLI version dev
 
     bibleit server info
     bibleit server help [topic]
@@ -68,8 +79,8 @@ to inspect the server to which it is authenticated:
     bibleit translation catalog <translation>
     # includes version=<server version> and protocol_version=1
 
-The build above injects only this repository’s `VERSION` into the CLI binary;
-changing the server version does not change a CLI build.
+The CLI version is independent of the server version. Release version injection
+will be configured when publication resumes.
 
 Commands:
 
@@ -92,7 +103,7 @@ Commands:
     bibleit live <id> stack push [translation] <book> [chapter] [verse]
 
 For web authentication, the CLI starts a temporary loopback callback, opens
-the selected HTTP profile’s URL in the default browser, and asks the signed-in
+the project-managed service URL in the default browser, and asks the signed-in
 account to approve the terminal. The authorization code is protected with PKCE
 and exchanged for a persistent account token; the token never appears in the
 browser URL.
@@ -110,8 +121,8 @@ For the local SSH development server, generate a dedicated key and run:
     ssh-keygen -t ed25519 -f ~/.ssh/bibleit_local_dev -C bibleit-local-dev
     make -C ../bibleit-server run
     go build -o cli .
-    ./cli profile add local-http --endpoint http://127.0.0.1:8080
-    ./cli profile add local-ssh --endpoint 127.0.0.1:2222 --transport ssh
+    ./cli profile add local-http
+    ./cli profile add local-ssh --transport ssh
     ./cli --profile local-http auth login
 
 After web sign-in, open the dashboard and add the contents of
@@ -139,10 +150,14 @@ ACL setup aborts saving. Existing files are hardened on the next successful
 write. `BIBLEIT_CONFIG` selects another
 file. The versioned file stores active_profile and a profiles map; each entry
 contains transport, endpoint and optional access_token/identity. SSH private keys
-are never stored in this file. Legacy token/identity files load as `default`,
-bound to the current binary’s configured default endpoint, and are migrated on the next write.
+are never stored in this file. The endpoint field records the service binding;
+it is checked against the project-managed address and is not a user override.
+Foreign endpoint profiles and legacy bearer credentials without an endpoint binding
+are rejected without sending a request or rewriting the file. Sign in again with
+a fresh config rather than retargeting an old credential. Identity-only legacy
+files can still migrate to the fixed SSH service.
 A new installation has an implicit local HTTP default; creating a profile
-replaces that implicit default. Built-in defaults can still be set at build time.
+replaces that implicit default.
 
 `profile show [name]` inspects metadata; `profile use <name>` selects an active
 profile. `profile remove <name>` requires another active profile and, for cached
@@ -176,10 +191,11 @@ Exit codes are stable:
 
 ## Client development
 
-Clone `bibleit-go` beside this repository for joint development. An optional
-local workspace can use both modules (`go work init . ../bibleit-go`); workspace
-files are ignored. Published builds use the version pinned in `go.mod`, with
-no local replacement.
+Keep `bibleit-go` beside this repository for joint development. The local workspace
+uses both modules (`go work init . ../bibleit-go`) and is ignored by Git. It is
+required while the client is unreleased. When publication resumes, pin a released
+client in `go.mod` and validate with `GOWORK=off`; published builds must not need
+a sibling checkout or local replacement.
 
 The real-server harness accepts `--go-client ../bibleit-go`; client integration
 tests compile from that checkout, while CLI integration tests compile here.
@@ -201,7 +217,8 @@ Python, Ruby, and Rust clients will live in `bibleit-python`, `bibleit-ruby`, an
 Run a standalone client example with an existing account token:
 
 ```sh
-BIBLEIT_ENDPOINT=https://your-server BIBLEIT_TOKEN=your-token go run github.com/bibleit-labs/bibleit-go/examples/read@latest
+cd ../bibleit-go
+BIBLEIT_TOKEN=your-token go run ./examples/read
 ```
 
 `secret set <value>` is rejected until the server command API supports custom
@@ -285,9 +302,11 @@ The [native CI workflow](.github/workflows/native.yml) pins Go 1.27.1 and runs
 race tests, vet, builds and executable smoke checks on Ubuntu, Windows and macOS.
 Linux also runs actual Bash/Zsh/Fish completion. See
 [native validation](docs/native-validation.md) for commands, coverage and verification evidence. Native macOS/arm64 and Linux/arm64 checks
-pass locally; hosted Ubuntu, Windows Server 2025 and macOS jobs all pass. Windows
-checks include the persisted credential DACL and console handles. See the
-[verified native run](https://github.com/mittel-labs/bibleit/actions/runs/38081432573).
+pass locally for the fixed-endpoint draft, including Fish/Bash/Zsh on Linux.
+All six Linux/macOS/Windows amd64/arm64 targets cross-build. Hosted Windows
+and other native results belong to the earlier implementation; no current
+changes have been pushed or tested by GitHub Actions. See the documented
+historical evidence and current limitations.
 
 
 ## Contributing and license

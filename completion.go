@@ -72,7 +72,7 @@ func completionCandidates(words []string) []string {
 	}
 	prefix := words[len(words)-1]
 	previous := words[:len(words)-1]
-	valueOptions := map[string]bool{"--profile": true, "--format": true, "--identity": true, "--transport": true, "--endpoint": true}
+	valueOptions := map[string]bool{"--profile": true, "--format": true, "--identity": true, "--transport": true}
 	optionValues := func(option string) []string {
 		switch option {
 		case "--format":
@@ -129,7 +129,7 @@ func completionCandidates(words []string) []string {
 			}
 		}
 		if len(args) >= 2 && args[0] == "profile" && args[1] == "add" {
-			for _, option := range []string{"--endpoint", "--transport"} {
+			for _, option := range []string{"--transport"} {
 				if !used[option] {
 					options = append(options, option)
 				}

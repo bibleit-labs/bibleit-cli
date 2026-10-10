@@ -35,7 +35,6 @@ func captureCLI(t *testing.T, fn func() int) (int, string, string) {
 }
 func TestLegacyProfileMigrationAndBinding(t *testing.T) {
 	for _, test := range []struct{ legacy, transport, endpoint string }{
-		{`{"access_token":"bt_legacy"}`, "http", defaultWebURL},
 		{`{"identity":"/tmp/key"}`, "ssh", defaultSSHServer},
 		{`{}`, "ssh", defaultSSHServer},
 	} {
@@ -67,7 +66,7 @@ func TestNamedProfilesAndAutomationRouting(t *testing.T) {
 	t.Setenv("BIBLEIT_CONFIG", filepath.Join(t.TempDir(), "config.json"))
 	t.Setenv("BIBLEIT_PROFILE", "")
 	t.Setenv("BIBLEIT_TOKEN", "")
-	for _, args := range [][]string{{"profile", "add", "one", "--endpoint", "https://one.example"}, {"profile", "add", "two", "--endpoint", "https://two.example"}, {"profile", "add", "ssh", "--endpoint", "server.example:2222", "--transport", "ssh"}} {
+	for _, args := range [][]string{{"profile", "add", "one"}, {"profile", "add", "two"}, {"profile", "add", "ssh", "--transport", "ssh"}} {
 		code, _, stderr := captureCLI(t, func() int { return run(args) })
 		if code != exitOK {
 			t.Fatal(stderr)
@@ -102,7 +101,7 @@ func TestNamedProfilesAndAutomationRouting(t *testing.T) {
 	if code != exitOK {
 		t.Fatal(stderr)
 	}
-	if strings.Join(seen, "|") != "two.example Bearer bt_two|one.example Bearer bt_one|two.example Bearer bt_environment" {
+	if strings.Join(seen, "|") != "localhost:8080 Bearer bt_two|localhost:8080 Bearer bt_one|localhost:8080 Bearer bt_environment" {
 		t.Fatalf("unexpected routing %v", seen)
 	}
 	persisted, _ := loadSelectedConfig("two")
@@ -137,7 +136,7 @@ func TestProfileValidationAndLifecycle(t *testing.T) {
 			t.Fatalf("accepted %v: %d", args, code)
 		}
 	}
-	for _, args := range [][]string{{"profile", "add", "a", "--endpoint", "https://a.example"}, {"profile", "add", "b", "--endpoint", "https://b.example"}, {"profile", "use", "b"}, {"profile", "remove", "a"}} {
+	for _, args := range [][]string{{"profile", "add", "a"}, {"profile", "add", "b"}, {"profile", "use", "b"}, {"profile", "remove", "a"}} {
 		code, _, stderr := captureCLI(t, func() int { return run(args) })
 		if code != exitOK {
 			t.Fatal(stderr)
@@ -147,7 +146,7 @@ func TestProfileValidationAndLifecycle(t *testing.T) {
 	if code != exitConflict {
 		t.Fatal("removed active profile")
 	}
-	code, _, _ = captureCLI(t, func() int { return run([]string{"profile", "add", "b", "--endpoint", "https://other.example"}) })
+	code, _, _ = captureCLI(t, func() int { return run([]string{"profile", "add", "b"}) })
 	if code != exitConflict {
 		t.Fatal("overwrote profile")
 	}
@@ -156,7 +155,7 @@ func TestProfileValidationAndLifecycle(t *testing.T) {
 	if err := saveConfig(c); err != nil {
 		t.Fatal(err)
 	}
-	code, _, _ = captureCLI(t, func() int { return run([]string{"profile", "add", "other", "--endpoint", "https://other.example"}) })
+	code, _, _ = captureCLI(t, func() int { return run([]string{"profile", "add", "other"}) })
 	if code != exitOK {
 		t.Fatal("add")
 	}
@@ -168,7 +167,7 @@ func TestProfileValidationAndLifecycle(t *testing.T) {
 	old := cliHTTPClient
 	defer func() { cliHTTPClient = old }()
 	cliHTTPClient = &http.Client{Transport: roundTripFunc(func(r *http.Request) (*http.Response, error) {
-		if r.URL.Host != "b.example" {
+		if r.URL.Host != "localhost:8080" {
 			t.Error("logout used another endpoint")
 		}
 		return &http.Response{StatusCode: 204, Header: make(http.Header), Body: io.NopCloser(strings.NewReader(""))}, nil
@@ -178,7 +177,7 @@ func TestProfileValidationAndLifecycle(t *testing.T) {
 		t.Fatal(stderr)
 	}
 	b, _ := loadSelectedConfig("b")
-	if b.Endpoint != "https://b.example" || b.Transport != "http" || b.AccessToken != "" {
+	if b.Endpoint != defaultWebURL || b.Transport != "http" || b.AccessToken != "" {
 		t.Fatal("logout lost binding")
 	}
 	store, _, _ := loadStore()
@@ -299,5 +298,55 @@ func TestStreamPayloadAndEmptyErrorFields(t *testing.T) {
 	var result map[string]any
 	if json.Unmarshal([]byte(stderr), &result) != nil || result["error"].(map[string]any)["fields"] == nil {
 		t.Fatal("nullable error fields")
+	}
+}
+
+func TestFixedServiceRejectsEndpointOverridesAndForeignCredentials(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "config.json")
+	t.Setenv("BIBLEIT_CONFIG", path)
+	t.Setenv("BIBLEIT_PROFILE", "")
+	t.Setenv("BIBLEIT_TOKEN", "bt_test")
+	t.Setenv("BIBLEIT_ENDPOINT", "https://other.example")
+	beforeClient := cliHTTPClient
+	defer func() { cliHTTPClient = beforeClient }()
+	requests := 0
+	cliHTTPClient = &http.Client{Transport: roundTripFunc(func(r *http.Request) (*http.Response, error) {
+		requests++
+		if r.URL.String() != defaultWebURL+"/api/cli/command" {
+			t.Fatalf("unexpected destination: %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: make(http.Header), Body: io.NopCloser(strings.NewReader("OK pong=true\n"))}, nil
+	})}
+	for _, args := range [][]string{
+		{"--endpoint", "https://other.example", "ping"},
+		{"profile", "add", "foreign", "--endpoint", "https://other.example"},
+	} {
+		code, _, _ := captureCLI(t, func() int { return run(args) })
+		if code != exitUsage || requests != 0 {
+			t.Fatal("accepted endpoint override", args, code, requests)
+		}
+	}
+	code, _, stderr := captureCLI(t, func() int { return run([]string{"ping"}) })
+	if code != exitOK || requests != 1 {
+		t.Fatal("environment changed endpoint", code, stderr)
+	}
+	requests = 0
+	for _, data := range []string{
+		`{"access_token":"bt_legacy"}`,
+		`{"version":1,"active_profile":"old","profiles":{"old":{"transport":"http","endpoint":"https://other.example","access_token":"bt_old"}}}`,
+		`{"version":1,"active_profile":"old","profiles":{"old":{"transport":"http","endpoint":"http://127.0.0.1:8080","access_token":"bt_old"}}}`,
+		`{"version":1,"active_profile":"old","profiles":{"old":{"transport":"ssh","endpoint":"other.example:2222"}}}`,
+	} {
+		if err := os.WriteFile(path, []byte(data), 0600); err != nil {
+			t.Fatal(err)
+		}
+		code, _, _ := captureCLI(t, func() int { return run([]string{"ping"}) })
+		after, _ := os.ReadFile(path)
+		if code != exitFailure || requests != 0 || string(after) != data {
+			t.Fatal("retargeted or changed old credentials", code, requests)
+		}
+	}
+	if strings.Contains(strings.Join(completionCandidates([]string{"profile", "add", "new", "--"}), " "), "--endpoint") {
+		t.Fatal("completion advertises endpoint overrides")
 	}
 }

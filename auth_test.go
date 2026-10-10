@@ -23,9 +23,9 @@ func TestLogoutPreservesCredentialsOnFailure(t *testing.T) {
 				}
 			}))
 			defer server.Close()
-			previousURL, previousClient := defaultWebURL, cliHTTPClient
-			defaultWebURL, cliHTTPClient = server.URL, server.Client()
-			t.Cleanup(func() { defaultWebURL, cliHTTPClient = previousURL, previousClient })
+			previousClient := cliHTTPClient
+			cliHTTPClient = server.Client()
+			t.Cleanup(func() { cliHTTPClient = previousClient })
 			t.Setenv("BIBLEIT_CONFIG", filepath.Join(t.TempDir(), "config.json"))
 			cfg := config{AccessToken: "bt_secret"}
 			if err := saveConfig(cfg); err != nil {
@@ -60,7 +60,7 @@ func TestCLIExchangeUsesClientAndQuotaAdvice(t *testing.T) {
 		}))
 		previousClient := cliHTTPClient
 		cliHTTPClient = server.Client()
-		name, token, err := exchangeBrowserCode(server.URL, "code", "verifier")
+		name, token, err := exchangeBrowserCode("code", "verifier")
 		server.Close()
 		cliHTTPClient = previousClient
 		if strings.Contains(body, "quota_exceeded") {

@@ -4,9 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	bibleit "github.com/bibleit-labs/bibleit-go"
-	"net"
-	"net/url"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -37,28 +34,15 @@ var profileName = regexp.MustCompile(`^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$`)
 func validateProfile(p profile) error {
 	switch p.Transport {
 	case "http":
-		// Apply exactly the same endpoint validation as library requests.
-		if _, err := bibleit.NewAuthClient(bibleit.AuthConfig{Endpoint: p.Endpoint}); err != nil {
-			return err
-		}
-		endpoint, err := url.Parse(p.Endpoint)
-		if err != nil || endpoint.Hostname() == "" {
-			return errors.New("HTTP endpoint requires a hostname")
-		}
-		if port := endpoint.Port(); port != "" {
-			n, err := strconv.Atoi(port)
-			if err != nil || n < 1 || n > 65535 {
-				return errors.New("HTTP endpoint port must be from 1 to 65535")
-			}
+		if p.Endpoint != defaultWebURL {
+			return errors.New("HTTP profile does not match the project-managed service; back up this config and sign in using a fresh config")
 		}
 		if p.Identity != "" {
 			return errors.New("HTTP profiles cannot contain an SSH identity")
 		}
 	case "ssh":
-		host, port, err := net.SplitHostPort(p.Endpoint)
-		n, parseErr := strconv.Atoi(port)
-		if err != nil || parseErr != nil || n < 1 || n > 65535 || host == "" || strings.ContainsAny(host, " \t\r\n\x00/@") || strings.HasPrefix(host, "-") {
-			return errors.New("SSH endpoint must be host:port with a port from 1 to 65535")
+		if p.Endpoint != defaultSSHServer {
+			return errors.New("SSH profiles must use the project-managed Bibleit endpoint")
 		}
 		if p.AccessToken != "" {
 			return errors.New("SSH profiles cannot contain a bearer token")
@@ -109,10 +93,10 @@ func loadStore() (profileStore, bool, error) {
 		if err = json.Unmarshal(data, &legacy); err != nil {
 			return store, false, errors.New("invalid legacy configuration")
 		}
-		p := profile{Transport: "ssh", Endpoint: defaultSSHServer, Identity: legacy.Identity}
 		if legacy.AccessToken != "" {
-			p = profile{Transport: "http", Endpoint: defaultWebURL, AccessToken: legacy.AccessToken}
+			return store, false, errors.New("legacy bearer credentials have no service binding; remove the old config and sign in again")
 		}
+		p := profile{Transport: "ssh", Endpoint: defaultSSHServer, Identity: legacy.Identity}
 		store = profileStore{Version: 1, Active: "default", Profiles: map[string]profile{"default": p}}
 	}
 	if !profileName.MatchString(store.Active) {
@@ -216,22 +200,26 @@ func profileCommand(args []string, format string) int {
 	}
 	switch args[0] {
 	case "add":
-		options, rest, err := parseOptions(args[1:], map[string]bool{"--endpoint": true, "--transport": true})
-		if err != nil || len(rest) != 1 || options["--endpoint"] == "" {
-			return fail(exitUsage, "usage: bibleit profile add <name> --endpoint <url|host:port> [--transport http|ssh]")
+		options, rest, err := parseOptions(args[1:], map[string]bool{"--transport": true})
+		if err != nil || len(rest) != 1 {
+			return fail(exitUsage, "usage: bibleit profile add <name> [--transport http|ssh]")
 		}
 		name := rest[0]
 		if !profileName.MatchString(name) {
 			return fail(exitUsage, "profile names must be 1–64 letters, digits, underscores or hyphens, starting with a letter or digit")
 		}
 		if _, exists := store.Profiles[name]; exists && !implicit {
-			return fail(exitConflict, "profile already exists; use a new name to bind another endpoint")
+			return fail(exitConflict, "profile already exists; use another name")
 		}
 		transport := options["--transport"]
 		if transport == "" {
 			transport = "http"
 		}
-		p := profile{Transport: transport, Endpoint: strings.TrimRight(options["--endpoint"], "/")}
+		serviceEndpoint := defaultWebURL
+		if transport == "ssh" {
+			serviceEndpoint = defaultSSHServer
+		}
+		p := profile{Transport: transport, Endpoint: serviceEndpoint}
 		if err := validateProfile(p); err != nil {
 			return fail(exitUsage, "%v", err)
 		}

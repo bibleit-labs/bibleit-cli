@@ -9,8 +9,9 @@ in issues, commits, or test fixtures.
 ## Development
 
 Use Go **1.27.1** and build with `go build -o build/bibleit .`.
-The CLI depends on `github.com/bibleit-labs/bibleit-go` at the version in
-`go.mod`. Keep library behavior in that repository; profiles, terminal output,
+The CLI uses the sibling `bibleit-go` checkout through an ignored local
+`go.work` while publication is paused. The version in `go.mod` is an unreleased
+placeholder; pin a real client release before standalone builds. Keep library behavior in that repository; profiles, terminal output,
 browser orchestration, and OpenSSH process integration belong here.
 
 For changes to executable behavior, run:
@@ -26,7 +27,7 @@ Linux contributors can add `--shells bash zsh fish` to the runtime check.
 CI runs Windows, Ubuntu, and macOS checks. Documentation-only changes need
 link/content review rather than additional executable tests.
 
-An optional local `go.work` can include the sibling `../bibleit-go` checkout.
+A local `go.work` must include the sibling `../bibleit-go` checkout for now.
 Do not commit workspace files or local `replace` directives. Published CLI
 builds must resolve the pinned client without access to a sibling checkout.
 Real-server tests require the separate server checkout; see
@@ -37,7 +38,7 @@ Real-server tests require the separate server checkout; see
 Use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/):
 `type(scope): description`, with an optional scope. Examples:
 
-- `feat(profile): add endpoint-bound profiles`
+- `feat(profile): add named account profiles`
 - `fix(windows): protect credential file permissions`
 - `docs: explain Go client dependency updates`
 - `ci: validate Fish completion`
@@ -55,3 +56,7 @@ are versioned snapshots; synchronize changes deliberately across client
 repositories. A passing local fixture test is not a real-server compatibility
 claim. Semantic-version tags and downloadable binary releases are separate
 from publishing development branches.
+
+The service endpoint is project-managed; see [the endpoint policy](docs/endpoint-policy.md).
+Keep current work local. Do not push commits, tags or releases until the user
+explicitly resumes publication.

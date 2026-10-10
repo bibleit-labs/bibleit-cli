@@ -75,7 +75,7 @@ def terminal_checks(binary, env, requests):
                 if select.select([master], [], [], 0.5)[0]:
                     output += os.read(master, 4096)
             assert b'Type "delete all" to confirm: ' in output, output
-            assert b"production" in output and b"127.0.0.1" in output and b"bt_runtime" not in output, output
+            assert b"production" in output and b"localhost:8080" in output and b"bt_runtime" not in output, output
             os.write(master, (answer + "\n").encode())
             stdout, _ = child.communicate(timeout=10)
             assert child.returncode == code and len(requests) == before + delta, (answer, child.returncode, requests)
@@ -116,7 +116,7 @@ def main():
             self.end_headers()
             self.wfile.write(reply)
 
-    server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    server = ThreadingHTTPServer(("127.0.0.1", 8080), Handler)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
     try:
@@ -126,15 +126,18 @@ def main():
             shutil.copy2(source_binary, binary)
             config = directory / "profiles with spaces.json"
             env = {**os.environ, "BIBLEIT_CONFIG": str(config), "BIBLEIT_PROFILE": "",
-                   "BIBLEIT_TOKEN": "bt_runtime", "PATH": str(directory) + os.pathsep + os.environ["PATH"]}
-            endpoint = f"http://127.0.0.1:{server.server_port}"
+                   "BIBLEIT_TOKEN": "bt_runtime", "BIBLEIT_ENDPOINT": "https://other.example", "PATH": str(directory) + os.pathsep + os.environ["PATH"]}
             for name in ("production", "preview"):
-                run(binary, ["profile", "add", name, "--endpoint", endpoint], env)
+                run(binary, ["profile", "add", name], env)
+            before = len(requests)
+            run(binary, ["profile", "add", "foreign", "--endpoint", "https://other.example"], env, code=2)
+            assert len(requests) == before
             run(binary, ["profile", "use", "preview"], env)
             run(binary, ["profile", "use", "production"], env)
             store = json.loads(config.read_text())
             assert store["version"] == 1 and store["active_profile"] == "production"
             assert "bt_runtime" not in config.read_text()
+            assert all(p["endpoint"] == "http://localhost:8080" for p in store["profiles"].values())
             info = json.loads(run(binary, ["profile", "show", "--format", "json"], env).stdout)
             assert info["records"][0]["fields"]["name"] == "production"
             response = json.loads(run(binary, ["ping", "--format", "json"], env).stdout)

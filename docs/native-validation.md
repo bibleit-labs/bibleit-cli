@@ -10,16 +10,17 @@ The hosted workflow passed all three native jobs on 2026-10-10 at code commit
 `08e4a31d0ff468b07e01408788f8b94a42995dc0`:
 [verified run](https://github.com/mittel-labs/bibleit/actions/runs/38081432573).
 That run validates the pre-extraction implementation in the original staging
-repository. The independent repositories now also pass their native matrices:
+repository. Before publication was paused, the independent repositories also passed their native matrices:
 
 - [Go client](https://github.com/bibleit-labs/bibleit-go/actions/runs/38082660896), commit `9a52be34b0c3`.
 - [CLI](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38082843195), code commit `e46bfd6`.
 
-Both use `repository-split`, with no codex prefix. The CLI pins the client commit
-in `go.mod`. Each matrix targets runner-default architectures, not all six
+Those historical branches were `repository-split`, with no codex prefix. The
+user is clearing these repositories; hosted records may no longer be available.
+Current changes stay local on `fixed-service-endpoint`, and use a local workspace. Each matrix targets runner-default architectures, not all six
 build targets. The original repository's remote main is unchanged.
 
-## Current evidence
+## Historical evidence before fixed-endpoint changes
 
 | Environment | Result | Coverage |
 | --- | --- | --- |
@@ -90,3 +91,21 @@ Console tests use [AllocConsole](https://learn.microsoft.com/en-us/windows/conso
 and [GetConsoleMode](https://learn.microsoft.com/en-us/windows/console/getconsolemode).
 Go installation in CI uses [actions/setup-go](https://github.com/actions/setup-go)
 with an exact version and automatic toolchain switching disabled.
+
+
+## Current fixed-endpoint draft (2026-10-10)
+
+- Go client and CLI: local macOS/arm64 race tests, vet and build passed.
+- CLI native macOS process/HTTP fixture, PTY confirmation and Bash/Zsh checks passed.
+- Both modules: native Linux/arm64 race tests and vet passed in a disposable Docker VM.
+- Linux CLI process/HTTP fixture, PTY confirmation, and Fish/Bash/Zsh checks passed.
+- CLI cross-builds passed for darwin/linux/windows on amd64 and arm64.
+- Both updated real-server integration test binaries compile; real-server tests were not rerun.
+- Native Windows and hosted Actions were not rerun for these local-only changes.
+
+The runtime fixture now uses IPv4 loopback port 8080 and needs that port free.
+Its requests use the fixed `http://localhost:8080` service address. The fixture
+does not stop or replace an existing listener. See [endpoint policy](endpoint-policy.md).
+
+Publication and releases are paused. Before publication resumes, pin a real
+Go client version and validate builds with `GOWORK=off`, then rerun hosted checks.

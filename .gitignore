@@ -8,3 +8,5 @@ __pycache__/
 go.work
 go.work.sum
 .DS_Store
+
+.local-backups/
