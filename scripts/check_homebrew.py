@@ -41,7 +41,7 @@ def main():
             (portable / ruby.resolve().name).symlink_to(ruby.resolve(), target_is_directory=True)
             (portable / 'current').symlink_to(ruby.resolve().name, target_is_directory=True)
         isolated = prefix / 'bin/brew'
-        env = dict(base_env, HOMEBREW_NO_INSTALL_FROM_API='1', HOMEBREW_NO_INSTALL_CLEANUP='1', HOMEBREW_NO_ENV_HINTS='1', HOMEBREW_CACHE=str(scratch / 'cache'), HOMEBREW_LOGS=str(scratch / 'logs'), HOMEBREW_TEMP=str(scratch / 'temp'))
+        env = dict(base_env, HOMEBREW_NO_INSTALL_FROM_API='1', HOMEBREW_NO_INSTALL_CLEANUP='1', HOMEBREW_NO_AUTOREMOVE='1', HOMEBREW_NO_ENV_HINTS='1', HOMEBREW_CACHE=str(scratch / 'cache'), HOMEBREW_LOGS=str(scratch / 'logs'), HOMEBREW_TEMP=str(scratch / 'temp'))
         (scratch / 'temp').mkdir()
         tap = prefix / 'Library/Taps/bibleit-labs/homebrew-local-validation'
         (tap / 'Formula').mkdir(parents=True)
@@ -85,7 +85,10 @@ def main():
         run('reinstall', '--formula', '--build-from-source', name)
         assert hashlib.sha256(binary.read_bytes()).hexdigest() == before
         run('test', name)
-        run('uninstall', '--formula', name)
+        # The disposable prefix has no dependent packages. Avoid Homebrew's
+        # unrelated core-tap resolution during dependent checks/autoremove.
+        assert {p.name for p in (prefix / 'Cellar').iterdir() if p.is_dir()} == {formula_name}
+        run('uninstall', '--formula', '--ignore-dependencies', name)
         assert not binary.exists() and not binary.is_symlink()
         assert not (prefix / 'Cellar' / formula_name).exists()
     report = Path(args.report)
