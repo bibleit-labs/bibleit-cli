@@ -34,15 +34,31 @@ concurrent input/revision changes. Client and CLI baselines are synchronized.
 Passing coverage: 34 decoder/18 encoder fixtures, seven server security cases,
 all 11 Go HTTP subtests, real OpenSSH subscription/pause/reconnect/delete closure,
 single-credential/output parity, 17 auth/key/protocol tests, ten import-access and
-15 publication cases. There was no post-run source/test drift; the disposable
-PostgreSQL container was removed. Full ignored log:
+15 publication cases. Recorded file contents matched after the run; the disposable
+PostgreSQL container was removed. Package 23 subsequently added combined-infrastructure
+and fault-proxy test files outside this snapshot; recorded source/test/native
+contents still match. The full current test set therefore differs from the snapshot. Full ignored log:
 build/validation/assessment-final-integration-2026-10-11.log.
 
-These focused compatibility results are independent of the server's broader
-assessment, which still needs final sign-off. Production URLs and a committed/
+The broader assessment's package 22 full suite also passed: 310 integration
+cases, 48 Erlang unit tests, 71 JavaScript tests and native C programs, no skips.
+The assessment ledger/log and its chat confirm this separate result. Campaign
+progress is 22/25; combined faults/restore, final dependency/TLS/SSH review and
+Fly deployment verification remain, so overall final sign-off is still pending. Production URLs and a committed/
 deployed release baseline remain open. The prior named-profile removal and
 platform evidence below remains historical; draft CI now pins client 8de21e9,
 whose changes are the baseline and contract documentation, not client runtime.
+
+Fresh hosted runs are green on these pushed inputs:
+
+- Client 8de21e9: [native Windows/Ubuntu/macOS](https://github.com/bibleit-labs/bibleit-go/actions/runs/38096465359).
+- CLI e737565, exact client 8de21e9: [native matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38096515700) and [candidate matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38096515593), all three platforms.
+
+Candidate checks include six-target archive packaging, native installers,
+PowerShell 7/5.1 replacement/failure cases, Scoop and macOS Homebrew. They still
+use the draft workspace/development endpoint and do not certify production
+packaging or public download paths. Subsequent documentation-only commits do not
+change the tested runtime or harness code.
 
 ## Single-configuration validation — 11 October 2026
 
