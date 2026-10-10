@@ -59,7 +59,7 @@ func completionCommand(args []string, format string) int {
 }
 
 // The final word is the current prefix, including an explicit empty word.
-// Only local profile names are dynamic. Never query a server or emit credentials.
+// Candidates are static. Never query a server or emit credentials.
 func completeCommand(words []string) int {
 	for _, candidate := range completionCandidates(words) {
 		fmt.Println(candidate)
@@ -72,15 +72,13 @@ func completionCandidates(words []string) []string {
 	}
 	prefix := words[len(words)-1]
 	previous := words[:len(words)-1]
-	valueOptions := map[string]bool{"--profile": true, "--format": true, "--identity": true, "--transport": true}
+	valueOptions := map[string]bool{"--format": true, "--identity": true, "--transport": true}
 	optionValues := func(option string) []string {
 		switch option {
 		case "--format":
 			return []string{"table", "raw", "json", "ndjson"}
 		case "--transport":
 			return []string{"http", "ssh"}
-		case "--profile":
-			return completionProfileNames()
 		}
 		return nil
 	}
@@ -123,28 +121,21 @@ func completionCandidates(words []string) []string {
 			return filter(optionValues(name), value, name+"=")
 		}
 		options := []string{}
-		for _, option := range []string{"--profile", "--format", "--identity", "--yes", "--help"} {
+		for _, option := range []string{"--transport", "--format", "--identity", "--yes", "--help"} {
 			if !used[option] {
 				options = append(options, option)
-			}
-		}
-		if len(args) >= 2 && args[0] == "profile" && args[1] == "add" {
-			for _, option := range []string{"--transport"} {
-				if !used[option] {
-					options = append(options, option)
-				}
 			}
 		}
 		return filter(options, prefix, "")
 	}
 	candidates := []string{}
 	if len(args) == 0 {
-		candidates = []string{"ping", "server", "account", "auth", "profile", "translation", "read", "search", "live", "completion", "help", "version"}
+		candidates = []string{"ping", "server", "account", "auth", "translation", "read", "search", "live", "completion", "help", "version"}
 	} else {
 		switch args[0] {
 		case "help":
 			if len(args) == 1 {
-				candidates = []string{"server", "account", "auth", "profile", "translation", "read", "search", "live", "completion"}
+				candidates = []string{"server", "account", "auth", "translation", "read", "search", "live", "completion"}
 			}
 		case "completion":
 			if len(args) == 1 {
@@ -172,13 +163,6 @@ func completionCandidates(words []string) []string {
 			if len(args) == 1 {
 				candidates = []string{"list", "add", "remove", "info", "catalog"}
 			}
-		case "profile":
-			if len(args) == 1 {
-				candidates = []string{"add", "use", "list", "show", "remove"}
-			}
-			if len(args) == 2 && oneOf(args[1], "use", "show", "remove") {
-				candidates = completionProfileNames()
-			}
 		case "live":
 			if len(args) == 1 {
 				candidates = []string{"list", "create", "delete"}
@@ -203,15 +187,4 @@ func completionCandidates(words []string) []string {
 		}
 	}
 	return filter(candidates, prefix, "")
-}
-func completionProfileNames() []string {
-	store, _, err := loadStore()
-	if err != nil {
-		return nil
-	}
-	names := []string{}
-	for name := range store.Profiles {
-		names = append(names, name)
-	}
-	return names
 }

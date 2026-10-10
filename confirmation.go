@@ -50,7 +50,7 @@ func destructiveAction(args []string) string {
 }
 
 func confirmAction(cfg config, action, format string, input io.Reader, output io.Writer, interactive bool) error {
-	context := fmt.Sprintf("%s. Profile %q, %s endpoint %q", action, cfg.Name, cfg.Transport, cfg.Endpoint)
+	context := fmt.Sprintf("%s. %s endpoint %q", action, cfg.Transport, cfg.Endpoint)
 	if !interactive || format == "json" || format == "ndjson" {
 		return &confirmationError{"confirmation_required", context + "; rerun with --yes to confirm"}
 	}

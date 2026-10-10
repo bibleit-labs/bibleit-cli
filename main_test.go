@@ -209,7 +209,7 @@ func TestSSHAuthenticationCanUseOpenSSHIdentitySelection(t *testing.T) {
 	}
 }
 
-func TestWebProfileRunsCommandsWithCachedBearerToken(t *testing.T) {
+func TestHTTPRunsCommandsWithCachedBearerToken(t *testing.T) {
 	previous := cliHTTPClient
 	cliHTTPClient = &http.Client{Transport: roundTripFunc(func(r *http.Request) (*http.Response, error) {
 		if r.URL.Path != "/api/cli/command" || r.Header.Get("Authorization") != "Bearer bt_test" {
@@ -230,7 +230,7 @@ type roundTripFunc func(*http.Request) (*http.Response, error)
 
 func (fn roundTripFunc) RoundTrip(request *http.Request) (*http.Response, error) { return fn(request) }
 
-func TestConfigPersistsAnActiveProfilePrivately(t *testing.T) {
+func TestConfigPersistsSingleCredentialPrivately(t *testing.T) {
 	path := filepath.Join(t.TempDir(), ".bibleit", "config.json")
 	t.Setenv("BIBLEIT_CONFIG", path)
 	want := config{AccessToken: "bt_secret"}
@@ -242,9 +242,9 @@ func TestConfigPersistsAnActiveProfilePrivately(t *testing.T) {
 		t.Fatalf("got %#v, %v", got, err)
 	}
 	raw, err := os.ReadFile(path)
-	var persisted profileStore
+	var persisted configDocument
 	decodeErr := json.Unmarshal(raw, &persisted)
-	if err != nil || decodeErr != nil || persisted.Version != 1 || persisted.Active != "default" || persisted.Profiles["default"].Endpoint != defaultWebURL || persisted.Profiles["default"].AccessToken != "bt_secret" {
+	if err != nil || decodeErr != nil || persisted.Version != 2 || persisted.Endpoint != defaultWebURL || persisted.AccessToken != "bt_secret" {
 		t.Fatalf("unexpected persisted config %q, %v", raw, err)
 	}
 	assertPrivateConfig(t, path)
@@ -255,7 +255,7 @@ func TestConfigPersistsAnActiveProfilePrivately(t *testing.T) {
 	assertPrivateConfig(t, path)
 	got, err = loadConfig()
 	if err != nil || got.AccessToken != want.AccessToken {
-		t.Fatal("replacement did not preserve profile", err)
+		t.Fatal("replacement did not preserve credential", err)
 	}
 }
 
@@ -266,9 +266,9 @@ func TestSSHConfigContainsOnlyIdentity(t *testing.T) {
 		t.Fatal(err)
 	}
 	raw, err := os.ReadFile(path)
-	var persisted profileStore
+	var persisted configDocument
 	decodeErr := json.Unmarshal(raw, &persisted)
-	if err != nil || decodeErr != nil || persisted.Profiles["default"].Identity != "/tmp/dev-key" || persisted.Profiles["default"].Transport != "ssh" || persisted.Profiles["default"].AccessToken != "" {
+	if err != nil || decodeErr != nil || persisted.Identity != "/tmp/dev-key" || persisted.AccessToken != "" {
 		t.Fatalf("unexpected persisted SSH config %q, %v", raw, err)
 	}
 }

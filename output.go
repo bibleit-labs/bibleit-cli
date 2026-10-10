@@ -26,7 +26,7 @@ func typedRecord(record outputRecord) (stableRecord, error) {
 	result := stableRecord{Type: record.Type, Fields: map[string]any{}}
 	for key, value := range record.Fields {
 		switch {
-		case oneOf(key, "paused", "owned", "protected", "retiring", "pong", "active", "removed", "credential_cached") || key == "auth" && record.Type == "ok" || key == "auth" && record.Type == "auth":
+		case oneOf(key, "paused", "owned", "protected", "retiring", "pong") || key == "auth" && record.Type == "ok" || key == "auth" && record.Type == "auth":
 			if value != "true" && value != "false" {
 				return result, fmt.Errorf("invalid boolean output field %s", key)
 			}

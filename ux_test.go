@@ -69,7 +69,7 @@ func TestDestructiveRequestGuard(t *testing.T) {
 }
 
 func TestInteractiveConfirmation(t *testing.T) {
-	cfg := config{Name: "production", Transport: "http", Endpoint: defaultWebURL, AccessToken: "DO_NOT_PRINT"}
+	cfg := config{Transport: "http", Endpoint: defaultWebURL, AccessToken: "DO_NOT_PRINT"}
 	for _, test := range []struct {
 		action, input, format string
 		interactive, ok       bool
@@ -97,7 +97,7 @@ func TestInteractiveConfirmation(t *testing.T) {
 			}
 		}
 		if test.interactive && test.format != "json" {
-			if !strings.Contains(prompt.String(), "production") || !strings.Contains(prompt.String(), defaultWebURL) {
+			if !strings.Contains(prompt.String(), "http") || !strings.Contains(prompt.String(), defaultWebURL) {
 				t.Fatal("missing scope", prompt.String())
 			}
 		} else if prompt.Len() != 0 {
@@ -120,20 +120,18 @@ func TestInteractiveConfirmation(t *testing.T) {
 
 func TestCompletionCandidates(t *testing.T) {
 	t.Setenv("BIBLEIT_CONFIG", filepath.Join(t.TempDir(), "config.json"))
-	store := profileStore{Version: 1, Active: "prod", Profiles: map[string]profile{"prod": {Transport: "http", Endpoint: defaultWebURL, AccessToken: "TOP_SECRET"}, "preview": {Transport: "http", Endpoint: defaultWebURL}}}
-	if err := saveStore(store); err != nil {
+	if err := saveConfig(config{AccessToken: "TOP_SECRET"}); err != nil {
 		t.Fatal(err)
 	}
 	for _, test := range []struct{ words, want []string }{
 		{[]string{"li"}, []string{"live"}},
-		{[]string{"--profile", "pr"}, []string{"preview", "prod"}},
-		{[]string{"--profile=pr"}, []string{"--profile=preview", "--profile=prod"}},
-		{[]string{"--profile", "prod", "live", "L1", "st"}, []string{"stack", "start", "stats", "stop"}},
+		{[]string{"--transport", "s"}, []string{"ssh"}},
+		{[]string{"--transport=s"}, []string{"--transport=ssh"}},
+		{[]string{"--transport", "http", "live", "L1", "st"}, []string{"stack", "start", "stats", "stop"}},
 		{[]string{"live", "L1", "stack", "p"}, []string{"pop", "push"}},
 		{[]string{"live", "L1", "secret", ""}, []string{"create", "delete", "rotate"}},
 		{[]string{"live", "delete", ""}, []string{"all"}},
-		{[]string{"profile", "show", "pr"}, []string{"preview", "prod"}},
-		{[]string{"profile", "add", "new", "--transport", ""}, []string{"http", "ssh"}},
+		{[]string{"--transport", ""}, []string{"http", "ssh"}},
 		{[]string{"--format", "j"}, []string{"json"}},
 		{[]string{"completion", ""}, []string{"bash", "fish", "zsh"}},
 		{[]string{"read", "KJV", ""}, []string{}},
@@ -152,19 +150,19 @@ func TestCompletionCandidates(t *testing.T) {
 		t.Fatal("completion contacted server")
 		return nil, errors.New("unexpected request")
 	})}
-	code, out, stderr := captureCLI(t, func() int { return run([]string{"__complete", "--profile", ""}) })
-	if code != exitOK || out != "preview\nprod\n" || stderr != "" {
+	code, out, stderr := captureCLI(t, func() int { return run([]string{"__complete", "--transport", ""}) })
+	if code != exitOK || out != "http\nssh\n" || stderr != "" {
 		t.Fatalf("completion output: %d %q %q", code, out, stderr)
 	}
 	after, _ := os.ReadFile(configPath())
 	if !bytes.Equal(before, after) {
-		t.Fatal("completion modified profile")
+		t.Fatal("completion modified configuration")
 	}
 	if err := os.WriteFile(configPath(), []byte("malformed"), 0600); err != nil {
 		t.Fatal(err)
 	}
-	code, out, stderr = captureCLI(t, func() int { return run([]string{"__complete", "--profile", ""}) })
-	if code != exitOK || out != "" || stderr != "" {
+	code, out, stderr = captureCLI(t, func() int { return run([]string{"__complete", "--transport", ""}) })
+	if code != exitOK || out != "http\nssh\n" || stderr != "" {
 		t.Fatal("bad config completion should be quiet")
 	}
 	for _, shell := range []string{"bash", "zsh", "fish"} {

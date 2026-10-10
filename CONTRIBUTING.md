@@ -11,7 +11,7 @@ in issues, commits, or test fixtures.
 Use Go **1.27.1** and build with `go build -o build/bibleit .`.
 The CLI uses the sibling `bibleit-go` checkout through an ignored local
 `go.work` while publication is paused. The version in `go.mod` is an unreleased
-placeholder; pin a real client release before standalone builds. Keep library behavior in that repository; profiles, terminal output,
+placeholder; pin a real client release before standalone builds. Keep library behavior in that repository; credential storage, terminal output,
 browser orchestration, and OpenSSH process integration belong here.
 
 For changes to executable behavior, run:
@@ -38,7 +38,7 @@ Real-server tests require the separate server checkout; see
 Use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/):
 `type(scope): description`, with an optional scope. Examples:
 
-- `feat(profile): add named account profiles`
+- `feat(auth): simplify credential configuration`
 - `fix(windows): protect credential file permissions`
 - `docs: explain Go client dependency updates`
 - `ci: validate Fish completion`
