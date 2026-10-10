@@ -70,6 +70,10 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
                               for p in sorted((server/'test').rglob('*.erl'))},
         'verification': {'integration': args.integration}
     }
+    if args.source_metadata:
+        native_metadata = json.loads(args.source_metadata.read_text()).get('native_library')
+        if native_metadata:
+            baseline['native_library'] = native_metadata
     print('Server source snapshot created (local credentials/data excluded)', flush=True)
     deps = [p for p in (server/'_build/default/lib').glob('*/ebin') if p.parent.name != 'bibleit_server']
     paths = [part for p in deps for part in ('-pa', str(p))]
