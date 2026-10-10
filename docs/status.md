@@ -7,14 +7,13 @@ percentages of the entire project. The full plan is in `plan.md`.
 
 | Item | Status | Evidence / limits |
 | --- | --- | --- |
-| Private CLI access preflight | Implementation complete; credential pending | Tap 04e8b16 adds a read-only manual workflow and checks release-list access before formula downloads; no releases, tags or PRs created |
-| Actions PR permissions | Blocked on organization setting | Repository configuration returned HTTP 409 because organization policy forbids Actions PR creation; authenticated token cannot change organization policy (HTTP 403, missing admin:org); preserve read-only defaults when enabling the tap setting |
+| Private CLI access preflight | Blocked on scoped credential; implementation complete | Tap 04e8b16 adds a read-only manual workflow and checks release-list access before formula downloads; no releases, tags or PRs created |
+| Actions PR permissions | Complete | Final API check confirms can_approve_pull_request_reviews=true with default_workflow_permissions=read; organization restriction was lifted during setup; update job alone requests write permissions |
 | Validate and record setup | Complete | Seven updater regressions, shell/YAML checks and hosted Homebrew syntax/style pass at tap 04e8b16 in [run 38092320412](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38092320412); no BIBLEIT_CLI_READ_TOKEN is configured yet |
 
-Progress: **2/3 tracked items complete**; credential/policy setup remains blocked. User setup is needed for
-organization Actions PR creation and the tap secret scoped only to bibleit-cli
-with Contents: read. After setup, enable the repository PR setting and dispatch
-Check updater access. A green read check cannot certify formula downloads or PR
+Progress: **2/3 tracked items complete**; scoped credential setup remains blocked. User setup is needed for
+the tap secret scoped only to bibleit-cli with Contents: read. After saving the
+secret, dispatch Check updater access. A green read check cannot certify formula downloads or PR
 creation until the first real production CLI release exists.
 
 ## Previous increment: single credential configuration and tap CI

@@ -305,14 +305,14 @@ at 04e8b16. The initial run identified shell formatting; this revision fixes it.
 
 Remaining tap setup, in order:
 
-1. Enable Actions PR creation at organization level. Repository configuration
-   currently returns HTTP 409; the authenticated setup token cannot change the
-   organization policy (HTTP 403, missing admin:org).
+1. Actions PR policy: complete. The organization restriction was lifted during
+   setup; the final repository API check confirms PR creation is enabled.
 2. Save BIBLEIT_CLI_READ_TOKEN in homebrew-tap: fine-grained token owned by
    bibleit-labs, selecting only bibleit-cli, Contents: read-only. No secret exists
    yet; keep broad interactive credentials out of Actions secrets.
-3. Enable the tap repository PR setting while preserving read-only workflow
-   defaults; verify the effective setting through the API.
+3. Repository PR setting: complete. The API confirms
+   can_approve_pull_request_reviews=true and default_workflow_permissions=read;
+   only the updater job requests write permissions.
 4. Dispatch Check updater access using the actual Actions secret; record the
    green run and tap syntax validation. This check creates no releases or PRs.
 5. After a production CLI release exists, dispatch its formula update, review
