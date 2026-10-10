@@ -224,12 +224,12 @@ it cannot close production endpoint or standalone dependency gates.
 
 | Order | Next step | Status / owner input | Acceptance evidence |
 | --- | --- | --- | --- |
-| 1 | Push prepared client/CLI/tap sources and refresh draft CI pins | Authorized; this increment | Remote branches match local commits; CLI native/candidate workflows use the exact pushed client SHA; all native jobs pass |
+| 1 | Push prepared client/CLI/tap sources and refresh draft CI pins | Authorized; this increment | Remote branches match local commits; CLI native/candidate workflows use the exact pushed client SHA; all native and development candidate jobs passed; see native-validation.md |
 | 2 | Choose first release scope/version and customer access model | Pending project decision; propose Go/CLI v0.1.0, existing core commands | Supported commands/transports and known v1 limits in release notes; public distribution or explicitly supported private delivery selected |
 | 3 | Set production HTTPS and SSH addresses; adapt endpoint-dependent tests | Blocked on actual addresses and deployed service | NewClient(apiToken), browser exchange/logout and CLI HTTP/SSH use project-owned destinations; no customer override; disposable tests never contact production accidentally; existing profile bindings fail safely after address changes |
 | 4 | Freeze the deployed server contract and run release integration | Pending deployed revision/configuration | Committed/deployed server revision plus relevant source fingerprints, full HTTP/SSH/auth/import compatibility pass; controlled production TLS/login/revocation and SSH host verification smoke checks |
 | 5 | Version/release the Go client and pin it in CLI | After steps 2–4 | Reviewed semantic version, tag/release notes, client downloaded from remote; replace v0.0.0, tidy dependency metadata, clean-cache GOWORK=off test/vet/build succeeds without sibling checkout or replacement modules |
-| 6 | Validate the exact standalone CLI release candidate | After step 5 | Clean source and pinned dependency; production packaging without --local; six archives/checksums/provenance/version match; fresh Windows/macOS/Linux native CLI and installer jobs plus Fish/Homebrew/Scoop pass |
+| 6 | Validate the exact standalone CLI release candidate | After step 5 | Clean source and pinned dependency; production packaging without --local; six archives/checksums/provenance/version match; fresh Windows/macOS/Linux native CLI and installer jobs plus Fish/Homebrew/Scoop pass; architecture support policy records cross-build-only targets |
 | 7 | Prepare customer-visible artifacts and release notes | After step 6; publication decision required | Release notes cover client version, server baseline, OpenSSH requirement, profile migration, install/update/uninstall, supported architectures and known limits; decide signing policy and test real macOS downloaded binaries with normal OS protections |
 | 8 | Publish Go client then CLI binaries and installer assets, then tap/bucket | Pending release readiness and publication authorization | Reviewed manual procedure or publication workflow; exact tag/commit/artifacts verified; customer-accessible URLs; tap formula matches released hashes/version; Scoop channel created if chosen |
 | 9 | Test fresh customer installs and document support/update process | After publication | Actual published Homebrew/cURL/PowerShell/manual installs and upgrade paths pass on clean environments; release links/examples correct; record evidence and maintenance/rollback procedure |
@@ -237,6 +237,8 @@ it cannot close production endpoint or standalone dependency gates.
 Source publication order is Go client first, then CLI with its exact CI pin, and
 independent tap staging. Reuse `integration-refresh` and `formula-preparation`;
 do not merge into other/default branches or create release tags during this review.
+Fresh client and CLI native matrices pass on Windows/Ubuntu/macOS; the exact
+revisions and runs are in [native-validation.md](native-validation.md).
 Current default branches are CLI `package-manager-validation`, Go
 `private-platform-validation`, and tap `formula-preparation`. Before launch, review
 and promote the approved source into the chosen release/default branch through

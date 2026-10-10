@@ -15,11 +15,23 @@ separate readiness gates. Branches remain `integration-refresh` (CLI/client) and
 | --- | --- | --- |
 | Review remaining release gates | Complete | Production addresses/deployment, endpoint fixture adaptation, released/pinned dependency, GOWORK=off build, final candidate/platform checks, customer-accessible distribution and release sequence recorded |
 | Update next steps and validation configuration | Complete | Ordered nine-step checklist in plan.md; current client SHA pinned in both CLI workflows; integration-refresh now triggers candidate checks; stale local-only policy corrected |
-| Push prepared work and refresh hosted verification | In progress | Client source 310259e pushed; tap source dc2c4a5 pushed; CLI publication and fresh native/candidate run evidence pending |
+| Push prepared work and refresh hosted verification | Complete | Client 310259e, CLI validation source 0ce1c47 and tap dc2c4a5 pushed; all client/CLI native and package-candidate jobs passed |
 
-Progress: **2/3 tracked readiness-review items complete**. This is a review/source
+Progress: **3/3 tracked readiness-review items complete**. This is a review/source
 publication increment, not a customer release. Repository privacy was verified
 through authenticated interactive zsh; no visibility changes, tags or releases.
+
+Fresh hosted evidence (2026-10-11):
+
+- [Client native matrix](https://github.com/bibleit-labs/bibleit-go/actions/runs/38090370470): Windows/Ubuntu/macOS race, vet and examples passed at 310259e.
+- [CLI native matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38090456759): Windows/Ubuntu/macOS race/vet/build/process and Linux Bash/Zsh/Fish passed at 0ce1c47 with exact client 310259e.
+- [Candidate matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38090456683): six-target development packaging, native installers, Windows PowerShell 7/5.1 and Scoop, and macOS Homebrew passed at the same CLI/client inputs. Private validation artifacts remain development-only.
+
+These runs use the development endpoint and workspace. The ordered production
+release checklist is in plan.md; green draft CI does not close those remaining
+gates. Documentation-only completion commits follow the tested source revision.
+All prepared commits are pushed, with no default-branch merges, visibility
+changes, release tags or customer releases.
 
 ## Previous increment: Homebrew naming and assessment protocol fixes
 
