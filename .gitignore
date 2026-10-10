@@ -1,0 +1,10 @@
+cli
+bibleit
+bibleit.exe
+build/
+__pycache__/
+*.pyc
+*.test
+go.work
+go.work.sum
+.DS_Store
