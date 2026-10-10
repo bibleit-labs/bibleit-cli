@@ -21,6 +21,26 @@ At the publication pause, changes stayed local with a sibling workspace. Private
 CI is now authorized; see the latest validation section below. Each matrix targets runner-default architectures, not all six
 build targets. The original repository's remote main is unchanged.
 
+## Readiness refresh — 11 October 2026
+
+Prepared source branches are pushed to the private repositories. The fresh
+[Go-client native matrix](https://github.com/bibleit-labs/bibleit-go/actions/runs/38090370470)
+passed Windows, Ubuntu and macOS at client `310259e1acb5dbd1b07378bfb41462fdddfcda2c`.
+The fresh [CLI native matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38090456759)
+passed all three platforms at CLI `0ce1c4732526c2af6303a0074094e9670f9bcbd7`,
+using that exact client SHA. CLI checks include race/vet/build, native process
+fixtures, and Linux Bash/Zsh/Fish runtime checks. These draft runs use the
+localhost endpoint and an ephemeral private-client workspace; production addresses,
+a released client and standalone GOWORK=off validation remain separate gates.
+The hosted matrix exercises runner architectures; Windows/arm64 remains
+cross-build only, not native execution certification.
+
+The refreshed [release-candidate matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38090456683)
+also passed all three platforms at the same CLI/client revisions: six-target
+packaging, native Bash/PowerShell installers, PowerShell 7/5.1 replacement/failure
+paths, Scoop lifecycle and macOS Homebrew lifecycle. Artifacts are private
+development candidates, not production releases or verified public downloads.
+
 ## Historical evidence before fixed-endpoint changes
 
 | Environment | Result | Coverage |
