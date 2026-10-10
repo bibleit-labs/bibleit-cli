@@ -192,3 +192,30 @@ translation/registry edits from the ongoing assessment are outside this baseline
 This refresh does not repeat
 native Windows/package-manager CI, validate production TLS/download addresses,
 or replace the server's broader security assessment.
+
+## Latest assessment translation validation (2026-10-10)
+
+`python3 scripts/check_server_container.py --imports --baseline contract/server-baseline.json`
+passed with CLI harness `26de771`, Go client `5138077` and the server working tree
+at HEAD `1a266cc8bf6aa726c4890b78ddf95a3aadda0ba0`. The baseline now fingerprints
+all 63 server source and 57 test files. Both sets matched the server at completion;
+future assessment edits remain outside that snapshot.
+
+In addition to the complete existing HTTP/SSH harness (27 decoder/18 encoder
+fixtures, 7 targeted security cases, 11 HTTP subtests, real OpenSSH lifecycle and
+profile/output checks, 8 auth/key EUnit tests), all 10 import-access and 14
+publication cases pass. These exercise immutable generations, concurrent
+installations and archives, retained native handles, idempotent provenance and
+response-loss retries, registry outage, legacy upgrade, install/delete races,
+path containment, staged failures and process death before/after publication.
+
+The runner executes the actual suite cases with setup/teardown callbacks; it does
+not run the full Common Test campaign. Access cases use real HTTP with loopback
+archive fixtures, while publication fault cases use the assessment's production
+module clone with filesystem/NIF boundary substitutions. The optional flag keeps
+the normal client/CLI gate available independently.
+
+Log: `build/validation/assessment-integration-2026-10-10.log`. The isolated
+database was removed, no host ports were exposed and no server files were changed.
+Native Windows/package-manager evidence remains the preceding private CI runs;
+this increment stays entirely local.

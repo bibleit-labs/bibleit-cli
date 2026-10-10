@@ -3,7 +3,43 @@
 Updated 2026-10-10. Counts describe explicit acceptance items, not estimated
 percentages of the entire project. The full plan is in `plan.md`.
 
-## Current increment: fresh full HTTP/SSH integration
+## Current increment: latest assessment translation validation
+
+Branch: `integration-refresh`. Local only: no pushes, tags, releases or CI runs.
+Inputs: CLI harness revision `26de771`, Go-client revision `5138077`, server HEAD
+`1a266cc8bf6aa726c4890b78ddf95a3aadda0ba0` plus assessment working-tree changes.
+The new immutable publication module and translation/registry changes are now
+included in `contract/server-baseline.json`, with 63 source and 57 test fingerprints.
+
+| Item | Status | Evidence / limits |
+| --- | --- | --- |
+| Inspect latest assessment changes | Complete | Immutable generation publication, registry generation-aware handles, local import-access and publication suites; existing HTTP/SSH checks extended with optional `--imports` |
+| Validate frozen source and integration | Complete | 27 decoder/18 encoder fixtures; 7 targeted security cases; all 11 Go HTTP subtests; real OpenSSH lifecycle/profile/output checks; 8 auth/key EUnit tests; 10 import-access and 14 publication cases |
+| Update baselines, plan and local commits | Complete | CLI/client baselines synchronized; source and test fingerprints matched the server at completion; disposable database removed; remaining contract/publication gates retained |
+
+Progress: **3/3 tracked assessment-validation items complete**. All 24 import
+cases passed, including concurrent installs/archives, retained native handles,
+idempotent provenance/retries, registry outage, legacy upgrade, install/delete
+races, path containment, staged write/index/manifest failures and process death
+before/after publication. Import access cases use real HTTP authorization and
+loopback archive fixtures. Publication faults use the assessment's production-code
+fixture clone at filesystem/NIF boundaries. Suite cases execute their actual
+setup/teardown callbacks; this is focused execution, not a full Common Test campaign.
+No client/server regression or runtime fix was needed. Later assessment edits
+require a new snapshot; the matching fingerprints are a completion-time observation.
+
+Reproduce:
+
+```sh
+python3 scripts/check_server_container.py --imports --baseline contract/server-baseline.json
+```
+
+Output: `build/validation/assessment-integration-2026-10-10.log` (ignored local
+evidence). This closes the previous translation/registry snapshot gap; it does
+not close production deployment, browser-only API contracts or the full server
+security assessment.
+
+## Previous increment: fresh full HTTP/SSH integration
 
 Branch: `integration-refresh`. Everything in this increment stays local; no pushes,
 tags, releases or hosted CI runs. The test used CLI source revision `045fd20` and

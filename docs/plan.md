@@ -190,17 +190,25 @@ in authorized private CI. See `native-validation.md` for exact revisions/runs.
 
 ## Latest integration evidence
 
-The 2026-10-10 local refresh passed the full existing client/CLI HTTP/SSH harness
-against a frozen server working tree at HEAD `1a266cc8bf6aa726c4890b78ddf95a3aadda0ba0`. Inputs were CLI
-`045fd20` and Go client `9332d35`; exact server source fingerprints are in
-`contract/server-baseline.json`. Coverage: 27 decoder/18 encoder fixtures,
-7 targeted security cases, 11 Go HTTP subtests, actual OpenSSH subscription
-lifecycle and profile/output parity, and 8 auth/SSH EUnit tests. The fixture uses
-localhost:8080 inside a disposable network namespace and removes its database.
-No new integration regression was found. The assessment continues changing
-translation code; edits after the frozen snapshot require later validation.
-The SECRET SET contract gap remains;
-browser-only workspace/event APIs and production release gates stay open.
+The latest 2026-10-10 local refresh uses CLI harness `26de771` and Go client
+`5138077` against server HEAD `1a266cc8bf6aa726c4890b78ddf95a3aadda0ba0` plus its
+assessment changes. It includes immutable translation publication and the updated
+translation registry. `contract/server-baseline.json` records 63 source and 57
+test fingerprints; both sets matched the server at completion.
+
+Passing coverage: 27 decoder/18 encoder fixtures, 7 targeted security cases,
+11 HTTP subtests, actual OpenSSH subscription/profile/output checks, 8 auth/key
+EUnit tests, 10 real-HTTP import-access cases and 14 publication cases. The optional
+`--imports` runner executes the assessment suite cases and their callbacks with
+local fixtures in the disposable namespace. Publication coverage includes
+concurrent archives, retained handles, install/delete races, generation/provenance
+retries, registry outage, legacy migration and pre/post-publication failures.
+
+This closes the translation changes excluded by the previous snapshot. No new
+integration regression was found. Subsequent assessment edits need a new snapshot.
+The SECRET SET contract gap, browser-only workspace/event APIs and production
+release gates remain open. The focused case execution does not replace the full
+server security assessment or Common Test campaign.
 
 ## Immediate next work
 
