@@ -36,6 +36,7 @@ def main():
     parser.add_argument('--server', type=Path, default=ROOT.parent / 'bibleit-server')
     parser.add_argument('--go-client', type=Path, default=ROOT.parent / 'bibleit-go')
     parser.add_argument('--baseline', type=Path)
+    parser.add_argument('--imports', action='store_true', help='include server import-access/publication suite cases')
     args = parser.parse_args()
     server = args.server.resolve()
     with tempfile.TemporaryDirectory(prefix='bibleit-isolated-integration-') as directory:
@@ -99,7 +100,8 @@ ENV PATH="/usr/local/go/bin:$PATH" GOTOOLCHAIN=local GOCACHE=/tmp/go-cache GOMOD
                  '--mount', f'type=bind,src={sources},dst=/sources,readonly',
                  '--mount', f'type=bind,src={results},dst=/results',
                  '--env', 'BIBLEIT_TEST_DATABASE_URL=postgresql://bibleit_test:bibleit-test-only@127.0.0.1:5432/bibleit_test?sslmode=disable',
-                 image, 'python3', '/sources/bibleit-cli/scripts/prepare_server_container.py'])
+                 image, 'python3', '/sources/bibleit-cli/scripts/prepare_server_container.py',
+                 *(['--imports'] if args.imports else [])])
             if args.baseline:
                 shutil.copy2(results / 'server-baseline.json', args.baseline)
         finally:

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Build fixture NIFs for the container OS, then execute the real-server harness."""
 from pathlib import Path
+import argparse
 import shutil
 import subprocess
 import tempfile
@@ -11,6 +12,9 @@ def run(command, **kwargs):
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--imports', action='store_true')
+    args = parser.parse_args()
     with tempfile.TemporaryDirectory(prefix='bibleit-linux-snapshot-') as directory:
         workspace = Path(directory) / 'workspace'
         shutil.copytree('/sources', workspace)
@@ -43,7 +47,8 @@ def main():
         cli = workspace / 'bibleit-cli'
         run(['python3', 'scripts/check_server.py', '--integration', '--external-disposable-database',
              '--source-metadata', str(workspace / 'server-metadata.json'),
-             '--baseline', '/results/server-baseline.json'], cwd=cli)
+             '--baseline', '/results/server-baseline.json',
+             *(['--imports'] if args.imports else [])], cwd=cli)
 
 
 if __name__ == '__main__':

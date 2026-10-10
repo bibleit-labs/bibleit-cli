@@ -7,10 +7,13 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--server', type=pathlib.Path, default=root.parent/'bibleit-server')
 parser.add_argument('--go-client', type=pathlib.Path, default=root.parent/'bibleit-go', help='checkout of the independent Go client for integration tests')
 parser.add_argument('--integration', action='store_true', help='run server authentication/security tests with a unique disposable Docker database')
+parser.add_argument('--imports', action='store_true', help='also execute server import-access/publication suite cases against local fixtures')
 parser.add_argument('--baseline', type=pathlib.Path, help='save verified snapshot fingerprints after all requested checks pass')
 parser.add_argument('--external-disposable-database', action='store_true', help='use BIBLEIT_TEST_DATABASE_URL inside an isolated test container instead of starting Docker here')
 parser.add_argument('--source-metadata', type=pathlib.Path, help='provenance for an already frozen server snapshot')
 args = parser.parse_args()
+if args.imports and not args.integration:
+    parser.error('--imports requires --integration')
 if args.external_disposable_database:
     database_url = os.environ.get('BIBLEIT_TEST_DATABASE_URL', '')
     database = urlparse(database_url)
@@ -63,6 +66,8 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
         'working_tree_changes': json.loads(args.source_metadata.read_text())['working_tree_changes'] if args.source_metadata else bool(run(['git','-C',str(original),'status','--porcelain'],capture_output=True).stdout.strip()),
         'files_sha256': {str(p.relative_to(server)): hashlib.sha256(p.read_bytes()).hexdigest()
                          for p in sorted((server/'src').rglob('*.erl'))},
+        'test_files_sha256': {str(p.relative_to(server)): hashlib.sha256(p.read_bytes()).hexdigest()
+                              for p in sorted((server/'test').rglob('*.erl'))},
         'verification': {'integration': args.integration}
     }
     print('Server source snapshot created (local credentials/data excluded)', flush=True)
@@ -103,6 +108,8 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
         env['BIBLEIT_CLI_TEST_BIN']=str(cli_binary)
         shutil.copy(server/'_build/default/lib/bibleit_server/ebin/bibleit_server.app', ebin)
         suites = [server/'test/bibleit_test_database.erl', server/'test/bibleit_security_SUITE.erl', server/'test/http/bibleit_cli_auth_tests.erl', server/'test/ssh/bibleit_ssh_key_cb_tests.erl']
+        if args.imports:
+            suites += [server/'test/bibleit_import_access_SUITE.erl', server/'test/bibleit_import_publication_SUITE.erl']
         run(['erlc', *paths,'-o',str(ebin),*map(str,suites)],cwd=temporary)
         name = 'bibleit-client-test-'+uuid.uuid4().hex[:12]
         started = False
@@ -203,6 +210,24 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
               end.
             '''
             run(['erl','-noshell',*paths,'-pa',str(ebin),'-eval',integration],env=env,cwd=temporary,timeout=120)
+            if args.imports:
+                # Execute the actual suite cases and setup/teardown callbacks.
+                # This is focused case execution, not a full Common Test campaign.
+                imports = '''
+                  {ok,_}=application:ensure_all_started(cowboy),
+                  lists:foreach(fun(Suite)->
+                    Config=Suite:init_per_suite([{priv_dir,os:getenv("BIBLEIT_TEST_PRIV")}]),
+                    try lists:foreach(fun(Case)->
+                      C=Suite:init_per_testcase(Case,Config),
+                      try apply(Suite,Case,[C]),
+                          io:format("Server import case: ~p:~p passed~n",[Suite,Case])
+                      after Suite:end_per_testcase(Case,C) end
+                    end,Suite:all())
+                    after Suite:end_per_suite(Config) end
+                  end,[bibleit_import_access_SUITE,bibleit_import_publication_SUITE]),
+                  halt().
+                '''
+                run(['erl','-noshell',*paths,'-pa',str(ebin),'-eval',imports],env=env,cwd=temporary,timeout=180)
         finally:
             if started: run(['docker','rm','--force',name],stdout=subprocess.DEVNULL)
     if args.baseline:
@@ -210,5 +235,6 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
             'request_decoder_cases': len(json.loads(fixture.read_text())),
             'fixed_http_endpoint': 'http://localhost:8080' if args.integration else None,
             'response_encoder_cases': sum('server_response_term' in case for case in json.loads((root/'contract/fixtures/responses-v1.json').read_text())),
+            'import_suite_cases': args.imports,
         })
         args.baseline.write_text(json.dumps(baseline, indent=2)+'\n')
