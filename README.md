@@ -164,6 +164,8 @@ no profiles or saved transport choice; private keys are never stored here.
 Foreign service bindings, old configuration files and legacy credential files are
 rejected before network access and never rewritten. Back up an old file and
 sign in with a fresh config; there is no automatic account selection or migration.
+Backing up an old file does not revoke its server credentials. Revoke obsolete CLI
+credentials in account settings when replacing the old configuration.
 
 Output defaults to a readable table. Use `--format raw` to preserve finite
 protocol records, `--format json` for a version-1 typed record envelope, or
