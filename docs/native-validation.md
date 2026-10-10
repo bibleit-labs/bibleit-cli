@@ -21,6 +21,32 @@ At the publication pause, changes stayed local with a sibling workspace. Private
 CI is now authorized; see the latest validation section below. Each matrix targets runner-default architectures, not all six
 build targets. The original repository's remote main is unchanged.
 
+## Single-configuration validation — 11 October 2026
+
+The CLI removes named profiles and uses schema-v2 credentials with HTTP default
+and explicit SSH transport. Local macOS/arm64 race/vet, process/loopback HTTP,
+Unix credential permissions, actual PTY confirmation and Bash/Zsh completion pass.
+Fresh isolated server integration also passes HTTP/auth/SSH/output checks and
+25 import cases; the baseline contains 63 source and 59 test fingerprints.
+
+The [client native matrix](https://github.com/bibleit-labs/bibleit-go/actions/runs/38091438398)
+passed Windows/Ubuntu/macOS at 17e146b. Tap syntax/style and seven updater
+regressions passed at d08561b in
+[tap CI](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38091389888).
+The manual release updater remains uninvoked pending a real CLI release and
+its documented private-read/PR permission setup.
+
+The new [CLI native matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38091481226)
+passed Windows/Ubuntu/macOS at fe719db with exact client 17e146b, including native
+Windows config ACL checks, process fixtures and Linux Bash/Zsh/Fish completion.
+The [candidate matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38091481159)
+also passed at those inputs: six-target packaging, Linux/macOS installers,
+PowerShell 7/5.1 replacement/failure checks, Scoop and Homebrew lifecycle checks.
+Later documentation-only commits do not change the tested runtime code. These
+are development-endpoint/workspace candidates; production packaging and fresh
+published-download validation remain release gates. Later assessment changes
+are outside the frozen integration snapshot. Windows/arm64 is cross-build only.
+
 ## Readiness refresh — 11 October 2026
 
 Prepared source branches are pushed to the private repositories. The fresh
