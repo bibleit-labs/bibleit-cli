@@ -23,7 +23,7 @@ Known field types:
 
 | Type | Fields |
 | --- | --- |
-| Boolean | paused, owned, protected, retiring, pong; local profile active, removed, credential_cached; auth in OK/local auth records |
+| Boolean | paused, owned, protected, retiring, pong; auth in OK/local auth records |
 | Non-negative integer | protocol_version, count, verses, chapters, results, books, commands, connections, actor_connections, anonymous_connections, running_for_seconds, revision, stack_entries, position, issued_at, created_at, last_used_at, expires_at, connected_at, connected_for_seconds, plan_activated_at, lives, tokens, keys, used, book, chapter, verse |
 | String array | roles, permissions, capabilities, scopes; translations except the count cases below |
 | Integer or string | quota limit is an integer, or the literal string `unlimited` |
@@ -35,9 +35,7 @@ produce an error rather than silently converting a value to zero or false.
 These are typed protocol records; they are not a serialization of the Go client's
 domain structs. Future output schema changes must use a new schema_version.
 
-Profile metadata uses PROFILE records with name, endpoint, transport, active,
-credential_cached and identity. List order is alphabetical; show/use/add/remove
-provide the corresponding metadata. No profile command prints a bearer value.
+Named profile commands and PROFILE output records are removed before release.
 Local version/help/auth actions use version/help/auth record types. Interactive
 browser progress and fallback browser URLs are written to stderr.
 
@@ -76,7 +74,7 @@ server error codes remain intact. Failed finite commands write no success object
 A stream can emit records before a later error. Local help/version bypass config
 loading, so they still work when configuration is unreadable.
 
-`raw` preserves wire records and framing; local profile/auth/version/help actions
+`raw` preserves wire records and framing; local auth/version/help actions
 use human output. Default tables retain server column order, escape control
 characters, and keep verse text readable. Malformed output after a mutation does
 not imply rollback; the CLI never retries mutations. Existing prerelease JSON

@@ -16,40 +16,37 @@ escape hatch, so shell input cannot accidentally become protocol input.
 
 The service address is controlled by the project, currently **`http://localhost:8080`**.
 Customers cannot select another endpoint through constructor options, CLI flags,
-environment variables, or saved profiles. The production HTTPS address will replace
+environment variables, or saved configuration. The production HTTPS address will replace
 this placeholder in the Go client's `ServerEndpoint` constant. See the
 [endpoint policy](docs/endpoint-policy.md).
 
-Named profiles select credentials/accounts and a transport at that fixed service:
+The CLI stores one credential configuration for the fixed service:
 
 ```sh
-bibleit profile add production
-bibleit --profile production auth login
-bibleit profile add local-ssh --transport ssh
-bibleit --profile local-ssh auth login --identity ~/.ssh/bibleit_local_dev
-bibleit profile use production
-bibleit profile list
+bibleit auth login
+bibleit auth info
+bibleit --transport ssh auth login --identity ~/.ssh/bibleit_key
+bibleit --transport ssh live list
+bibleit auth logout
 ```
 
-`--profile` selects a profile for one command. Otherwise `BIBLEIT_PROFILE`, then
-the saved active profile, selects it. Adding the first profile makes it active;
-adding another does not switch the active profile. Existing profile names cannot
-be overwritten. HTTP commands use that profile's bearer credential at the fixed
-service. SSH uses the project-managed SSH address and OpenSSH configuration/agent.
+HTTP is always the default. `--transport ssh` explicitly selects OpenSSH; there
+is no automatic fallback. `auth login ssh` is an alias for SSH login. SSH login
+caches an optional identity path without removing the saved HTTP token or changing
+the default transport. HTTP and SSH identities can belong to different accounts;
+`auth info` reports the actor for the selected transport. No named profiles,
+`--profile` or account-switching commands are provided. `BIBLEIT_PROFILE` is ignored.
 `--endpoint` is rejected and `BIBLEIT_ENDPOINT` is ignored.
 
-`auth login` opens browser authorization for an HTTP profile and verifies SSH
-for an SSH profile. `auth login ssh` remains an explicit SSH alias. Use
-`--identity` only with SSH. Web logout keeps the cached credential if revocation
-fails; successful revocation or an already unauthorized credential clears it.
-Logout retains the profile's endpoint/transport and leaves other profiles intact.
-SSH logout clears the cached identity selection; registered keys and the SSH
-agent remain under your control.
+`auth login` opens browser authorization. Use `--identity` only with SSH.
+Logout revokes the cached HTTP credential and clears both cached credential
+selections; failed revocation preserves them for retry. Registered SSH keys and
+the agent remain under your control. Login/logout operate on saved credentials,
+not an environment token.
 
-For automation, set `BIBLEIT_TOKEN` through your environment/secret store and
-select an HTTP profile. It overrides the cached bearer for data commands and
-`auth info`, without being saved or printed in profile listings. Login/logout
-operate on cached credentials rather than the environment token. Use `--` before
+For automation, set `BIBLEIT_TOKEN` through your environment/secret store. It
+overrides the HTTP token for data commands and `auth info`, without being saved
+or printed. Explicit SSH commands ignore this HTTP-only token. Use `--` before
 literal command arguments that would otherwise be interpreted as global flags.
 
 Use Go **1.27.1**. With the local workspace configured, build and test from the repository root:
@@ -137,17 +134,15 @@ For the local SSH development server, generate a dedicated key and run:
     ssh-keygen -t ed25519 -f ~/.ssh/bibleit_local_dev -C bibleit-local-dev
     make -C ../bibleit-server run
     go build -o cli .
-    ./cli profile add local-http
-    ./cli profile add local-ssh --transport ssh
-    ./cli --profile local-http auth login
+    ./cli auth login
 
 After web sign-in, open the dashboard and add the contents of
 `~/.ssh/bibleit_local_dev.pub` under **SSH keys**. Only then will SSH login
 succeed:
 
     cat ~/.ssh/bibleit_local_dev.pub
-    ./cli --profile local-ssh auth login --identity ~/.ssh/bibleit_local_dev
-    ./cli --profile local-ssh live list
+    ./cli --transport ssh auth login --identity ~/.ssh/bibleit_local_dev
+    ./cli --transport ssh live list
 
 On the first connection, OpenSSH saves a previously unseen server host key in
 `known_hosts`; it still rejects a host whose saved key later changes. Every
@@ -156,28 +151,19 @@ cached settings.
 
 With email or OAuth configured, the equivalent web flow is:
 
-    ./cli --profile local-http auth login
-    ./cli --profile local-http live list
+    ./cli auth login
+    ./cli live list
 
-Profiles are stored in `~/.bibleit/config.json`, with newly created directories
-mode `0700` and file writes mode `0600` on Unix. On Windows, each new config
-file receives a current-user-only ACL before credentials are written; failed
-ACL setup aborts saving. Existing files are hardened on the next successful
-write. `BIBLEIT_CONFIG` selects another
-file. The versioned file stores active_profile and a profiles map; each entry
-contains transport, endpoint and optional access_token/identity. SSH private keys
-are never stored in this file. The endpoint field records the service binding;
-it is checked against the project-managed address and is not a user override.
-Foreign endpoint profiles and legacy bearer credentials without an endpoint binding
-are rejected without sending a request or rewriting the file. Sign in again with
-a fresh config rather than retargeting an old credential. Identity-only legacy
-files can still migrate to the fixed SSH service.
-A new installation has an implicit local HTTP default; creating a profile
-replaces that implicit default.
-
-`profile show [name]` inspects metadata; `profile use <name>` selects an active
-profile. `profile remove <name>` requires another active profile and, for cached
-HTTP credentials, logout first. List/show never reveal bearer values.
+Credentials are stored in `~/.bibleit/config.json`, with newly created
+directories mode `0700` and file writes mode `0600` on Unix. On Windows, each
+new config file receives a current-user-only ACL before credentials are written;
+failed ACL setup aborts saving. Atomic replacements retain these protections.
+`BIBLEIT_CONFIG` selects another file. Schema version 2 stores fixed HTTP/SSH
+service bindings, an optional access_token and SSH identity path. It contains
+no profiles or saved transport choice; private keys are never stored here.
+Foreign service bindings, old configuration files and legacy credential files are
+rejected before network access and never rewritten. Back up an old file and
+sign in with a fresh config; there is no automatic account selection or migration.
 
 Output defaults to a readable table. Use `--format raw` to preserve finite
 protocol records, `--format json` for a version-1 typed record envelope, or
@@ -187,9 +173,9 @@ and retain server metadata. Human tables escape embedded control characters.
 See [the stable output contract](docs/output.md) for types and examples.
 
 ```sh
-bibleit --profile production --format json account tokens
-bibleit --profile local-ssh --format ndjson live <id> subscribe
-bibleit --profile production --format raw live list
+bibleit --format json account tokens
+bibleit --transport ssh --format ndjson live <id> subscribe
+bibleit --format raw live list
 ```
 
 Exit codes are stable:
@@ -228,7 +214,7 @@ management and bearer-authenticated event watching are not implemented.
 
 The reusable [Go client](https://github.com/bibleit-labs/bibleit-go) owns validated customer commands,
 HTTP transport, and finite response decoding. The CLI owns browser login,
-profiles, terminal output, and its OpenSSH adapter. The shared protocol contract
+credential storage, terminal output, and its OpenSSH adapter. The shared protocol contract
 and response fixtures are documented in [contract/README.md](contract/README.md).
 
 The CLI depends on the independent `github.com/bibleit-labs/bibleit-go` module.
@@ -244,7 +230,7 @@ BIBLEIT_TOKEN=your-token go run ./examples/read
 
 `secret set <value>` is rejected until the server command API supports custom
 secret setting. Use `secret create` or `secret rotate` to
-generate a server-managed secret. Live subscriptions require an SSH profile.
+generate a server-managed secret. Live subscriptions require explicit SSH transport.
 
 Subscriptions begin with a current Live snapshot, then emit live changes. Live
 closure ends the watch successfully; revoked access and unexpected disconnects
@@ -258,7 +244,7 @@ current request tokenizer cannot represent them reliably.
 
 Generate scripts with `bibleit completion bash`, `bibleit completion zsh`, or
 `bibleit completion fish`. Generation works without authentication or a valid
-profile file. It prints the script and does not change your shell settings.
+configuration file. It prints the script and does not change your shell settings.
 
 For the current Bash session:
 
@@ -282,18 +268,17 @@ mkdir -p ~/.config/fish/completions
 bibleit completion fish > ~/.config/fish/completions/bibleit.fish
 ```
 
-Completion covers command words, flags, format/transport values and local
-profile names. Use separate words for option-value completion, for example
-`--profile prod`. Completion never contacts the server, writes configuration,
-or suggests tokens, secrets, Live IDs or translation/reference data. An invalid
-profile file yields no profile suggestions. Script generation accepts the
-normal or raw format; JSON/NDJSON are not script formats.
+Completion covers command words, flags and format/transport values. It never
+reads credentials, contacts the server, writes configuration or suggests tokens,
+secrets, Live IDs or translation/reference data. It works even when configuration
+is missing or invalid. Script generation accepts normal or raw format;
+JSON/NDJSON are not script formats.
 
 ## Destructive commands
 
 Live deletion (including `live delete all`), stack clear/pop, and secret
 rotation/removal require confirmation before a request is sent. A terminal
-prompt shows the profile, transport, endpoint and affected target. Type `yes`
+prompt shows the transport, endpoint and affected target. Type `yes`
 for a single target, or `delete all` for bulk deletion. An empty answer, another
 answer, EOF or an overlong answer cancels without sending a request.
 
@@ -301,8 +286,8 @@ Both stdin and stderr must be terminals for prompting. JSON output and
 noninteractive use require `--yes`:
 
 ```sh
-bibleit --profile production live session-id delete --yes
-bibleit --profile production --format json live delete all --yes
+bibleit live session-id delete --yes
+bibleit --format json live delete all --yes
 ```
 
 `--yes` confirms the command once; server authentication and permissions still
@@ -312,7 +297,7 @@ is rejected). Options after `--` are literal command arguments.
 Cancellation exits **1**. Missing confirmation exits **2**, with error code
 `confirmation_required` in JSON; cancellation uses `cancelled`. Errors go to
 stderr and leave stdout empty. Read commands, reversible Live controls/settings,
-translation library removal, logout and removal of a logged-out inactive profile
+translation library removal, logout
 retain their existing behavior. Creating a secret cannot replace an existing
 secret; use guarded rotation to replace one.
 

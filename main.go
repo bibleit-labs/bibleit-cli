@@ -61,7 +61,7 @@ func run(args []string) int {
 	}
 	previousFormat := activeFormat
 	defer func() { activeFormat = previousFormat }()
-	options, args, err := parseOptions(args, map[string]bool{"--format": true, "--identity": true, "--profile": true, "--yes": false})
+	options, args, err := parseOptions(args, map[string]bool{"--format": true, "--identity": true, "--transport": true, "--yes": false})
 	format := options["--format"]
 	if format == "" {
 		format = "table"
@@ -92,30 +92,41 @@ func run(args []string) int {
 	if oneOf(args[len(args)-1], "--help", "-h") || (args[len(args)-1] == "help" && args[0] != "server") {
 		return help([]string{args[0]})
 	}
-	if len(args) == 1 && oneOf(args[0], "live", "read", "search", "translation", "server", "account", "profile", "completion") {
+	if len(args) == 1 && oneOf(args[0], "live", "read", "search", "translation", "server", "account", "completion") {
 		return help(args)
 	}
 	if args[0] == "completion" {
 		return completionCommand(args[1:], format)
 	}
 	if args[0] == "profile" {
-		if options["--identity"] != "" {
-			return fail(exitUsage, "select an SSH identity with auth login, not profile management")
-		}
-		return profileCommand(args[1:], format)
+		return fail(exitUsage, "named profiles are not supported")
 	}
-	selected := options["--profile"]
-	if selected == "" {
-		selected = os.Getenv("BIBLEIT_PROFILE")
-	}
-	cfg, err := loadSelectedConfig(selected)
+	cfg, err := loadConfig()
 	if err != nil {
 		return fail(exitFailure, "read configuration: %v", err)
 	}
+	transport := options["--transport"]
+	if transport == "" {
+		transport = "http"
+	}
+	if !oneOf(transport, "http", "ssh") {
+		return fail(exitUsage, "transport must be http or ssh")
+	}
+	if len(args) >= 3 && args[0] == "auth" && args[1] == "login" && args[2] == "ssh" {
+		if options["--transport"] == "http" {
+			return fail(exitUsage, "SSH login conflicts with --transport http")
+		}
+		transport = "ssh"
+	}
+	cfg.Transport = transport
+	cfg.Endpoint = defaultWebURL
+	if transport == "ssh" {
+		cfg.Endpoint = defaultSSHServer
+	}
 	identity := options["--identity"]
 	if identity != "" {
-		if cfg.Transport != "ssh" && !(cfg.implicit && len(args) >= 3 && args[0] == "auth" && args[1] == "login" && args[2] == "ssh") {
-			return fail(exitUsage, "--identity requires an SSH profile")
+		if cfg.Transport != "ssh" {
+			return fail(exitUsage, "--identity requires --transport ssh")
 		}
 		cfg.Identity = identity
 	}
@@ -147,7 +158,7 @@ func run(args []string) int {
 	}
 	if isLiveSubscribe(args) {
 		if cfg.Transport != "ssh" {
-			return fail(exitUsage, "Live subscriptions require an SSH profile; select one with --profile")
+			return fail(exitUsage, "Live subscriptions require --transport ssh")
 		}
 		if format == "json" {
 			return fail(exitUsage, "use --format ndjson for Live subscriptions")
@@ -166,7 +177,7 @@ func run(args []string) int {
 func automationCredential(cfg config) (config, error) {
 	if token := os.Getenv("BIBLEIT_TOKEN"); token != "" {
 		if cfg.Transport != "http" {
-			return cfg, errors.New("BIBLEIT_TOKEN requires an HTTP profile")
+			return cfg, nil
 		}
 		if strings.ContainsAny(token, "\r\n\x00") {
 			return cfg, errors.New("invalid BIBLEIT_TOKEN")
@@ -197,16 +208,9 @@ func authCommand(cfg config, args []string, format string, explicitIdentity bool
 		if len(args) > 2 || (len(args) == 2 && args[1] != "ssh") {
 			return usage()
 		}
-		if cfg.Transport != "ssh" {
-			if !cfg.implicit {
-				return fail(exitUsage, "SSH login requires an SSH profile; add one with profile add --transport ssh")
-			}
-			cfg.Transport = "ssh"
-			cfg.Endpoint = defaultSSHServer
-		}
 		if !explicitIdentity {
 			// A fresh SSH login without --identity deliberately asks OpenSSH
-			// to select from its config and agent, even if an older profile
+			// to select from its config and agent, even if an earlier login
 			// cached an explicit identity path.
 			cfg.Identity = ""
 		}
@@ -218,7 +222,6 @@ func authCommand(cfg config, args []string, format string, explicitIdentity bool
 		if identityName == "" {
 			return fail(exitFailure, "SSH authentication succeeded but the server did not identify the account")
 		}
-		cfg.AccessToken = ""
 		if err := saveConfig(cfg); err != nil {
 			return fail(exitFailure, "save configuration: %v", err)
 		}
@@ -232,7 +235,7 @@ func authCommand(cfg config, args []string, format string, explicitIdentity bool
 		if err := logout(&cfg); err != nil {
 			return protocolFailure(err)
 		}
-		return printLocal("auth", map[string]string{"event": "logged_out", "profile": cfg.Name}, format)
+		return printLocal("auth", map[string]string{"event": "logged_out", "transport": cfg.Transport}, format)
 	case "whoami", "info":
 		if len(args) != 1 {
 			return usage()
@@ -406,7 +409,7 @@ type authenticationError struct{ message string }
 
 func (e authenticationError) Error() string { return e.message }
 func request(cfg config, command bibleit.Command) ([]string, error) {
-	if cfg.Transport == "http" || (cfg.Transport == "" && cfg.AccessToken != "") {
+	if cfg.Transport != "ssh" {
 		return requestHTTP(cfg, command)
 	}
 	return requestSSH(cfg, command)
@@ -435,9 +438,9 @@ func sshCommand(cfg config, command bibleit.Command) (*exec.Cmd, string, error) 
 			return nil, "", err
 		}
 	}
-	host, port, err := net.SplitHostPort(profileFor(cfg).Endpoint)
+	host, port, err := net.SplitHostPort(sshEndpoint(cfg))
 	if err != nil || host == "" || port == "" {
-		return nil, "", fmt.Errorf("invalid SSH server address %q", profileFor(cfg).Endpoint)
+		return nil, "", fmt.Errorf("invalid SSH server address %q", sshEndpoint(cfg))
 	}
 	targetHost := host
 	if strings.Contains(host, ":") {
@@ -720,16 +723,13 @@ func logout(cfg *config) error {
 		if err := client.RevokeCredential(context.Background()); err != nil {
 			var httpErr *bibleit.HTTPError
 			// An unauthorized credential is already unusable. Other failures
-			// leave the local profile intact so the user can retry logout.
+			// leave the local credentials intact so the user can retry logout.
 			if !errors.As(err, &httpErr) || httpErr.StatusCode != http.StatusUnauthorized {
 				return fmt.Errorf("revoke cached web authentication: %w", err)
 			}
 		}
 	}
 	next := *cfg
-	bound := profileFor(*cfg)
-	next.Transport = bound.Transport
-	next.Endpoint = bound.Endpoint
 	next.AccessToken = ""
 	next.Identity = ""
 	if err := saveConfig(next); err != nil {
@@ -979,7 +979,7 @@ func homeDirectory() string {
 	return "."
 }
 func usage() int {
-	return fail(exitUsage, "usage: bibleit [--profile name] [--identity path] [--format table|raw|json|ndjson] <command>\n\nRun \"bibleit help\" to list commands.")
+	return fail(exitUsage, "usage: bibleit [--transport http|ssh] [--identity path] [--format table|raw|json|ndjson] <command>\n\nRun \"bibleit help\" to list commands.")
 }
 func help(topic []string) int {
 	key := strings.Join(topic, " ")
@@ -991,29 +991,27 @@ func help(topic []string) int {
 			"Usage:", "  bibleit [flags]", "  bibleit [command]", "",
 			"Reading Scripture", "  read         Read a verse, chapter, or book.", "  search       Search an enabled translation.", "  translation  Manage your account translation library.", "",
 			"Live sessions", "  live         Create, inspect, and control Lives you are allowed to manage.", "",
-			"Access control", "  auth         Verify SSH access and inspect the current actor.", "  account      Inspect your account and effective quotas.", "  profile      Add, select, and inspect endpoint-bound profiles.", "",
+			"Access control", "  auth         Verify SSH access and inspect the current actor.", "  account      Inspect your account and effective quotas.", "",
 			"Server", "  server       Inspect the connected bibleit-server.", "",
 			"Additional Commands:", "  help         Help about any command.", "  version      Print the CLI version.", "  completion   Generate Bash, Zsh, or Fish completion.", "",
-			"Flags:", "      --profile name             Select a named account profile", "      --identity path            Select a supported SSH private key", "      --format table|raw|json|ndjson  Output format (default \"table\")", "      --yes                      Confirm destructive commands without a prompt", "  -h, --help                      Help for bibleit.", "  -v, --version                   Print the CLI version.", "",
+			"Flags:", "      --transport http|ssh       Select transport (default http)", "      --identity path            Select a supported SSH private key", "      --format table|raw|json|ndjson  Output format (default \"table\")", "      --yes                      Confirm destructive commands without a prompt", "  -h, --help                      Help for bibleit.", "  -v, --version                   Print the CLI version.", "",
 			"Use \"bibleit [command] --help\" for more information about a command.",
 		}
 	case "completion":
-		lines = []string{"Generate shell completion without contacting the server.", "", "Usage:", "  bibleit completion bash|zsh|fish", "", "Source the generated Bash script, source Zsh after compinit, or save Fish output to ~/.config/fish/completions/bibleit.fish.", "Completes command words, flags and local profile names; Live IDs, translations, references and secrets are not fetched."}
-	case "profile":
-		lines = []string{"Manage named account profiles for the project-managed Bibleit service.", "", "Usage:", "  bibleit profile add <name> [--transport http]", "  bibleit profile add <name> --transport ssh", "  bibleit profile list", "  bibleit profile show [name]", "  bibleit profile use <name>", "  bibleit profile remove <name>", "", "Use --profile <name> or BIBLEIT_PROFILE for one command. BIBLEIT_TOKEN supplies an HTTP token without saving it. Profile listings omit tokens."}
+		lines = []string{"Generate shell completion without contacting the server.", "", "Usage:", "  bibleit completion bash|zsh|fish", "", "Source the generated Bash script, source Zsh after compinit, or save Fish output to ~/.config/fish/completions/bibleit.fish.", "Completes command words and flags; Live IDs, translations, references and secrets are not fetched."}
 	case "auth":
 		lines = []string{
 			"Authenticate Bibleit CLI through the dashboard or SSH.", "",
 			"`bibleit auth login` opens the dedicated CLI sign-in flow in your browser. `bibleit auth login ssh` first uses the SSH agent and identities selected by OpenSSH configuration. Pass --identity only when you need to choose a specific supported SSH key.", "",
 			"Usage:", "  bibleit auth login", "  bibleit auth login ssh [--identity <private-key>]", "  bibleit auth info|whoami|logout", "",
-			"Commands:", "  login       Authenticate and cache the active profile.", "  info        Show the authenticated actor and permissions.", "  whoami      Alias for auth info.", "  logout      Revoke cached web authentication and clear the active profile.", "",
+			"Commands:", "  login       Authenticate and cache the saved credentials.", "  info        Show the authenticated actor and permissions.", "  whoami      Alias for auth info.", "  logout      Revoke cached web authentication and clear the saved credentials.", "",
 			"Examples:", "  bibleit auth login", "  bibleit auth login ssh", "  bibleit auth login ssh --identity ~/.ssh/bibleit_local_dev", "  bibleit live list",
 		}
 	case "live":
 		lines = []string{
 			"Create, inspect, and control Bibleit Live sessions.", "",
 			"Usage:", "  bibleit live [command]", "",
-			"Commands:", "  list                              List Lives visible to the authenticated actor.", "  create [name]                     Create an open Live.", "  delete all                        Delete every Live managed by the actor.", "  <id> info|stats                   Show Live details or connection statistics.", "  <id> start|stop                   Change the Live state.", "  <id> pause|resume                 Pause or resume its retained stack.", "  <id> clear                        Clear the stack.", "  <id> secret <value>               Authenticate a Live secret for this connection.", "  <id> secret create|rotate|delete  Manage a Live secret.", "  <id> set name|reference|translations <value...>", "                                    Change Live options.", "  <id> stack info                   Show the current Live stack.", "  <id> stack push [translation] <book> [chapter] [verse]", "                                    Push a reading onto the stack.", "  <id> stack pop [count]            Pop entries from the stack.", "  <id> stack clear                  Clear the stack.", "  <id> subscribe                    Subscribe to a Live.", "  <id> delete                       Delete a Live.", "", "Deletion, stack clear/pop and secret rotation/removal require confirmation.", "Terminal prompts show the profile, endpoint and target; type yes (delete all for bulk deletion).", "Use --yes for automation or JSON output. Cancellation sends no request and exits 1; missing confirmation exits 2.",
+			"Commands:", "  list                              List Lives visible to the authenticated actor.", "  create [name]                     Create an open Live.", "  delete all                        Delete every Live managed by the actor.", "  <id> info|stats                   Show Live details or connection statistics.", "  <id> start|stop                   Change the Live state.", "  <id> pause|resume                 Pause or resume its retained stack.", "  <id> clear                        Clear the stack.", "  <id> secret <value>               Authenticate a Live secret for this connection.", "  <id> secret create|rotate|delete  Manage a Live secret.", "  <id> set name|reference|translations <value...>", "                                    Change Live options.", "  <id> stack info                   Show the current Live stack.", "  <id> stack push [translation] <book> [chapter] [verse]", "                                    Push a reading onto the stack.", "  <id> stack pop [count]            Pop entries from the stack.", "  <id> stack clear                  Clear the stack.", "  <id> subscribe                    Subscribe to a Live.", "  <id> delete                       Delete a Live.", "", "Deletion, stack clear/pop and secret rotation/removal require confirmation.", "Terminal prompts show the transport, endpoint and target; type yes (delete all for bulk deletion).", "Use --yes for automation or JSON output. Cancellation sends no request and exits 1; missing confirmation exits 2.",
 		}
 	case "read":
 		lines = []string{"Read a verse, chapter, or book.", "", "Usage:", "  bibleit read <translation> <book> [chapter] [verse]", "", "Examples:", "  bibleit read KJV John 3 16", "  bibleit read NVIPT Salmos 23"}
@@ -1036,4 +1034,11 @@ func help(topic []string) int {
 }
 func fail(code int, format string, args ...any) int {
 	return outputError(code, fmt.Errorf(format, args...))
+}
+
+func sshEndpoint(c config) string {
+	if c.Transport == "ssh" && c.Endpoint != "" {
+		return c.Endpoint
+	}
+	return defaultSSHServer
 }

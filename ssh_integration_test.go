@@ -73,20 +73,16 @@ func TestServerSSHSubscription(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
-	t.Run("endpoint-bound profiles and stable output", func(t *testing.T) {
+	t.Run("single credential and stable output", func(t *testing.T) {
 		t.Setenv("BIBLEIT_CONFIG", filepath.Join(t.TempDir(), "config.json"))
 		t.Setenv("BIBLEIT_PROFILE", "")
 		t.Setenv("BIBLEIT_TOKEN", "")
-		store := profileStore{Version: 1, Active: "http", Profiles: map[string]profile{
-			"http": {Transport: "http", Endpoint: defaultWebURL, AccessToken: os.Getenv("BIBLEIT_INTEGRATION_TOKEN")},
-			"ssh":  {Transport: "ssh", Endpoint: os.Getenv("BIBLEIT_INTEGRATION_SSH"), Identity: cfg.Identity},
-		}}
-		if err := saveStore(store); err != nil {
+		if err := saveConfig(config{AccessToken: os.Getenv("BIBLEIT_INTEGRATION_TOKEN"), Identity: cfg.Identity}); err != nil {
 			t.Fatal(err)
 		}
 		var httpPing any
 		for _, args := range [][]string{{"ping"}, {"server", "info"}, {"server", "help", "account"}, {"account", "info"}, {"account", "quotas"}, {"account", "tokens"}, {"translation", "info", "web"}, {"translation", "catalog", "web"}, {"read", "web", "19", "23", "1"}, {"live", id, "info"}, {"live", id, "stats"}} {
-			commandArgs := append([]string{"--profile", "http", "--format", "json"}, args...)
+			commandArgs := append([]string{"--format", "json"}, args...)
 			code, stdout, stderr := captureCLI(t, func() int { return run(commandArgs) })
 			var result map[string]any
 			if code != exitOK || json.Unmarshal([]byte(stdout), &result) != nil || result["schema_version"] != float64(1) {
@@ -96,10 +92,12 @@ func TestServerSSHSubscription(t *testing.T) {
 				httpPing = result
 			}
 		}
-		selected, err := loadSelectedConfig("ssh")
+		selected, err := loadConfig()
 		if err != nil {
 			t.Fatal(err)
 		}
+		selected.Transport = "ssh"
+		selected.Endpoint = defaultSSHServer
 		base, _, err := sshCommand(selected, bibleit.PingCommand())
 		if err != nil {
 			t.Fatal(err)

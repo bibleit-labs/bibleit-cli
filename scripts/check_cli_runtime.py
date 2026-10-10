@@ -27,8 +27,8 @@ def shells(binary, env, directory, requested):
         "bibleit live L1 st": ["stack", "start", "stats", "stop"],
         "bibleit live L1 stack p": ["pop", "push"],
         "bibleit live L1 secret ": ["create", "delete", "rotate"],
-        "bibleit --profile pr": ["preview", "production"],
-        "bibleit profile show pr": ["preview", "production"],
+        "bibleit --transport s": ["ssh"],
+        "bibleit profile ": [],
         "bibleit --format j": ["json"],
         "bibleit read KJV ": [],
         "bibleit -- search KJV --": [],
@@ -75,7 +75,7 @@ def terminal_checks(binary, env, requests):
                 if select.select([master], [], [], 0.5)[0]:
                     output += os.read(master, 4096)
             assert b'Type "delete all" to confirm: ' in output, output
-            assert b"production" in output and b"localhost:8080" in output and b"bt_runtime" not in output, output
+            assert b"http" in output and b"localhost:8080" in output and b"bt_runtime" not in output, output
             os.write(master, (answer + "\n").encode())
             stdout, _ = child.communicate(timeout=10)
             assert child.returncode == code and len(requests) == before + delta, (answer, child.returncode, requests)
@@ -124,22 +124,17 @@ def main():
             directory = Path(tmp)
             binary = directory / ("bibleit.exe" if os.name == "nt" else "bibleit")
             shutil.copy2(source_binary, binary)
-            config = directory / "profiles with spaces.json"
+            config = directory / "credentials with spaces.json"
             env = {**os.environ, "BIBLEIT_CONFIG": str(config), "BIBLEIT_PROFILE": "",
                    "BIBLEIT_TOKEN": "bt_runtime", "BIBLEIT_ENDPOINT": "https://other.example", "PATH": str(directory) + os.pathsep + os.environ["PATH"]}
-            for name in ("production", "preview"):
-                run(binary, ["profile", "add", name], env)
+            config.write_text(json.dumps({"version": 2, "endpoint": "http://localhost:8080", "ssh_server": "127.0.0.1:2222", "access_token": "bt_saved"}))
             before = len(requests)
-            run(binary, ["profile", "add", "foreign", "--endpoint", "https://other.example"], env, code=2)
+            for invalid_args in (["profile", "list"], ["--profile", "old", "ping"], ["--endpoint", "https://other.example", "ping"]):
+                run(binary, invalid_args, env, code=2)
             assert len(requests) == before
-            run(binary, ["profile", "use", "preview"], env)
-            run(binary, ["profile", "use", "production"], env)
             store = json.loads(config.read_text())
-            assert store["version"] == 1 and store["active_profile"] == "production"
+            assert store["version"] == 2 and "profiles" not in store
             assert "bt_runtime" not in config.read_text()
-            assert all(p["endpoint"] == "http://localhost:8080" for p in store["profiles"].values())
-            info = json.loads(run(binary, ["profile", "show", "--format", "json"], env).stdout)
-            assert info["records"][0]["fields"]["name"] == "production"
             response = json.loads(run(binary, ["ping", "--format", "json"], env).stdout)
             assert response["schema_version"] == 1 and response["records"][0]["fields"]["pong"] is True
             before = len(requests)
@@ -151,7 +146,7 @@ def main():
             response = json.loads(run(binary, ["live", "delete", "all", "--yes", "--format", "json"], env).stdout)
             assert response["ok"] is True and len(requests) == before + 1
             assert json.loads(requests[-1][2])["command"] == "LIVE DELETE ALL"
-            print(f"Native {platform.system()}/{platform.machine()}: profiles, replacement, spaced paths, loopback HTTP, JSON and destructive guards pass", flush=True)
+            print(f"Native {platform.system()}/{platform.machine()}: single configuration, spaced paths, loopback HTTP, JSON and destructive guards pass", flush=True)
             terminal_checks(binary, env, requests)
             before_config, before_requests = config.read_bytes(), len(requests)
             shells(binary, env, directory, args.shells)

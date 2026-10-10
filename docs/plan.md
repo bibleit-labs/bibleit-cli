@@ -35,7 +35,7 @@ repositories and declare the tested server baseline with every release.
 | --- | --- | --- |
 | 1. Verified integration contract | 7/7 tracked items; operation matrix, fresh 34 decoder/18 encoder fixtures and full tracked HTTP/auth/SSH integration | Core protocol discrepancies resolved; browser-only API contracts and publication gates remain separate |
 | 2. Core Go client | 5/5 tracked items; typed discovery, account, tokens, translations, reading and Live results; `NewClient(apiToken)` and fixed service | Future workspace/event APIs are separate |
-| 3. CLI customer surface | 5/5 tracked items; profiles, authentication, stable output, completion and destructive UX | Fresh private Windows/Ubuntu/macOS matrix passed; production release gates remain |
+| 3. CLI customer surface | 5/5 tracked items; single credential configuration, authentication, stable output, completion and destructive UX | Fresh private Windows/Ubuntu/macOS matrix passed; production release gates remain |
 | Repository split and fixed endpoint | Complete; independent bibleit-go/bibleit-cli modules, no customer endpoint overrides, fresh fixed-endpoint HTTP/SSH integration passed | Production service addresses and standalone pinned dependency |
 | 4. Workspace/event APIs | Contract requirements recorded | Server bearer API contract and implementation |
 | 5. Python/Ruby/Rust clients | Separate repository naming decided | Implementation and portability checks |
@@ -71,7 +71,7 @@ They do not establish coverage of the new organization/browser surfaces.
    also checks Origin and revalidates management access. Neither is an existing
    bearer-token client event endpoint.
 3. Organization appears in domain authority, but the command parser provides no
-   explicit organization/workspace selection or management commands. A profile
+   explicit organization/workspace selection or management commands. A local
    preference cannot invent server-side workspace authorization.
 4. V1 requests cannot represent embedded double quotes. This limit is now
    documented and verified: malformed quote segments fail with `bad_command`,
@@ -123,7 +123,7 @@ and pass the server integration suite without personal/workspace authority leaks
 
 ### 3. Make CLI authentication and output ready for publication
 
-Named account profiles at a project-managed service, explicit HTTP/SSH transport selection, stable
+One service-bound credential configuration at a project-managed service, explicit HTTP/SSH transport selection, stable
 output, shell completion and destructive-command confirmation are implemented;
 see `status.md` for progress and `output.md` for the stable contract. Native
 Windows, Ubuntu and macOS hosted checks passed on the earlier published code;
@@ -199,7 +199,7 @@ records 63 source and 58 test fingerprints, matching at validation completion.
 Its review date uses UTC, while this progress record uses the local date.
 
 Passing coverage: 34 decoder/18 encoder fixtures, 7 targeted security cases,
-11 HTTP subtests, actual OpenSSH subscription/profile/output checks, 17
+11 HTTP subtests, actual OpenSSH subscription/credential/output checks, 17
 auth/key/protocol EUnit tests, 10 real-HTTP import-access cases and 15 publication
 cases. The optional `--imports` runner executes the assessment suite cases and
 callbacks with local fixtures in the disposable namespace. All checks passed;
@@ -215,6 +215,28 @@ The generator emits `bibleit-cli.rb`; no customer-ready formula or release was p
 may now be pushed privately.
 Homebrew itself may fetch developer gems/core metadata into the disposable prefix.
 
+## Simplified authentication and tap CI
+
+Named profiles are removed before the first release. The CLI stores one cached
+HTTP token and optional SSH identity path in a version-2 service-bound file. HTTP
+is the default; --transport ssh is explicit. SSH login preserves the HTTP token;
+auth info reports the selected transport's actor, which may differ between HTTP
+and SSH credentials. BIBLEIT_TOKEN overrides HTTP data requests only and is never
+saved. Logout revokes the cached HTTP token and clears cached selections after
+successful revocation; failure preserves them. Old profile/legacy files remain
+untouched and require backup plus fresh login. Secure Unix modes and Windows ACLs
+remain mandatory. Profiles are not part of future workspace selection.
+
+The separate tap now has push/PR/manual tap syntax/style validation and release
+updater regressions. Its manual versioned updater downloads the CLI-generated
+formula and release archives, verifies checksums/provenance and opens a reviewed
+release/vX.Y.Z PR with a Conventional Commit; it never merges or creates a CLI
+release. Private CLI downloads need a contents-read BIBLEIT_CLI_READ_TOKEN secret
+in the tap. Actions PR creation must be permitted before invoking publication.
+The generated formula, manifest and checksums must accompany the CLI release.
+Unpublished development URLs are not fetched by tap syntax CI; actual installation
+continues in CLI candidate CI and must be rechecked against published release URLs.
+
 ## Release readiness review and ordered next steps
 
 Reviewed 2026-10-11. Core scope is complete; the first release does not depend on
@@ -226,11 +248,11 @@ it cannot close production endpoint or standalone dependency gates.
 | --- | --- | --- | --- |
 | 1 | Push prepared client/CLI/tap sources and refresh draft CI pins | Authorized; this increment | Remote branches match local commits; CLI native/candidate workflows use the exact pushed client SHA; all native and development candidate jobs passed; see native-validation.md |
 | 2 | Choose first release scope/version and customer access model | Pending project decision; propose Go/CLI v0.1.0, existing core commands | Supported commands/transports and known v1 limits in release notes; public distribution or explicitly supported private delivery selected |
-| 3 | Set production HTTPS and SSH addresses; adapt endpoint-dependent tests | Blocked on actual addresses and deployed service | NewClient(apiToken), browser exchange/logout and CLI HTTP/SSH use project-owned destinations; no customer override; disposable tests never contact production accidentally; existing profile bindings fail safely after address changes |
+| 3 | Set production HTTPS and SSH addresses; adapt endpoint-dependent tests | Blocked on actual addresses and deployed service | NewClient(apiToken), browser exchange/logout and CLI HTTP/SSH use project-owned destinations; no customer override; disposable tests never contact production accidentally; credential bindings fail safely after address changes |
 | 4 | Freeze the deployed server contract and run release integration | Pending deployed revision/configuration | Committed/deployed server revision plus relevant source fingerprints, full HTTP/SSH/auth/import compatibility pass; controlled production TLS/login/revocation and SSH host verification smoke checks |
 | 5 | Version/release the Go client and pin it in CLI | After steps 2–4 | Reviewed semantic version, tag/release notes, client downloaded from remote; replace v0.0.0, tidy dependency metadata, clean-cache GOWORK=off test/vet/build succeeds without sibling checkout or replacement modules |
 | 6 | Validate the exact standalone CLI release candidate | After step 5 | Clean source and pinned dependency; production packaging without --local; six archives/checksums/provenance/version match; fresh Windows/macOS/Linux native CLI and installer jobs plus Fish/Homebrew/Scoop pass; architecture support policy records cross-build-only targets |
-| 7 | Prepare customer-visible artifacts and release notes | After step 6; publication decision required | Release notes cover client version, server baseline, OpenSSH requirement, profile migration, install/update/uninstall, supported architectures and known limits; decide signing policy and test real macOS downloaded binaries with normal OS protections |
+| 7 | Prepare customer-visible artifacts and release notes | After step 6; publication decision required | Release notes cover client version, server baseline, OpenSSH requirement, old-config migration, install/update/uninstall, supported architectures and known limits; decide signing policy and test real macOS downloaded binaries with normal OS protections |
 | 8 | Publish Go client then CLI binaries and installer assets, then tap/bucket | Pending release readiness and publication authorization | Reviewed manual procedure or publication workflow; exact tag/commit/artifacts verified; customer-accessible URLs; tap formula matches released hashes/version; Scoop channel created if chosen |
 | 9 | Test fresh customer installs and document support/update process | After publication | Actual published Homebrew/cURL/PowerShell/manual installs and upgrade paths pass on clean environments; release links/examples correct; record evidence and maintenance/rollback procedure |
 

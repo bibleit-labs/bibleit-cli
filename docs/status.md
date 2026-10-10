@@ -3,7 +3,34 @@
 Updated 2026-10-11. Counts describe explicit acceptance items, not estimated
 percentages of the entire project. The full plan is in `plan.md`.
 
-## Current increment: release readiness and private source publication
+## Current increment: single credential configuration and tap CI
+
+Branches remain integration-refresh (CLI/client) and formula-preparation (tap).
+Source pushes to the three private repositories are authorized. No tags, customer
+releases, automatic merges or repository visibility changes are performed.
+
+| Item | Status | Evidence / limits |
+| --- | --- | --- |
+| Remove named profiles | Complete | One schema-v2 service-bound config; HTTP default, explicit --transport ssh; cached token and optional identity retained; no profile commands/flag/environment selection/output/completion; old files rejected and untouched |
+| Add Homebrew tap CI | Complete implementation | Tap syntax/style plus seven updater regressions; manually dispatched release updater verifies published CLI-generated formula/archives and opens a Conventional Commit PR without auto-merge |
+| Validate, update plan and push | In progress | Local race/vet, macOS process/PTY/Bash/Zsh, full real HTTP/SSH/auth/import integration pass; client baseline synchronized; fresh private native/candidate/tap CI and final records pending |
+
+Progress: **2/3 tracked items complete**. The local server integration log is
+build/validation/single-config-integration-2026-10-11.log (ignored): 34 decoder/18
+encoder fixtures, 7 security cases, 11 HTTP subtests, real SSH lifecycle and
+single-credential/output parity, 17 auth/key/protocol tests, 10 import-access and
+15 publication cases. The snapshot includes 63 source and 59 test fingerprints;
+new plan-support assessment files are included in the snapshot, not additional
+client test coverage. The harness is a focused integration gate, not the full
+server security campaign.
+
+Tap update publication is prepared but not invoked: no CLI release exists. Private
+release reads need BIBLEIT_CLI_READ_TOKEN (Contents: read only to bibleit-cli) in
+the tap; Actions PR-creation policy must permit the write job. These setup steps
+are documented in the tap. Tap syntax CI does not fetch unpublished candidate
+URLs; real lifecycle checks run through the CLI candidate workflow.
+
+## Previous increment: release readiness and private source publication
 
 Updated authorization: all prepared source work may be pushed to the private
 CLI, Go-client and Homebrew tap repositories. This supersedes earlier local-only

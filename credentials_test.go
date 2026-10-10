@@ -33,158 +33,6 @@ func captureCLI(t *testing.T, fn func() int) (int, string, string) {
 	errW.Close()
 	return code, string(<-stdoutResult), string(<-stderrResult)
 }
-func TestLegacyProfileMigrationAndBinding(t *testing.T) {
-	for _, test := range []struct{ legacy, transport, endpoint string }{
-		{`{"identity":"/tmp/key"}`, "ssh", defaultSSHServer},
-		{`{}`, "ssh", defaultSSHServer},
-	} {
-		path := filepath.Join(t.TempDir(), "config.json")
-		t.Setenv("BIBLEIT_CONFIG", path)
-		if err := os.WriteFile(path, []byte(test.legacy), 0600); err != nil {
-			t.Fatal(err)
-		}
-		c, err := loadConfig()
-		if err != nil || c.Name != "default" || c.Transport != test.transport || c.Endpoint != test.endpoint {
-			t.Fatalf("migration: %+v %v", c, err)
-		}
-		if err := saveConfig(c); err != nil {
-			t.Fatal(err)
-		}
-		store, _, err := loadStore()
-		if err != nil || store.Version != 1 || store.Profiles["default"].Endpoint != test.endpoint {
-			t.Fatal("failed to persist binding", err)
-		}
-		if c.AccessToken != "" {
-			c.Endpoint = "https://other.example"
-			if err := saveConfig(c); err == nil {
-				t.Fatal("rebound cached credential")
-			}
-		}
-	}
-}
-func TestNamedProfilesAndAutomationRouting(t *testing.T) {
-	t.Setenv("BIBLEIT_CONFIG", filepath.Join(t.TempDir(), "config.json"))
-	t.Setenv("BIBLEIT_PROFILE", "")
-	t.Setenv("BIBLEIT_TOKEN", "")
-	for _, args := range [][]string{{"profile", "add", "one"}, {"profile", "add", "two"}, {"profile", "add", "ssh", "--transport", "ssh"}} {
-		code, _, stderr := captureCLI(t, func() int { return run(args) })
-		if code != exitOK {
-			t.Fatal(stderr)
-		}
-	}
-	one, _ := loadSelectedConfig("one")
-	one.AccessToken = "bt_one"
-	if err := saveConfig(one); err != nil {
-		t.Fatal(err)
-	}
-	two, _ := loadSelectedConfig("two")
-	two.AccessToken = "bt_two"
-	if err := saveConfig(two); err != nil {
-		t.Fatal(err)
-	}
-	old := cliHTTPClient
-	defer func() { cliHTTPClient = old }()
-	seen := []string{}
-	cliHTTPClient = &http.Client{Transport: roundTripFunc(func(r *http.Request) (*http.Response, error) {
-		seen = append(seen, r.URL.Host+" "+r.Header.Get("Authorization"))
-		return &http.Response{StatusCode: 200, Header: make(http.Header), Body: io.NopCloser(strings.NewReader("OK pong=true\n"))}, nil
-	})}
-	for _, args := range [][]string{{"--profile", "two", "ping"}, {"ping"}} {
-		code, _, stderr := captureCLI(t, func() int { return run(args) })
-		if code != exitOK {
-			t.Fatal(stderr)
-		}
-	}
-	t.Setenv("BIBLEIT_PROFILE", "two")
-	t.Setenv("BIBLEIT_TOKEN", "bt_environment")
-	code, _, stderr := captureCLI(t, func() int { return run([]string{"ping"}) })
-	if code != exitOK {
-		t.Fatal(stderr)
-	}
-	if strings.Join(seen, "|") != "localhost:8080 Bearer bt_two|localhost:8080 Bearer bt_one|localhost:8080 Bearer bt_environment" {
-		t.Fatalf("unexpected routing %v", seen)
-	}
-	persisted, _ := loadSelectedConfig("two")
-	if persisted.AccessToken != "bt_two" {
-		t.Fatal("persisted automation token")
-	}
-	store, _, _ := loadStore()
-	if store.Active != "one" {
-		t.Fatal("per-command selection changed active profile")
-	}
-	code, stdout, _ := captureCLI(t, func() int { return run([]string{"--format", "json", "profile", "list"}) })
-	if code != exitOK || strings.Contains(stdout, "bt_") || !strings.Contains(stdout, "credential_cached") {
-		t.Fatal("unsafe profile listing")
-	}
-	code, _, _ = captureCLI(t, func() int { return run([]string{"--profile", "ssh", "ping"}) })
-	if code != exitUsage {
-		t.Fatal("automation token used for SSH")
-	}
-	t.Setenv("BIBLEIT_TOKEN", "")
-	code, _, _ = captureCLI(t, func() int { return run([]string{"--profile", "two", "--identity", "/tmp/key", "ping"}) })
-	if code != exitUsage {
-		t.Fatal("HTTP accepted SSH override")
-	}
-}
-func TestProfileValidationAndLifecycle(t *testing.T) {
-	t.Setenv("BIBLEIT_CONFIG", filepath.Join(t.TempDir(), "config.json"))
-	for _, args := range [][]string{{"profile", "add", "bad", "--endpoint", "http://remote.example"},
-		{"profile", "add", "bad", "--endpoint", "https://:443"},
-		{"profile", "add", "bad", "--endpoint", "https://server.example:65536"}, {"profile", "add", "bad", "--endpoint", "https://user:password@remote.example"}, {"profile", "add", "bad", "--transport", "ssh", "--endpoint", "host:0"}, {"profile", "add", "bad", "--transport", "ssh", "--endpoint", "host:65536"}, {"profile", "add", "../bad", "--endpoint", "https://server.example"}, {"--profile"}, {"--format", "json", "--format", "raw", "ping"}} {
-		code, _, _ := captureCLI(t, func() int { return run(args) })
-		if code != exitUsage {
-			t.Fatalf("accepted %v: %d", args, code)
-		}
-	}
-	for _, args := range [][]string{{"profile", "add", "a"}, {"profile", "add", "b"}, {"profile", "use", "b"}, {"profile", "remove", "a"}} {
-		code, _, stderr := captureCLI(t, func() int { return run(args) })
-		if code != exitOK {
-			t.Fatal(stderr)
-		}
-	}
-	code, _, _ := captureCLI(t, func() int { return run([]string{"profile", "remove", "b"}) })
-	if code != exitConflict {
-		t.Fatal("removed active profile")
-	}
-	code, _, _ = captureCLI(t, func() int { return run([]string{"profile", "add", "b"}) })
-	if code != exitConflict {
-		t.Fatal("overwrote profile")
-	}
-	c, _ := loadConfig()
-	c.AccessToken = "bt_b"
-	if err := saveConfig(c); err != nil {
-		t.Fatal(err)
-	}
-	code, _, _ = captureCLI(t, func() int { return run([]string{"profile", "add", "other"}) })
-	if code != exitOK {
-		t.Fatal("add")
-	}
-	captureCLI(t, func() int { return run([]string{"profile", "use", "other"}) })
-	code, _, _ = captureCLI(t, func() int { return run([]string{"profile", "remove", "b"}) })
-	if code != exitConflict {
-		t.Fatal("removed cached bearer")
-	}
-	old := cliHTTPClient
-	defer func() { cliHTTPClient = old }()
-	cliHTTPClient = &http.Client{Transport: roundTripFunc(func(r *http.Request) (*http.Response, error) {
-		if r.URL.Host != "localhost:8080" {
-			t.Error("logout used another endpoint")
-		}
-		return &http.Response{StatusCode: 204, Header: make(http.Header), Body: io.NopCloser(strings.NewReader(""))}, nil
-	})}
-	code, _, stderr := captureCLI(t, func() int { return run([]string{"--profile", "b", "auth", "logout"}) })
-	if code != exitOK {
-		t.Fatal(stderr)
-	}
-	b, _ := loadSelectedConfig("b")
-	if b.Endpoint != defaultWebURL || b.Transport != "http" || b.AccessToken != "" {
-		t.Fatal("logout lost binding")
-	}
-	store, _, _ := loadStore()
-	if store.Active != "other" || len(store.Profiles) != 2 {
-		t.Fatal("logout changed another profile")
-	}
-}
 func TestVersionedJSONAndErrors(t *testing.T) {
 	code, stdout, stderr := captureCLI(t, func() int {
 		return printResponse([]string{"OK actor=user count=1", "TOKEN id=001 source=cli issued_at=100 scopes=\"token.get,future.read\" retiring=false label=\"line\\nlabel\" future=007", "END"}, "json")
@@ -249,13 +97,13 @@ func TestNDJSONAndControlRendering(t *testing.T) {
 	if humanValue("line\nlabel\t\x1b[31m") != "line\\nlabel\\t\\u001b[31m" {
 		t.Fatal("unescaped human controls")
 	}
-	values, rest, err := parseOptions([]string{"--profile=a", "search", "web", "--", "--format"}, map[string]bool{"--profile": true, "--format": true})
-	if err != nil || values["--profile"] != "a" || strings.Join(rest, " ") != "search web --format" {
+	values, rest, err := parseOptions([]string{"--transport=http", "search", "web", "--", "--format"}, map[string]bool{"--transport": true, "--format": true})
+	if err != nil || values["--transport"] != "http" || strings.Join(rest, " ") != "search web --format" {
 		t.Fatal("invalid flag terminator")
 	}
 }
 
-func TestInvalidProfileDocumentsAndLocalHelp(t *testing.T) {
+func TestInvalidCredentialDocumentsAndLocalHelp(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "config.json")
 	t.Setenv("BIBLEIT_CONFIG", path)
 	for _, data := range []string{
@@ -272,7 +120,7 @@ func TestInvalidProfileDocumentsAndLocalHelp(t *testing.T) {
 			t.Fatal("accepted invalid profile document")
 		}
 	}
-	for _, args := range [][]string{{"--format", "json", "version"}, {"--format", "json", "help", "profile"}} {
+	for _, args := range [][]string{{"--format", "json", "version"}, {"--format", "json", "help", "auth"}} {
 		code, stdout, stderr := captureCLI(t, func() int { return run(args) })
 		var value map[string]any
 		if code != exitOK || stderr != "" || json.Unmarshal([]byte(stdout), &value) != nil || value["schema_version"] != float64(1) {
@@ -348,5 +196,79 @@ func TestFixedServiceRejectsEndpointOverridesAndForeignCredentials(t *testing.T)
 	}
 	if strings.Contains(strings.Join(completionCandidates([]string{"profile", "add", "new", "--"}), " "), "--endpoint") {
 		t.Fatal("completion advertises endpoint overrides")
+	}
+}
+
+func TestSingleCredentialRoutingAndPreservation(t *testing.T) {
+	t.Setenv("BIBLEIT_CONFIG", filepath.Join(t.TempDir(), "config.json"))
+	t.Setenv("BIBLEIT_PROFILE", "nonexistent")
+	t.Setenv("BIBLEIT_TOKEN", "")
+	c := config{AccessToken: "bt_cached", Identity: "/tmp/key"}
+	if err := saveConfig(c); err != nil {
+		t.Fatal(err)
+	}
+	c, err := loadConfig()
+	if err != nil || c.Transport != "http" {
+		t.Fatal(c, err)
+	}
+	old := cliHTTPClient
+	defer func() { cliHTTPClient = old }()
+	var bearer string
+	cliHTTPClient = &http.Client{Transport: roundTripFunc(func(r *http.Request) (*http.Response, error) {
+		bearer = r.Header.Get("Authorization")
+		return &http.Response{StatusCode: 200, Header: make(http.Header), Body: io.NopCloser(strings.NewReader("OK pong=true\n"))}, nil
+	})}
+	for _, args := range [][]string{{"ping"}, {"--transport", "http", "ping"}} {
+		code, _, stderr := captureCLI(t, func() int { return run(args) })
+		if code != exitOK || bearer != "Bearer bt_cached" {
+			t.Fatal(code, stderr, bearer)
+		}
+	}
+	t.Setenv("BIBLEIT_TOKEN", "bt_environment")
+	code, _, stderr := captureCLI(t, func() int { return run([]string{"ping"}) })
+	if code != exitOK || bearer != "Bearer bt_environment" {
+		t.Fatal(code, stderr)
+	}
+	c, _ = loadConfig()
+	if c.AccessToken != "bt_cached" {
+		t.Fatal("persisted environment token")
+	}
+	c.Transport = "ssh"
+	c.Endpoint = defaultSSHServer
+	automated, err := automationCredential(c)
+	if err != nil || automated.AccessToken != "bt_cached" {
+		t.Fatal("SSH used environment token")
+	}
+	if err := saveConfig(c); err != nil {
+		t.Fatal(err)
+	}
+	c, _ = loadConfig()
+	if c.Transport != "http" || c.Identity != "/tmp/key" || c.AccessToken != "bt_cached" {
+		t.Fatal("SSH persistence lost HTTP credentials or changed default")
+	}
+	for _, args := range [][]string{{"profile", "list"}, {"--profile", "old", "ping"}, {"--transport", "invalid", "ping"}, {"--identity", "/tmp/key", "ping"}, {"--transport", "http", "auth", "login", "ssh"}} {
+		code, _, _ := captureCLI(t, func() int { return run(args) })
+		if code != exitUsage {
+			t.Fatal("accepted removed/conflicting option", args, code)
+		}
+	}
+}
+func TestCredentialBindingAndOldConfigIsNeverOverwritten(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "config.json")
+	t.Setenv("BIBLEIT_CONFIG", path)
+	for _, data := range []string{`{"version":1,"active_profile":"a","profiles":{"a":{"transport":"http","endpoint":"http://localhost:8080","access_token":"old"}}}`, `{"version":2,"endpoint":"https://foreign.example","ssh_server":"127.0.0.1:2222","access_token":"old"}`, `{"version":2,"endpoint":"http://localhost:8080","ssh_server":"foreign.example:22","identity":"key"}`} {
+		if err := os.WriteFile(path, []byte(data), 0600); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := loadConfig(); err == nil {
+			t.Fatal("accepted old or foreign binding")
+		}
+		if err := saveConfig(config{AccessToken: "new"}); err == nil {
+			t.Fatal("overwrote unsupported config")
+		}
+		after, _ := os.ReadFile(path)
+		if string(after) != data {
+			t.Fatal("changed old credentials")
+		}
 	}
 }

@@ -21,12 +21,13 @@ Custom HTTP clients configure transport/timeouts, not a service URL option.
 As with any open source library, callers can modify source or implement their own
 network transport; this API policy does not replace server-side authorization.
 
-CLI profiles select accounts/credentials and HTTP or SSH transport. There is no
+CLI configuration stores one HTTP token and optional SSH identity. HTTP is the
+default; --transport ssh selects SSH explicitly. Named profiles are removed. There is no
 `--endpoint` option, completion candidate, or endpoint environment setting.
 The persisted endpoint is a service-binding record. Its value must match the
 current project-managed address. A mismatch fails locally; cached credentials
-are never silently copied to a new service. Legacy bearer-only configs lack
-that binding and are rejected. Users can retain the old config as a backup and
+are never silently copied to a new service. Legacy bearer-only and version-1 profile configs are rejected. Schema version 2
+binds both HTTP and SSH addresses; it never auto-selects an old profile. Users can retain the old config as a backup and
 sign in with a fresh config after an address change.
 
 Apply the same policy to future Python, Ruby and Rust clients: a project-owned
