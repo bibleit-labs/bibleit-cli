@@ -60,3 +60,10 @@ from publishing development branches.
 The service endpoint is project-managed; see [the endpoint policy](docs/endpoint-policy.md).
 Keep current work local. Do not push commits, tags or releases until the user
 explicitly resumes publication.
+
+For real-server integration while the developer service occupies port 8080, run
+`python3 scripts/check_server_container.py --baseline contract/server-baseline.json`.
+This uses a disposable container namespace and database; it reads a frozen
+server snapshot and rebuilds NIFs without editing the server checkout.
+Use `NewClient(apiToken)` for standard client construction and the separate
+`NewClientWithHTTPClient` constructor for transport/timeout customization.

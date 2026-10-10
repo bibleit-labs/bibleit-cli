@@ -1,14 +1,31 @@
 #!/usr/bin/env python3
 """Verify the current server source without modifying its checkout or loading .env."""
-import argparse, datetime, hashlib, json, os, pathlib, shutil, subprocess, tempfile, time, uuid
+import argparse, datetime, hashlib, json, os, pathlib, shutil, socket, subprocess, tempfile, time, uuid
+from urllib.parse import urlparse
 root = pathlib.Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
 parser.add_argument('--server', type=pathlib.Path, default=root.parent/'bibleit-server')
 parser.add_argument('--go-client', type=pathlib.Path, default=root.parent/'bibleit-go', help='checkout of the independent Go client for integration tests')
 parser.add_argument('--integration', action='store_true', help='run server authentication/security tests with a unique disposable Docker database')
 parser.add_argument('--baseline', type=pathlib.Path, help='save verified snapshot fingerprints after all requested checks pass')
+parser.add_argument('--external-disposable-database', action='store_true', help='use BIBLEIT_TEST_DATABASE_URL inside an isolated test container instead of starting Docker here')
+parser.add_argument('--source-metadata', type=pathlib.Path, help='provenance for an already frozen server snapshot')
 args = parser.parse_args()
+if args.external_disposable_database:
+    database_url = os.environ.get('BIBLEIT_TEST_DATABASE_URL', '')
+    database = urlparse(database_url)
+    if not args.integration or database.scheme != 'postgresql' or database.hostname != '127.0.0.1' or database.path != '/bibleit_test':
+        raise SystemExit('External disposable database must be the isolated loopback bibleit_test maintenance database')
+
 server = args.server.resolve()
+if args.integration:
+    # A busy port must never cause the harness to connect to a developer service.
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as probe:
+        try:
+            probe.bind(("127.0.0.1", 8080))
+        except OSError as error:
+            raise SystemExit("Fixed-endpoint integration requires a free loopback port 8080; existing services are never stopped") from error
+
 def run(command, **kw):
     return subprocess.run(command, check=True, text=True, **kw)
 with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
@@ -42,8 +59,8 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
     shutil.copytree(server/'priv', app/'priv')
     baseline = {
         'reviewed_at': datetime.datetime.now(datetime.timezone.utc).date().isoformat(),
-        'head': run(['git','-C',str(original),'rev-parse','HEAD'],capture_output=True).stdout.strip(),
-        'working_tree_changes': bool(run(['git','-C',str(original),'status','--porcelain'],capture_output=True).stdout.strip()),
+        'head': json.loads(args.source_metadata.read_text())['head'] if args.source_metadata else run(['git','-C',str(original),'rev-parse','HEAD'],capture_output=True).stdout.strip(),
+        'working_tree_changes': json.loads(args.source_metadata.read_text())['working_tree_changes'] if args.source_metadata else bool(run(['git','-C',str(original),'status','--porcelain'],capture_output=True).stdout.strip()),
         'files_sha256': {str(p.relative_to(server)): hashlib.sha256(p.read_bytes()).hexdigest()
                          for p in sorted((server/'src').rglob('*.erl'))},
         'verification': {'integration': args.integration}
@@ -77,7 +94,7 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
     '''
     run(['erl','-noshell','-pa',str(ebin),'-eval',check],env=env,cwd=temporary)
     if args.integration:
-        go_env = dict(os.environ, GOCACHE='/tmp/bibleit-go127-cache', GOTOOLCHAIN='local')
+        go_env = dict(os.environ, GOCACHE='/tmp/bibleit-go127-cache', GOMODCACHE='/tmp/bibleit-native-modcache', GOTOOLCHAIN='local')
         binary=temporary/'client-integration.test'
         run(['go','test','-c','-o',str(binary),'.'],cwd=args.go_client.resolve(),env=go_env)
         env['BIBLEIT_GO_TEST_BIN']=str(binary)
@@ -90,16 +107,19 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
         name = 'bibleit-client-test-'+uuid.uuid4().hex[:12]
         started = False
         try:
-            run(['docker','run','--pull=never','--detach','--name',name,'--publish','127.0.0.1::5432','--tmpfs','/var/lib/postgresql/data',
-                 '--env','POSTGRES_USER=bibleit_test','--env','POSTGRES_PASSWORD=bibleit-test-only','--env','POSTGRES_DB=bibleit_test','postgres:17-alpine'],stdout=subprocess.DEVNULL)
-            started = True
-            for _ in range(80):
-                ready = subprocess.run(['docker','exec',name,'pg_isready','-h','127.0.0.1','-U','bibleit_test','-d','bibleit_test'],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
-                if ready.returncode == 0: break
-                time.sleep(.25)
-            else: raise RuntimeError('test database did not become ready')
-            port = run(['docker','port',name,'5432/tcp'],capture_output=True).stdout.strip().rsplit(':',1)[1]
-            env['BIBLEIT_TEST_DATABASE_URL']=f'postgresql://bibleit_test:bibleit-test-only@127.0.0.1:{port}/bibleit_test?sslmode=disable'
+            if args.external_disposable_database:
+                env['BIBLEIT_TEST_DATABASE_URL'] = database_url
+            else:
+                run(['docker','run','--pull=never','--detach','--name',name,'--publish','127.0.0.1::5432','--tmpfs','/var/lib/postgresql/data',
+                     '--env','POSTGRES_USER=bibleit_test','--env','POSTGRES_PASSWORD=bibleit-test-only','--env','POSTGRES_DB=bibleit_test','postgres:17-alpine'],stdout=subprocess.DEVNULL)
+                started = True
+                for _ in range(80):
+                    ready = subprocess.run(['docker','exec',name,'pg_isready','-h','127.0.0.1','-U','bibleit_test','-d','bibleit_test'],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+                    if ready.returncode == 0: break
+                    time.sleep(.25)
+                else: raise RuntimeError('test database did not become ready')
+                port = run(['docker','port',name,'5432/tcp'],capture_output=True).stdout.strip().rsplit(':',1)[1]
+                env['BIBLEIT_TEST_DATABASE_URL']=f'postgresql://bibleit_test:bibleit-test-only@127.0.0.1:{port}/bibleit_test?sslmode=disable'
             private=temporary/'test-data';private.mkdir();env['BIBLEIT_TEST_PRIV']=str(private)
             integration='''
               {ok,_}=application:ensure_all_started(cowboy),
@@ -110,6 +130,11 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
                 after bibleit_security_SUITE:end_per_testcase(Case,C) end
               end,[cli_rate_limit,scoped_token_cannot_escalate,revoked_credentials,concurrent_code_exchange,oversized_cli_input,search_shares_budget,ssh_revocation]),
               _=bibleit_security_SUITE:init_per_testcase(go_client,Config),
+              ok=gen_server:stop(bibleit_http_listener),
+              application:set_env(bibleit_server,http,#{port=>8080,host=>{127,0,0,1}}),
+              {ok,FixedHTTP}=bibleit_http_listener:start_link(),unlink(FixedHTTP),
+              8080=ranch:get_port(bibleit_http),
+              io:format("Fixed service integration: http://localhost:8080 (no client endpoint override)~n"),
               gen_server:stop(bibleit_rate_limit),
               application:set_env(bibleit_server,rate_limits,#{ssh_command=>#{limit=>100},ssh_search=>#{limit=>100}}),
               {ok,L}=bibleit_rate_limit:start_link(),unlink(L),
@@ -137,10 +162,10 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
               Prefix=[io_lib:format("Book ~B 1:1 filler~n",[B]) || B<-lists:seq(1,18)],
               ok=file:write_file(BT,iolist_to_binary([Prefix,"Psalms 1:1 Fixture book opening.\nPsalms 23:1 The shepherd guides me.\nPsalms 23:2 The shepherd gives rest.\n"])),
               ok=bibleit_translation_nif:create_index(list_to_binary(BT),list_to_binary(Index)),
-              Endpoint="http://127.0.0.1:"++integer_to_list(proplists:get_value(port,Config)),
+
               P=open_port({spawn_executable,os:getenv("BIBLEIT_GO_TEST_BIN")},[exit_status,use_stdio,stderr_to_stdout,
                 {args,["-test.run=^TestServerHTTPIntegration$","-test.v"]},
-                {env,[{"BIBLEIT_CLIENT_TEST_DISPOSABLE","1"},{"BIBLEIT_INTEGRATION_ENDPOINT",Endpoint},{"BIBLEIT_INTEGRATION_TOKEN",binary_to_list(Token)},{"BIBLEIT_EXPIRED_TOKEN",binary_to_list(ExpiredToken)},{"BIBLEIT_MANUAL_TOKEN_ID",binary_to_list(ManualId)},{"BIBLEIT_SCOPED_TOKEN_ID",binary_to_list(ScopedId)},{"BIBLEIT_SCOPED_TOKEN",binary_to_list(ScopedToken)},{"BIBLEIT_DENIED_TOKEN",binary_to_list(DeniedToken)},{"BIBLEIT_AUTH_CODE",binary_to_list(AuthCode)},{"BIBLEIT_AUTH_BAD_CODE",binary_to_list(BadAuthCode)},{"BIBLEIT_AUTH_VERIFIER",binary_to_list(AuthVerifier)}]}]),
+                {env,[{"BIBLEIT_CLIENT_TEST_DISPOSABLE","1"},{"BIBLEIT_INTEGRATION_TOKEN",binary_to_list(Token)},{"BIBLEIT_EXPIRED_TOKEN",binary_to_list(ExpiredToken)},{"BIBLEIT_MANUAL_TOKEN_ID",binary_to_list(ManualId)},{"BIBLEIT_SCOPED_TOKEN_ID",binary_to_list(ScopedId)},{"BIBLEIT_SCOPED_TOKEN",binary_to_list(ScopedToken)},{"BIBLEIT_DENIED_TOKEN",binary_to_list(DeniedToken)},{"BIBLEIT_AUTH_CODE",binary_to_list(AuthCode)},{"BIBLEIT_AUTH_BAD_CODE",binary_to_list(BadAuthCode)},{"BIBLEIT_AUTH_VERIFIER",binary_to_list(AuthVerifier)}]}]),
               Wait=fun F()->receive {P,{data,Data}}->io:put_chars(Data),F();{P,{exit_status,0}}->ok;{P,{exit_status,Status}}->{error,{go_client_failed,Status}} after 30000->error(go_client_timeout) end end,
               GoResult=Wait(),
               SSHDirectory=filename:join(Directory,"client-ssh"),
@@ -160,7 +185,7 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
                 SSHAddress="127.0.0.1:"++integer_to_list(proplists:get_value(port,SSHInfo)),
                 CLI=open_port({spawn_executable,os:getenv("BIBLEIT_CLI_TEST_BIN")},[exit_status,use_stdio,stderr_to_stdout,
                   {args,["-test.run=^TestServerSSHSubscription$","-test.v"]},
-                  {env,[{"BIBLEIT_CLIENT_TEST_DISPOSABLE","1"},{"BIBLEIT_INTEGRATION_ENDPOINT",Endpoint},
+                  {env,[{"BIBLEIT_CLIENT_TEST_DISPOSABLE","1"},
                         {"BIBLEIT_INTEGRATION_TOKEN",binary_to_list(Token)},{"BIBLEIT_INTEGRATION_SSH",SSHAddress},
                         {"BIBLEIT_INTEGRATION_IDENTITY",Identity}]}]),
                 CLIWait=fun F()->receive {CLI,{data,Data}}->io:put_chars(Data),F();{CLI,{exit_status,0}}->ok;
@@ -183,6 +208,7 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
     if args.baseline:
         baseline['verification'].update({
             'request_decoder_cases': len(json.loads(fixture.read_text())),
+            'fixed_http_endpoint': 'http://localhost:8080' if args.integration else None,
             'response_encoder_cases': sum('server_response_term' in case for case in json.loads((root/'contract/fixtures/responses-v1.json').read_text())),
         })
         args.baseline.write_text(json.dumps(baseline, indent=2)+'\n')

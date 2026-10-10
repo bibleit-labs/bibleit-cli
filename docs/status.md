@@ -3,7 +3,40 @@
 Updated 2026-10-10. Counts describe explicit acceptance items, not estimated
 percentages of the entire project. The full plan is in `plan.md`.
 
-## Current increment: fixed service and local-only work
+## Current increment: simple API-token clients and real fixed-service integration
+
+All work remains local; publication and release tags stay paused. Both branches
+are `simple-client-integration`, with no codex prefix. Server files are read into
+a frozen snapshot and are not edited. The complete fixed-endpoint run passed on
+2026-10-10; its baseline is `contract/server-baseline.json`.
+
+| Item | Status | Evidence |
+| --- | --- | --- |
+| Choose credential-only API | Complete | `NewClient(apiToken)`; API token terminology; separate custom HTTP transport constructor; validation error return retained |
+| Simplify Go client and update CLI | Complete | Config/AuthConfig removed; NewAuthClient() takes no options; examples and callers updated; no endpoint override |
+| Local verification | Complete | Go client and CLI race tests, vet and build pass with Go 1.27.1; invalid credentials rejected before requests |
+| Real fixed-endpoint integration | Complete | Public constructors at localhost:8080 in a disposable Linux container namespace; 27 decoder/18 encoder fixtures, 7 security cases, Go HTTP/domain/auth checks, actual CLI/OpenSSH lifecycle, 4 PKCE and 4 SSH EUnit cases pass |
+| Document baseline and commit locally | Complete | Updated endpoint policy, client examples, container harness instructions and matching baselines; local Conventional Commits only |
+
+Progress: **5/5 tracked items complete**. Host port 8080 was occupied; the isolated
+runner used its own namespace and temporary PostgreSQL instance with no published
+ports. The developer's existing HTTP process remained running with the same PID.
+Native Windows was not rerun for this increment, and these checks are not a full
+server security assessment or a production-endpoint release certification.
+
+Run locally:
+
+```sh
+python3 scripts/check_server_container.py --baseline contract/server-baseline.json
+```
+
+The container runner requires Docker and build-image/package downloads on its
+first use. It uses a cached Go 1.27.1 image, Erlang 29, and rebuilds fixture NIFs
+from the frozen source. No developer .env, host keys, live database, Docker socket
+mount, or private server source is baked into the tools image. Source mounts are
+read-only; compilation and test data live in disposable directories/containers.
+
+## Previous increment: fixed service and local-only work
 
 The user paused all GitHub pushes, release tags and binary publication, and is
 handling deletion/recreation of the public repositories. Previous publication

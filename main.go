@@ -570,7 +570,7 @@ func requestHTTP(cfg config, command bibleit.Command) ([]string, error) {
 	if cfg.AccessToken == "" {
 		return nil, authenticationError{message: "web authentication is not configured; run `bibleit auth login`"}
 	}
-	client, err := bibleit.NewClient(bibleit.Config{Token: cfg.AccessToken, HTTPClient: cliHTTPClient})
+	client, err := bibleit.NewClientWithHTTPClient(cfg.AccessToken, cliHTTPClient)
 	if err != nil {
 		return nil, err
 	}
@@ -689,7 +689,7 @@ func exchangeBrowserCode(code, verifier string) (string, string, error) {
 	if deviceName == "" {
 		deviceName = "Bibleit CLI"
 	}
-	client, err := bibleit.NewAuthClient(bibleit.AuthConfig{HTTPClient: cliHTTPClient})
+	client, err := bibleit.NewAuthClientWithHTTPClient(cliHTTPClient)
 	if err != nil {
 		return "", "", err
 	}
@@ -713,7 +713,7 @@ func exchangeBrowserCode(code, verifier string) (string, string, error) {
 
 func logout(cfg *config) error {
 	if cfg.AccessToken != "" {
-		client, err := bibleit.NewClient(bibleit.Config{Token: cfg.AccessToken, HTTPClient: cliHTTPClient})
+		client, err := bibleit.NewClientWithHTTPClient(cfg.AccessToken, cliHTTPClient)
 		if err != nil {
 			return err
 		}

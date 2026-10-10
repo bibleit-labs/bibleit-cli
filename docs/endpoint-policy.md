@@ -10,8 +10,11 @@ address before release. The CLI derives its HTTP and browser authentication
 address from that constant. SSH currently uses the project-managed development
 address `127.0.0.1:2222`; establish its production address before shipping SSH.
 
-`Config` accepts a token and optional HTTP client. `AuthConfig` accepts an
-optional HTTP client. Neither exposes an endpoint. Commands, code exchange,
+Create an authenticated client with `NewClient(apiToken)`. Use
+`NewClientWithHTTPClient(apiToken, httpClient)` for custom transport/timeouts.
+`NewAuthClient()` creates the browser-code exchange client; its custom transport
+constructor is `NewAuthClientWithHTTPClient(httpClient)`. No constructor exposes
+an endpoint. Both simple constructors retain an error return for validation. Commands, code exchange,
 and revocation all construct URLs at the fixed service, and redirects remain
 blocked. Credentials remain explicit; the library reads no environment variables.
 Custom HTTP clients configure transport/timeouts, not a service URL option.
@@ -37,9 +40,11 @@ Keep `bibleit-cli` and `bibleit-go` as sibling checkouts. A local ignored
 Do not publish standalone builds until a real client version is pinned and
 `GOWORK=off` validation passes.
 
-Unit tests use injected in-memory HTTP transports. Real-server integration test
-binaries have private fixture routing in `_test.go` files, excluded from customer
-builds. The native process harness currently binds a disposable HTTP fixture on
+Unit tests use injected in-memory HTTP transports. Real-server integration now puts the disposable server at `localhost:8080`
+and calls public constructors without destination remapping. The isolated
+container runner shares a disposable PostgreSQL network namespace with the
+fixture, leaving host port 8080 untouched. It rebuilds Linux NIFs from the frozen
+source snapshot. No server files or developer databases are modified. The native process harness currently binds a disposable HTTP fixture on
 IPv4 loopback port 8080 to test the development endpoint without a public override.
 It requires that port to be free and fails if another service is listening; it
 never stops or replaces an existing service. Adapt that fixture strategy before

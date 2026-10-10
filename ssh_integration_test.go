@@ -6,9 +6,6 @@ import (
 	"encoding/json"
 	"errors"
 	"io"
-	"net"
-	"net/http"
-	"net/url"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -31,10 +28,8 @@ func TestServerSSHSubscription(t *testing.T) {
 	defer func() { defaultSSHServer = previous }()
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
-	previousHTTPClient := cliHTTPClient
-	cliHTTPClient = integrationHTTPTransport(t)
-	defer func() { cliHTTPClient = previousHTTPClient }()
-	client, err := bibleit.NewClient(bibleit.Config{HTTPClient: cliHTTPClient, Token: os.Getenv("BIBLEIT_INTEGRATION_TOKEN")})
+	t.Setenv("BIBLEIT_ENDPOINT", "https://other.example")
+	client, err := bibleit.NewClient(os.Getenv("BIBLEIT_INTEGRATION_TOKEN"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -173,19 +168,4 @@ func TestServerSSHSubscription(t *testing.T) {
 	if err != nil || !acknowledged {
 		t.Fatalf("closure after reconnect: %v", err)
 	}
-}
-
-// Only the disposable test binary remaps sockets to a fixture. Public clients
-// still construct requests for the fixed project-managed service endpoint.
-func integrationHTTPTransport(t *testing.T) *http.Client {
-	t.Helper()
-	fixture, err := url.Parse(os.Getenv("BIBLEIT_INTEGRATION_ENDPOINT"))
-	if err != nil || fixture.Scheme != "http" || fixture.Hostname() != "127.0.0.1" {
-		t.Fatal("integration fixture must be an IPv4 loopback HTTP listener")
-	}
-	return &http.Client{Timeout: 15 * time.Second, Transport: &http.Transport{
-		DialContext: func(ctx context.Context, network, address string) (net.Conn, error) {
-			return (&net.Dialer{}).DialContext(ctx, network, fixture.Host)
-		},
-	}}
 }
