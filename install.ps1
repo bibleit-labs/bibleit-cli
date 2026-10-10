@@ -45,7 +45,8 @@ try {
     $staged = Join-Path $InstallDir ('.bibleit-' + [Guid]::NewGuid().ToString() + '.exe')
     Copy-Item -LiteralPath $binary -Destination $staged
     $target = Join-Path $InstallDir 'bibleit.exe'
-    if (Test-Path -LiteralPath $target) { [IO.File]::Replace($staged, $target, $null) }
+    # Preserve a .NET null string; PowerShell coerces $null to an empty path.
+    if (Test-Path -LiteralPath $target) { [IO.File]::Replace($staged, $target, [NullString]::Value) }
     else { [IO.File]::Move($staged, $target) }
     Write-Output "Installed Bibleit $Version at $target. Add $InstallDir to your user PATH if needed."
 } finally {
