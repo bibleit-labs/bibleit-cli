@@ -45,7 +45,13 @@ def main():
         (scratch / 'temp').mkdir()
         tap = prefix / 'Library/Taps/bibleit-labs/homebrew-local-validation'
         (tap / 'Formula').mkdir(parents=True)
-        original = Path(args.formula).read_text() if args.formula else (assets / 'bibleit.rb').read_text()
+        formula_path = Path(args.formula) if args.formula else assets / 'bibleit-cli.rb'
+        if not args.formula and not formula_path.exists():
+            formula_path = assets / 'bibleit.rb'  # Previously generated candidates.
+        formula_name = formula_path.stem
+        if formula_name not in ('bibleit', 'bibleit-cli'):
+            raise RuntimeError(f'unsupported Bibleit formula name: {formula_name}')
+        original = formula_path.read_text()
         # Only URLs change in the fixture. Install/test methods and actual hashes
         # remain the generated production formula's implementation.
         def local_url(match):
@@ -55,9 +61,9 @@ def main():
                 raise RuntimeError(f'missing archive: {name}')
             return f'url "{archive.as_uri()}"'
         formula = re.sub(r'url "(https://github.com/bibleit-labs/bibleit-cli/releases/download/[^\"]+)"', local_url, original)
-        (tap / 'Formula/bibleit.rb').write_text(formula)
+        (tap / 'Formula' / f'{formula_name}.rb').write_text(formula)
         subprocess.run(['git', 'init', '--quiet', str(tap)], check=True)
-        name = 'bibleit-labs/local-validation/bibleit'
+        name = f'bibleit-labs/local-validation/{formula_name}'
         def run(*command):
             result = subprocess.run([str(isolated), *command], env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             evidence.append({'command': ['brew', *command], 'exit_code': result.returncode, 'output': result.stdout})
@@ -81,7 +87,7 @@ def main():
         run('test', name)
         run('uninstall', '--formula', name)
         assert not binary.exists() and not binary.is_symlink()
-        assert not (prefix / 'Cellar/bibleit').exists()
+        assert not (prefix / 'Cellar' / formula_name).exists()
     report = Path(args.report)
     report.parent.mkdir(parents=True, exist_ok=True)
     report.write_text(json.dumps({'platform': os.uname().sysname, 'architecture': os.uname().machine, 'version': version, 'offline': True, 'isolated_prefix': True, 'checks': evidence}, indent=2) + '\n')

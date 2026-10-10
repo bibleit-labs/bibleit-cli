@@ -32,7 +32,7 @@ records the source commit, dirty state, toolchain and client module metadata.
 | `bibleit_<version>_windows_{amd64,arm64}.zip` | Windows executable |
 | `checksums.txt` | SHA-256 for six archives and both installer scripts |
 | `install.sh`, `install.ps1` | Bash and PowerShell installers |
-| `bibleit.rb` | Homebrew formula with actual archive checksums |
+| `bibleit-cli.rb` | Homebrew formula with actual archive checksums |
 | `bibleit.json` | Scoop manifest for Windows amd64/arm64 |
 | `manifest.json` | Candidate build provenance and local-only marker |
 
@@ -82,7 +82,7 @@ These are proposed public commands, **not available installation paths today**:
 
 ```sh
 # Homebrew: publish the generated formula in a future bibleit-labs/homebrew-tap.
-brew install bibleit-labs/tap/bibleit
+brew install bibleit-labs/tap/bibleit-cli
 
 # Bash: release assets host the installer; no website/domain assumption needed.
 curl -fsSL https://github.com/bibleit-labs/bibleit-cli/releases/latest/download/install.sh | bash
@@ -149,7 +149,17 @@ remain unvalidated and publication remains paused.
 
 ## Separate Homebrew repository
 
-`bibleit-labs/homebrew-tap` owns `Formula/bibleit.rb`, its README, license and
+The formula is named `bibleit-cli`; the installed executable remains `bibleit`.
+The canonical command after publication is `brew install bibleit-labs/tap/bibleit-cli`.
+Homebrew maps `bibleit-labs/tap` to `bibleit-labs/homebrew-tap`; `/cli/` would
+require `homebrew-cli`, while `homebrew-taps` would map to `/taps/`.
+A bare `brew install bibleit-cli` requires prior tap setup (and formula trust on
+Homebrew versions that require it), or future acceptance into `homebrew/core`.
+The fully qualified form is the supported one-step installation command.
+See [Homebrew tap naming](https://docs.brew.sh/Taps) and the
+[Resend example](https://github.com/resend/homebrew-cli).
+
+`bibleit-labs/homebrew-tap` owns `Formula/bibleit-cli.rb`, its README, license and
 contribution notes. The CLI generates versioned formulas with release archive
 checksums. After an authorized release, copy the matching formula into the tap,
 review and validate it, then commit its version update independently. There is
@@ -157,7 +167,7 @@ no automatic tap publication in the CLI workflow.
 
 ```sh
 python3 scripts/check_homebrew.py --assets build/releases/v0.1.0-dev.1 \
-  --formula ../homebrew-tap/Formula/bibleit.rb
+  --formula ../homebrew-tap/Formula/bibleit-cli.rb
 ```
 
 The validation runner changes only archive URLs to local files. It uses the tap's
