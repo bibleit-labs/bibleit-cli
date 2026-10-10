@@ -34,13 +34,13 @@ repositories and declare the tested server baseline with every release.
 
 | Milestone | Completed | Remaining |
 | --- | --- | --- |
-| 1. Verified integration contract | 6/7 tracked items; operation matrix, 27 decoder/18 encoder fixtures, isolated HTTP/auth/SSH checks | Server-owned SECRET SET/documentation and repeated stats-field discrepancies |
+| 1. Verified integration contract | 6/7 tracked items; operation matrix, 27 decoder/18 encoder fixtures, isolated HTTP/auth/SSH checks | Server-owned SECRET SET/documentation discrepancy; duplicate stats field repaired and fixtures refreshed |
 | 2. Core Go client | 5/5 tracked items; typed discovery, account, tokens, translations, reading and Live results; `NewClient(apiToken)` and fixed service | Future workspace/event APIs are separate |
-| 3. CLI customer surface | 5/5 tracked items; profiles, authentication, stable output, completion and destructive UX | Refresh native Windows/hosted evidence before release; earlier hosted results are historical |
+| 3. CLI customer surface | 5/5 tracked items; profiles, authentication, stable output, completion and destructive UX | Fresh private Windows/Ubuntu/macOS matrix passed; production release gates remain |
 | Repository split and fixed endpoint | Complete; independent bibleit-go/bibleit-cli modules, no customer endpoint overrides, real fixed-endpoint integration passed | Production service addresses and standalone pinned dependency |
 | 4. Workspace/event APIs | Contract requirements recorded | Server bearer API contract and implementation |
 | 5. Python/Ruby/Rust clients | Separate repository naming decided | Implementation and portability checks |
-| 6. Release preparation | Local six-target packaging, checksums, version injection, Homebrew/Scoop manifests, Bash/PowerShell installers; isolated native Homebrew install/test/reinstall/uninstall passed | Private Windows/Scoop CI in preparation; production gates, tags and releases remain paused |
+| 6. Release preparation | Local six-target packaging, checksums, version injection, Homebrew/Scoop manifests, Bash/PowerShell installers; isolated native Homebrew install/test/reinstall/uninstall passed | Native Windows PowerShell 7/5.1 and Scoop lifecycle passed; production gates, tags and releases remain paused |
 
 Completion describes tracked core scope, not all future product features. Detailed
 evidence and historical increments are in [status.md](status.md).
@@ -185,14 +185,14 @@ completion files, Bash/PowerShell installers, generated Homebrew/Scoop manifests
 and a manual candidate-validation workflow. See `releases.md` for offline testing
 and proposed distribution commands. No hosted script, formula, bucket or release
 has been published. The separate tap repository exists and local Homebrew lifecycle
-checks pass. Native Windows/Scoop checks are being prepared in authorized private CI.
+checks pass. Native Windows CLI, PowerShell 7/5.1 installer and Scoop lifecycle checks now pass
+in authorized private CI. See `native-validation.md` for exact revisions/runs.
 
 ## Immediate next work
 
 The authorized local release-packaging increment is complete. Existing core
 implementation, repository separation, request/response fixtures and real-server
-integration do not need to be restarted. Remaining release preparation is native
-Windows CLI/installer and Scoop execution; Homebrew lifecycle validation is now
+integration do not need to be restarted. Native Windows CLI/installer, Scoop and Homebrew lifecycle validation are
 complete. Private native Go-client CI also passes on all three platforms. Production
 HTTPS/SSH addresses, a published/pinned Go client and fresh GOWORK=off validation
 are required before publishing; publication remains paused. Server-owned contract

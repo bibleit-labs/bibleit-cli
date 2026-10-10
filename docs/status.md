@@ -14,15 +14,38 @@ its development formula preparation remains local.
 | --- | --- | --- |
 | Homebrew install lifecycle | Complete on local macOS/arm64 | Real generated formula in disposable prefix: install, formula tests, completions, reinstall and uninstall passed; normal user prefix untouched |
 | Go-client native matrix | Complete | `private-platform-validation`, commit `3d15ec6`; Windows/Ubuntu/macOS race tests, vet and builds passed in private run 38086747099 |
-| CLI native and Scoop execution | Private CI starting | Exact client SHA in ephemeral CI workspace; scoped checkout secret configured; Scoop engine pinned at e6aa3b3; native executable/shim/reset/reinstall/uninstall/hash rejection checks ready |
-| Separate tap and verification records | In progress | Local `formula-preparation`; README/contribution/license and generated development formula; CLI docs reflect private CI authorization; final CLI results pending |
+| CLI native and Scoop execution | Complete | CLI matrix passed at `1e58c54` in run 38088193147; release-candidate matrix passed in run 38088193158, including native PowerShell 7/5.1 installation/replacement/failure checks and real Scoop shim/reset/reinstall/uninstall/hash rejection |
+| Separate tap and verification records | Complete | Local tap commit `61ad753` on `formula-preparation`; actual tap formula passed isolated Homebrew checks; native reports downloaded under ignored `build/validation/ci-38088193158`; no tap push |
 
-Progress: **2/4 tracked validation items complete**. GitHub disables deploy keys
+Progress: **4/4 tracked validation items complete**. GitHub disables deploy keys
 on `bibleit-go`; user selected `BIBLEIT_CLIENT_READ_TOKEN` with contents-read only
 on that repository and configured it. The current production endpoint and standalone client-release
 gates are unchanged. See `docs/releases.md` for repeatable local checks.
 
 [Go-client native CI passed](https://github.com/bibleit-labs/bibleit-go/actions/runs/38086747099).
+[CLI native CI passed](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38088193147).
+[Installer/Homebrew/Scoop CI passed](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38088193158).
+
+Native Windows exposed a PowerShell null-to-empty conversion during binary
+replacement; `[NullString]::Value` fixes the backup-path argument. The harness
+now resets inherited module paths when launching another PowerShell runtime.
+Scoop checksum rejection is verified by its explicit error and absence of an
+installed executable/current link/shim, since this engine can return zero after
+a pipeline install failure. Validation uses real archive hashes and isolated roots.
+
+Server follow-up (2026-10-10): rechecked the Go client's duplicate-field comment.
+The previous `LIVE STATS` encoder prepended `connections` while retaining the same
+field from the statistics map. At the user's request, the security assessment
+chat was asked to emit one authoritative count and cover empty/nonempty subscriber
+lists and stale conflicting counts. The client already handles canonical output,
+accepts identical duplicates for compatibility and rejects conflicting duplicates.
+The assessment fixed the encoder and reports three protocol regressions plus a
+green full suite. Local canonical CLI/client fixtures now use one field; a legacy
+client fixture preserves duplicate compatibility. Fresh read-only server checks
+passed 27 decoder and 18 encoder fixtures, and Go-client race tests passed.
+Client fixture/comment refresh: local commit `9332d35`; no client push.
+Earlier full-integration fingerprints remain historical; this refresh did not
+rerun full HTTP/SSH integration or publish a new client revision.
 
 ## Previous increment: local release packaging and installation paths
 
@@ -126,7 +149,7 @@ assessment or future workspace/event APIs.
 | 3. Customer CLI profiles/auth/output | Complete for tracked scope | 5/5: profiles, credentials, output, completion/destructive UX and representative native platform validation |
 | 4. Workspace and event integration APIs | Pending server contract | Existing browser endpoints are not bearer-token client APIs |
 | 5. Python, Ruby, Rust clients | Not started | Wait for verified core contract |
-| 6. Independent publication | Local preparation complete; publishing paused | Six-target archives/checksums, installers and Homebrew/Scoop manifests prepared; production addresses, real client version, standalone/native Windows/package-manager checks and publication pending |
+| 6. Independent publication | Local preparation complete; publishing paused | Six-target archives/checksums, installers and Homebrew/Scoop manifests prepared; production addresses, real client version, standalone release builds and publication pending; native Windows/package-manager validation complete |
 
 ## Reproduce verification
 

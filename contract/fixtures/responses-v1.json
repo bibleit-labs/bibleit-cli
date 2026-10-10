@@ -62,7 +62,7 @@
   },
   {
     "name": "live-stats",
-    "wire": "OK connections=1 connections=1 future=true\nCONNECTION id=\"c1\"\nEND\n",
+    "wire": "OK connections=1 future=true\nCONNECTION id=\"c1\"\nEND\n",
     "records": [
       {
         "type": "ok",
