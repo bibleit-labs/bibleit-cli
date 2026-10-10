@@ -45,10 +45,11 @@ type outputRecord struct {
 
 const sshUser = "bibleit-cli"
 
+const defaultWebURL = bibleit.ServerEndpoint
+
 var (
 	cliVersion       = "dev"
 	defaultSSHServer = "127.0.0.1:2222"
-	defaultWebURL    = "http://127.0.0.1:8080"
 	cliHTTPClient    = &http.Client{Timeout: 15 * time.Second}
 )
 
@@ -569,7 +570,7 @@ func requestHTTP(cfg config, command bibleit.Command) ([]string, error) {
 	if cfg.AccessToken == "" {
 		return nil, authenticationError{message: "web authentication is not configured; run `bibleit auth login`"}
 	}
-	client, err := bibleit.NewClient(bibleit.Config{Endpoint: profileFor(cfg).Endpoint, Token: cfg.AccessToken, HTTPClient: cliHTTPClient})
+	client, err := bibleit.NewClient(bibleit.Config{Token: cfg.AccessToken, HTTPClient: cliHTTPClient})
 	if err != nil {
 		return nil, err
 	}
@@ -582,7 +583,7 @@ func requestHTTP(cfg config, command bibleit.Command) ([]string, error) {
 }
 
 func browserAuthenticate(cfg *config) (string, error) {
-	if _, err := validatedWebURL(profileFor(*cfg).Endpoint); err != nil {
+	if _, err := validatedWebURL(defaultWebURL); err != nil {
 		return "", err
 	}
 	listener, err := net.Listen("tcp", "127.0.0.1:0")
@@ -601,7 +602,7 @@ func browserAuthenticate(cfg *config) (string, error) {
 	digest := sha256.Sum256([]byte(verifier))
 	challenge := base64.RawURLEncoding.EncodeToString(digest[:])
 	redirectURI := "http://" + listener.Addr().String() + "/callback"
-	authorizeURL, err := url.Parse(endpoint(profileFor(*cfg).Endpoint, "/cli/auth"))
+	authorizeURL, err := url.Parse(endpoint(defaultWebURL, "/cli/auth"))
 	if err != nil {
 		return "", err
 	}
@@ -657,7 +658,7 @@ func browserAuthenticate(cfg *config) (string, error) {
 	if received.err != "" {
 		return "", errors.New(received.err)
 	}
-	displayName, token, err := exchangeBrowserCode(profileFor(*cfg).Endpoint, received.code, verifier)
+	displayName, token, err := exchangeBrowserCode(received.code, verifier)
 	if err != nil {
 		return "", err
 	}
@@ -683,12 +684,12 @@ func authenticatedIdentity(lines []string) string {
 	return ""
 }
 
-func exchangeBrowserCode(webURL, code, verifier string) (string, string, error) {
+func exchangeBrowserCode(code, verifier string) (string, string, error) {
 	deviceName, _ := os.Hostname()
 	if deviceName == "" {
 		deviceName = "Bibleit CLI"
 	}
-	client, err := bibleit.NewAuthClient(bibleit.AuthConfig{Endpoint: webURL, HTTPClient: cliHTTPClient})
+	client, err := bibleit.NewAuthClient(bibleit.AuthConfig{HTTPClient: cliHTTPClient})
 	if err != nil {
 		return "", "", err
 	}
@@ -712,7 +713,7 @@ func exchangeBrowserCode(webURL, code, verifier string) (string, string, error) 
 
 func logout(cfg *config) error {
 	if cfg.AccessToken != "" {
-		client, err := bibleit.NewClient(bibleit.Config{Endpoint: profileFor(*cfg).Endpoint, Token: cfg.AccessToken, HTTPClient: cliHTTPClient})
+		client, err := bibleit.NewClient(bibleit.Config{Token: cfg.AccessToken, HTTPClient: cliHTTPClient})
 		if err != nil {
 			return err
 		}
@@ -993,13 +994,13 @@ func help(topic []string) int {
 			"Access control", "  auth         Verify SSH access and inspect the current actor.", "  account      Inspect your account and effective quotas.", "  profile      Add, select, and inspect endpoint-bound profiles.", "",
 			"Server", "  server       Inspect the connected private-service.", "",
 			"Additional Commands:", "  help         Help about any command.", "  version      Print the CLI version.", "  completion   Generate Bash, Zsh, or Fish completion.", "",
-			"Flags:", "      --profile name             Select a named endpoint-bound profile", "      --identity path            Select a supported SSH private key", "      --format table|raw|json|ndjson  Output format (default \"table\")", "      --yes                      Confirm destructive commands without a prompt", "  -h, --help                      Help for bibleit.", "  -v, --version                   Print the CLI version.", "",
+			"Flags:", "      --profile name             Select a named account profile", "      --identity path            Select a supported SSH private key", "      --format table|raw|json|ndjson  Output format (default \"table\")", "      --yes                      Confirm destructive commands without a prompt", "  -h, --help                      Help for bibleit.", "  -v, --version                   Print the CLI version.", "",
 			"Use \"bibleit [command] --help\" for more information about a command.",
 		}
 	case "completion":
 		lines = []string{"Generate shell completion without contacting the server.", "", "Usage:", "  bibleit completion bash|zsh|fish", "", "Source the generated Bash script, source Zsh after compinit, or save Fish output to ~/.config/fish/completions/bibleit.fish.", "Completes command words, flags and local profile names; Live IDs, translations, references and secrets are not fetched."}
 	case "profile":
-		lines = []string{"Manage named profiles bound to one server endpoint and transport.", "", "Usage:", "  bibleit profile add <name> --endpoint <https-url> [--transport http]", "  bibleit profile add <name> --endpoint <host:port> --transport ssh", "  bibleit profile list", "  bibleit profile show [name]", "  bibleit profile use <name>", "  bibleit profile remove <name>", "", "Use --profile <name> or BIBLEIT_PROFILE for one command. BIBLEIT_TOKEN supplies an HTTP token without saving it. Profile listings omit tokens."}
+		lines = []string{"Manage named account profiles for the project-managed Bibleit service.", "", "Usage:", "  bibleit profile add <name> [--transport http]", "  bibleit profile add <name> --transport ssh", "  bibleit profile list", "  bibleit profile show [name]", "  bibleit profile use <name>", "  bibleit profile remove <name>", "", "Use --profile <name> or BIBLEIT_PROFILE for one command. BIBLEIT_TOKEN supplies an HTTP token without saving it. Profile listings omit tokens."}
 	case "auth":
 		lines = []string{
 			"Authenticate Bibleit CLI through the dashboard or SSH.", "",

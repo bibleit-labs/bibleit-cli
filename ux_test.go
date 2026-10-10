@@ -69,7 +69,7 @@ func TestDestructiveRequestGuard(t *testing.T) {
 }
 
 func TestInteractiveConfirmation(t *testing.T) {
-	cfg := config{Name: "production", Transport: "http", Endpoint: "https://prod.example", AccessToken: "DO_NOT_PRINT"}
+	cfg := config{Name: "production", Transport: "http", Endpoint: defaultWebURL, AccessToken: "DO_NOT_PRINT"}
 	for _, test := range []struct {
 		action, input, format string
 		interactive, ok       bool
@@ -97,7 +97,7 @@ func TestInteractiveConfirmation(t *testing.T) {
 			}
 		}
 		if test.interactive && test.format != "json" {
-			if !strings.Contains(prompt.String(), "production") || !strings.Contains(prompt.String(), "https://prod.example") {
+			if !strings.Contains(prompt.String(), "production") || !strings.Contains(prompt.String(), defaultWebURL) {
 				t.Fatal("missing scope", prompt.String())
 			}
 		} else if prompt.Len() != 0 {
@@ -120,7 +120,7 @@ func TestInteractiveConfirmation(t *testing.T) {
 
 func TestCompletionCandidates(t *testing.T) {
 	t.Setenv("BIBLEIT_CONFIG", filepath.Join(t.TempDir(), "config.json"))
-	store := profileStore{Version: 1, Active: "prod", Profiles: map[string]profile{"prod": {Transport: "http", Endpoint: "https://prod.example", AccessToken: "TOP_SECRET"}, "preview": {Transport: "http", Endpoint: "https://preview.example"}}}
+	store := profileStore{Version: 1, Active: "prod", Profiles: map[string]profile{"prod": {Transport: "http", Endpoint: defaultWebURL, AccessToken: "TOP_SECRET"}, "preview": {Transport: "http", Endpoint: defaultWebURL}}}
 	if err := saveStore(store); err != nil {
 		t.Fatal(err)
 	}

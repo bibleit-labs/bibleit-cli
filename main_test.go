@@ -211,8 +211,6 @@ func TestSSHAuthenticationCanUseOpenSSHIdentitySelection(t *testing.T) {
 
 func TestWebProfileRunsCommandsWithCachedBearerToken(t *testing.T) {
 	previous := cliHTTPClient
-	previousWebURL := defaultWebURL
-	defaultWebURL = "https://bibleit.example"
 	cliHTTPClient = &http.Client{Transport: roundTripFunc(func(r *http.Request) (*http.Response, error) {
 		if r.URL.Path != "/api/cli/command" || r.Header.Get("Authorization") != "Bearer bt_test" {
 			return &http.Response{StatusCode: http.StatusUnauthorized, Body: io.NopCloser(strings.NewReader("ERR unauthorized\n")), Header: make(http.Header)}, nil
@@ -221,7 +219,6 @@ func TestWebProfileRunsCommandsWithCachedBearerToken(t *testing.T) {
 	})}
 	t.Cleanup(func() {
 		cliHTTPClient = previous
-		defaultWebURL = previousWebURL
 	})
 	lines, err := request(config{AccessToken: "bt_test"}, bibleit.IdentityCommand())
 	if err != nil || len(lines) != 1 || !strings.Contains(lines[0], "browser-user") {

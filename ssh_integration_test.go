@@ -6,6 +6,9 @@ import (
 	"encoding/json"
 	"errors"
 	"io"
+	"net"
+	"net/http"
+	"net/url"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -28,7 +31,10 @@ func TestServerSSHSubscription(t *testing.T) {
 	defer func() { defaultSSHServer = previous }()
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
-	client, err := bibleit.NewClient(bibleit.Config{Endpoint: os.Getenv("BIBLEIT_INTEGRATION_ENDPOINT"), Token: os.Getenv("BIBLEIT_INTEGRATION_TOKEN")})
+	previousHTTPClient := cliHTTPClient
+	cliHTTPClient = integrationHTTPTransport(t)
+	defer func() { cliHTTPClient = previousHTTPClient }()
+	client, err := bibleit.NewClient(bibleit.Config{HTTPClient: cliHTTPClient, Token: os.Getenv("BIBLEIT_INTEGRATION_TOKEN")})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -77,7 +83,7 @@ func TestServerSSHSubscription(t *testing.T) {
 		t.Setenv("BIBLEIT_PROFILE", "")
 		t.Setenv("BIBLEIT_TOKEN", "")
 		store := profileStore{Version: 1, Active: "http", Profiles: map[string]profile{
-			"http": {Transport: "http", Endpoint: os.Getenv("BIBLEIT_INTEGRATION_ENDPOINT"), AccessToken: os.Getenv("BIBLEIT_INTEGRATION_TOKEN")},
+			"http": {Transport: "http", Endpoint: defaultWebURL, AccessToken: os.Getenv("BIBLEIT_INTEGRATION_TOKEN")},
 			"ssh":  {Transport: "ssh", Endpoint: os.Getenv("BIBLEIT_INTEGRATION_SSH"), Identity: cfg.Identity},
 		}}
 		if err := saveStore(store); err != nil {
@@ -167,4 +173,19 @@ func TestServerSSHSubscription(t *testing.T) {
 	if err != nil || !acknowledged {
 		t.Fatalf("closure after reconnect: %v", err)
 	}
+}
+
+// Only the disposable test binary remaps sockets to a fixture. Public clients
+// still construct requests for the fixed project-managed service endpoint.
+func integrationHTTPTransport(t *testing.T) *http.Client {
+	t.Helper()
+	fixture, err := url.Parse(os.Getenv("BIBLEIT_INTEGRATION_ENDPOINT"))
+	if err != nil || fixture.Scheme != "http" || fixture.Hostname() != "127.0.0.1" {
+		t.Fatal("integration fixture must be an IPv4 loopback HTTP listener")
+	}
+	return &http.Client{Timeout: 15 * time.Second, Transport: &http.Transport{
+		DialContext: func(ctx context.Context, network, address string) (net.Conn, error) {
+			return (&net.Dialer{}).DialContext(ctx, network, fixture.Host)
+		},
+	}}
 }
