@@ -40,6 +40,7 @@ def main():
                 root = scratch / 'scoop'
                 current = root / 'apps/scoop/current'
                 shutil.copytree(source, current, ignore=shutil.ignore_patterns('.git'))
+                (root / 'buckets').mkdir()
                 # Portable config and application directories are all temporary.
                 (root / 'config.json').write_text(json.dumps({'root_path': str(root), 'global_path': str(scratch / 'global'), 'cache_path': str(scratch / 'cache'), 'use_isolated_path': True, 'aria2-enabled': False, 'use_external_7zip': False, 'use_sqlite_cache': False}))
                 env = dict(os.environ, SCOOP=str(root), SCOOP_GLOBAL=str(scratch / 'global'), SCOOP_CACHE=str(scratch / 'cache'))
@@ -56,9 +57,10 @@ def main():
                 def run(*command, succeeds=True):
                     result = subprocess.run([powershell, '-NoProfile', '-File', str(scoop), *command], env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
                     evidence.append({'command': ['scoop', *command], 'exit_code': result.returncode, 'output': result.stdout})
-                    if (result.returncode == 0) != succeeds:
+                    if succeeds is not None and (result.returncode == 0) != succeeds:
                         raise RuntimeError(result.stdout)
-                    print(f'PASS: scoop {" ".join(command)}', flush=True)
+                    if succeeds is not None:
+                        print(f'PASS: scoop {" ".join(command)}', flush=True)
                     return result.stdout
                 def verify_binary():
                     shim = root / 'shims/bibleit.exe'
@@ -80,9 +82,14 @@ def main():
                 for item in manifest['architecture'].values():
                     item['hash'] = '0' * 64
                 fixture.write_text(json.dumps(manifest, indent=2))
-                output = run('install', '--no-update-scoop', '--independent', '--no-cache', str(fixture), succeeds=False)
-                assert 'hash' in output.lower(), output
+                # Scoop can return zero after an install_app hash failure inside
+                # its pipeline. Assert the rejection and durable state directly.
+                output = run('install', '--no-update-scoop', '--independent', '--no-cache', str(fixture), succeeds=None)
+                assert 'hash check failed' in output.lower(), output
                 assert not (root / 'shims/bibleit.exe').exists()
+                assert not (root / 'apps/bibleit/current').exists()
+                assert not list((root / 'apps/bibleit').rglob('bibleit.exe'))
+                print('PASS: Scoop rejected incorrect hash without installing an executable or shim', flush=True)
         finally:
             server.shutdown()
             thread.join()
