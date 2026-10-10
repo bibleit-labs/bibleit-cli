@@ -3,7 +3,21 @@
 Updated 2026-10-11. Counts describe explicit acceptance items, not estimated
 percentages of the entire project. The full plan is in `plan.md`.
 
-## Current increment: single credential configuration and tap CI
+## Current increment: Homebrew updater access and permissions
+
+| Item | Status | Evidence / limits |
+| --- | --- | --- |
+| Private CLI access preflight | Implementation complete; credential pending | Tap 04e8b16 adds a read-only manual workflow and checks release-list access before formula downloads; no releases, tags or PRs created |
+| Actions PR permissions | Blocked on organization setting | Repository configuration returned HTTP 409 because organization policy forbids Actions PR creation; authenticated token cannot change organization policy (HTTP 403, missing admin:org); preserve read-only defaults when enabling the tap setting |
+| Validate and record setup | Complete | Seven updater regressions, shell/YAML checks and hosted Homebrew syntax/style pass at tap 04e8b16 in [run 38092320412](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38092320412); no BIBLEIT_CLI_READ_TOKEN is configured yet |
+
+Progress: **2/3 tracked items complete**; credential/policy setup remains blocked. User setup is needed for
+organization Actions PR creation and the tap secret scoped only to bibleit-cli
+with Contents: read. After setup, enable the repository PR setting and dispatch
+Check updater access. A green read check cannot certify formula downloads or PR
+creation until the first real production CLI release exists.
+
+## Previous increment: single credential configuration and tap CI
 
 Branches remain integration-refresh (CLI/client) and formula-preparation (tap).
 Source pushes to the three private repositories are authorized. No tags, customer

@@ -296,8 +296,28 @@ normal review; changing branch defaults is separate from pushing the prepared wo
 Profile removal and tap CI are complete. The new single-configuration CLI and
 client/candidate matrices passed at CLI fe719db and client 17e146b; tap validation
 passed at d08561b. Exact runs and limits are recorded in native-validation.md.
-The manual tap update path still needs its documented private-read secret and
-PR-creation policy before a real release update can be exercised.
+The manual tap update path now checks CLI release-read access before downloading.
+Tap 04e8b16 also provides a read-only Check updater access workflow that can run
+before any release exists. Local shell/YAML checks and seven updater regressions
+pass. Hosted Homebrew syntax/style and regression validation is green in
+[run 38092320412](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38092320412)
+at 04e8b16. The initial run identified shell formatting; this revision fixes it.
+
+Remaining tap setup, in order:
+
+1. Enable Actions PR creation at organization level. Repository configuration
+   currently returns HTTP 409; the authenticated setup token cannot change the
+   organization policy (HTTP 403, missing admin:org).
+2. Save BIBLEIT_CLI_READ_TOKEN in homebrew-tap: fine-grained token owned by
+   bibleit-labs, selecting only bibleit-cli, Contents: read-only. No secret exists
+   yet; keep broad interactive credentials out of Actions secrets.
+3. Enable the tap repository PR setting while preserving read-only workflow
+   defaults; verify the effective setting through the API.
+4. Dispatch Check updater access using the actual Actions secret; record the
+   green run and tap syntax validation. This check creates no releases or PRs.
+5. After a production CLI release exists, dispatch its formula update, review
+   the PR, approve/run validation and verify real archive installation. The
+   workflow never approves or merges PRs despite GitHub's combined policy toggle.
 
 Next implementation increment: obtain the production addresses/deployment baseline,
 then update service constants and endpoint-dependent fixtures together. If deployment
