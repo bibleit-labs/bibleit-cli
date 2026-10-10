@@ -10,11 +10,14 @@ The hosted workflow passed all three native jobs on 2026-10-10 at code commit
 `08e4a31d0ff468b07e01408788f8b94a42995dc0`:
 [verified run](https://github.com/mittel-labs/bibleit/actions/runs/38081432573).
 That run validates the pre-extraction implementation in the original staging
-repository. The CLI now lives in `bibleit-labs/bibleit-cli` on `repository-split`
-and imports the independent `bibleit-labs/bibleit-go` module. The new repositories
-run their own hosted checks after publication; the historical run does not
-substitute for those checks. The matrix targets runner-default architectures,
-not all six build targets.
+repository. The independent repositories now also pass their native matrices:
+
+- [Go client](https://github.com/bibleit-labs/bibleit-go/actions/runs/38082660896), commit `9a52be34b0c3`.
+- [CLI](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38082843195), code commit `e46bfd6`.
+
+Both use `repository-split`, with no codex prefix. The CLI pins the client commit
+in `go.mod`. Each matrix targets runner-default architectures, not all six
+build targets. The original repository's remote main is unchanged.
 
 ## Current evidence
 
