@@ -3,7 +3,8 @@
 Publication is paused by the user. All work stays local; the user is clearing the
 public repositories. Endpoint configuration is removed: every client targets the
 project-managed service, currently `http://localhost:8080`. See
-[endpoint-policy.md](endpoint-policy.md). Before resuming release work, set the
+[endpoint-policy.md](endpoint-policy.md). Local release preparation is complete;
+see [releases.md](releases.md). Before publishing, set the
 production HTTPS/SSH addresses, release the Go client, pin it in the CLI, and
 verify standalone builds without a workspace.
 
@@ -15,7 +16,7 @@ same surface into Python, Ruby, and Rust.
 
 ## Decisions retained
 
-Use Go 1.27.1 or newer for the CLI and Go client. Keep the CLI dependent on the
+Use Go 1.27.1 for the CLI and Go client. Keep the CLI dependent on the
 client, with browser opening, presentation, and credential persistence outside
 core library operations. Use HTTPS/bearer authentication as the default finite
 command transport; retain explicit SSH support. No automatic mutation retries.
@@ -27,6 +28,21 @@ The server and existing reader/TUI retain separate repositories. Go client APIs
 must not import the CLI. Share versioned protocol fixtures explicitly across
 repositories and declare the tested server baseline with every release.
 
+## Current completion summary
+
+| Milestone | Completed | Remaining |
+| --- | --- | --- |
+| 1. Verified integration contract | 6/7 tracked items; operation matrix, 27 decoder/18 encoder fixtures, isolated HTTP/auth/SSH checks | Server-owned SECRET SET/documentation and repeated stats-field discrepancies |
+| 2. Core Go client | 5/5 tracked items; typed discovery, account, tokens, translations, reading and Live results; `NewClient(apiToken)` and fixed service | Future workspace/event APIs are separate |
+| 3. CLI customer surface | 5/5 tracked items; profiles, authentication, stable output, completion and destructive UX | Refresh native Windows/hosted evidence before release; earlier hosted results are historical |
+| Repository split and fixed endpoint | Complete; independent bibleit-go/bibleit-cli modules, no customer endpoint overrides, real fixed-endpoint integration passed | Production service addresses and standalone pinned dependency |
+| 4. Workspace/event APIs | Contract requirements recorded | Server bearer API contract and implementation |
+| 5. Python/Ruby/Rust clients | Separate repository naming decided | Implementation and portability checks |
+| 6. Release preparation | Local six-target packaging, checksums, version injection, Homebrew/Scoop manifests, Bash/PowerShell installers and manual validation workflow | Production gates, native Windows/package-manager checks, tags and publication; all publishing remains paused |
+
+Completion describes tracked core scope, not all future product features. Detailed
+evidence and historical increments are in [status.md](status.md).
+
 ## What changed and why it matters
 
 | Current server evidence | Client/CLI consequence |
@@ -34,8 +50,8 @@ repositories and declare the tested server baseline with every release.
 | Personal and organization resource accounts; scoped owner/admin/operator/viewer membership | Model authenticated identity separately from resource workspace. Do not equate a protocol actor with universal resource ownership. |
 | Starter/Contributor access and organization capacity; CLI credentials have a separate cap of 10 | Read effective quotas from the server. Correct the CLI's token-quota advice; login credentials do not consume the manual-token plan allowance. |
 | Token scope/expiry metadata and settings-based rotation with overlap | Distinguish login credentials from automation tokens; preserve metadata and revoked/expired/retiring error behavior. Rotation is not yet a general command-client operation. |
-| SSH accepts Ed25519, RSA SHA-2, and NIST ECDSA | The CLI's explicit-identity Ed25519 restriction is behind the server. Align validation without weakening host verification. |
-| HTTP command limit: 8192 command bytes and 16384 body bytes; command and search rate limits | Validate UTF-8 byte limits before sending, including JSON overhead. Preserve 429/error metadata; provide useful size and retry diagnostics. |
+| SSH accepts Ed25519, RSA SHA-2, and NIST ECDSA | CLI validation now supports these algorithms while retaining OpenSSH host verification. |
+| HTTP command limit: 8192 command bytes and 16384 body bytes; command and search rate limits | UTF-8 command/body limits and structured HTTP/protocol error handling are implemented and tested. |
 | A separate browser-authenticated Live management WebSocket | Distinguish audience subscription from management watching. Management observers should not consume audience quota. |
 | Browser-only organization settings, Live workspace movement, design, collaborations, stack reorder/removal | These features need an explicit public integration contract before CLI commands or client methods are promised. |
 | Documentation reorganized into protocol, HTTP, and domain references | Use those sources and implementation tests as contract inputs; avoid treating prose alone as executable truth. |
@@ -62,8 +78,8 @@ They do not establish coverage of the new organization/browser surfaces.
    framing is implicit in known headers. Resolve or formally document these
    constraints and test them against the server before freezing client APIs.
 5. The native CLI is explicitly described as unpublished/in development in the
-   server documentation. Our current local command/output shapes are drafts,
-   including raw record JSON. The unsupported `secret set` alias has been removed.
+   server documentation. Stable CLI output is now documented in `output.md`;
+   publication remains paused. The unsupported `secret set` alias has been removed.
 
 ## Delivery sequence and acceptance gates
 
@@ -73,7 +89,8 @@ Inventory each candidate operation with its endpoint or command, authentication
 mode, authority, request/response, limits, errors, and supported server baseline.
 Add request fixtures beside existing response fixtures. Verify their wire
 semantics with server tests, including the secret mismatch and framing cases.
-Resolve the secret grammar and publish a supported-feature matrix.
+The operation matrix and source-verified fixtures are complete. Resolve the
+remaining secret grammar and stats-field discrepancies with the server owner.
 
 Run integration tests using a disposable server/test database: PKCE success and
 failure, onboarding-required rejection, token revocation/expiry/scopes, quota
@@ -96,6 +113,9 @@ protocol, and HTTP JSON failures distinctly, with status and server metadata.
 Enforce request limits and cancellation. Preserve the current read/search/Live
 surface while reconciling draft commands with the server.
 
+These core client items are complete and verified against the real server using
+the public credential-only constructors. New methods remain subject to this gate.
+
 **Gate:** standalone Go applications and CLI commands use the same client paths
 and pass the server integration suite without personal/workspace authority leaks.
 
@@ -104,9 +124,10 @@ and pass the server integration suite without personal/workspace authority leaks
 Named account profiles at a project-managed service, explicit HTTP/SSH transport selection, stable
 output, shell completion and destructive-command confirmation are implemented;
 see `status.md` for progress and `output.md` for the stable contract. Native
-Windows, Ubuntu and macOS hosted checks now pass, alongside local Linux/arm64
-and Fish runtime checks. Repository placement and package publication remain
-separate decisions.
+Windows, Ubuntu and macOS hosted checks passed on the earlier published code;
+local Linux/arm64 and Fish checks also passed. Fixed-endpoint/API changes have
+new local macOS/Linux evidence; refresh native Windows before release. Repository
+placement is decided and implemented; package publication stays paused.
 Support automation tokens without exposing token values in command-line arguments.
 Handle username onboarding, separate CLI credential quotas, expired/revoked
 credentials, and revocation failures accurately. Align explicit SSH key validation
@@ -157,14 +178,23 @@ Publish CLI binaries/checksums for Linux/macOS/Windows on amd64/arm64, test nati
 TLS/login/process behavior, and document the optional external OpenSSH dependency.
 Coordinate server documentation with the first CLI release. Add installer and
 package-manager distribution after release artifacts and upgrade paths work.
+Local preparation now provides six versioned archives, checksums, license and
+completion files, Bash/PowerShell installers, generated Homebrew/Scoop manifests,
+and a manual candidate-validation workflow. See `releases.md` for offline testing
+and proposed distribution commands. No hosted script, tap, bucket or release has
+been published. Package-manager end-to-end checks and native Windows installer
+validation remain release gates.
 
 ## Immediate next work
 
-Start with milestone 1: resolve `SECRET SET`, build the operation/transport matrix,
-and add server-verified request fixtures and disposable integration tests. Then
-align SSH validation and HTTP size/error handling. The Go client and CLI repository split is authorized and in progress. Keep
-new language clients and browser-only feature wrappers behind their verified
-contracts.
+The authorized local release-packaging increment is complete. Existing core
+implementation, repository separation, request/response fixtures and real-server
+integration do not need to be restarted. Remaining release preparation is native
+Windows installer execution and actual Homebrew/Scoop install/test. Production
+HTTPS/SSH addresses, a published/pinned Go client and fresh GOWORK=off validation
+are required before publishing; publication remains paused. Server-owned contract
+discrepancies and workspace/event contracts remain outside CLI-only work. New
+language clients follow the verified core contract in their separate repositories.
 
 ## Sources reviewed
 

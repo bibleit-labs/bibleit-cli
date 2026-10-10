@@ -3,7 +3,27 @@
 Updated 2026-10-10. Counts describe explicit acceptance items, not estimated
 percentages of the entire project. The full plan is in `plan.md`.
 
-## Current increment: simple API-token clients and real fixed-service integration
+## Current increment: local release packaging and installation paths
+
+Branch: `local-release-packaging`. Everything stays local: no pushes, tags,
+GitHub Releases, hosted workflow runs, Homebrew tap or Scoop bucket changes.
+
+| Item | Status | Evidence / limits |
+| --- | --- | --- |
+| Distribution design | Complete | Homebrew, Bash/cURL, PowerShell, direct archives and Scoop selected; future channels and maintenance scope documented |
+| Archives and build metadata | Complete | Go 1.27.1; six amd64/arm64 macOS/Linux/Windows archives; version injection, license/completions, eight SHA-256 entries; repeat builds have identical archive/checksum bytes |
+| Installer and package-manager preparation | Complete locally | Checksum-required per-user installers, version validation and safe replacement; generated Homebrew formula and Scoop manifest use real archive hashes |
+| Local validation and future native gate | Complete for local scope | macOS/arm64 and disposable Linux/arm64 offline install/reinstall and failure cases pass; PowerShell parser/failure cases pass in a Linux container; Ruby syntax and manifest checks pass; native Windows and actual Homebrew/Scoop install/test remain pending |
+| Reconcile plan and local Conventional Commit | Complete | Plan marks core/client split/fixed-endpoint work complete; release docs distinguish local preparation from production/publication; commit stays local |
+
+Progress: **5/5 tracked local-preparation items complete**. Candidate files are
+ignored under `build/releases/`. The prepared manual workflow validates future
+standalone candidates and native installers with read-only repository permissions;
+it has not been pushed or run. Production packaging currently rejects the
+unpublished `v0.0.0` client dependency unless `--local` is explicit. Publication
+remains paused. See [releases.md](releases.md) for reproduction and release gates.
+
+## Previous increment: simple API-token clients and real fixed-service integration
 
 All work remains local; publication and release tags stay paused. Both branches
 are `simple-client-integration`, with no codex prefix. Server files are read into
@@ -85,7 +105,7 @@ assessment or future workspace/event APIs.
 | 3. Customer CLI profiles/auth/output | Complete for tracked scope | 5/5: profiles, credentials, output, completion/destructive UX and representative native platform validation |
 | 4. Workspace and event integration APIs | Pending server contract | Existing browser endpoints are not bearer-token client APIs |
 | 5. Python, Ruby, Rust clients | Not started | Wait for verified core contract |
-| 6. Independent publication | Paused by user | Keep work local; user clearing public repositories; production endpoint, real client version and release checks pending |
+| 6. Independent publication | Local preparation complete; publishing paused | Six-target archives/checksums, installers and Homebrew/Scoop manifests prepared; production addresses, real client version, standalone/native Windows/package-manager checks and publication pending |
 
 ## Reproduce verification
 

@@ -1,0 +1,48 @@
+# Prepared locally only. No tag trigger, release upload or repository write permission.
+name: Validate release candidate
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Candidate version (vMAJOR.MINOR.PATCH, optional prerelease)
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  candidate:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-15, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    env:
+      GOTOOLCHAIN: local
+      GOWORK: 'off'
+      CANDIDATE_VERSION: ${{ inputs.version }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-go@v6
+        with:
+          go-version: '1.27.1'
+          cache: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - name: Package standalone candidate (production gates enforced)
+        run: python scripts/package_release.py --version "$CANDIDATE_VERSION"
+        shell: bash
+      - name: Offline native installer checks
+        run: python scripts/check_release.py --assets build/releases
+      - name: PowerShell parser and failure paths
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: ./scripts/check_powershell_installer.ps1 -AssetsDir build/releases
+      - name: Save reviewed candidate artifacts
+        if: matrix.os == 'ubuntu-24.04'
+        uses: actions/upload-artifact@v7
+        with:
+          name: release-candidate
+          path: build/releases/
+          if-no-files-found: error
