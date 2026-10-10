@@ -113,6 +113,8 @@ Source fingerprints are recorded in `server-baseline.json`.
 ```sh
 python3 scripts/check_server.py
 python3 scripts/check_server.py --integration
+# Include latest assessment import-access/publication cases in the isolated runner:
+python3 scripts/check_server_container.py --imports --baseline contract/server-baseline.json
 ```
 
 Identical repeated response fields are accepted for compatibility with older

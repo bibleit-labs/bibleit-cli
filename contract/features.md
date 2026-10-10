@@ -58,3 +58,9 @@ metadata integration passes, including permission denial and inactive-token filt
 The assessment also fixed an intermediate normal Live-deletion regression during
 stream authorization changes. The real OpenSSH subscription once again receives
 EVENT closed; the complete integration run passes.
+
+Latest assessment validation (2026-10-10) additionally passes all 10 import-access
+and 14 publication cases via `--imports`, including immutable generations,
+concurrent archives and retained handles. The server source and test fingerprints
+in `server-baseline.json` matched the working tree at completion. This closes
+the prior translation/registry snapshot gap; later edits need revalidation.
