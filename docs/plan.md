@@ -1,14 +1,13 @@
 # Bibleit clients and CLI: revised implementation plan
 
-Public releases and tags remain paused. The user recreated `bibleit-cli` and
-`bibleit-go` as private repositories and authorized validation-branch pushes and
-CI on 2026-10-10. The separate `bibleit-labs/homebrew-tap` is now created; formula
-preparation stays local until a distributable CLI release exists. Endpoint configuration is removed: every client targets the
-project-managed service, currently `http://localhost:8080`. See
-[endpoint-policy.md](endpoint-policy.md). Local release preparation is complete;
-see [releases.md](releases.md). Before publishing, set the
-production HTTPS/SSH addresses, release the Go client, pin it in the CLI, and
-verify standalone builds without a workspace.
+Source branch pushes and private CI are authorized for all three prepared
+repositories as of 2026-10-11. Customer release tags/assets and repository visibility
+changes remain gated on production readiness. The repositories are currently
+private: `bibleit-cli`, `bibleit-go` and `homebrew-tap`. This supersedes earlier
+local-only source instructions. Use Conventional Commits and no codex branch prefix.
+Every client targets the project-managed service, currently
+`http://localhost:8080`; SSH uses `127.0.0.1:2222`. See
+[endpoint-policy.md](endpoint-policy.md) and [releases.md](releases.md).
 
 Revised 2026-10-11 against the local `../bibleit-server` checkout. Its HEAD is
 `1a266cc`, with uncommitted assessment changes; this is a working-tree review,
@@ -212,19 +211,64 @@ Homebrew preparation uses `bibleit-labs/homebrew-tap`, formula `bibleit-cli`,
 and executable `bibleit`. The future one-step installation command is
 `brew install bibleit-labs/tap/bibleit-cli`. Tap commit `7834751` passed isolated
 local install/test/reinstall/completions/uninstall using development archives.
-The generator emits `bibleit-cli.rb`; no formula or release was published.
+The generator emits `bibleit-cli.rb`; no customer-ready formula or release was published. The prepared tap source branch
+may now be pushed privately.
 Homebrew itself may fetch developer gems/core metadata into the disposable prefix.
 
-## Immediate next work
+## Release readiness review and ordered next steps
 
-The authorized local release-packaging increment is complete. Existing core
-implementation, repository separation, request/response fixtures and real-server
-integration do not need to be restarted. Native Windows CLI/installer, Scoop and Homebrew lifecycle validation are
-complete. Private native Go-client CI also passes on all three platforms. Production
-HTTPS/SSH addresses, a published/pinned Go client and fresh GOWORK=off validation
-are required before publishing; publication remains paused. The core server discrepancies are closed; public workspace/event contracts
-remain outside CLI-only work. New
-language clients follow the verified core contract in their separate repositories.
+Reviewed 2026-10-11. Core scope is complete; the first release does not depend on
+Python/Ruby/Rust clients or browser-only workspace/events. Those remain separate
+milestones. Fresh CI validates the development endpoint and workspace dependency;
+it cannot close production endpoint or standalone dependency gates.
+
+| Order | Next step | Status / owner input | Acceptance evidence |
+| --- | --- | --- | --- |
+| 1 | Push prepared client/CLI/tap sources and refresh draft CI pins | Authorized; this increment | Remote branches match local commits; CLI native/candidate workflows use the exact pushed client SHA; all native jobs pass |
+| 2 | Choose first release scope/version and customer access model | Pending project decision; propose Go/CLI v0.1.0, existing core commands | Supported commands/transports and known v1 limits in release notes; public distribution or explicitly supported private delivery selected |
+| 3 | Set production HTTPS and SSH addresses; adapt endpoint-dependent tests | Blocked on actual addresses and deployed service | NewClient(apiToken), browser exchange/logout and CLI HTTP/SSH use project-owned destinations; no customer override; disposable tests never contact production accidentally; existing profile bindings fail safely after address changes |
+| 4 | Freeze the deployed server contract and run release integration | Pending deployed revision/configuration | Committed/deployed server revision plus relevant source fingerprints, full HTTP/SSH/auth/import compatibility pass; controlled production TLS/login/revocation and SSH host verification smoke checks |
+| 5 | Version/release the Go client and pin it in CLI | After steps 2–4 | Reviewed semantic version, tag/release notes, client downloaded from remote; replace v0.0.0, tidy dependency metadata, clean-cache GOWORK=off test/vet/build succeeds without sibling checkout or replacement modules |
+| 6 | Validate the exact standalone CLI release candidate | After step 5 | Clean source and pinned dependency; production packaging without --local; six archives/checksums/provenance/version match; fresh Windows/macOS/Linux native CLI and installer jobs plus Fish/Homebrew/Scoop pass |
+| 7 | Prepare customer-visible artifacts and release notes | After step 6; publication decision required | Release notes cover client version, server baseline, OpenSSH requirement, profile migration, install/update/uninstall, supported architectures and known limits; decide signing policy and test real macOS downloaded binaries with normal OS protections |
+| 8 | Publish Go client then CLI binaries and installer assets, then tap/bucket | Pending release readiness and publication authorization | Reviewed manual procedure or publication workflow; exact tag/commit/artifacts verified; customer-accessible URLs; tap formula matches released hashes/version; Scoop channel created if chosen |
+| 9 | Test fresh customer installs and document support/update process | After publication | Actual published Homebrew/cURL/PowerShell/manual installs and upgrade paths pass on clean environments; release links/examples correct; record evidence and maintenance/rollback procedure |
+
+Source publication order is Go client first, then CLI with its exact CI pin, and
+independent tap staging. Reuse `integration-refresh` and `formula-preparation`;
+do not merge into other/default branches or create release tags during this review.
+Current default branches are CLI `package-manager-validation`, Go
+`private-platform-validation`, and tap `formula-preparation`. Before launch, review
+and promote the approved source into the chosen release/default branch through
+normal review; changing branch defaults is separate from pushing the prepared work.
+
+### Concrete remaining constraints
+
+- Production addresses are unknown. The release packager intentionally rejects
+  localhost HTTPS/SSH placeholders; completing the core milestone does not lift it.
+- Native process tests and the disposable real-server harness currently assume
+  localhost:8080. Adapt their fixture approach with the address change while keeping
+  the public API credential-only. Production smoke tests must be separate and explicit.
+- CLI go.mod still requires bibleit-go v0.0.0. Draft CI checks out an exact client
+  commit in an ephemeral workspace; a green draft run is not GOWORK=off certification.
+- Private repositories are suitable for CI staging. Current unauthenticated
+  GitHub Release URLs in formulas/installers cannot serve customers while those
+  artifacts are private. Restore the planned public client/CLI/tap visibility when
+  approved, or design a separate authenticated channel. Server visibility stays private.
+  See [GitHub release asset access](https://docs.github.com/en/rest/releases/assets).
+- For private standalone Go validation, configure Git credentials and
+  [GOPRIVATE](https://go.dev/ref/mod#private-modules); pinning alone does not grant access.
+- There is no release upload/tag workflow: the packager only creates files and
+  candidate CI only saves validation artifacts. A reviewed manual first release is
+  sufficient; release automation is a later implementation choice.
+- The staged Homebrew formula is v0.1.0-dev.1 with unpublished URLs. Push its source
+  for review, then replace it with the exact released candidate before customer use.
+  Scoop is generated/tested, but a customer bucket and publication are still pending.
+
+Next implementation increment: obtain the production addresses/deployment baseline,
+then update service constants and endpoint-dependent fixtures together. If deployment
+is not ready, keep validating private development candidates without making a
+customer-release claim. The seven tracked core contract items stay complete.
 
 ## Sources reviewed
 

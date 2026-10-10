@@ -324,10 +324,10 @@ race tests, vet, builds and executable smoke checks on Ubuntu, Windows and macOS
 Linux also runs actual Bash/Zsh/Fish completion. See
 [native validation](docs/native-validation.md) for commands, coverage and verification evidence. Native macOS/arm64 and Linux/arm64 checks
 pass locally for the fixed-endpoint draft, including Fish/Bash/Zsh on Linux.
-All six Linux/macOS/Windows amd64/arm64 targets cross-build. Hosted Windows
-and other native results belong to the earlier implementation; no current
-changes have been pushed or tested by GitHub Actions. See the documented
-historical evidence and current limitations.
+All six Linux/macOS/Windows amd64/arm64 targets cross-build. Hosted results are tied to the exact revisions in the validation records.
+Current private source pushes are authorized, and workflows pin the reviewed
+Go client commit. Fresh native and package-candidate checks must pass on the
+final release inputs; historical green runs do not certify later changes.
 
 
 ## Contributing and license

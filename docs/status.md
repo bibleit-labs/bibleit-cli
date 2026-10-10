@@ -3,7 +3,25 @@
 Updated 2026-10-11. Counts describe explicit acceptance items, not estimated
 percentages of the entire project. The full plan is in `plan.md`.
 
-## Current increment: Homebrew naming and assessment protocol fixes
+## Current increment: release readiness and private source publication
+
+Updated authorization: all prepared source work may be pushed to the private
+CLI, Go-client and Homebrew tap repositories. This supersedes earlier local-only
+source restrictions; customer release tags/assets and visibility changes remain
+separate readiness gates. Branches remain `integration-refresh` (CLI/client) and
+`formula-preparation` (tap), with Conventional Commits and no codex prefix.
+
+| Item | Status | Evidence / limits |
+| --- | --- | --- |
+| Review remaining release gates | Complete | Production addresses/deployment, endpoint fixture adaptation, released/pinned dependency, GOWORK=off build, final candidate/platform checks, customer-accessible distribution and release sequence recorded |
+| Update next steps and validation configuration | Complete | Ordered nine-step checklist in plan.md; current client SHA pinned in both CLI workflows; integration-refresh now triggers candidate checks; stale local-only policy corrected |
+| Push prepared work and refresh hosted verification | In progress | Client source 310259e pushed; tap source dc2c4a5 pushed; CLI publication and fresh native/candidate run evidence pending |
+
+Progress: **2/3 tracked readiness-review items complete**. This is a review/source
+publication increment, not a customer release. Repository privacy was verified
+through authenticated interactive zsh; no visibility changes, tags or releases.
+
+## Previous increment: Homebrew naming and assessment protocol fixes
 
 Branches: CLI/client `integration-refresh`, tap `formula-preparation`. Local only:
 no pushes, tags, releases or CI runs. Validation is captured by CLI `6d0ebf8`,

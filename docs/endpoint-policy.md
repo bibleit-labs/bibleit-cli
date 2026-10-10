@@ -1,6 +1,6 @@
 # Service endpoint policy
 
-Updated 2026-10-10. All language clients target the single project-managed Bibleit
+Updated 2026-10-11. All language clients target the single project-managed Bibleit
 service. The server repository is private; its eventual organizational move is
 separate from publishing public client repositories.
 
@@ -52,5 +52,7 @@ switching the fixed endpoint to production.
 
 Release tags and binary publication remain paused. The user recreated the client
 repositories privately and authorized validation-branch pushes and CI; the
-fixed-endpoint rule remains in effect. Local Git bundles
+user authorized all prepared source branch pushes on 2026-10-11. Customer
+release tags/assets remain gated on production readiness; the fixed-endpoint
+rule remains in effect. Local Git bundles
 in the CLI's ignored `.local-backups/` directory preserve the pre-change histories.

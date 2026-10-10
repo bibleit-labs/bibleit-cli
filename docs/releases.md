@@ -3,9 +3,29 @@
 Release publication is paused. The commands below prepare files locally; no
 release tag, GitHub Release, distributed formula, Scoop bucket or hosted installer
 is created. Private validation branches and CI are authorized. The separate
-`bibleit-labs/homebrew-tap` exists; its formula preparation remains local.
+`bibleit-labs/homebrew-tap` exists; prepared source branches may be pushed
+to the private repositories as of 2026-10-11. Customer package publication remains
+gated on production readiness.
 Production service addresses and a published Go-client dependency remain release
 gates. Local candidates still connect to `http://localhost:8080`.
+
+## Public distribution versus private validation
+
+Private source pushes and Actions artifacts are development staging, not a
+customer download channel. The generated formula, Scoop manifest and installers
+use ordinary GitHub Release URLs without GitHub credentials. Before public launch,
+make the intended client/CLI/tap repositories and release assets publicly
+accessible, or deliberately implement and test a separate authenticated/private
+installation channel. Do not change repository visibility during readiness review.
+A private Go client also requires Git authentication and `GOPRIVATE` for fresh
+standalone builds; this is not solved by pinning a version alone.
+See [Go private modules](https://go.dev/ref/mod#private-modules) and
+[GitHub release asset access](https://docs.github.com/en/rest/releases/assets).
+
+The packager prepares artifacts but does not upload, tag or publish them. Use a
+reviewed manual release procedure for the first release, or add an explicit
+publication workflow later. The candidate workflow has contents-read permission
+and remains validation-only. See the ordered launch checklist in [plan.md](plan.md).
 
 ## Prepare and check a development candidate
 
@@ -81,7 +101,7 @@ controls or removes macOS quarantine attributes.
 These are proposed public commands, **not available installation paths today**:
 
 ```sh
-# Homebrew: publish the generated formula in a future bibleit-labs/homebrew-tap.
+# Homebrew: publish a release-matching formula in bibleit-labs/homebrew-tap.
 brew install bibleit-labs/tap/bibleit-cli
 
 # Bash: release assets host the installer; no website/domain assumption needed.
@@ -113,8 +133,9 @@ The implementation here is written for Bibleit's Go release layout.
 
 ## Release gates and future validation
 
-1. Set the production HTTPS/SSH addresses and resolve outstanding server contract
-   discrepancies; rerun fixed-endpoint integration against the agreed baseline.
+1. Set the production HTTPS/SSH addresses, adapt the localhost-based test fixtures
+   and rerun integration against the agreed server baseline. The tracked core
+   protocol discrepancies are resolved.
 2. Release the reviewed Go client when authorized, pin its version in go.mod,
    record dependency sums and verify builds with GOWORK=off. No replacement modules.
 3. Commit reviewed sources and use a semantic version. Running the packager without
@@ -139,7 +160,7 @@ Local evidence for the packaging increment: macOS/arm64 and disposable Linux/arm
 installation/replacement and corrupt/missing/duplicate checksum checks; PowerShell
 parser/failure-path checks in a disposable Linux container; all six archive layouts,
 eight checksums and package manifest values; two identical archive builds. Native
-Native Windows PowerShell 7/5.1 installers and Scoop lifecycle now pass, together
+Windows PowerShell 7/5.1 installers and Scoop lifecycle now pass, together
 with Linux/macOS installers and macOS Homebrew, in
 [private run 38088193158](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38088193158).
 Homebrew also passes local macOS/arm64 checks against the separate tap formula
