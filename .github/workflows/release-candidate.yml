@@ -1,6 +1,8 @@
-# Prepared locally only. No tag trigger, release upload or repository write permission.
+# Private draft validation is authorized. No tags or releases are published.
 name: Validate release candidate
 on:
+  push:
+    branches: [package-manager-validation]
   workflow_dispatch:
     inputs:
       version:
@@ -19,10 +21,25 @@ jobs:
     timeout-minutes: 20
     env:
       GOTOOLCHAIN: local
-      GOWORK: 'off'
-      CANDIDATE_VERSION: ${{ inputs.version }}
+      CANDIDATE_VERSION: ${{ inputs.version || 'v0.1.0-ci.1' }}
     steps:
       - uses: actions/checkout@v6
+      - name: Check out exact private Go client
+        uses: actions/checkout@v6
+        with:
+          repository: bibleit-labs/bibleit-go
+          ref: 3d15ec6f54eba822129863e86e006d51deb07725
+          path: .ci-client
+          token: ${{ secrets.BIBLEIT_CLIENT_READ_TOKEN }}
+          persist-credentials: false
+      - name: Check out pinned Scoop engine
+        if: runner.os == 'Windows'
+        uses: actions/checkout@v6
+        with:
+          repository: ScoopInstaller/Scoop
+          ref: e6aa3b366bdee8ed138c1e0f7b85192ebdd35d0f
+          path: .ci-scoop
+          persist-credentials: false
       - uses: actions/setup-go@v6
         with:
           go-version: '1.27.1'
@@ -30,19 +47,32 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: '3.13'
-      - name: Package standalone candidate (production gates enforced)
-        run: python scripts/package_release.py --version "$CANDIDATE_VERSION"
+      - name: Prepare draft client workspace
+        run: go work init . ./.ci-client
+      - name: Package development candidate (never a production release)
+        run: python scripts/package_release.py --local --version "$CANDIDATE_VERSION"
         shell: bash
       - name: Offline native installer checks
         run: python scripts/check_release.py --assets build/releases
+      - name: Windows PowerShell 5.1 installation and replacement
+        if: runner.os == 'Windows'
+        run: python scripts/check_release.py --assets build/releases --powershell powershell
       - name: PowerShell parser and failure paths
         if: runner.os == 'Windows'
         shell: pwsh
         run: ./scripts/check_powershell_installer.ps1 -AssetsDir build/releases
+      - name: Native Scoop installation lifecycle
+        if: runner.os == 'Windows'
+        run: python scripts/check_scoop.py --assets build/releases --scoop-source .ci-scoop
+      - name: Native Homebrew installation lifecycle
+        if: runner.os == 'macOS'
+        run: python scripts/check_homebrew.py --assets build/releases
       - name: Save reviewed candidate artifacts
-        if: matrix.os == 'ubuntu-24.04'
+        if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: release-candidate
-          path: build/releases/
+          name: validation-${{ matrix.os }}
+          path: |
+            build/releases/
+            build/validation/
           if-no-files-found: error

@@ -21,6 +21,14 @@ jobs:
       GOTOOLCHAIN: local
     steps:
       - uses: actions/checkout@v6
+      - name: Check out exact private Go client for draft validation
+        uses: actions/checkout@v6
+        with:
+          repository: bibleit-labs/bibleit-go
+          ref: 3d15ec6f54eba822129863e86e006d51deb07725
+          path: .ci-client
+          token: ${{ secrets.BIBLEIT_CLIENT_READ_TOKEN }}
+          persist-credentials: false
       - uses: actions/setup-go@v6
         with:
           go-version: '1.27.1'
@@ -46,6 +54,8 @@ jobs:
         run: |
           go version
           go env GOOS GOARCH
+      - name: Prepare unpublished client workspace
+        run: go work init . ./.ci-client
       - name: Native race tests
         env:
           CGO_ENABLED: '1'
