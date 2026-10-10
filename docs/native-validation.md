@@ -21,6 +21,29 @@ At the publication pause, changes stayed local with a sibling workspace. Private
 CI is now authorized; see the latest validation section below. Each matrix targets runner-default architectures, not all six
 build targets. The original repository's remote main is unchanged.
 
+## Assessment HTTP/SSH compatibility refresh — 11 October 2026
+
+The isolated command `python3 scripts/check_server_container.py --imports
+--baseline build/validation/assessment-final-server-baseline-2026-10-11.json`
+passes against server c2beef5334c249f65daedd0e279b8d9252f0d51b plus assessment
+working-tree changes and libbibleit f6fed37919c848b1aa0208900af992a5e8a507f2.
+Native code is rebuilt in the Linux/arm64 namespace. The verified baseline records
+65 Erlang source, 62 test and 11 native build-input hashes; native capture rejects
+concurrent input/revision changes. Client and CLI baselines are synchronized.
+
+Passing coverage: 34 decoder/18 encoder fixtures, seven server security cases,
+all 11 Go HTTP subtests, real OpenSSH subscription/pause/reconnect/delete closure,
+single-credential/output parity, 17 auth/key/protocol tests, ten import-access and
+15 publication cases. There was no post-run source/test drift; the disposable
+PostgreSQL container was removed. Full ignored log:
+build/validation/assessment-final-integration-2026-10-11.log.
+
+These focused compatibility results are independent of the server's broader
+assessment, which still needs final sign-off. Production URLs and a committed/
+deployed release baseline remain open. The prior named-profile removal and
+platform evidence below remains historical; draft CI now pins client 8de21e9,
+whose changes are the baseline and contract documentation, not client runtime.
+
 ## Single-configuration validation — 11 October 2026
 
 The CLI removes named profiles and uses schema-v2 credentials with HTTP default

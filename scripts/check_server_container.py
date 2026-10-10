@@ -31,6 +31,15 @@ def fingerprints(source):
             for directory in ('src', 'test') for p in (source / directory).rglob('*.erl')}
 
 
+def native_fingerprints(library):
+    paths = [library / 'Makefile']
+    for directory in ('src', 'include', 'config'):
+        paths.extend((library / directory).rglob('*'))
+    return {str(p.relative_to(library)): hashlib.sha256(p.read_bytes()).hexdigest()
+            for p in sorted(paths) if p.is_file() and not p.is_symlink()
+            and not p.name.endswith(('.o', '.a', '.so', '.so.1', '.dylib'))}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--server', type=Path, default=ROOT.parent / 'bibleit-server')
@@ -47,6 +56,9 @@ def main():
         copy_sources(args.go_client.resolve(), sources / 'bibleit-go')
         (sources / 'bibleit-cli/go.work').write_text('go 1.27.1\n\nuse (\n .\n ../bibleit-go\n)\n')
         before = fingerprints(server)
+        native = server / 'libbibleit'
+        native_before = native_fingerprints(native)
+        native_head = run(['git', '-C', str(native), 'rev-parse', 'HEAD'], capture_output=True).stdout.strip()
         snapshot = sources / 'bibleit-server'
         # No .env, .git, databases, keys, uploaded data, or host-native binaries.
         for relative in ('src', 'test', 'c_src', 'libbibleit/src', 'libbibleit/include',
@@ -61,9 +73,18 @@ def main():
         shutil.copy2(server / 'libbibleit/Makefile', snapshot / 'libbibleit/Makefile')
         if before != fingerprints(server) or before != fingerprints(snapshot):
             raise RuntimeError('server source changed during snapshot; rerun')
+        if (native_before != native_fingerprints(native)
+                or native_before != native_fingerprints(snapshot / 'libbibleit')
+                or native_head != run(['git', '-C', str(native), 'rev-parse', 'HEAD'], capture_output=True).stdout.strip()):
+            raise RuntimeError('native library changed during snapshot; rerun')
         metadata = {
             'head': run(['git', '-C', str(server), 'rev-parse', 'HEAD'], capture_output=True).stdout.strip(),
             'working_tree_changes': bool(run(['git', '-C', str(server), 'status', '--porcelain'], capture_output=True).stdout.strip()),
+            'native_library': {
+                'head': native_head,
+                'working_tree_changes': bool(run(['git', '-C', str(native), 'status', '--porcelain'], capture_output=True).stdout.strip()),
+                'files_sha256': native_before,
+            },
         }
         (sources / 'server-metadata.json').write_text(json.dumps(metadata))
         build = temporary / 'tools'

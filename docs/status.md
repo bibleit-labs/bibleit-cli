@@ -3,7 +3,21 @@
 Updated 2026-10-11. Counts describe explicit acceptance items, not estimated
 percentages of the entire project. The full plan is in `plan.md`.
 
-## Current increment: first-release readiness review
+## Current increment: assessment compatibility refresh
+
+| Item | Status | Evidence / limits |
+| --- | --- | --- |
+| Check latest assessment results | Checked; package 22 full suite pending | Package 21 final suite passed; package 22 extended fanout/reconnect and HTTP load pass; overall campaign not complete |
+| Rerun isolated HTTP/SSH/import integration | Complete | 34 decoder/18 encoder fixtures, seven security cases, 11 HTTP subtests, real SSH lifecycle/output parity, 17 auth/key/protocol tests and 25 import cases pass; disposable database removed |
+| Synchronize baselines and update release plan | Prepared | Server c2beef5 working-tree snapshot, native f6fed37; 65 source/62 test/11 native fingerprints; client and CLI baseline bytes identical; private CI pins updated to client 8de21e9 |
+
+Current compatibility passes with no client regression. This is development
+integration evidence: the server working tree has assessment changes and the
+campaign is still in progress. The committed/deployed baseline, production
+addresses, released Go dependency and final standalone/customer-install gates
+remain open. No server edits or release tags/assets are created here.
+
+## Previous increment: first-release readiness review
 
 | Item | Status | Evidence / limits |
 | --- | --- | --- |

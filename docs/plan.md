@@ -190,24 +190,22 @@ in authorized private CI. See `native-validation.md` for exact revisions/runs.
 
 ## Latest integration evidence
 
-The latest 2026-10-11 local refresh is recorded in CLI validation commit
-`fe719db` and Go-client commit `17e146b`, against server HEAD
-`1a266cc8bf6aa726c4890b78ddf95a3aadda0ba0` plus assessment changes. The server
-snapshot includes fail-closed request quoting, the corrected generated-secret
-contract and immutable translation publication. `contract/server-baseline.json`
-records 63 source and 59 test fingerprints. It freezes the tested assessment working
-tree, including later plan-support changes; subsequent edits require a fresh
-snapshot.
-Its review date uses UTC, while this progress record uses the local date.
+The latest 2026-10-11 isolated refresh passed against server HEAD
+c2beef5334c249f65daedd0e279b8d9252f0d51b plus assessment working-tree changes,
+using native libbibleit f6fed37919c848b1aa0208900af992a5e8a507f2. The synchronized
+client/CLI baseline records 65 source, 62 test and 11 native build-input hashes.
+The native library is rebuilt inside the isolated Linux container, and capture
+rejects concurrent native input/revision changes. No server files were edited.
 
-Passing coverage: 34 decoder/18 encoder fixtures, 7 targeted security cases,
-11 HTTP subtests, actual OpenSSH subscription/credential/output checks, 17
-auth/key/protocol EUnit tests, 10 real-HTTP import-access cases and 15 publication
-cases. The optional `--imports` runner executes the assessment suite cases and
-callbacks with local fixtures in the disposable namespace. All checks passed;
-this is focused coverage, not the full server security campaign. Later assessment
-edits need a fresh snapshot. Browser-only workspace/event APIs and production
-release gates remain open.
+Passing coverage: 34 decoder/18 encoder fixtures, seven targeted security cases,
+11 HTTP subtests, actual OpenSSH subscription/pause/reconnect/delete closure and
+single-credential/output parity, 17 auth/key/protocol EUnit tests, 10 real-HTTP
+import-access and 15 publication cases. All checks passed and the disposable
+PostgreSQL container was removed. No post-run source/test drift was found.
+Log (ignored): build/validation/assessment-final-integration-2026-10-11.log.
+This is a frozen development snapshot, not the full server assessment or a
+compatibility claim against a deployed production release. The review date uses
+UTC while this progress record uses the local date.
 
 Homebrew preparation uses `bibleit-labs/homebrew-tap`, formula `bibleit-cli`,
 and executable `bibleit`. The future one-step installation command is
@@ -293,13 +291,13 @@ it on final changed release inputs rather than treating all tooling as unbuilt.
   127.0.0.1:2222 in the CLI. The production packager intentionally rejects these
   placeholders. Native process tests and real-server harness use loopback fixtures;
   adapt them with the endpoint change while keeping the public API credential-only.
-- Both contract/server-baseline.json files are identical and record server HEAD
-  1a266cc8bf6aa726c4890b78ddf95a3aadda0ba0 plus an assessment working-tree snapshot.
-  At this review, 1/63 recorded source fingerprints differs:
-  src/http/bibleit_http_listener.erl. All 59 recorded test fingerprints match.
-  This is drift evidence, not a regression finding; compatibility with that later
-  edit has not been tested. Do not replace baseline hashes merely to hide drift.
-- CLI go.mod still requires bibleit-go v0.0.0. Draft CI pins exact client 17e146b
+- Both contract/server-baseline.json files are identical and now record server
+  c2beef5334c249f65daedd0e279b8d9252f0d51b plus assessment working-tree changes,
+  with native f6fed37919c848b1aa0208900af992a5e8a507f2. The verified 65 source,
+  62 test and 11 native build-input fingerprints matched after integration.
+  A committed/deployed release freeze and production smoke checks are still pending.
+
+- CLI go.mod still requires bibleit-go v0.0.0. Draft CI now pins exact client 8de21e9
   in an ephemeral workspace and packages with --local. Green draft CI does not
   certify standalone dependency retrieval or production release provenance.
 - All three repositories are private. Generated ordinary GitHub release URLs do
@@ -323,16 +321,17 @@ libbibleit f6fed37919c848b1aa0208900af992a5e8a507f2; the local server submodule
 points at that revision. Package 22 separates management WebSocket authorization
 checks from keepalive pings (30-second ping interval). The assessment reports a
 passing 120-second/48-client fanout soak and 30 reconnect cycles, with the full
-server suite still running at notification time. These are assessment-reported
-results, not new CLI integration evidence.
+server suite still running at notification time. Those soak results are assessment-reported; the independent HTTP/SSH/import
+compatibility refresh above has now passed against the current snapshot.
 
 Neither the CLI nor Go client implements management WebSockets; their contract
 marks both browser WebSocket surfaces outside bearer client transport. No client
 ping cadence assumption or corresponding code change was found. HTTP/SSH command
-semantics and schemas are reported unchanged. Before release, wait for the final
-assessment result, freeze the agreed committed/deployed server revision and exact
-native submodule revision, then rerun compatibility before refreshing fingerprints.
-Do not refresh the recorded baseline from this still-changing working tree.
+semantics and schemas are reported unchanged and the refreshed compatibility run
+passes. Before release, wait for final assessment sign-off, freeze the agreed
+committed/deployed server and native revisions, then run release compatibility and
+production smoke checks. The newly verified development snapshot does not close
+that deployment gate.
 
 ### Next actionable increment
 
