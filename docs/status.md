@@ -33,7 +33,11 @@ record uses the local date. Evidence is ignored locally under:
 - `build/validation/homebrew-cli-naming.json`
 - `build/validation/protocol-integration-2026-10-11.log`
 
-The assessment's full campaign is separate and was still running at verification.
+The assessment subsequently confirmed a green full `make test` on 2026-10-11:
+248 Common Test cases, 48 Erlang unit tests, 71 JavaScript tests and the native
+C test, with no skips. This is server-owned evidence recorded in
+`../bibleit-server/docs/developers/security-test-results.md`, separate from our
+client integration run; its protocol contract matches the client safeguards.
 Production HTTPS/SSH addresses, a published/pinned Go client, standalone GOWORK=off
 validation and publication authorization remain release gates. Browser-only
 workspace/event contracts and the other language clients remain future work.
