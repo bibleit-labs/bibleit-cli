@@ -69,6 +69,11 @@ def main():
                 return [installer, '-NoProfile', '-File', str(ROOT / 'install.ps1'), '-Version', requested, '-AssetsDir', str(copied), '-InstallDir', str(destination)]
             binary = destination / 'bibleit.exe'
             env = dict(os.environ)
+            # CI launches Python from PowerShell 7. Let the selected runtime
+            # initialize its own module paths, especially Windows PowerShell 5.1.
+            for key in list(env):
+                if key.lower() == 'psmodulepath':
+                    del env[key]
         else:
             def command(requested):
                 return ['bash', str(ROOT / 'install.sh'), requested]
