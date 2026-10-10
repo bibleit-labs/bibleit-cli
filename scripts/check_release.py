@@ -53,7 +53,10 @@ def main():
         assert b'Permission is hereby granted' in files['LICENSE']
     for entry in json.loads((assets / 'bibleit.json').read_text())['architecture'].values():
         assert hashes[entry['url'].split('/')[-1]] == entry['hash']
-    formula = (assets / 'bibleit.rb').read_text()
+    formula_path = assets / 'bibleit-cli.rb'
+    if not formula_path.exists():
+        formula_path = assets / 'bibleit.rb'  # Previously generated local candidates.
+    formula = formula_path.read_text()
     for name, digest in hashes.items():
         if name.endswith('.tar.gz'):
             assert name in formula and digest in formula

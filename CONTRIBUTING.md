@@ -73,7 +73,7 @@ workflow has read-only repository permissions and no publication steps.
 Run `python3 scripts/check_homebrew.py --assets build/releases/<candidate>` on
 macOS/Linux with Homebrew already installed. This clones a disposable prefix,
 uses local archive URLs, tests install/completions/reinstall/uninstall, and removes
-the fixture. To validate the separate tap, add `--formula ../homebrew-tap/Formula/bibleit.rb`.
+the fixture. To validate the separate tap, add `--formula ../homebrew-tap/Formula/bibleit-cli.rb`.
 On Windows, `scripts/check_scoop.py --assets <candidate> --scoop-source <source>`
 uses an existing Scoop checkout, a disposable root, and loopback archive downloads.
 Private CI needs `BIBLEIT_CLIENT_READ_TOKEN`, restricted to contents-read on

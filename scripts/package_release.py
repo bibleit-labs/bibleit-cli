@@ -40,7 +40,7 @@ def archive(path, files, windows):
 
 
 def formula(version, hashes):
-    lines = ['class Bibleit < Formula', '  desc "Command-line client for Bibleit"', '  homepage "https://github.com/bibleit-labs/bibleit-cli"', f'  version "{version}"', '  license "MIT"']
+    lines = ['class BibleitCli < Formula', '  desc "Command-line client for Bibleit"', '  homepage "https://github.com/bibleit-labs/bibleit-cli"', f'  version "{version}"', '  license "MIT"']
     for system, section in (("darwin", "on_macos"), ("linux", "on_linux")):
         lines.append(f"  {section} do")
         for arch, condition in (("arm64", "Hardware::CPU.arm?"), ("amd64", "Hardware::CPU.intel?")):
@@ -115,7 +115,7 @@ def main():
             (stage / name).write_bytes((ROOT / name).read_bytes())
             hashes[name] = hashlib.sha256((stage / name).read_bytes()).hexdigest()
         (stage / 'checksums.txt').write_text(''.join(f'{digest}  {name}\n' for name, digest in sorted(hashes.items())))
-        (stage / 'bibleit.rb').write_text(formula(version, hashes))
+        (stage / 'bibleit-cli.rb').write_text(formula(version, hashes))
         scoop = dict(version=version, description='Command-line client for Bibleit', homepage='https://github.com/bibleit-labs/bibleit-cli', license='MIT', bin='bibleit.exe', architecture={})
         for arch, scoop_arch in (('amd64', '64bit'), ('arm64', 'arm64')):
             name = f'bibleit_{version}_windows_{arch}.zip'
