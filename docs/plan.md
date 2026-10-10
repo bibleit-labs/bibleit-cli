@@ -239,92 +239,90 @@ The generated formula, manifest and checksums must accompany the CLI release.
 Unpublished development URLs are not fetched by tap syntax CI; actual installation
 continues in CLI candidate CI and must be rechecked against published release URLs.
 
-## Release readiness review and ordered next steps
+## First release readiness review and ordered next steps
 
-Reviewed 2026-10-11. Core scope is complete; the first release does not depend on
-Python/Ruby/Rust clients or browser-only workspace/events. Those remain separate
-milestones. Fresh CI validates the development endpoint and workspace dependency;
-it cannot close production endpoint or standalone dependency gates.
+Reviewed 2026-10-11 against local sources and authenticated GitHub state. This
+review is complete; the first customer release is not ready. Core scope and
+private development validation are complete. There are no Go, CLI or tap releases
+published. Python/Ruby/Rust clients, workspace/events, additional package channels
+and automated release uploading are outside the initial release requirement.
 
-| Order | Next step | Status / owner input | Acceptance evidence |
+### Completed preparation
+
+- Go client native matrix: Windows/Ubuntu/macOS passed at 17e146b in
+  [run 38091438398](https://github.com/bibleit-labs/bibleit-go/actions/runs/38091438398).
+- CLI native and development candidate matrices: passed at fe719db with exact
+  client 17e146b in [native run 38091481226](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38091481226)
+  and [candidate run 38091481159](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38091481159).
+  These cover single credential configuration, output/completion, native installers,
+  PowerShell 7/5.1, Homebrew and Scoop against development fixtures. Six targets
+  cross-build; Windows arm64 has not been validated on native arm64 hardware.
+- Tap Homebrew syntax/style and seven updater regressions passed at 04e8b16 in
+  [run 38092320412](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38092320412).
+  Private CLI release-list access using BIBLEIT_CLI_READ_TOKEN passed at bf6a46b in
+  [run 38092683138](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38092683138).
+  Actions PR creation is enabled, default workflow permissions stay read-only,
+  and only the updater job requests write permissions. The user confirmed the
+  secret selects only bibleit-cli with Contents: read-only.
+- Prepared sources and documentation are pushed to private branches. Subsequent
+  documentation commits do not change the tested runtime code. No tags, releases,
+  merges or visibility changes were performed during this review.
+
+### Remaining release gates, in order
+
+| Order | Item | Current status / required input | Done when |
 | --- | --- | --- | --- |
-| 1 | Push prepared client/CLI/tap sources and refresh draft CI pins | Complete; client/CLI native, candidate and tap CI green | Remote branches match local commits; CLI native/candidate workflows use the exact pushed client SHA; all native and development candidate jobs passed on the single-configuration implementation; see native-validation.md |
-| 2 | Choose first release scope/version and customer access model | Pending project decision; propose Go/CLI v0.1.0, existing core commands | Supported commands/transports and known v1 limits in release notes; public distribution or explicitly supported private delivery selected |
-| 3 | Set production HTTPS and SSH addresses; adapt endpoint-dependent tests | Blocked on actual addresses and deployed service | NewClient(apiToken), browser exchange/logout and CLI HTTP/SSH use project-owned destinations; no customer override; disposable tests never contact production accidentally; credential bindings fail safely after address changes |
-| 4 | Freeze the deployed server contract and run release integration | Pending deployed revision/configuration | Committed/deployed server revision plus relevant source fingerprints, full HTTP/SSH/auth/import compatibility pass; controlled production TLS/login/revocation and SSH host verification smoke checks |
-| 5 | Version/release the Go client and pin it in CLI | After steps 2–4 | Reviewed semantic version, tag/release notes, client downloaded from remote; replace v0.0.0, tidy dependency metadata, clean-cache GOWORK=off test/vet/build succeeds without sibling checkout or replacement modules |
-| 6 | Validate the exact standalone CLI release candidate | After step 5 | Clean source and pinned dependency; production packaging without --local; six archives/checksums/provenance/version match; fresh Windows/macOS/Linux native CLI and installer jobs plus Fish/Homebrew/Scoop pass; architecture support policy records cross-build-only targets |
-| 7 | Prepare customer-visible artifacts and release notes | After step 6; publication decision required | Release notes cover client version, server baseline, OpenSSH requirement, old-config migration, install/update/uninstall, supported architectures and known limits; decide signing policy and test real macOS downloaded binaries with normal OS protections |
-| 8 | Publish Go client then CLI binaries and installer assets, then tap/bucket | Pending release readiness and publication authorization | Reviewed manual procedure or publication workflow; exact tag/commit/artifacts verified; customer-accessible URLs; tap formula matches released hashes/version; Scoop channel created if chosen |
-| 9 | Test fresh customer installs and document support/update process | After publication | Actual published Homebrew/cURL/PowerShell/manual installs and upgrade paths pass on clean environments; release links/examples correct; record evidence and maintenance/rollback procedure |
+| 1 | Confirm version, scope and customer access | Project decision; propose Go/CLI v0.1.0 for the existing core command surface, Homebrew/Bash/PowerShell/manual archives | Version and supported transports/architectures recorded; choose public customer artifacts or implement authenticated delivery; choose whether Scoop bucket ships now or later |
+| 2 | Configure production service and safe test fixtures | Blocked on actual HTTPS URL, SSH host/port and deployed service | Change project-owned constants without exposing endpoint overrides; isolate disposable fixtures from production; verify stored credential bindings safely reject the old service |
+| 3 | Freeze and validate server compatibility | Pending agreed committed/deployed server revision | Refresh synchronized client/CLI baseline only after full HTTP/SSH/auth/import integration passes; run explicit controlled production TLS, browser login/token revocation and SSH host verification checks |
+| 4 | Release Go client and pin standalone CLI dependency | After gates 1–3; go.mod still requires v0.0.0 | Review/promote the client source, publish approved semantic version, pin it in CLI and record sums; clean-cache GOWORK=off test/vet/build succeeds without sibling checkout or replace directives; private access uses appropriate Git credentials/GOPRIVATE |
+| 5 | Validate exact production CLI candidate | After gate 4; current candidate workflow uses --local and go work | Add a standalone production candidate validation path using the released client, GOWORK=off and no --local; clean Go 1.27.1 source produces six archives, installer scripts, formula, Scoop manifest, checksums and provenance; rerun relevant native/platform/installer checks on those exact inputs |
+| 6 | Finalize release sources, notes and delivery policy | Before publishing CLI; release/default branches still need review | Promote reviewed source through normal review; notes name client version/server baseline, protocol limits, old-config migration/revocation, OpenSSH dependency and supported architectures; choose signing policy and test downloaded macOS binaries with normal OS protections; record manual release procedure or implement upload automation |
+| 7 | Publish CLI assets and update package channels | After gate 6 and publication authorization | Approved tag matches source/manifest; customer-accessible assets are attached and hashes verified; dispatch tap updater for real release, review its PR and run/approve validation before merging; publish Scoop bucket only if selected |
+| 8 | Verify fresh customer installs and maintenance | After publication, before announcing availability | Published Homebrew, Bash, PowerShell and manual installs/upgrade paths pass on clean native hosts; selected Scoop channel passes; document uninstall, support, credential preservation, token rotation and package rollback procedure |
 
-Source publication order is Go client first, then CLI with its exact CI pin, and
-independent tap staging. Reuse `integration-refresh` and `formula-preparation`;
-do not merge into other/default branches or create release tags during this review.
-Fresh client and CLI native matrices pass on Windows/Ubuntu/macOS; the exact
-revisions and runs are in [native-validation.md](native-validation.md). Tap
-syntax/style and updater regression CI passed at d08561b in
-[run 38091389888](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38091389888).
-Current default branches are CLI `package-manager-validation`, Go
-`private-platform-validation`, and tap `formula-preparation`. Before launch, review
-and promote the approved source into the chosen release/default branch through
-normal review; changing branch defaults is separate from pushing the prepared work.
+The publication dependency order is Go client → pinned/validated CLI → CLI release
+assets → reviewed Homebrew formula (and Scoop bucket if selected). A reviewed
+manual first release is sufficient; an automated tag/upload workflow is optional.
+Native installer validation already passed for development candidates, so repeat
+it on final changed release inputs rather than treating all tooling as unbuilt.
 
-### Concrete remaining constraints
+### Concrete evidence and limits
 
-- Production addresses are unknown. The release packager intentionally rejects
-  localhost HTTPS/SSH placeholders; completing the core milestone does not lift it.
-- Native process tests and the disposable real-server harness currently assume
-  localhost:8080. Adapt their fixture approach with the address change while keeping
-  the public API credential-only. Production smoke tests must be separate and explicit.
-- CLI go.mod still requires bibleit-go v0.0.0. Draft CI checks out an exact client
-  commit in an ephemeral workspace; a green draft run is not GOWORK=off certification.
-- Private repositories are suitable for CI staging. Current unauthenticated
-  GitHub Release URLs in formulas/installers cannot serve customers while those
-  artifacts are private. Restore the planned public client/CLI/tap visibility when
-  approved, or design a separate authenticated channel. Server visibility stays private.
-  See [GitHub release asset access](https://docs.github.com/en/rest/releases/assets).
-- For private standalone Go validation, configure Git credentials and
-  [GOPRIVATE](https://go.dev/ref/mod#private-modules); pinning alone does not grant access.
-- There is no release upload/tag workflow: the packager only creates files and
-  candidate CI only saves validation artifacts. A reviewed manual first release is
-  sufficient; release automation is a later implementation choice.
-- The staged Homebrew formula is v0.1.0-dev.1 with unpublished URLs. Push its source
-  for review, then replace it with the exact released candidate before customer use.
-  Scoop is generated/tested, but a customer bucket and publication are still pending.
+- The service constants remain http://localhost:8080 in the Go client and
+  127.0.0.1:2222 in the CLI. The production packager intentionally rejects these
+  placeholders. Native process tests and real-server harness use loopback fixtures;
+  adapt them with the endpoint change while keeping the public API credential-only.
+- Both contract/server-baseline.json files are identical and record server HEAD
+  1a266cc8bf6aa726c4890b78ddf95a3aadda0ba0 plus an assessment working-tree snapshot.
+  At this review, 1/63 recorded source fingerprints differs:
+  src/http/bibleit_http_listener.erl. All 59 recorded test fingerprints match.
+  This is drift evidence, not a regression finding; compatibility with that later
+  edit has not been tested. Do not replace baseline hashes merely to hide drift.
+- CLI go.mod still requires bibleit-go v0.0.0. Draft CI pins exact client 17e146b
+  in an ephemeral workspace and packages with --local. Green draft CI does not
+  certify standalone dependency retrieval or production release provenance.
+- All three repositories are private. Generated ordinary GitHub release URLs do
+  not authenticate customers. The intended open source launch requires approved
+  public client/CLI/tap access, or a deliberately tested authenticated channel.
+  Server visibility remains private. Source push authorization does not authorize
+  visibility changes or customer release publication.
+- The tap formula is still v0.1.0-dev.1 with unpublished URLs. Read-secret and PR
+  policy setup are complete; actual release archive verification, bot PR creation
+  and customer formula installation await the first production CLI release.
+- Current default branches are CLI package-manager-validation, Go
+  private-platform-validation and tap formula-preparation. Review/promote the
+  approved source before release; do not accidentally tag stale default-branch
+  code. Continue on integration-refresh (CLI/client) and formula-preparation (tap),
+  using Conventional Commits and no codex prefix.
 
-Profile removal and tap CI are complete. The new single-configuration CLI and
-client/candidate matrices passed at CLI fe719db and client 17e146b; tap validation
-passed at d08561b. Exact runs and limits are recorded in native-validation.md.
-The manual tap update path now checks CLI release-read access before downloading.
-Tap 04e8b16 also provides a read-only Check updater access workflow that can run
-before any release exists. Local shell/YAML checks and seven updater regressions
-pass. Hosted Homebrew syntax/style and regression validation is green in
-[run 38092320412](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38092320412)
-at 04e8b16. The initial run identified shell formatting; this revision fixes it.
+### Next actionable increment
 
-Tap updater setup and remaining release validation:
-
-1. Actions PR policy: complete. The organization restriction was lifted during
-   setup; the final repository API check confirms PR creation is enabled.
-2. Private read secret: complete. The user confirmed BIBLEIT_CLI_READ_TOKEN in
-   homebrew-tap is configured for bibleit-labs, only bibleit-cli, Contents: read-only.
-   Keep it narrowly scoped and rotate before expiration.
-3. Repository PR setting: complete. The API confirms
-   can_approve_pull_request_reviews=true and default_workflow_permissions=read;
-   only the updater job requests write permissions.
-4. Actions access validation: complete. [Run 38092683138](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38092683138)
-   passed at tap bf6a46b using the configured secret. Private CLI metadata and
-   release-list reads succeeded; no tags, releases or PRs were created. This verifies
-   access, not the token's full permission scope. Tap syntax validation is green.
-5. After a production CLI release exists, dispatch its formula update, review
-   the PR, approve/run validation and verify real archive installation. The
-   workflow never approves or merges PRs despite GitHub's combined policy toggle.
-
-Next implementation increment: obtain the production addresses/deployment baseline,
-then update service constants and endpoint-dependent fixtures together. If deployment
-is not ready, keep validating private development candidates without making a
-customer-release claim. The seven tracked core contract items stay complete.
+Obtain the production HTTPS URL, SSH host/port and intended deployed server
+revision, plus the first-release version/access decision. Then change service
+constants and endpoint-dependent fixtures together and run the frozen integration
+gate. Until deployment inputs are ready, keep validation as private development
+staging. The seven core contract items and tap updater setup remain complete.
 
 ## Sources reviewed
 

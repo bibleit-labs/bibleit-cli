@@ -3,7 +3,25 @@
 Updated 2026-10-11. Counts describe explicit acceptance items, not estimated
 percentages of the entire project. The full plan is in `plan.md`.
 
-## Current increment: Homebrew updater access and permissions
+## Current increment: first-release readiness review
+
+| Item | Status | Evidence / limits |
+| --- | --- | --- |
+| Review current sources and hosted evidence | Complete | All three repos private and clean; no published releases; client/CLI native and development candidate CI green; tap syntax and actual secret access green |
+| Identify and order remaining release gates | Complete | Eight ordered gates in plan.md: version/access, production addresses/fixtures, server baseline, released Go dependency, standalone production candidate, release notes/source promotion, publication/tap PR, customer installs |
+| Update and push release documentation | Complete | plan.md, releases.md and this status revised; Conventional Commits on integration-refresh; no tags, releases, merges or visibility changes |
+
+Progress: **3/3 review items complete**. This measures the review, not launch
+readiness. Production HTTP/SSH constants are still loopback placeholders and
+CLI go.mod still requires bibleit-go v0.0.0. One of 63 recorded server source
+fingerprints differs (bibleit_http_listener.erl); all 59 recorded test fingerprints
+match. No integration rerun is claimed for the later server edit.
+
+The next work needs production addresses and an agreed deployed server revision,
+plus the release version/customer access decision. Final standalone validation,
+real tap release-download/PR flow and customer install checks remain outstanding.
+
+## Previous increment: Homebrew updater access and permissions
 
 | Item | Status | Evidence / limits |
 | --- | --- | --- |

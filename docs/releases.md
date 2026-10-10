@@ -208,12 +208,49 @@ Archive downloads use a loopback fixture; the client's fixed endpoint is unchang
 
 ## Tap CI setup before the first formula update
 
-Tap syntax/style and formula-updater regression CI are prepared in homebrew-tap.
-Before dispatching its update workflow, publish bibleit-cli.rb, manifest.json and
-checksums.txt alongside the four macOS/Linux release archives. While CLI assets
-are private, configure BIBLEIT_CLI_READ_TOKEN in the tap with Contents: read only
-to bibleit-cli; allow Actions PR creation through repository/org policy. The
+Tap setup is complete: syntax/style and seven updater regressions are green in
+[run 38092320412](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38092320412).
+BIBLEIT_CLI_READ_TOKEN is configured and actual private CLI release-list reads
+passed in [run 38092683138](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38092683138).
+Actions PR creation is enabled with read-only defaults; the updater job alone
+requests contents-write and pull-requests-write. Keep the token scoped only to
+bibleit-cli with Contents: read-only and rerun Check updater access after rotation.
+Before dispatching the real update workflow, publish bibleit-cli.rb, manifest.json
+and checksums.txt alongside the four macOS/Linux release archives. The
 workflow consumes a reviewed version, verifies production provenance and archive
 hashes, then opens a Conventional Commit release PR. It does not create CLI
 releases or automatically merge the formula. The updater has fixture regression
 evidence but no real-release download/PR evidence yet because no release exists.
+
+
+## First-release execution checklist
+
+Use the eight ordered gates in [plan.md](plan.md) as the readiness record.
+Development candidate CI is already green; it still uses a workspace and --local,
+so add a standalone production validation path after releasing and pinning the
+Go client. Build from the reviewed CLI source, not an older default branch.
+
+For an authorized manual first release:
+
+1. Record the approved Go and CLI versions, production destinations, deployed
+   server baseline and exact reviewed source commits. Complete compatibility checks.
+2. Publish the approved Go client version first. Pin it in CLI, tidy module metadata
+   and validate dependency retrieval with a fresh cache and GOWORK=off.
+3. Commit the final CLI inputs and package without --local into a new directory.
+   Inspect manifest.json (local_only=false, dirty=false, correct source and client),
+   verify archive checksums/version and run final standalone/native installer checks.
+4. Prepare release notes and choose customer access/signing policy. The CLI assets
+   must include all six archives, checksums.txt, manifest.json, install.sh,
+   install.ps1, bibleit-cli.rb and bibleit.json. Publish only the approved assets
+   against the corresponding reviewed tag/source after publication authorization.
+5. Dispatch the tap updater with that exact published tag. Review its generated
+   release PR, run/approve tap validation and merge through normal review. Publish
+   a Scoop bucket only if selected for this release; a generated manifest alone
+   does not establish that channel.
+6. Validate the actual customer download URLs and clean-machine installs/upgrades,
+   including macOS download protections. Record support and rollback steps before
+   announcing availability. Development fixtures are not a substitute for this check.
+
+No publication command is executed as part of the readiness review. Automated
+release upload, additional language clients and extra package ecosystems can be
+added later without delaying a reviewed manual release of the existing core scope.
