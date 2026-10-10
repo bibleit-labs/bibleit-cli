@@ -7,15 +7,24 @@ percentages of the entire project. The full plan is in `plan.md`.
 
 | Item | Status | Evidence / limits |
 | --- | --- | --- |
-| Check latest assessment results | Checked; package 22 full suite pending | Package 21 final suite passed; package 22 extended fanout/reconnect and HTTP load pass; overall campaign not complete |
+| Check latest assessment results | Complete review | Package 22 final suite passes: 310 integration, 48 Erlang unit, 71 JavaScript and native C programs, no skips; overall campaign 22/25, packages 23–25 pending |
 | Rerun isolated HTTP/SSH/import integration | Complete | 34 decoder/18 encoder fixtures, seven security cases, 11 HTTP subtests, real SSH lifecycle/output parity, 17 auth/key/protocol tests and 25 import cases pass; disposable database removed |
-| Synchronize baselines and update release plan | Prepared | Server c2beef5 working-tree snapshot, native f6fed37; 65 source/62 test/11 native fingerprints; client and CLI baseline bytes identical; private CI pins updated to client 8de21e9 |
+| Synchronize baselines and update release plan | Complete | Server c2beef5 working-tree snapshot, native f6fed37; 65 source/62 test/11 native fingerprints; client and CLI baseline bytes identical; private CI pins updated to client 8de21e9 |
 
-Current compatibility passes with no client regression. This is development
-integration evidence: the server working tree has assessment changes and the
-campaign is still in progress. The committed/deployed baseline, production
+Progress: **3/3 requested items complete**. Current compatibility passes with no
+client regression. Fresh hosted verification:
+
+- [Go client native matrix](https://github.com/bibleit-labs/bibleit-go/actions/runs/38096465359): Windows/Ubuntu/macOS passed at 8de21e9.
+- [CLI native matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38096515700): all three platforms passed at e737565 with client 8de21e9.
+- [CLI candidate matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38096515593): all three platforms passed at the same inputs; six-target packaging, PowerShell 7/5.1, Scoop and Homebrew checks passed.
+
+Documentation-only completion commits follow the tested CLI source revision.
+This is development integration evidence: the server working tree has assessment changes and the
+campaign remains 22/25 complete. The committed/deployed baseline, production
 addresses, released Go dependency and final standalone/customer-install gates
-remain open. No server edits or release tags/assets are created here.
+remain open. The assessment has subsequently added two package-23 test files
+outside this frozen snapshot; recorded source/test/native inputs still match.
+No server edits or release tags/assets are created here.
 
 ## Previous increment: first-release readiness review
 

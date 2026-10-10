@@ -201,7 +201,10 @@ Passing coverage: 34 decoder/18 encoder fixtures, seven targeted security cases,
 11 HTTP subtests, actual OpenSSH subscription/pause/reconnect/delete closure and
 single-credential/output parity, 17 auth/key/protocol EUnit tests, 10 real-HTTP
 import-access and 15 publication cases. All checks passed and the disposable
-PostgreSQL container was removed. No post-run source/test drift was found.
+PostgreSQL container was removed. Recorded file contents matched after the run.
+The assessment subsequently added test/bibleit_combined_infrastructure_SUITE.erl
+and test/bibleit_fault_proxy.erl for its next package; those new tests are outside
+this frozen snapshot. No recorded source/test file changed and native inputs match.
 Log (ignored): build/validation/assessment-final-integration-2026-10-11.log.
 This is a frozen development snapshot, not the full server assessment or a
 compatibility claim against a deployed production release. The review date uses
@@ -247,11 +250,11 @@ and automated release uploading are outside the initial release requirement.
 
 ### Completed preparation
 
-- Go client native matrix: Windows/Ubuntu/macOS passed at 17e146b in
-  [run 38091438398](https://github.com/bibleit-labs/bibleit-go/actions/runs/38091438398).
-- CLI native and development candidate matrices: passed at fe719db with exact
-  client 17e146b in [native run 38091481226](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38091481226)
-  and [candidate run 38091481159](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38091481159).
+- Go client native matrix: Windows/Ubuntu/macOS passed at 8de21e9 in
+  [run 38096465359](https://github.com/bibleit-labs/bibleit-go/actions/runs/38096465359).
+- CLI native and development candidate matrices: passed at e737565 with exact
+  client 8de21e9 in [native run 38096515700](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38096515700)
+  and [candidate run 38096515593](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38096515593).
   These cover single credential configuration, output/completion, native installers,
   PowerShell 7/5.1, Homebrew and Scoop against development fixtures. Six targets
   cross-build; Windows arm64 has not been validated on native arm64 hardware.
@@ -320,9 +323,14 @@ The assessment chat reported package 21 native index/cache hardening with
 libbibleit f6fed37919c848b1aa0208900af992a5e8a507f2; the local server submodule
 points at that revision. Package 22 separates management WebSocket authorization
 checks from keepalive pings (30-second ping interval). The assessment reports a
-passing 120-second/48-client fanout soak and 30 reconnect cycles, with the full
-server suite still running at notification time. Those soak results are assessment-reported; the independent HTTP/SSH/import
-compatibility refresh above has now passed against the current snapshot.
+passing 120-second/48-client fanout soak and 30 reconnect cycles. Its final package
+22 full suite now exits zero: 310 integration cases, 48 Erlang unit tests,
+71 JavaScript tests and native C programs, without skips. The overall campaign is
+22/25 complete. Package 23 (combined faults/backup restoration), package 24
+(dependency/history-secret/TLS/SSH/chained tests and final retest), and package 25
+(Fly deployment review) remain pending. These broad results are assessment-reported
+and confirmed in its ledger/log; the independent HTTP/SSH/import compatibility
+refresh above also passed against the current snapshot.
 
 Neither the CLI nor Go client implements management WebSockets; their contract
 marks both browser WebSocket surfaces outside bearer client transport. No client
