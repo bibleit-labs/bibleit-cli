@@ -288,3 +288,11 @@ Linux also runs actual Bash/Zsh/Fish completion. See
 pass locally; hosted Ubuntu, Windows Server 2025 and macOS jobs all pass. Windows
 checks include the persisted credential DACL and console handles. See the
 [verified native run](https://github.com/mittel-labs/bibleit/actions/runs/38081432573).
+
+
+## Contributing and license
+
+Bibleit CLI is a public open source project maintained in `bibleit-labs`.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, validation and Conventional
+Commits. This project is distributed under the [MIT license](LICENSE).
+The Go, Python, Ruby and Rust clients have independent repositories and releases.

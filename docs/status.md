@@ -32,7 +32,7 @@ assessment or future workspace/event APIs.
 | 3. Customer CLI profiles/auth/output | Complete for tracked scope | 5/5: profiles, credentials, output, completion/destructive UX and representative native platform validation |
 | 4. Workspace and event integration APIs | Pending server contract | Existing browser endpoints are not bearer-token client APIs |
 | 5. Python, Ruby, Rust clients | Not started | Wait for verified core contract |
-| 6. Independent publication | Not started | Separate repository paths selected; extraction and new hosted checks in progress |
+| 6. Independent publication | In progress | Public CLI and Go client extracted and validated; semantic-version tags and binary releases remain pending |
 
 ## Reproduce verification
 
@@ -383,9 +383,9 @@ recoverable, and its remote main is unchanged.
 | Independent Go client extraction | Complete | Own module, fixtures, example and native CI; local race/vet/build pass |
 | Pin published client and wire CLI harness | Complete | Pinned `v0.0.0-20261010200950-9a52be34b0c3`; no replacement; both integration test binaries compile; fixture snapshots match |
 | CLI extraction and local validation | Complete | Race/vet/build; real process/PTY and Bash/Zsh completion checks pass on local macOS/arm64 |
-| Publish and verify both hosted matrices | In progress | Go client native matrix passed; CLI push and matrix verification next |
+| Publish and verify both hosted matrices | Complete | Go client and CLI each passed Windows, Ubuntu and macOS; CLI Ubuntu also passed Fish/Bash/Zsh |
 
-Progress: **4/5 repository-separation items complete**. Historical native results
+Progress: **5/5 repository-separation items complete**. Historical native results
 above apply to the original implementation; new repository workflows must pass
 independently. No package release tag or binary release has been published.
 
@@ -394,3 +394,12 @@ on the extracted client commit `9a52be34b0c3`. The CLI pins that commit using
 a Go pseudo-version until a reviewed semantic-version release is published.
 The new split integration harness compiles both binaries; the real-server
 integration results above remain historical and were not rerun for this split.
+
+[CLI native matrix passed](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38082843195)
+on code commit `e46bfd6`. Both new repositories have `repository-split` as their
+initial default branch. No branch uses the codex prefix.
+
+All CLI and language-client repositories are public open source projects under
+`bibleit-labs`. Use Conventional Commits for subsequent changes and maintain
+contribution documentation, the existing MIT license, and independent release
+notes. `bibleit-server` remains separate and is not moved or made public here.
