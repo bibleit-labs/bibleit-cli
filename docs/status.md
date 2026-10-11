@@ -14,16 +14,32 @@ increment below is complete; the new route needs its own evidence.
 | Configure canonical endpoints and trust migration | Complete | Go HTTP/browser origin and CLI SSH use bibleit.app; HostKeyAlias preserves the verified Fly-host known_hosts entry solely as a trust lookup; no user endpoint overrides |
 | Update isolated fixtures and credential tests | Complete | Verified TLS fixture names bibleit.app; old localhost and Fly configurations reject without overwrite; real changed-host-key regression added |
 | Refresh HTTP/SSH/import compatibility | Complete | Assessed revision 5969f2f; 69 source/72 test/11 native hashes; HTTP/SSH/import, changed-key rejection, 24 unit and one boot configuration case pass; committed Erlang input equivalence verified |
-| Publish source and record fresh private CI | In progress | Six native jobs pass at client 58505aa/CLI 9243489; Windows candidate timed out during repeated cross-compilation; revised CI builds once on Linux and validates identical native inputs; client metadata pin 59dfaa4 |
+| Publish source and record fresh private CI | Complete | Go 58505aa native matrix and CLI bc94231 native/candidate matrices pass; CLI pins client 59dfaa4 (documentation-only since 58505aa); one Linux build supplies identical archives to native Windows/Linux/macOS installer checks |
 
-Progress: **3/4 custom-domain client items complete**. Local Go/CLI race tests and
-vet pass; Darwin TLS/PTY/Bash/Zsh checks pass. The assessment’s final Turnstile/canonical-host boot change is qualified; all
-Erlang inputs match commit 5969f2f. Dirty metadata preserves unrelated frontend
+Progress: **4/4 custom-domain client items complete**. Local Go/CLI race tests and
+vet pass; Darwin TLS/PTY/Bash/Zsh checks pass. The Turnstile/canonical-host boot
+change at 5969f2f is qualified; all
+Erlang inputs used in that run match the commit. The assessment subsequently found
+a missing BIBLEIT_HTTP_REDIRECT_HOSTS boot parser entry during pre-cutover alias
+checks. Its repair and public-route acceptance remain pending; the client uses
+the canonical origin directly and does not follow aliases. Dirty metadata
+preserves unrelated frontend
 working-tree edits; final packaging inputs still need freezing.
 Actual DNS-only apex cutover,
 certificate/canonical-origin/authentication and retained production SSH fingerprint
 verification remain assessment/Fly-owned release gates. They are not certified by
 local fixtures. No customer release tag/assets or production data changes are made.
+
+Fresh private CI passes all ten jobs: three [Go native jobs](https://github.com/bibleit-labs/bibleit-go/actions/runs/38126756591),
+three [CLI native jobs](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38128631673),
+and the build plus three [native candidate installer jobs](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38128631681).
+The repaired candidate workflow eliminates duplicate cross-compilation; Windows
+PowerShell 7/5.1 and Scoop, macOS Homebrew and Linux installers pass on the same
+six-target archive set. CLI runtime source is unchanged since 9243489; the
+client's Go source is unchanged since its tested 58505aa revision.
+The earlier Windows candidate timeout was resolved by this build-sharing change.
+Detailed evidence is in [native-validation.md](native-validation.md); the full
+isolated integration log is build/validation/final-canonical-integration-2026-10-11.log.
 
 ## Previous increment: fixed Fly endpoints and compatibility refresh
 

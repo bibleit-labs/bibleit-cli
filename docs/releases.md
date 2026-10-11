@@ -419,8 +419,13 @@ known_hosts. Old service-bound HTTP/SSH credentials fail locally and remain inta
 Back them up and sign in using a fresh config after the approved cutover.
 
 This prepared address change passes isolated HTTP/SSH/import, including changed
-saved-host-key rejection, at assessed 5969f2f. The final boot change passes
-canonical/provider unit and synthetic hostname configuration checks. Actual
-DNS/TLS/SSH and authentication qualification is still required by the assessment/Fly chats before
-customer release. The prior nine green native/candidate jobs cover the Fly-origin
-increment, and must not be presented as new-domain validation.
+saved-host-key rejection, at assessed 5969f2f. That revision’s boot change passes
+canonical/provider unit and synthetic hostname configuration checks. A subsequent
+pre-cutover check found a missing redirect-host environment boot parser entry;
+its assessment-owned repair and full public-route acceptance remain pending.
+Actual DNS/TLS/SSH and authentication qualification is still required by the
+assessment/Fly chats before customer release. New-domain client and CLI native matrices pass, as does the
+revised candidate build/installer matrix at CLI bc94231. All native installer jobs
+validate one shared six-target archive set. See [native-validation.md](native-validation.md)
+for the exact private runs; this development evidence does not certify the public
+route or a standalone production release.
