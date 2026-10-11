@@ -1,567 +1,60 @@
-# Native runtime validation
+# Development and compatibility validation
 
-The CI workflow is `.github/workflows/native.yml`. It pins Go **1.27.1** and runs
-on native Ubuntu 24.04, Windows Server 2025 and macOS 15 runners. Each job runs
-race tests, vet, a CGO-free executable build and the process smoke harness.
-Linux also installs and runs Bash, Zsh and Fish completion checks. Push, pull
-request and manual dispatch events trigger the workflow once it is published.
+Use Go 1.27.1. Normal CLI and SDK unit tests run without the private server or a
+production account. See [CONTRIBUTING.md](../CONTRIBUTING.md) for standalone and
+optional workspace setup. Go modules must be authenticated while the SDK is private.
 
-The hosted workflow passed all three native jobs on 2026-10-10 at code commit
-`08e4a31d0ff468b07e01408788f8b94a42995dc0`:
-[verified run](https://github.com/mittel-labs/bibleit/actions/runs/38081432573).
-That run validates the pre-extraction implementation in the original staging
-repository. Before publication was paused, the independent repositories also passed their native matrices:
-
-- [Go client](https://github.com/bibleit-labs/bibleit-go/actions/runs/38082660896), commit `9a52be34b0c3`.
-- [CLI](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38082843195), code commit `e46bfd6`.
-
-Those historical branches were `repository-split`, with no codex prefix. The
-repositories were recreated; earlier hosted records may no longer be available.
-At the publication pause, changes stayed local with a sibling workspace. Private
-CI is now authorized; see the latest validation section below. Each matrix targets runner-default architectures, not all six
-build targets. The original repository's remote main is unchanged.
-
-## Canonical custom-domain validation — 11 October 2026
-
-Prepared HTTPS/browser origin https://bibleit.app and ordinary SSH bibleit.app:22.
-OpenSSH uses the historical Fly hostname only as a known_hosts lookup alias to
-preserve verified trust; a foreign saved key must fail. Local race tests/vet in
-both repositories and native Darwin TLS/PTY/Bash/Zsh checks pass. Fresh isolated
-HTTP/SSH/import passes at assessment revision [private revision withheld]:
-34 decoder/18 encoder, seven security, 11 HTTP, real OpenSSH lifecycle/JSON
-parity and changed-key rejection, 24 auth/key/protocol/canonical/provider unit tests, one boot case and 26 import cases.
-Three TLS checks pass; synchronized 69 source/72 test/11 native hashes match
-after the run and match the committed Erlang inputs. Unrelated frontend edits
-keep the server dirty flag true.
-
-All ten fresh private CI jobs pass:
-
-- [Go native matrix](https://github.com/bibleit-labs/bibleit-go/actions/runs/38126756591)
-  at 58505aac9059d41d68cae4485549109467cc0d8c: Windows/Ubuntu/macOS.
-- [CLI native matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38128631673)
-  at bc94231489e2a6f7c32549055667877fd357ecfc: Windows/Ubuntu/macOS,
-  including verified-TLS process checks and Linux Bash/Zsh/Fish completion.
-- [Candidate build and native installers](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38128631681)
-  at the same CLI revision: one six-target build on Linux, then identical archive
-  inputs downloaded and checksum-verified on Windows/Ubuntu/macOS. PowerShell
-  7/5.1, Scoop, Bash and Homebrew installation/replacement checks pass.
-
-The CLI workflows pin client 59dfaa45836002dc6c159a07407c08e382763b7c;
-that follow-up changes documentation/contract metadata only, with Go source and
-module inputs unchanged since the green client run at 58505aa. CLI runtime Go
-source and module inputs are unchanged since 9243489. A previous candidate run
-38126789985 timed out on Windows during duplicated cross-compilation, before
-installer assertions. Building once resolved it; the replacement run is green.
-Supplemental direct alias boot qualification at [private revision withheld] passes configured-host
-normalization, absent-host behavior and wildcard rejection. It uses the actual
-server EUnit regression in cleared-env child processes with empty cwd, synthetic
-DB settings and no egress. No service or database is started. All 69 source/73
-test hashes match the committed repair; 11 native inputs remain [private revision withheld]. The
-sole runtime difference from the full client run is the one-line parser entry.
-`contract/server-boot-validation.json` retains this evidence separately from the
-full [private revision withheld] integration baseline, with a hash linking the earlier evidence.
-The full future integration runner includes the new direct boot test; its unit
-count becomes 25 when run, rather than retroactively changing the earlier 24.
-Assessment-owned broad repaired-source evidence is 337 CT/63 EUnit/71 JavaScript/
-native 65536/10 bootstrap.
-
-Actual public canonical-DNS technical acceptance subsequently passes on deployed
-source [private revision withheld], runtime repair [private revision withheld]/native [private revision withheld] and immutable image
-sha256:[private digest withheld].
-Assessment/Fly verified 403 source hashes and 20 actual-image checks. Both address
-families pass 23 HTTPS boundary and 39 alias checks each; 11 authentication,
-10 public canonical SSH and 15 paired rate checks pass. The public SSH fingerprint
-is unchanged; all scoped synthetic fixture counts are zero after cleanup.
-`contract/canonical-deployment-validation.json` records the redacted report hashes
-and links both independent client evidence files. This is actual public-DNS
-acceptance, separate from earlier address-override probes and local fixtures.
-The operator confirms Google/GitHub sign-in. Real Turnstile backend success/replay
-remains pending. Two missing/bogus-token backend denials pass; visible widget success
-alone does not close that gate. No client/native runtime change or customer
-release is required to record the technical acceptance.
-
-The subsequent native-form repair is technically qualified on source [private revision withheld],
-native [private revision withheld] and image sha256:[private digest withheld]
-in [deployment 38144206075]([private service reference withheld]).
-403 source hashes and 20 actual-image checks match. Real production requestSubmit
-carries canonical Origin/Referer, passes CSRF and reaches missing-token denial;
-ordinary HTML response policy is same-origin. Provider traffic is blocked and no
-account/email is created. Updated boundary23/alias39 checks pass on each address
-family; local source338 CT/63 EUnit/71 JS/native/10 bootstrap passes. The current
-contract provenance records each repaired report’s source/native/image and hash,
-while retaining earlier auth/SSH/rate results separately at their tested source.
-Real Turnstile backend fresh-token success/replay and actual email delivery/
-verification remain pending. The newer catalog rollout uses server [private revision withheld]/native [private revision withheld]
-(workflow 38144732991) and needs independent deployment/catalog qualification.
-This [private revision withheld]/[private revision withheld] evidence is point-in-time and does not qualify the later image; no client runtime change is needed here.
-
-Focused changed-native qualification at server[private revision withheld]/native [private revision withheld] passes
-five typed HTTP groups (Portuguese/German catalogue and accented named reads),
-five HTTP/SSH parity cases, invalid-index rejection preserving the prior sparse
-generation and three verified TLS boundaries. All69source/75test/11native hashes
-match committed inputs and remain unchanged after the run. Full independent
-HTTP/SSH/auth/Live/import proof remains at[private revision withheld]/f6; it is not claimed as repeated
-on the later native/source. The fixture builds d6 and its NIF from frozen inputs,
-uses synthetic66-book sparse data and removes its unique disposable database.
-Report contract/server-catalog-validation.json is synchronized with the Go client;
-full ignored log is build/validation/catalog-native-validation-2026-10-11.log.
-
-The original[private revision withheld]/d6 deployment is independently qualified by405 source hashes,
-eight stages,20 actual-image checks/native amd64, matching published/running
-digest and clean fixtures; public boundary23/alias39 passes each family. The
-focused client run found a server localized-literal UTF-8 bug, and repair[private revision withheld]
-now passes server340 CT/66 EUnit/75 JS/native65536/10 bootstrap. Exact repaired
-deployment/public qualification is complete at server [private revision withheld]/native [private revision withheld], image
-sha256:[private digest withheld] (workflow
-38147193441): 406 committed hashes, eight successful stages, 20 actual-image startup
-checks, published/running digest parity and 185 APK comparisons with zero fixed-advisory
-alerts. Refreshed boundary 23/alias 39 checks pass independently on IPv4 and IPv6;
-native form CSRF admission and missing-token denial pass. Production BPML has 66 strict
-UTF-8 BOOK records and matching Gênesis. The five public report hashes are recorded in
-canonical-deployment-validation.json. Real Turnstile backend success/replay and actual
-email delivery/verification remain open.
-
-## Prior Fly-hostname endpoint validation — 11 October 2026
-
-Client runtime 867dcbe and documentation follow-up b081081 use the fixed production
-HTTPS origin. CLI uses ordinary SSH at legacy.bibleit.example:22. Local race tests
-and vet pass in both repositories. Native Darwin/arm64 process checks pass using
-verified TLS at an ephemeral loopback fixture, along with real PTY confirmation
-and nine completion cases each in Bash/Zsh. Fish is unavailable on this host and
-is covered by Linux CI. The process harness runs the actual binary's version,
-then the shared CLI entry function in a test executable with a destination-limited
-loopback dialer and fixture-only CA. Production binaries contain no fixture hook.
-
-Fresh real-server integration passes at clean server [private revision withheld]/native [private revision withheld]:
-34 decoder/18 encoder, seven security, 11 HTTP, real OpenSSH lifecycle and JSON
-parity, 18 auth/key/protocol and 26 import cases. Three TLS boundary checks pass.
-The container has no external route and maps the production name to loopback;
-public constructors and fixed SSH port 22 are unchanged during the tests.
-Host trust stores/ports and production data are untouched. Both baselines match
-68 source, 70 test and 11 native input fingerprints after the run.
-
-Fresh private native matrices pass on all three platforms:
-
-- [Go client b081081](https://github.com/bibleit-labs/bibleit-go/actions/runs/38125983246).
-- [CLI 26bbfaa](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38126046169), including Windows verified-TLS process checks and Linux Bash/Zsh/Fish.
-
-The [candidate matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38126046149)
-passes on all three platforms with the same exact inputs, including native
-Homebrew, Scoop, Bash and PowerShell 7/5.1 lifecycle checks. These are development workspace candidates, not standalone release
-provenance or a new public-edge qualification.
-
-## Final assessed deployment — 11 October 2026
-
-Assessment ledger [private revision withheld] closes the scoped campaign at 25/25. Final source
-7442010eebcfb1a2a9105db312ebaeae5f789003 passes [native run 38106224843]([private service reference withheld]):
-398 tracked-file checks, eight stages and cleanup; native and rebuilt deployment
-image campaigns each pass 20 checks. Native submodule remains [private revision withheld]. Registry
-digest sha256:44f2278362bd73f26a2f1c4abb78bf4d72eb02a99c177629656b72391c79fc11
-is deployed at legacy.bibleit.example, with ordinary public SSH port 22.
-
-The final assessment suite passes 334 CT/56 Erlang/71 JavaScript/native/ten bootstrap
-tests. Deployed HTTP/SSH/proxy client-isolation and recovery results are recorded
-in plan.md. These are assessment-owned results; this follow-up does not rerun the
-client harness. Its older development baseline is retained until fresh frozen
-HTTP/SSH/import integration covers the newer server admission changes.
-
-Native evidence below describes historical snapshots. Their 24/25 progress and
-then-open deployed gates are superseded by the final 25/25 result, while production
-client configuration, release provenance/dependency and customer install gates remain.
-
-## Native amd64 server image — 11 October 2026
-
-The assessment-owned [native server run 38101109368]([private service reference withheld])
-passed at f5f1736b723096e0e3bd80f817ea6701e7856cc1 on branch
-security-native-validation/package-25, with clean submodule
-[private digest withheld]. This is server validation in its private
-repository, separate from the client/CLI matrices below.
-
-The downloaded report confirms native Linux x86_64 host/Docker and linux/amd64
-runtime image sha256:ab28d63404454a94ac1d891e3d0ae1e042a8ab559c314403c0de37f6adf42706.
-Observed versions: GCC 15.2.0, Make 4.4.1, Rebar 3.27.0, OTP 29/ERTS 17.1,
-SSH 6.0.6, SSL 11.7.7, Alpine 3.24.2, runtime UID/GID10001. No ARM emulation or
-architecture-specific runtime workaround is used.
-
-All eight stages pass: build/toolchain, seeded native/65536-coordinate corpus,
-ten SSH-bootstrap tests, final image build/runtime inventory, bounded APK comparison
-and 17 final-image checks. The image checks exercise containment/loaded NIF,
-least-privilege SQL bootstrap, HTTP/SSH authorization/revocation, persistent SSH
-identity, specific database CA/hostname rejection, verified TLS, IPv6, outage/restart
-recovery and synthetic offline UID100 ownership repair. Both owned image-tag cleanup
-codes are zero. The driver cleans its disposable database/network/volume resources.
-
-Artifact native-amd64-server-f5f1736b723096e0e3bd80f817ea6701e7856cc1 contains
-389 tracked-file hashes. All existing 67 source/66 test/11 native baseline inputs
-match it. report.json SHA256:
-32402859f8740494c71d3d2a6b6e185474dddf7e69cf55a1c7f30ada0eecfce8.
-GitHub reports artifact archive digest
-sha256:c5c0641de38a812a66aa38320984e2501acc20ad8abb92281cf54bf4e5729aac.
-The client baseline remains the independent HTTP/SSH snapshot, with two newer
-server boundary test files outside its recorded test set.
-
-The final rerun includes the repository-transfer documentation and Node24 Actions:
-Checkout 7.0.1 pinned to 3d3c42e5aac5ba805825da76410c181273ba90b1 and Upload
-Artifact 7.0.2 pinned to cf430e030ddbb5b0abf93d22962f4752f3646cd9. Both action
-pins appear in the completed log; artifact upload succeeds, the check run has zero
-annotations and no Node20 deprecation warning appears in its log. Runtime/toolchain
-versions match the initial successful f54667c run 38100648994. Application/native
-source and the existing client baseline remain unchanged.
-
-This job does not run the complete 331-case CT suite; that separate local full
-retest and the updated 17 ARM64 image checks pass. The native validation image
-is not registry-published. Approved Fly edge/proxy/database/volume checks and final
-production source/image selection remain open; overall assessment stays 24/25.
-
-## Package 25 compatibility refresh — 11 October 2026
-
-`python3 scripts/check_server_container.py --imports --baseline
-build/validation/package-25-server-baseline-2026-10-11.json` passed in the isolated
-Linux/arm64 namespace. Server [private digest withheld] plus assessment
-working-tree changes and clean native [private digest withheld] were
-frozen. The client/CLI baselines are identical: 67 source, 66 test and 11 native
-build-input hashes. All input sets matched immediately after the run; the temporary
-database was removed. This includes the later boot/public-origin and security-test
-changes that were outside the package-24 snapshot below.
-
-Passing coverage: 34 decoder/18 encoder fixtures, seven security cases, 11 HTTP
-subtests, actual OpenSSH subscription/pause/reconnect/delete closure and output
-parity, 17 auth/key/protocol tests, 11 import-access and 15 publication cases.
-Log (ignored): build/validation/package-25-integration-2026-10-11.log.
-
-The separate assessment passes 326 integration, 51 Erlang unit, 71 JavaScript,
-native and ten SSH-bootstrap tests, plus 16 final-image checks on native ARM64.
-Its overall progress remains 24/25. Native amd64 server-image execution was open
-at this refresh and is now verified above; actual Fly boundary evidence remains
-open. This client runner does not exercise the production entrypoint/image, management WebSockets or a deployed edge.
-
-Fresh private CI passed on the exact refreshed inputs:
-
-- Client 3bec5bc: [Windows/macOS/Ubuntu native matrix](https://github.com/bibleit-labs/bibleit-go/actions/runs/38099677783).
-- CLI 438c0ca with exact client 3bec5bc: [native matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38099709263) and [candidate matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38099709267), all three platforms.
-
-Candidate checks cover six-target packaging, native installers, macOS Homebrew,
-PowerShell 7/5.1 and Scoop installation/replacement/failure paths. These are draft
-workspace/development-endpoint builds, not standalone customer releases. Runtime
-code and the integration harness required no changes; later documentation-only
-commits do not change these tested runtime inputs.
-
-## Package 24 compatibility refresh — 11 October 2026
-
-`python3 scripts/check_server_container.py --imports --baseline
-build/validation/package-24-server-baseline-2026-10-11.json` passed in the isolated
-Linux/arm64 namespace against server [private digest withheld] plus
-assessment working-tree changes, with native [private digest withheld].
-The refreshed baseline records 67 source, 66 test and 11 native build-input hashes.
-All inputs matched immediately after the run; native code was rebuilt and the
-fixture database removed. Later package-25 boot/public-origin and security-test
-edits are outside this snapshot; the native input set still matches. Client and
-CLI baseline bytes match; no client runtime change was needed.
-
-Coverage passes: 34 decoder/18 encoder fixtures, seven security cases, 11 HTTP
-subtests, real OpenSSH subscription/pause/reconnect/delete closure and stable output,
-17 auth/key/protocol tests, 11 import-access and 15 publication cases. This includes
-an authorized unreviewed-source denial; suite-local approved delivery preserves
-production URL policy and authorization. Log (ignored):
-build/validation/package-24-integration-2026-10-11.log.
-
-The assessment's separate final suite passes 324 integration, 50 Erlang unit,
-71 JavaScript and native tests with no skips. Local release/tar checks verify
-178 reviewed resources; Linux build/runtime checks pass. Campaign is 24/25,
-with final-image/Fly verification still open. These results do not certify a
-production endpoint or a committed/deployed release baseline.
-
-Fresh hosted client and CLI checks passed on these exact inputs:
-
-- Client 3c43133: [Windows/macOS/Ubuntu native matrix](https://github.com/bibleit-labs/bibleit-go/actions/runs/38098572121).
-- CLI 990215d with exact client 3c43133: [native matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38098645524) and [candidate matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38098645722), all three platforms.
-
-Candidate validation covers six-target packaging, native installers, PowerShell
-7/5.1 replacement/failure paths, Scoop and macOS Homebrew. These are workspace/
-development-endpoint builds; production packaging/customer downloads remain open.
-No client runtime or integration harness change was required; later documentation
-commits do not change the tested inputs' runtime behavior.
-
-## Assessment HTTP/SSH compatibility refresh — 11 October 2026
-
-The isolated command `python3 scripts/check_server_container.py --imports
---baseline build/validation/assessment-final-server-baseline-2026-10-11.json`
-passes against server [private digest withheld] plus assessment
-working-tree changes and libbibleit [private digest withheld].
-Native code is rebuilt in the Linux/arm64 namespace. The verified baseline records
-65 Erlang source, 62 test and 11 native build-input hashes; native capture rejects
-concurrent input/revision changes. Client and CLI baselines are synchronized.
-
-Passing coverage: 34 decoder/18 encoder fixtures, seven server security cases,
-all 11 Go HTTP subtests, real OpenSSH subscription/pause/reconnect/delete closure,
-single-credential/output parity, 17 auth/key/protocol tests, ten import-access and
-15 publication cases. Recorded file contents matched after the run; the disposable
-PostgreSQL container was removed. Package 23 subsequently added combined-infrastructure
-and fault-proxy test files outside this snapshot; recorded source/test/native
-contents still match. The full current test set therefore differs from the snapshot. Full ignored log:
-build/validation/assessment-final-integration-2026-10-11.log.
-
-The broader assessment's package 22 full suite also passed: 310 integration
-cases, 48 Erlang unit tests, 71 JavaScript tests and native C programs, no skips.
-The assessment ledger/log and its chat confirm this separate result. Campaign
-progress was 22/25 at that earlier snapshot; combined faults/restore, final
-security review and Fly deployment verification were still open, so overall final sign-off is still pending. Production URLs and a committed/
-deployed release baseline remain open. The prior named-profile removal and
-platform evidence below remains historical; draft CI now pins client 8de21e9,
-whose changes are the baseline and contract documentation, not client runtime.
-
-Fresh hosted runs are green on these pushed inputs:
-
-- Client 8de21e9: [native Windows/Ubuntu/macOS](https://github.com/bibleit-labs/bibleit-go/actions/runs/38096465359).
-- CLI e737565, exact client 8de21e9: [native matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38096515700) and [candidate matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38096515593), all three platforms.
-
-Candidate checks include six-target archive packaging, native installers,
-PowerShell 7/5.1 replacement/failure cases, Scoop and macOS Homebrew. They still
-use the draft workspace/development endpoint and do not certify production
-packaging or public download paths. Subsequent documentation-only commits do not
-change the tested runtime or harness code.
-
-## Single-configuration validation — 11 October 2026
-
-The CLI removes named profiles and uses schema-v2 credentials with HTTP default
-and explicit SSH transport. Local macOS/arm64 race/vet, process/loopback HTTP,
-Unix credential permissions, actual PTY confirmation and Bash/Zsh completion pass.
-Fresh isolated server integration also passes HTTP/auth/SSH/output checks and
-25 import cases; the baseline contains 63 source and 59 test fingerprints.
-
-The [client native matrix](https://github.com/bibleit-labs/bibleit-go/actions/runs/38091438398)
-passed Windows/Ubuntu/macOS at 17e146b. Tap syntax/style and seven updater
-regressions passed at d08561b in
-[tap CI](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38091389888).
-The manual release updater remains uninvoked pending a real CLI release and
-its documented private-read/PR permission setup.
-
-The new [CLI native matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38091481226)
-passed Windows/Ubuntu/macOS at fe719db with exact client 17e146b, including native
-Windows config ACL checks, process fixtures and Linux Bash/Zsh/Fish completion.
-The [candidate matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38091481159)
-also passed at those inputs: six-target packaging, Linux/macOS installers,
-PowerShell 7/5.1 replacement/failure checks, Scoop and Homebrew lifecycle checks.
-Later documentation-only commits do not change the tested runtime code. These
-are development-endpoint/workspace candidates; production packaging and fresh
-published-download validation remain release gates. Later assessment changes
-are outside the frozen integration snapshot. Windows/arm64 is cross-build only.
-
-## Readiness refresh — 11 October 2026
-
-Prepared source branches are pushed to the private repositories. The fresh
-[Go-client native matrix](https://github.com/bibleit-labs/bibleit-go/actions/runs/38090370470)
-passed Windows, Ubuntu and macOS at client `310259e1acb5dbd1b07378bfb41462fdddfcda2c`.
-The fresh [CLI native matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38090456759)
-passed all three platforms at CLI `0ce1c4732526c2af6303a0074094e9670f9bcbd7`,
-using that exact client SHA. CLI checks include race/vet/build, native process
-fixtures, and Linux Bash/Zsh/Fish runtime checks. These draft runs use the
-localhost endpoint and an ephemeral private-client workspace; production addresses,
-a released client and standalone GOWORK=off validation remain separate gates.
-The hosted matrix exercises runner architectures; Windows/arm64 remains
-cross-build only, not native execution certification.
-
-The refreshed [release-candidate matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38090456683)
-also passed all three platforms at the same CLI/client revisions: six-target
-packaging, native Bash/PowerShell installers, PowerShell 7/5.1 replacement/failure
-paths, Scoop lifecycle and macOS Homebrew lifecycle. Artifacts are private
-development candidates, not production releases or verified public downloads.
-
-## Historical evidence before fixed-endpoint changes
-
-| Environment | Result | Coverage |
-| --- | --- | --- |
-| macOS/arm64, Go 1.27.1 | Pass | Race/vet/build; native process/HTTP fixture; actual terminal confirmation; Bash/Zsh completion |
-| Linux/arm64 in Docker VM, Go 1.27.1 | Pass | Race/vet/build; native process/HTTP fixture; actual PTY confirmation; Bash/Zsh/Fish 3.6.0 completion |
-| Windows Server 2025 hosted runner | Pass | Race/vet/build; actual saved DACL before/after replacement; console handles/CRLF; native process/HTTP fixture and redirected confirmation guards |
-| Windows/arm64 | Cross-build only | Native arm64 execution is outside the current hosted matrix |
-| Hosted Ubuntu/Windows/macOS jobs | Pass | All jobs succeeded in the linked run; Ubuntu also executes Bash/Zsh/Fish completion |
-
-Linux runs execute Linux binaries on the Linux VM's arm64 CPU. They do not prove
-native Linux/amd64 behavior or Windows behavior. The latest checks use a local
-loopback HTTP fixture, not a real private-service instance; the separate server
-integration harness retains its previous results.
-
-## Run locally
-
-Unix:
+## Offline checks
 
 ```sh
-go test -race -count=1 ./...
-go vet ./...
-CGO_ENABLED=0 go build -o build/bibleit .
-python3 scripts/check_cli_runtime.py --binary build/bibleit --shells bash zsh fish
+GOWORK=off go test -race -count=1 ./...
+GOWORK=off go vet ./...
+GOWORK=off go build -o build/bibleit .
+python3 scripts/check_cli_runtime.py --binary build/bibleit
 ```
 
-Use only installed shells in `--shells`; explicitly requested missing shells fail
-instead of silently skipping. The harness copies the executable into a directory
-containing spaces, creates disposable profiles, starts a loopback-only HTTP
-fixture, and removes its temporary files. Completion checks verify nested verbs,
-option values, profile names, empty prefixes, positional references and `--`.
-They assert no fixture requests or profile writes occur during completion.
+The runtime helper exercises local process/output/completion behavior using
+synthetic fixtures. Linux can add `--shells bash zsh fish`; install those shells
+first. Native CI exercises Linux, macOS and Windows, including credential-file
+protection and terminal behavior. Only run tests relevant to the change:
+documentation changes need link/command/content review, not a new live-service run.
 
-Windows PowerShell, with Go, Python, OpenSSH and a Go-compatible MinGW GCC on PATH:
+Shared contract fixtures are versioned snapshots. The SDK uses in-memory
+transports; the CLI's test transport allows only the production hostname and
+routes it to isolated loopback TLS with a fixture-only CA. Fixture trust is absent
+from production executables and is never installed in the host trust store.
+Passing these tests does not prove production availability or provider behavior.
 
-```powershell
-$env:GOTOOLCHAIN = 'local'
-$env:CGO_ENABLED = '1'
-go test -race -count=1 ./...
-go vet ./...
-$env:CGO_ENABLED = '0'
-go build -o build/bibleit.exe .
-python scripts/check_cli_runtime.py --binary build/bibleit.exe
-```
+## Optional private-server integration
 
-The Windows-only Go tests verify a real console handle with GetConsoleMode and
-confirmation input using CRLF, plus the actual saved configuration DACL before
-and after replacement. The process smoke harness covers redirected handles and
-the no-prompt/--yes paths. Unix PTY checks exercise the built executable's real
-prompt, rejection and confirmed dispatch. Windows console input end-to-end is
-still a manual check beyond the console-handle test.
-
-## Windows credential storage
-
-Unix config files retain mode `0600`. Windows mode bits cannot supply the same
-privacy guarantee: the CLI replaces the entire DACL on the new empty temporary
-file with a protected DACL granting the current user's SID full access before
-writing token data. This removes both inherited and explicit grants from the
-creation environment. ACL failures abort saving; no credential is written to that
-file. Replacement keeps the protected file's ACL. Existing configuration is
-hardened on its next successful write. This requires an ACL-capable Windows file
-system; administrators retain OS-level authority. The Windows test uses icacls
-to inspect the resulting DACL.
-
-The implementation uses Microsoft's [SetNamedSecurityInfoW](https://learn.microsoft.com/en-us/windows/win32/api/aclapi/nf-aclapi-setnamedsecurityinfow)
-and [SDDL conversion](https://learn.microsoft.com/en-us/windows/win32/api/sddl/nf-sddl-convertstringsecuritydescriptortosecuritydescriptorw).
-DACL inspection follows the [icacls documentation](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/icacls).
-Console tests use [AllocConsole](https://learn.microsoft.com/en-us/windows/console/allocconsole)
-and [GetConsoleMode](https://learn.microsoft.com/en-us/windows/console/getconsolemode).
-Go installation in CI uses [actions/setup-go](https://github.com/actions/setup-go)
-with an exact version and automatic toolchain switching disabled.
-
-
-## Current fixed-endpoint draft (2026-10-10)
-
-- Go client and CLI: local macOS/arm64 race tests, vet and build passed.
-- CLI native macOS process/HTTP fixture, PTY confirmation and Bash/Zsh checks passed.
-- Both modules: native Linux/arm64 race tests and vet passed in a disposable Docker VM.
-- Linux CLI process/HTTP fixture, PTY confirmation, and Fish/Bash/Zsh checks passed.
-- CLI cross-builds passed for darwin/linux/windows on amd64 and arm64.
-- Both updated real-server integration test binaries compile; real-server tests were not rerun.
-- Native Windows and hosted Actions were not rerun for these local-only changes.
-
-The runtime fixture now uses IPv4 loopback port 8080 and needs that port free.
-Its requests use the fixed `http://localhost:8080` service address. The fixture
-does not stop or replace an existing listener. See [endpoint policy](endpoint-policy.md).
-
-Publication and releases are paused. Before publication resumes, pin a real
-Go client version and validate builds with `GOWORK=off`, then rerun hosted checks.
-
-
-## Simple-client real-server checks (2026-10-10)
-
-The Go client and CLI passed local race tests, vet, and build after switching to
-`NewClient(apiToken)` and `NewAuthClient()`. The real-server harness also passed
-against the fixed service in a disposable Linux network namespace:
+The server is a separate private repository. Authorized maintainers with Docker
+and the sibling SDK/server checkouts can run the isolated container harness:
 
 ```sh
 python3 scripts/check_server_container.py --baseline contract/server-baseline.json
 ```
 
-The fixture server binds IPv4 loopback port 8080, so public constructors connect
-to their actual project-managed address. There is no client URL or destination
-remapping. The runner shares only the temporary database container's namespace;
-no ports are exposed on the host. NIFs are rebuilt for Linux from frozen source,
-and the original server checkout and existing host service remain untouched.
+Use `--imports` when import coverage is relevant. The harness copies the frozen
+server snapshot, rebuilds native dependencies and uses a disposable database and
+network namespace. It records source/native fingerprints and checks that inputs stay stable during
+the run. The --baseline argument writes the successful run's provenance to the
+selected file; review that diff before committing it. Read its options before
+running against changed server inputs. Ordinary contributors do not need this harness for unit tests.
 
-Passing coverage: 27 decoder fixtures, 18 encoder fixtures, 7 targeted security
-cases, Go HTTP/domain/PKCE/token checks, actual CLI/OpenSSH subscription lifecycle,
-and 8 authentication/SSH EUnit cases. The baseline records the server working-tree
-fingerprints and fixed HTTP endpoint. Native Windows was not rerun for that increment.
+Integration targets the fixed service name inside the isolated namespace; it does
+not add a customer endpoint override. Record the exact tested baseline and scoped
+operations. Fixture, private integration and genuine provider/public-DNS checks
+are separate evidence. [Contract coverage](../contract/features.md) records the
+client's supported operations and limits.
 
-## Private package-manager validation (2026-10-10)
+## Package installation validation
 
-The user recreated the Go-client and CLI repositories privately and authorized
-validation-branch pushes and CI. Releases/tags remain paused. The Go-client matrix
-passed Windows, Ubuntu and macOS at `3d15ec6f54eba822129863e86e006d51deb07725` in
-[run 38086747099](https://github.com/bibleit-labs/bibleit-go/actions/runs/38086747099).
+[Release maintenance](releases.md) owns archive/checksum, Bash/PowerShell,
+Homebrew and Scoop checks. Corrected v0.0.2 is staged privately, and Windows
+installer/Scoop checks remain pending by owner instruction. A successful build or
+Linux PowerShell parser test does not close those gates. Native code tests passed
+on the three hosted platforms at the recorded candidate source; current artifact
+and billing limits are in [release readiness](release-v0.0.2-readiness.md).
 
-Real Homebrew macOS/arm64 install/test/completion/reinstall/uninstall checks pass
-using the generated development formula in a disposable Homebrew prefix. The
-normal user installation is unchanged. Report: `build/validation/homebrew.json`.
-The tap is a separate `bibleit-labs/homebrew-tap` repository, prepared locally.
-
-The native CLI matrix passed Windows/Ubuntu/macOS at
-`1e58c54adb21cb1bfb00e9c7e021b38278f72828` in
-[run 38088193147](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38088193147).
-Ubuntu also executed Bash/Zsh/Fish completion checks.
-
-The distribution matrix passed at the same CLI revision in
-[run 38088193158](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38088193158):
-Linux/macOS Bash installation/replacement/failure paths; native Windows
-PowerShell 7 and Windows PowerShell 5.1 installation/replacement/failure paths;
-PowerShell parser checks; real macOS Homebrew lifecycle; real native Windows
-Scoop install, executable shim, reset, reinstall, uninstall and hash rejection.
-Scoop engine: `e6aa3b366bdee8ed138c1e0f7b85192ebdd35d0f`. Hash rejection checks
-require the explicit failure and absence of an executable, current link and shim,
-independently of Scoop's pipeline exit status. Windows/arm64 remains cross-build
-only. Local evidence is under `build/validation/ci-38088193158`.
-
-The scoped checkout secret is configured; these workflows use exact Go-client
-revision `3d15ec6f54eba822129863e86e006d51deb07725`, ephemeral go.work and
-development-only artifacts. They do not validate GOWORK=off production builds
-or hosted public download URLs. The subsequent local client fixture/comment
-refresh for the server's LIVE STATS repair is outside these pinned CI runs.
-
-## Fresh full HTTP/SSH integration (2026-10-10)
-
-Local branch `integration-refresh`, CLI source `045fd20`, Go client `9332d35`:
-`python3 scripts/check_server_container.py --baseline contract/server-baseline.json`
-passed against server HEAD `[private digest withheld]` with uncommitted assessment changes.
-The baseline fingerprints identify the actual tested source; this is not a claim
-against a published server release. The assessment continues editing the server; source
-fingerprints identify the tested snapshot rather than its moving working tree.
-
-The harness passed 27 decoder and 18 encoder fixtures, seven targeted security
-cases, all 11 HTTP integration subtests, real OpenSSH subscription events,
-disconnect/reconnect and deletion closure, CLI profile/stable-output checks and
-eight authentication/SSH EUnit tests. The LIVE STATS repair passed both canonical
-encoding and real subscriber statistics. No regressions or new fixes were needed.
-Negative SSH algorithm tests intentionally produce rejected-handshake logs.
-
-Linux fixture NIFs were rebuilt from frozen source. The temporary database and
-server shared a disposable network namespace; no host ports were exposed, and
-the database container was removed. Full output is saved locally at
-`build/validation/full-integration-refresh-2026-10-10.log`. Both full runs passed;
-the second included a fetcher edit discovered after the first snapshot. Subsequent
-translation/registry edits from the ongoing assessment are outside this baseline.
-This refresh does not repeat
-native Windows/package-manager CI, validate production TLS/download addresses,
-or replace the server's broader security assessment.
-
-## Latest assessment translation validation (2026-10-10)
-
-`python3 scripts/check_server_container.py --imports --baseline contract/server-baseline.json`
-passed with CLI harness `26de771`, Go client `5138077` and the server working tree
-at HEAD `[private digest withheld]`. The baseline now fingerprints
-all 63 server source and 57 test files. Both sets matched the server at completion;
-future assessment edits remain outside that snapshot.
-
-In addition to the complete existing HTTP/SSH harness (27 decoder/18 encoder
-fixtures, 7 targeted security cases, 11 HTTP subtests, real OpenSSH lifecycle and
-profile/output checks, 8 auth/key EUnit tests), all 10 import-access and 14
-publication cases pass. These exercise immutable generations, concurrent
-installations and archives, retained native handles, idempotent provenance and
-response-loss retries, registry outage, legacy upgrade, install/delete races,
-path containment, staged failures and process death before/after publication.
-
-The runner executes the actual suite cases with setup/teardown callbacks; it does
-not run the full Common Test campaign. Access cases use real HTTP with loopback
-archive fixtures, while publication fault cases use the assessment's production
-module clone with filesystem/NIF boundary substitutions. The optional flag keeps
-the normal client/CLI gate available independently.
-
-Log: `build/validation/assessment-integration-2026-10-10.log`. The isolated
-database was removed, no host ports were exposed and no server files were changed.
-Native Windows/package-manager evidence remains the preceding private CI runs;
-this increment stays entirely local.
+Dated implementation and deployment records remain in [historical status](status.md).
+They establish only their recorded revision/scope, not a new validation claim.

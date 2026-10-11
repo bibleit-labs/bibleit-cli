@@ -45,11 +45,14 @@ Local checks passed on the exact fresh candidate:
 
 See [the validation summary](security/v0.0.2-validation-summary-2026-10-11.json)
 for exact archive hashes, GitHub artifact digest and compact local evidence.
-Remaining: restore Actions capacity and rerun failed candidate jobs, then run the
-private tap workflow with version v0.0.2 and candidate_run_id 38174450362. This
-completes Windows PowerShell 7/5.1, Scoop, and tap Linux/macOS Homebrew checks.
-No new build is necessary if rerunning the same failed jobs on the frozen commit;
-any input/source change requires a fresh candidate and formula comparison.
+Windows PowerShell 7/5.1 and Scoop checks remain pending by owner instruction.
+Tap-owned Linux Homebrew validation also remains outstanding. The public-docs
+update changes README, which is embedded in the archives: the recorded candidate
+and proposed formula remain evidence for source 9fb7bfc only. Build a fresh clean
+candidate from the final approved documentation/source, regenerate the tap hashes,
+and validate those exact artifacts before release. Once Actions capacity is
+available, use that new successful candidate run for tap validation. Do not treat
+the old source's checks as approval for new package bytes.
 
 ## Recommended disposition of v0.0.1 — approval required
 
