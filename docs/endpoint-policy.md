@@ -12,8 +12,10 @@ public DNS/TLS/SSH technical qualification passed on 2026-10-11, with the
 assessment’s redacted provenance retained in contract/canonical-deployment-validation.json.
 The operator confirms Google/GitHub sign-in. The latest repaired deployment [private revision withheld]/native
 [private revision withheld] (workflow 38147193441) passes native form CSRF admission and refreshed
-public boundary/alias checks on IPv4 and IPv6; real Turnstile backend success/replay
-and actual email delivery/verification remain pending. Earlier Fly-hostname qualification at source 7442010 is historical evidence only.
+public boundary/alias checks on IPv4 and IPv6; real fresh-token acceptance and actual email delivery/verification are now
+human-confirmed in ledger a40d27d on font-only deployment[private revision withheld]/native [private revision withheld].
+The improved human helper confirms replay acceptance; assessment repair and
+real fresh-token/replay retesting are required before release. Earlier Fly-hostname qualification at source 7442010 is historical evidence only.
 Fly supplies the trusted PROXY envelope to the server; clients send ordinary
 SSH and never inject a PROXY preamble.
 
