@@ -18,6 +18,7 @@ def run(command, **kwargs):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--imports', action='store_true')
+    parser.add_argument('--catalog-only', action='store_true')
     args = parser.parse_args()
     # Refuse a routed namespace before mapping the real service name. This
     # gateway is confined to the disposable Linux container, never the host.
@@ -66,6 +67,11 @@ def main():
         run(['c++', '-shared', *objects, '-o', str(jiffy / 'priv/jiffy.so')])
         run(['make', 'nif'], cwd=server)
         cli = workspace / 'bibleit-cli'
+        if args.catalog_only:
+            run(['python3', 'scripts/check_server_catalog.py',
+                 '--source-metadata', str(workspace / 'server-metadata.json'),
+                 '--report', '/results/server-baseline.json'], cwd=cli)
+            return
         run(['python3', 'scripts/check_server.py', '--integration', '--external-disposable-database',
              '--source-metadata', str(workspace / 'server-metadata.json'),
              '--baseline', '/results/server-baseline.json',

@@ -302,7 +302,7 @@ and automated release uploading are outside the initial release requirement.
 | --- | --- | --- | --- |
 | 1 | Confirm version, scope and customer access | Project decision; propose Go/CLI v0.1.0 for the existing core command surface, Homebrew/Bash/PowerShell/manual archives | Version and supported transports/architectures recorded; choose public customer artifacts or implement authenticated delivery; choose whether Scoop bucket ships now or later |
 | 2 | Configure production service and safe test fixtures | Client implementation complete: custom-domain constants, trust-preserving SSH alias, verified fixtures and changed-key rejection pass; actual public DNS/TLS/HTTP/SSH/rate technical acceptance passes; human Google/GitHub sign-in confirmed; repaired native form technical admission passes; Turnstile/email manual acceptance pending | Retain public technical/provider evidence; confirm real Turnstile backend success/replay and actual email delivery/verification before release |
-| 3 | Freeze and validate server compatibility | New-domain compatibility and boot validation pass at assessed 5969f2f/native f6fed37; committed Erlang inputs verified; supplemental direct alias boot qualification passes at ef63e91; preceding public probes pass on c586107; repaired native admission/rollout qualifies 34d80f8/native f6fed37; manual token/email acceptance and final packaging input freeze pending | Retain repaired native admission, boundary/alias and source/image evidence; qualify actual token/email flow; retain earlier full integration and supplemental boot provenance; freeze all packaging/deployment inputs; retain the verified boot fix and compare recorded hashes or rerun changed checks; retain approved migration lineage/runtime inputs; public-edge evidence is assessment-owned, and customer login/access decisions remain gate 1 |
+| 3 | Freeze and validate server compatibility | New-domain compatibility and boot validation pass at assessed 5969f2f/native f6fed37; committed Erlang inputs verified; supplemental direct alias boot qualification passes at ef63e91; preceding public probes pass on c586107; repaired native admission/rollout qualifies 34d80f8/native f6fed37; catalog6ba81e2/d6e31dc operational qualification and focused4243c9a/d6 client compatibility pass; exact UTF-8 repair deployment, manual token/email acceptance and final packaging input freeze pending | Retain separately attributed full, boot, sparse-client and deployed image provenance; qualify exact UTF-8 repair rollout; qualify actual token/email flow; retain earlier full integration and supplemental boot provenance; freeze all packaging/deployment inputs; retain the verified boot fix and compare recorded hashes or rerun changed checks; retain approved migration lineage/runtime inputs; public-edge evidence is assessment-owned, and customer login/access decisions remain gate 1 |
 | 4 | Release Go client and pin standalone CLI dependency | After gates 1–3; go.mod still requires v0.0.0 | Review/promote the client source, publish approved semantic version, pin it in CLI and record sums; clean-cache GOWORK=off test/vet/build succeeds without sibling checkout or replace directives; private access uses appropriate Git credentials/GOPRIVATE |
 | 5 | Validate exact production CLI candidate | After gate 4; current candidate workflow uses --local and go work | Add a standalone production candidate validation path using the released client, GOWORK=off and no --local; clean Go 1.27.1 source produces six archives, installer scripts, formula, Scoop manifest, checksums and provenance; rerun relevant native/platform/installer checks on those exact inputs |
 | 6 | Finalize release sources, notes and delivery policy | Before publishing CLI; release/default branches still need review | Promote reviewed source through normal review; notes name client version/server baseline, protocol limits, old-config migration/revocation, OpenSSH dependency and supported architectures; choose signing policy and test downloaded macOS binaries with normal OS protections; record manual release procedure or implement upload automation |
@@ -622,9 +622,28 @@ Keep final qualification freeze held for real Turnstile backend fresh-token
 success/replay and actual email delivery/verification. The separate native
 sparse-verse rollout uses server 6ba81e2/native d6e31dc in
 [workflow 38144732991](https://github.com/bibleit-labs/bibleit-server/actions/runs/38144732991).
-It is outside this point-in-time 34d80f8/f6fed37 qualification; require its own
-deployment/catalog evidence and checks affected by the changed native inputs
-before adding that source to any client release baseline.
+It is independently operationally qualified: 405 source hashes/eight stages/20
+actual-image checks, native amd64, matching published/running digest and clean
+fixture cleanup. Refreshed public boundary23/alias39 checks pass per family;
+existing BPML66 books and omitted/present Luke17:36/37 semantics pass. New image
+sha256:7456bfec37b1d2285041387ef6135685dc707748ea82adbff60417e96c5fec47 is
+recorded separately from earlier 34d80f8/f6fed37 evidence.
+
+Independent --catalog-only client checks then found invalid UTF-8 in Portuguese/
+German language-pack binary literals. Sparse reads and native publication safety
+pass, but the old catalogue fails strict finite decoding. Repair4243c9a is now
+committed and full-suite green340 CT/66 EUnit/75 JS/native65536/10 bootstrap;
+all198 names and installed66-book catalogues agree across3languages. Independent
+focused client qualification at4243c9a/native d6e31dc passes five typed HTTP groups
+(including Portuguese/German UTF-8 and accented named reads), five HTTP/SSH parity
+cases, invalid-index publication safety and TLS3 boundaries. Recorded69source/
+75test/11native hashes match the commit and after-run inputs. Sparse catalogue
+chapter Verses is the highest source identifier, not a dense row count; omitted
+verse reads retain verse_not_found and chapter reads preserve present IDs.
+server-catalog-validation.json is synchronized across Go/CLI. Earlier broad
+protocol evidence remains at its tested source without unnecessary repetition.
+The exact UTF-8 repaired deployment/public qualification is pending assessment/Fly;
+retain independent image provenance before final release-baseline freeze. Keep real Turnstile/email manual acceptance open.
 
 Confirm first-release version/customer access, release and pin the Go client,
 validate a standalone CLI candidate without sibling workspace/--local, promote

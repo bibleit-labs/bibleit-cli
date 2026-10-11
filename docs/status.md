@@ -83,6 +83,37 @@ The separate catalog rollout uses server 6ba81e2/native d6e31dc in
 It is outside this point-in-time 34d80f8/f6fed37 qualification and requires its own
 deployment/catalog and changed-input acceptance before inclusion.
 
+### Catalog native rollout and focused client compatibility
+
+The separately approved catalog release is operationally qualified at server
+6ba81e2d2ec7d4bfbe5bbf819e77438a0f205665/native
+d6e31dc8eb7c478e2f915e7bd156b047a2cb279e, image
+sha256:7456bfec37b1d2285041387ef6135685dc707748ea82adbff60417e96c5fec47,
+[run 38144732991](https://github.com/bibleit-labs/bibleit-server/actions/runs/38144732991).
+405 source hashes, eight successful build stages, 20 actual-image checks,
+native amd64, zero cleanup counts, matching published/running digest and 185 APK
+comparisons with zero fixed-advisory alerts were independently verified. Refreshed
+23 boundary/39 alias checks pass per explicit address family; native browser CSRF
+admission passes with provider traffic blocked and no account/email. Existing
+BPML has 66 books, omitted Luke17:36 is notfound and17:37 reads exactly.
+
+Focused client compatibility found a separate localized UTF-8 server bug:
+BPML/LUT1912 book-name literals emit Latin-1 bytes. Strict Go decoding correctly
+rejects the finite catalogue; sparse present/omitted/chapter reads and invalid
+index rejection preserving the prior generation pass. Repair 4243c9a is committed
+and passes the full340 CT/66 EUnit/75 JS/native65536/10 bootstrap server suite;
+all198 names and dashboard/protocol66-book catalogues agree across3languages.
+Independent --catalog-only client qualification now passes five typed HTTP groups,
+Portuguese/German catalogues and accented named reads, five HTTP/SSH parity cases,
+one invalid-index publication case and three TLS checks at exact4243c9a/native
+d6e31dc. All69source/75test/11native hashes match that commit and remain unchanged
+after validation. The SDK/CLI decoder remains strict; no runtime decoding change.
+server-catalog-validation.json retains this focused evidence separately. Exact
+UTF-8 repair deployment/public qualification remains pending with assessment/Fly.
+Earlier broad
+client protocol integration stays attributed to its tested source. No customer
+release; real Turnstile/email acceptance remains open separately.
+
 ## Previous increment: fixed Fly endpoints and compatibility refresh
 
 | Item | Status | Evidence / limits |
