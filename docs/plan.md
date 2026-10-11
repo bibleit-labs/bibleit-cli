@@ -7,8 +7,8 @@ private: `bibleit-cli`, `bibleit-go` and `homebrew-tap`. This supersedes earlier
 local-only source instructions. Use Conventional Commits and no codex branch prefix.
 Every client targets the project-managed service, currently
 `https://bibleit.app`; ordinary SSH uses `bibleit.app:22`. Custom-domain
-technical qualification and human Google/GitHub sign-in pass; real Turnstile
-backend success/replay and actual email delivery/verification remain pending. See
+technical qualification, human Google/GitHub sign-in, fresh Turnstile acceptance
+and actual email delivery/verification pass; real replay rejection has failed and requires assessment repair/retest. See
 [endpoint-policy.md](endpoint-policy.md) and [releases.md](releases.md).
 
 Revised 2026-10-11 after the assessment closed its scoped campaign at server
@@ -17,8 +17,8 @@ supplemental alias boot qualification passes at ef63e91, and actual public-domai
 technical acceptance passed on 34d80f8 after the native HTML form repair. The latest
 localized catalogue repair is qualified at deployed 4243c9a/native d6e31dc
 (workflow 38147193441), including independent focused HTTP/SSH client checks.
-Real Turnstile backend success/replay, actual email delivery/verification and final
-packaging input freeze remain pending; human Google/GitHub sign-in passes. This revision supersedes the earlier sequence of extracting Go and immediately porting the
+Real Turnstile replay rejection and final packaging input freeze remain pending;
+human Google/GitHub sign-in, fresh-token acceptance and email verification pass. This revision supersedes the earlier sequence of extracting Go and immediately porting the
 same surface into Python, Ruby, and Rust.
 
 ## Decisions retained
@@ -303,8 +303,8 @@ and automated release uploading are outside the initial release requirement.
 | Order | Item | Current status / required input | Done when |
 | --- | --- | --- | --- |
 | 1 | Confirm version, scope and customer access | Project decision; propose Go/CLI v0.1.0 for the existing core command surface, Homebrew/Bash/PowerShell/manual archives | Version and supported transports/architectures recorded; choose public customer artifacts or implement authenticated delivery; choose whether Scoop bucket ships now or later |
-| 2 | Configure production service and safe test fixtures | Client implementation complete: custom-domain constants, trust-preserving SSH alias, verified fixtures and changed-key rejection pass; actual public DNS/TLS/HTTP/SSH/rate technical acceptance passes; human Google/GitHub sign-in confirmed; repaired native form technical admission passes; Turnstile/email manual acceptance pending | Retain public technical/provider evidence; confirm real Turnstile backend success/replay and actual email delivery/verification before release |
-| 3 | Freeze and validate server compatibility | New-domain compatibility and boot validation pass at assessed 5969f2f/native f6fed37; committed Erlang inputs verified; supplemental direct alias boot qualification passes at ef63e91; preceding public probes pass on c586107; repaired native admission/rollout qualifies 34d80f8/native f6fed37; catalog6ba81e2/d6e31dc operational qualification and focused4243c9a/d6 client compatibility pass; exact repaired UTF-8 deployment/public qualification complete; manual token/email acceptance and final packaging input freeze pending | Retain separately attributed full, boot, sparse-client and deployed image provenance; retain exact repaired UTF-8 rollout provenance; qualify actual token/email flow; retain earlier full integration and supplemental boot provenance; freeze all packaging/deployment inputs; retain the verified boot fix and compare recorded hashes or rerun changed checks; retain approved migration lineage/runtime inputs; public-edge evidence is assessment-owned, and customer login/access decisions remain gate 1 |
+| 2 | Configure production service and safe test fixtures | Client implementation complete: custom-domain constants, trust-preserving SSH alias, verified fixtures and changed-key rejection pass; actual public DNS/TLS/HTTP/SSH/rate technical acceptance passes; human Google/GitHub sign-in confirmed; repaired native form technical admission passes; fresh Turnstile and email delivery/verification human-confirmed; replay failed; assessment repair/retest required | Retain public technical/provider evidence; retain human fresh-token/email evidence and confirm real replay rejection before release |
+| 3 | Freeze and validate server compatibility | New-domain compatibility and boot validation pass at assessed 5969f2f/native f6fed37; committed Erlang inputs verified; supplemental direct alias boot qualification passes at ef63e91; preceding public probes pass on c586107; repaired native admission/rollout qualifies 34d80f8/native f6fed37; catalog6ba81e2/d6e31dc operational qualification and focused4243c9a/d6 client compatibility pass; exact repaired UTF-8 deployment/public qualification complete; confirmed replay failure requires repair/retest; final packaging input freeze pending | Retain separately attributed full, boot, sparse-client and deployed image provenance; retain exact repaired UTF-8 rollout provenance; qualify actual token/email flow; retain earlier full integration and supplemental boot provenance; freeze all packaging/deployment inputs; retain the verified boot fix and compare recorded hashes or rerun changed checks; retain approved migration lineage/runtime inputs; public-edge evidence is assessment-owned, and customer login/access decisions remain gate 1 |
 | 4 | Release Go client and pin standalone CLI dependency | Semantic release pending gates 1–3; immutable client snapshot v0.0.0-20261011144051-464d86d7dd41 is pinned with sums; standalone tests/native CI pass | Review/promote the client source, publish approved semantic version, pin it in CLI and record sums; clean-cache GOWORK=off test/vet/build succeeds without sibling checkout or replace directives; private access uses appropriate Git credentials/GOPRIVATE |
 | 5 | Validate exact production CLI candidate | Standalone infrastructure complete: clean non-local six-target candidate and native installer validation pass at CLI13e4b72; final approved semantic client/version inputs still require qualification | Retain the completed standalone GOWORK=off/no --local validation path, then qualify the final released-client input; clean Go 1.27.1 source produces six archives, installer scripts, formula, Scoop manifest, checksums and provenance; rerun relevant native/platform/installer checks on those exact inputs |
 | 6 | Finalize release sources, notes and delivery policy | Source promotion complete; main is the default in all three repos; tag-triggered draft workflow configured; final notes/customer delivery/signing decision remains | Promote reviewed source through normal review; notes name client version/server baseline, protocol limits, old-config migration/revocation, OpenSSH dependency and supported architectures; choose signing policy and test downloaded macOS binaries with normal OS protections; record manual release procedure or implement upload automation |
@@ -620,8 +620,9 @@ Updated 23 boundary/39 alias checks pass per address family; local source passes
 is retained at its tested source, with explicit report provenance. No unchanged
 client protocol checks are claimed as repeated at this later deployment.
 
-Keep final qualification freeze held for real Turnstile backend fresh-token
-success/replay and actual email delivery/verification. The separate native
+The earlier freeze required fresh-token/replay and email verification. Human
+fresh-token/email evidence is now recorded, but confirmed replay failure still
+requires assessment repair and real provider retesting before the freeze closes. The separate native
 sparse-verse rollout uses server 6ba81e2/native d6e31dc in
 [workflow 38144732991](https://github.com/bibleit-labs/bibleit-server/actions/runs/38144732991).
 It is independently operationally qualified: 405 source hashes/eight stages/20
@@ -651,8 +652,9 @@ startup checks, published/running digest parity and 185 APK comparisons with zer
 advisory alerts. Refreshed boundary 23/alias 39 checks pass independently on IPv4 and
 IPv6; native form CSRF admission and missing-token denial pass. Production BPML has 66
 strict UTF-8 BOOK records and matching Gênesis. The five public report hashes are
-recorded in canonical-deployment-validation.json. Real Turnstile backend success/replay
-and actual email delivery/verification remain open.
+recorded in canonical-deployment-validation.json. The remaining provider gate
+is confirmed replay failure requiring repair and real retesting;
+fresh-token/email human evidence is recorded separately.
 
 Confirm first-release version/customer access, release and pin the Go client,
 validate a standalone CLI candidate without sibling workspace/--local, promote
@@ -686,7 +688,7 @@ standalone `GOWORK=off` tests pass; semantic client release/version selection is
 still a launch decision. `release.yml` generates a draft only after native tests,
 six-target packaging and installer checks succeed for a tag on main.
 
-Complete the remaining Turnstile and email acceptance gates, select the approved
+Confirm real Turnstile replay rejection, select the approved
 Go/CLI release versions and customer access, then create the approved tags and
 review/publish the draft. Dispatch the tap updater and run its released-package
 validation on the formula PR before merging. No tag or published release is
@@ -695,24 +697,52 @@ created by merging the current source. See releases.md for workflow details.
 
 ## Real-provider acceptance coordination — 11 October 2026
 
-The assessment confirms real Turnstile backend fresh-token success/replay and
-actual email delivery/verification are still pending. It has requested the human
-steps in the assessment chat: run the canonical browser helper and report only
-its three result booleans, then reload for signup with an unused controlled email
-and confirm the check-email page, message arrival and completed verification.
+Assessment ledger a40d27d records human-confirmed check-email page, actual message
+delivery and completed account verification, plus real fresh-token acceptance.
+The original browser helper reports freshAcceptedBeforeInputValidation=true,
+replayRejected=false, passed=false and statuses400/400. That does not establish
+backend replay acceptance: rendered localized feedback may be misclassified.
+The assessment improved the helper to parse only feedback-error paragraphs and
+emit allowlisted locale/CSRF/rate/continuity booleans, using a unique invalid email
+and same-body replay. Six offline classification cases pass; a fresh human retry
+is requested. Real replay rejection remains open until that result is verified.
+
 No raw challenge tokens, email addresses, credentials, cookies or message contents
-belong in the shared release evidence. Widget success, missing-token denial,
-native CSRF admission and local provider fixtures do not close these gates.
+are retained here. Widget success, missing-token denial and local provider
+fixtures cannot replace genuine provider acceptance. Retain fresh/replay/mail
+results separately with deployed source/native/image provenance and cleanup.
 
-Retain each result separately with deployed source/native/image provenance and
-cleanup status. Source 14628f3 (workflow 38157279015) is reported as a later
-font-only rollout; exact image ownership/evidence is being coordinated. The full
-4243c9a/d6e31dc client/deployment records remain point-in-time evidence and are
-not silently attributed to that newer image. Complete the human acceptance before
-release-baseline freeze; a server regression must be repaired and relevant checks
-requalified before the gate closes.
+Font-only source14628f3/native d6e31dc/workflow38157279015 is separately qualified
+by its406-hash/eight-stage artifact and published/running image digest
+sha256:28fb9a0baa99d2bae3bbdc3a6f3247896fc67f2f2956a2a7ef322ea48a9660f9.
+Its owner confirms public CSS/signup/readiness. The4243 full client/public-boundary
+records remain point-in-time evidence. A provider regression must be repaired and
+relevant checks requalified before replay acceptance and release freeze close.
 
-The user clarified that the intended integration/default branch is `main`.
-CI triggers and the release tag ancestry guard now use main. Existing histories
-are preserved; the accidentally introduced master branches are removed only after
-main is published and verified as default.
+The user clarified `main` as the intended integration/default branch. Main is now
+default in all three repositories, and CI/tag ancestry use main. CLI's stale
+legacy origin/main ref did not exist in the recreated private repository; only
+our unpublished empty-tree merge was removed before publishing the reviewed CLI
+history. Master refs are left preserved. Main CI runs38160808491/38160808600 pass all seven jobs.
+Complete replay repair and real provider retesting, choose Go/CLI versions/customer access,
+qualify the final semantic-client candidate and approve draft publication/tap PR.
+
+
+### Confirmed replay failure
+
+The improved human helper confirms the identical token/body reaches invalid-email
+validation twice (HTTP400/400), human-denial=false, with CSRF/rate/continuity
+interference ruled out. Replay acceptance is a confirmed release blocker. The
+assessment owns deployed configuration/request-path diagnosis and repair. Retain
+mail delivery/verification separately; after repair qualify relevant changed
+inputs and rerun genuine fresh-token acceptance and replay rejection before
+closing the provider gate or publishing a release.
+
+
+The assessment confirms production integration is enabled, no documented test
+secret is configured and bogus tokens fail closed. It is adding an atomic
+shared database replay guard across concurrent requests and restarts, retaining
+only temporary token SHA-256 hashes. Required closure: commit/review the repair,
+pass relevant server concurrency/restart/failure and migration/startup checks,
+qualify the exact deployed image, then complete genuine fresh-token acceptance
+and replay rejection. These planned checks are not yet reported as passed.

@@ -26,7 +26,7 @@ Draft creation itself runs on the first approved tag; no release was created
 during these validation runs.
 
 No tags, published releases or visibility changes are part of this increment.
-Turnstile success/replay and email delivery/verification remain release gates.
+Real Turnstile replay rejection remains the provider release gate; email delivery/verification and fresh-token acceptance are human-confirmed.
 
 ## Current increment: canonical custom-domain migration
 
@@ -80,9 +80,11 @@ suite passes 337 CT/63 EUnit/71 JavaScript/native 65536/10 bootstrap checks.
 | Authentication, SSH and paired rate behavior | Complete | 11 auth, 10 actual canonical-DNS SSH and 15 paired rate checks pass; retained public SSH fingerprint confirmed; scoped fixture cleanup counts are zero |
 | Real provider sign-in | Complete | Operator confirms Google and GitHub OAuth sign-in at bibleit.app |
 | Native HTML form/browser approval repair | Complete for technical admission | Deployed 34d80f8 real requestSubmit carries canonical Origin/Referer, passes CSRF and reaches missing-token denial; same-origin HTML policy retains sensitive no-referrer; provider traffic blocked, no account/email |
-| Real Turnstile and email acceptance | In progress; awaiting human evidence | Assessment requested canonical helper result booleans and controlled signup delivery/verification; visible widget success, native admission and token denials remain partial evidence |
+| Real Turnstile fresh-token acceptance | Complete, human confirmed | Original helper freshAcceptedBeforeInputValidation=true; real signup also completed; source14628f3, assessment ledger a40d27d |
+| Actual email delivery and verification | Complete, human confirmed | Check-email page, delivered message and verification into the new account confirmed; identifiers and message contents omitted |
+| Real Turnstile replay rejection | Failed; assessment repair in progress | Improved same-body human test reached invalid-email validation twice; human denial false; CSRF/rate/continuity interference ruled out; repair and genuine fresh-token/replay retest required |
 
-Progress: **4/5 public acceptance items complete**; the client increment remains
+Progress: **6/7 public acceptance items complete**; the client increment remains
 4/4. The preceding technical probes qualified source c586107, runtime repair ef63e91/native f6fed37,
 image sha256:1140436c3d9e7de1b1f80e88aa208a0a6c06cff4b7ba371e0f5ddcbb5b6ace22,
 from [deployment 38129282912](https://github.com/bibleit-labs/bibleit-server/actions/runs/38129282912).
@@ -1056,3 +1058,36 @@ All CLI and language-client repositories are public open source projects under
 `bibleit-labs`. Use Conventional Commits for subsequent changes and maintain
 contribution documentation, the existing MIT license, and independent release
 notes. `bibleit-server` remains separate and is not moved or made public here.
+
+
+## Real-provider follow-up — 11 October 2026
+
+Assessment ledger a40d27d records actual human email delivery/verification and
+fresh Turnstile acceptance. The original helper's replayfalse400/400 output is
+inconclusive; no backend bypass is established. An improved browser helper checks
+rendered localized feedback and CSRF/rate/continuity signals, with six offline
+classification cases passing. A fresh human retry is requested in the assessment
+chat; replay remains open until that real result is verified.
+
+The later font-only source14628f3/native d6e31dc deployment is separately recorded:
+workflow38157279015, registry digest28fb9a0b and validated image ID392fc186.
+Published and running digest match. Its report verifies406 hashes/eight zero-exit
+stages/native amd64/cleanup[0,0];185 APK comparisons have zero fixed alerts. Its
+owner confirms CSS/signup/readiness. Earlier full client and boundary checks
+remain attributed to4243; no silent inheritance or unnecessary protocol rerun.
+
+`main` is now default in all three repos. The CLI's stale legacy origin/main ref
+was not part of the recreated private repo; its unpublished merge was removed,
+and reviewed CLI history was published directly. Older master refs remain
+preserved. Main CI source bd66265 passes all seven native/candidate jobs in
+[38160808491](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38160808491) and
+[38160808600](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38160808600).
+
+
+The improved real-token retry now confirms replay acceptance twice, rather than
+only inconclusive response classification. Human-denial=false, invalid-email=true
+on both HTTP400 responses; CSRF/rate/continuity checks rule out those alternatives.
+The assessment is investigating deployed credentials/request handling and owns
+the repair. Hold release publication, qualify the changed source/image as needed,
+and rerun genuine fresh-token/replay acceptance after repair. Email acceptance
+remains recorded separately; no raw challenge material is retained.

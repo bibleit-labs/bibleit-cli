@@ -9,10 +9,12 @@ gated on production readiness.
 The fixed canonical addresses are configured: `https://bibleit.app`
 and ordinary SSH at `bibleit.app:22`. Actual public custom-domain DNS/TLS/SSH
 technical acceptance and human Google/GitHub sign-in now pass; real Turnstile
-backend success/replay and actual email delivery/verification remain pending.
+fresh-token acceptance and email delivery/verification are human-confirmed, but
+real replay rejection failed and requires assessment repair/retest.
 Native HTML form technical admission is qualified on repaired deployment 34d80f8.
-A released, pinned Go-client
-dependency and standalone production candidate validation remain release gates.
+A checksummed client snapshot and standalone candidate validation now pass.
+An approved semantic Go-client version and final release-input qualification
+remain launch steps.
 
 ## Public distribution versus private validation
 
@@ -523,3 +525,18 @@ tap a41e453. Native CLI run 38158698440, standalone package/installers run
 non-local and non-workspace with the pinned client sum; the tap updater verifies
 its four formula archives. Tag-triggered draft creation and the first published
 tap update remain uninvoked until a release is approved.
+
+
+Real-provider follow-up: assessment ledger a40d27d confirms actual email delivery
+and completed verification, plus real fresh Turnstile acceptance. Replay remains
+unconfirmed after original helperfalse400/400; the assessment requests a fresh
+retry with its improved classifier. Release publication stays held for that gate,
+version/customer-access selection and final semantic-client candidate inputs.
+Source14628f3/native d6/image28fb9a0b/run38157279015 is recorded separately from
+4243's full client/boundary proof. Main is now the default and release ancestry
+branch in all three repos; older master refs remain preserved.
+
+The improved human replay test subsequently confirms duplicate token acceptance,
+with CSRF/rate/continuity interference ruled out. Replay is now a failed gate,
+not merely inconclusive classification. Assessment repair and deployed fresh-token/
+replay retesting are required before draft publication or customer release.
