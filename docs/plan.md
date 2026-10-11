@@ -301,8 +301,8 @@ it on final changed release inputs rather than treating all tooling as unbuilt.
   client compatibility; actual Fly-edge qualification is assessment-owned.
 - CLI go.mod still requires bibleit-go v0.0.0. Draft CI pins an exact private
   client revision in an ephemeral workspace and packages with --local. Fresh
-  native/candidate validation is underway for the production-constant changes;
-  results will be recorded in native-validation.md. Green draft CI does not
+  native/candidate validation passes all nine jobs at client b081081/CLI 26bbfaa;
+  exact results are recorded in native-validation.md. Green draft CI does not
   certify standalone dependency retrieval or production release provenance.
 - All three repositories are private. Generated ordinary GitHub release URLs do
   not authenticate customers. The intended open source launch requires approved

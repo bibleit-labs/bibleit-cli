@@ -10,14 +10,19 @@ percentages of the entire project. The full plan is in `plan.md`.
 | Configure service addresses | Complete | Go/client browser origin https://bibleit-server.fly.dev; ordinary CLI SSH bibleit-server.fly.dev:22; credential-only constructors, redirects blocked, TLS/host verification retained |
 | Isolate tests and preserve credentials | Complete | Egress-disabled namespace and verified TLS/hostname fixtures; direct host integration rejected; native test-only loopback dialer; old HTTP/SSH bindings rejected without overwrite |
 | Rerun HTTP/SSH/import checks | Complete | Clean server 8923d86/native f6fed37; 34 decoder/18 encoder, seven security, 11 HTTP, real OpenSSH lifecycle/JSON parity, 18 auth/key/protocol and 26 import cases; synchronized 68 source/70 test/11 native hashes |
-| Update release plan and private CI | In progress | Plan marks endpoint/client compatibility work complete; Go branch pushed, CLI CI pins client b081081; fresh native/candidate matrices pending |
+| Update release plan and private CI | Complete | Plan marks endpoint/client compatibility work complete; exact client b081081/CLI 26bbfaa native and candidate matrices pass on Windows/Ubuntu/macOS |
 
-Progress: **3/4 increment acceptance items complete**; assessment remains **25/25**.
+Progress: **4/4 increment acceptance items complete**; assessment remains **25/25**.
 Local Go/client and CLI race tests/vet pass; Darwin process TLS/PTY and Bash/Zsh
 checks pass. Linux CI supplies Fish; Windows CI verifies the test-only TLS path.
 Integration uses synthetic local principals and a unique disposable database,
 which was removed. No production principal, deployment or shared database changed.
 Full ignored log: build/validation/production-endpoint-integration-2026-10-11.log.
+
+Fresh private CI passes all nine jobs: [Go native](https://github.com/bibleit-labs/bibleit-go/actions/runs/38125983246),
+[CLI native](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38126046169),
+and [candidate packaging/installers](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38126046149).
+This includes Linux Fish and native Homebrew/Scoop/Bash/PowerShell 7/5.1 lifecycle checks.
 
 Release work still requires version/customer-access decisions, a released pinned
 Go dependency, standalone production-candidate validation and approved customer
