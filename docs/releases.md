@@ -58,7 +58,9 @@ records the source commit, dirty state, toolchain and client module metadata.
 | `bibleit.json` | Scoop manifest for Windows amd64/arm64 |
 | `manifest.json` | Candidate build provenance and local-only marker |
 
-Every archive includes LICENSE, README, and Bash/Zsh/Fish completion scripts.
+Corrected v0.0.2 candidates include LICENSE, THIRD_PARTY_NOTICES, README, and
+Bash/Zsh/Fish completion scripts in every archive. Existing private v0.0.1
+archives lack the additional notices and remain blocked from public distribution.
 The program itself needs no Go or Python runtime. SSH commands require a separate
 OpenSSH client; HTTP commands do not. Bash installation requires curl, tar and
 sha256sum or shasum. Windows installation requires PowerShell 5.1+ or PowerShell 7.
@@ -83,12 +85,14 @@ python scripts/check_release.py --assets build/releases/local-dev-1
 ```
 
 Both installers validate the selected version, require exactly one matching
-checksum, extract only the expected binary, and check its version before replacing
+checksum, extract only the expected binary and required notices, and check its version before replacing
 an existing installation. They install per user, need no administrator privileges,
 and leave shell profiles, persistent PATH and credential files untouched. Default
 locations are `$HOME/.local/bin` and `%LOCALAPPDATA%\Bibleit\bin`; add them to PATH
 when needed. Updating means rerunning the installer with a new version. Uninstall
-by removing the binary; account credentials remain under the user's control.
+by removing the binary and its `bibleit-licenses` directory; account credentials
+remain under the user's control. Homebrew retains notices in its package share
+directory; Scoop retains them alongside the executable.
 `BIBLEIT_INSTALL_ASSETS`/`-AssetsDir` select local release files for testing, and
 do not alter the client's service endpoint.
 
