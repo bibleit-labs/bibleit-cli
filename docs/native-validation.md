@@ -21,6 +21,29 @@ At the publication pause, changes stayed local with a sibling workspace. Private
 CI is now authorized; see the latest validation section below. Each matrix targets runner-default architectures, not all six
 build targets. The original repository's remote main is unchanged.
 
+## Fixed production endpoint validation — 11 October 2026
+
+Client runtime 867dcbe and documentation follow-up b081081 use the fixed production
+HTTPS origin. CLI uses ordinary SSH at legacy.bibleit.example:22. Local race tests
+and vet pass in both repositories. Native Darwin/arm64 process checks pass using
+verified TLS at an ephemeral loopback fixture, along with real PTY confirmation
+and nine completion cases each in Bash/Zsh. Fish is unavailable on this host and
+is covered by Linux CI. The process harness runs the actual binary's version,
+then the shared CLI entry function in a test executable with a destination-limited
+loopback dialer and fixture-only CA. Production binaries contain no fixture hook.
+
+Fresh real-server integration passes at clean server [private revision withheld]/native [private revision withheld]:
+34 decoder/18 encoder, seven security, 11 HTTP, real OpenSSH lifecycle and JSON
+parity, 18 auth/key/protocol and 26 import cases. Three TLS boundary checks pass.
+The container has no external route and maps the production name to loopback;
+public constructors and fixed SSH port 22 are unchanged during the tests.
+Host trust stores/ports and production data are untouched. Both baselines match
+68 source, 70 test and 11 native input fingerprints after the run.
+
+Fresh private native/client and CLI candidate matrix results will be recorded here
+once complete. These are development workspace candidates, not standalone release
+provenance or a new public-edge qualification.
+
 ## Final assessed deployment — 11 October 2026
 
 Assessment ledger [private revision withheld] closes the scoped campaign at 25/25. Final source

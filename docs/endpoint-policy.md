@@ -4,11 +4,12 @@ Updated 2026-10-11. All language clients target the single project-managed Bible
 service. The server repository is private; its eventual organizational move is
 separate from publishing public client repositories.
 
-The Go client declares `ServerEndpoint = "http://localhost:8080"` in `client.go`.
-This is a development placeholder. Replace it with the actual production HTTPS
-address before release. The CLI derives its HTTP and browser authentication
-address from that constant. SSH currently uses the project-managed development
-address `127.0.0.1:2222`; establish its production address before shipping SSH.
+The Go client declares `ServerEndpoint = "https://legacy.bibleit.example"` in
+`client.go`. The CLI derives its HTTP and browser authentication address from
+that constant. SSH uses `legacy.bibleit.example:22`, with standard OpenSSH host
+verification. These match the assessment-qualified deployment at server source
+7442010. Fly supplies the trusted PROXY envelope to the server; clients send
+ordinary SSH and never inject a PROXY preamble.
 
 Create an authenticated client with `NewClient(apiToken)`. Use
 `NewClientWithHTTPClient(apiToken, httpClient)` for custom transport/timeouts.
@@ -41,15 +42,27 @@ Keep `bibleit-cli` and `bibleit-go` as sibling checkouts. A local ignored
 Do not publish standalone builds until a real client version is pinned and
 `GOWORK=off` validation passes.
 
-Unit tests use injected in-memory HTTP transports. Real-server integration now puts the disposable server at `localhost:8080`
-and calls public constructors without destination remapping. The isolated
-container runner shares a disposable PostgreSQL network namespace with the
-fixture, leaving host port 8080 untouched. It rebuilds Linux NIFs from the frozen
-source snapshot. No server files or developer databases are modified. The native process harness currently binds a disposable HTTP fixture on
-IPv4 loopback port 8080 to test the development endpoint without a public override.
-It requires that port to be free and fails if another service is listening; it
-never stops or replaces an existing service. Adapt that fixture strategy before
-switching the fixed endpoint to production.
+Unit tests use injected in-memory HTTP transports. Real-server integration calls
+public constructors at the fixed production URL with standard TLS verification.
+The container runner uses an egress-disabled namespace (`--network none`), maps
+only the service hostname to loopback, and trusts a disposable fixture certificate
+only inside that container. HTTPS on port 443 relays to the real server fixture;
+ordinary SSH uses the fixed port 22. The developer's ports and host trust store
+are untouched. Direct host integration is rejected. Wrong hostname and untrusted
+certificate checks must fail before integration proceeds.
+
+The native process harness first checks the actual binary's version, then compiles
+a Go test executable using the same CLI entry function. Its test-only HTTP transport
+allows only the production destination, dials an ephemeral IPv4 loopback TLS
+fixture and verifies the hostname against a fixture-only trust pool. This works
+on Windows, macOS and Linux without installing certificates. The dialer is absent
+from production binaries. Process, PTY and shell-completion tests run offline;
+no public endpoint option or insecure TLS setting is added.
+
+The runner rebuilds Linux NIFs from the frozen source snapshot and uses only a
+unique disposable database. No server checkout or developer database is modified.
+Both client repositories record the verified server/native fingerprints only
+when all requested HTTP/SSH/import checks pass.
 
 Release tags and binary publication remain paused. The user recreated the client
 repositories privately and authorized validation-branch pushes and CI; the

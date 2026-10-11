@@ -54,7 +54,7 @@ def formula(version, hashes):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--version', required=True, help='Candidate version, e.g. v0.1.0-dev.1; no Git tag is created')
-    parser.add_argument('--local', action='store_true', help='Allow the unpublished sibling client and development endpoint')
+    parser.add_argument('--local', action='store_true', help='Prepare development-only artifacts using the unpublished sibling client')
     parser.add_argument('--output', default='build/releases')
     args = parser.parse_args()
     if not VERSION.fullmatch(args.version):
