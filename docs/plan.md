@@ -10,7 +10,7 @@ Every client targets the project-managed service, currently
 [endpoint-policy.md](endpoint-policy.md) and [releases.md](releases.md).
 
 Revised 2026-10-11 against the local `../bibleit-server` checkout. Its HEAD is
-`1a266cc`, with uncommitted assessment changes; this is a working-tree review,
+`c2beef5`, with uncommitted assessment changes; this is a working-tree review,
 not a compatibility claim against a published server release. This revision
 supersedes the earlier sequence of extracting Go and immediately porting the
 same surface into Python, Ruby, and Rust.
@@ -190,7 +190,7 @@ in authorized private CI. See `native-validation.md` for exact revisions/runs.
 
 ## Latest integration evidence
 
-The latest package-24 2026-10-11 isolated refresh passed against server HEAD
+The latest package-25 2026-10-11 isolated refresh passed against server HEAD
 c2beef5334c249f65daedd0e279b8d9252f0d51b plus assessment working-tree changes,
 using native libbibleit f6fed37919c848b1aa0208900af992a5e8a507f2. The synchronized
 client/CLI baseline records 67 source, 66 test and 11 native build-input hashes.
@@ -203,16 +203,17 @@ single-credential/output parity, 17 auth/key/protocol tests, 11 real-HTTP import
 access and 15 publication cases. The approved suite delivery adapter retains
 production URL/authorization/validation checks; authorized unreviewed-source
 rejection passes. All recorded source/test/native inputs matched on the immediate
-post-run check and the disposable PostgreSQL container was removed. Subsequent
-package-25 edits affect server boot/public-origin handling and two security test
-files; they are outside this verified snapshot. Full ignored log:
-build/validation/package-24-integration-2026-10-11.log.
+post-run check and the disposable PostgreSQL container was removed. This refresh
+includes package-25 boot/public-origin fixes and their security tests. Full ignored
+log: build/validation/package-25-integration-2026-10-11.log.
 
 This is a frozen development snapshot, not deployed compatibility certification.
-The server assessment's independent full suite also passed: 324 integration,
-50 Erlang unit, 71 JavaScript and native tests, without skips. Its release/tar
-resource checks and Linux build stage pass; campaign progress is 24/25, leaving
-Fly deployment verification. The date here is Europe/Berlin; baseline dates use UTC.
+The server assessment's independent full suite passed 326 integration, 51 Erlang
+unit, 71 JavaScript, native and ten SSH-bootstrap tests. Its 16 final-image checks
+passed on native ARM64. Campaign progress stays 24/25, leaving approved Fly boundary
+verification and native amd64 server-image execution. The production entrypoint,
+final image and management WebSockets are outside this client integration runner.
+The date here is Europe/Berlin; baseline dates use UTC.
 
 Homebrew preparation uses `bibleit-labs/homebrew-tap`, formula `bibleit-cli`,
 and executable `bibleit`. The future one-step installation command is
@@ -299,17 +300,15 @@ it on final changed release inputs rather than treating all tooling as unbuilt.
   placeholders. Native process tests and real-server harness use loopback fixtures;
   adapt them with the endpoint change while keeping the public API credential-only.
 - Both contract/server-baseline.json files are identical and now record server
-  c2beef5334c249f65daedd0e279b8d9252f0d51b plus package-24 working-tree changes,
+  c2beef5334c249f65daedd0e279b8d9252f0d51b plus package-25 working-tree changes,
   with native f6fed37919c848b1aa0208900af992a5e8a507f2. The verified 67 source,
   66 test and 11 native build-input fingerprints matched immediately after integration.
-  Package 25 subsequently changed src/bibleit_server_boot.erl,
-  src/http/bibleit_http_auth.erl, test/bibleit_security_review_SUITE.erl and
-  test/unit/bibleit_runtime_security_tests.erl; compatibility with those edits is
-  not claimed. Native inputs still match. A committed/deployed release freeze and production smoke checks are still pending.
-
-- CLI go.mod still requires bibleit-go v0.0.0. Draft CI now pins exact client 3c43133
-  in an ephemeral workspace and packages with --local. Green draft CI does not
-  certify standalone dependency retrieval or production release provenance.
+  Boot/public-origin and security-test edits previously outside package 24 are now
+  included. A committed/deployed release freeze and production smoke checks remain pending.
+- CLI go.mod still requires bibleit-go v0.0.0. Draft CI now pins exact client 3bec5bc
+  in an ephemeral workspace and packages with --local. Fresh native/candidate CI
+  is pending this push; green draft CI does not certify standalone dependency
+  retrieval or production release provenance.
 - All three repositories are private. Generated ordinary GitHub release URLs do
   not authenticate customers. The intended open source launch requires approved
   public client/CLI/tap access, or a deliberately tested authenticated channel.
@@ -429,8 +428,8 @@ The assessment reports its local deployment review and full suite passing:
 65536-coordinate corpus and ten SSH-bootstrap regressions. Its isolated
 make test-deployment driver passed 16 final-image/PostgreSQL 18/TLS/recovery
 checks; owned containers, networks and volumes were cleaned up. Native checkouts
-remain clean at f6fed37. These are assessment-owned results, not new client
-compatibility evidence for the later server edits.
+remain clean at f6fed37. These are assessment-owned results. The fresh client compatibility evidence
+for the later server edits is recorded in Latest integration evidence above.
 
 Progress remains 24/25: package 25 has local evidence but no approved Fly target
 or deployed-boundary validation. The final local server image was validated on
@@ -463,9 +462,9 @@ Operational requirements for the release:
   remain release operations work.
 
 No CLI protocol, runtime or native-library update is requested by these findings.
-The existing verified baseline stays intact until a fresh integration run against
-an agreed frozen server snapshot; deployed certification requires the approved
-actual target, not only the local image tests.
+The verified baseline was refreshed after independent integration against the
+frozen package-25 development snapshot. Deployed certification still requires an
+agreed committed release and the approved actual target, not only local image tests.
 
 ### Next actionable increment
 

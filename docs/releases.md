@@ -334,7 +334,9 @@ work. No production migration or deployed compatibility certification is claimed
 The server assessment's local full suite and image driver passed (326 integration,
 51 Erlang unit, 71 JavaScript, native coordinate corpus and ten SSH-bootstrap tests; 16 isolated
 image/database/TLS/recovery checks). Its final local image runs on native ARM64.
-These results do not replace the client's earlier verified compatibility snapshot.
+Independent HTTP/SSH/import integration subsequently passed against the frozen
+package-25 development source, and both client/CLI baselines were refreshed.
+These results still do not certify the final deployed release.
 Assessment progress remains 24/25 until approved deployed-boundary evidence exists.
 
 Before customer publication:
@@ -358,5 +360,5 @@ Before customer publication:
   SSH trust across restart/replacement. Local distribution/EPMD listeners remain
   disabled; the normal Bibleit SSH protocol stays available.
 
-No deployment, ownership migration, TLS policy change, client runtime change or
-baseline rewrite is performed by this documentation update.
+No deployment, ownership migration, TLS policy or client runtime change was
+performed. Baselines changed only after independent integration passed.

@@ -3,7 +3,26 @@
 Updated 2026-10-11. Counts describe explicit acceptance items, not estimated
 percentages of the entire project. The full plan is in `plan.md`.
 
-## Current increment: package 24 final results and compatibility refresh
+## Current increment: package 25 final local results and compatibility refresh
+
+| Item | Status | Evidence / limits |
+| --- | --- | --- |
+| Review package 25 final results | Complete | 326 integration, 51 Erlang unit, 71 JavaScript, native, ten SSH-bootstrap and 16 final-image checks pass; assessment stays 24/25 pending approved Fly boundary evidence |
+| Rerun HTTP/SSH/import integration | Complete | 34 decoder/18 encoder fixtures, seven security cases, 11 HTTP subtests, SSH lifecycle/output parity, 17 auth/key/protocol tests and 26 import cases pass |
+| Synchronize baselines and update release plan | In progress | Identical 67 source/66 test/11 native fingerprints; includes boot/public-origin fixes; client 3bec5bc pushed, CLI draft CI pinned to it; hosted native/candidate results pending |
+
+Progress: **2/3 requested items complete**; release-plan publication and hosted
+verification are in progress. Server c2beef5 plus working-tree changes and clean
+native f6fed37 identify the frozen development snapshot. All input sets matched
+immediately after the run, and its disposable database was removed. Ignored log:
+build/validation/package-25-integration-2026-10-11.log.
+
+No client runtime or server source change was required. Production origin/SSH
+configuration, an agreed committed/deployed release, native amd64 server-image
+execution, Fly proxy fairness, explicit database trust and volume ownership remain
+release gates. The CLI/client CI matrices do not certify the server deployment.
+
+## Previous increment: package 24 final results and compatibility refresh
 
 | Item | Status | Evidence / limits |
 | --- | --- | --- |
