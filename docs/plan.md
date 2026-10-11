@@ -275,7 +275,7 @@ and automated release uploading are outside the initial release requirement.
 | --- | --- | --- | --- |
 | 1 | Confirm version, scope and customer access | Project decision; propose Go/CLI v0.1.0 for the existing core command surface, Homebrew/Bash/PowerShell/manual archives | Version and supported transports/architectures recorded; choose public customer artifacts or implement authenticated delivery; choose whether Scoop bucket ships now or later |
 | 2 | Configure production service and safe test fixtures | Blocked on actual HTTPS URL, SSH host/port and deployed service | Change project-owned constants without exposing endpoint overrides; isolate disposable fixtures from production; verify stored credential bindings safely reject the old service |
-| 3 | Freeze and validate server compatibility | Pending agreed committed/deployed server revision | Record server and libbibleit revisions; refresh synchronized client/CLI baseline only after full HTTP/SSH/auth/import integration passes; run explicit controlled production TLS, browser login/token revocation and SSH host verification checks |
+| 3 | Freeze and validate server compatibility | Pending agreed committed/deployed server revision | Record server and libbibleit revisions; refresh synchronized client/CLI baseline only after full HTTP/SSH/auth/import integration passes; verify approved database migration lineage and packaging/runtime inputs; run explicit controlled production TLS, browser login/token revocation and SSH host verification checks |
 | 4 | Release Go client and pin standalone CLI dependency | After gates 1–3; go.mod still requires v0.0.0 | Review/promote the client source, publish approved semantic version, pin it in CLI and record sums; clean-cache GOWORK=off test/vet/build succeeds without sibling checkout or replace directives; private access uses appropriate Git credentials/GOPRIVATE |
 | 5 | Validate exact production CLI candidate | After gate 4; current candidate workflow uses --local and go work | Add a standalone production candidate validation path using the released client, GOWORK=off and no --local; clean Go 1.27.1 source produces six archives, installer scripts, formula, Scoop manifest, checksums and provenance; rerun relevant native/platform/installer checks on those exact inputs |
 | 6 | Finalize release sources, notes and delivery policy | Before publishing CLI; release/default branches still need review | Promote reviewed source through normal review; notes name client version/server baseline, protocol limits, old-config migration/revocation, OpenSSH dependency and supported architectures; choose signing policy and test downloaded macOS binaries with normal OS protections; record manual release procedure or implement upload automation |
@@ -377,6 +377,35 @@ SSH host verification and follow a verified trust-update process if the service
 host key changes. No runtime behavior or command schema changes are needed.
 The verified server/native baseline is unchanged; this documentation update is
 not new compatibility evidence for package-23 implementation changes.
+
+### Package 24 operational compatibility follow-up
+
+The assessment reports 30 focused SSH/TLS/schema/account/import cases passing;
+its final full retest is still running. Progress stays 23/25 until that result
+is confirmed. No CLI protocol, command or error-name change is reported, and
+libbibleit remains at f6fed37. No client runtime or verified baseline is changed
+by this documentation follow-up.
+
+Release/deployment checks to carry forward:
+
+- Server startup now requires migration journal filename/SHA-256 identity and
+  rejects missing or mismatched identity with schema_identity_mismatch. Establish
+  database lineage and use an audited migration into a canonical schema; a
+  disposable rebuild requires explicit approval. Do not backfill current hashes
+  merely to bypass startup or reset a shared/user database.
+- Outbound provider/download HTTPS is reported bounded and CA/hostname verified.
+  Reviewed imports accept approved HTTPS eBible sources; fetch_failed remains a
+  safe failed import with no published partial installation. Refresh integration
+  fixtures with the approved test delivery adapter while preserving production
+  URL/authorization checks, then rerun against the final frozen server baseline.
+- Guarded server release/tar staging excludes development PEM/SSH keys and private
+  assessment records. Verify the actual deployment image/public resources too;
+  local artifact checks alone do not certify the deployed package.
+- Default server VM settings disable inbound Erlang distribution/EPMD and omit
+  the shared default cookie. Remote Erlang console/RPC administration is disabled
+  by default; the Bibleit SSH command transport is separate and unchanged.
+- Package 25 still needs deployed database trust, migration/rollback lineage,
+  image contents, runtime versions, persistent keys and Fly edge/proxy evidence.
 
 ### Next actionable increment
 

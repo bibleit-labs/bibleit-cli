@@ -17,6 +17,13 @@ backup automation, whole-volume crash consistency, OOM or physical disk exhausti
 Customer fresh-credential/SSH-key guidance remains applicable after an actual
 approved restore. No client integration or production restore is claimed here.
 
+Package-24 follow-up: 30 focused local SSH/TLS/schema/account/import cases pass;
+its final full retest is pending. Release documentation now records migration
+identity/lineage requirements, bounded verified HTTPS import policy and guarded
+server packaging/runtime defaults. CLI commands/error names and native revision
+are reported unchanged. Progress stays 23/25; no runtime edits, database reset or
+verified baseline refresh is performed from this report.
+
 ## Previous increment: assessment compatibility refresh
 
 | Item | Status | Evidence / limits |
