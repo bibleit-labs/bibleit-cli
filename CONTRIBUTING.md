@@ -69,7 +69,8 @@ packaging requires a clean committed standalone checkout and Go 1.27.1.
 See [release maintenance](docs/releases.md) for candidate commands and gates.
 
 v0.0.1 remains private with deficient binary notices. Corrected v0.0.2 is staged;
-Windows installer/Scoop checks stay pending. Do not publish tags/assets, merge the
+Windows installer/Scoop checks resumed and passed on the documentation candidate;
+validate the final approved package inputs. Do not publish tags/assets, merge the
 staged tap formula, withdraw old assets or change visibility without approval.
 The separate tap owns formula review and package-manager validation. Keep LICENSE
 and THIRD_PARTY_NOTICES with redistributed binaries. Software MIT does not grant

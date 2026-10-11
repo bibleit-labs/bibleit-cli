@@ -2,8 +2,8 @@
 
 The repositories remain private. CLI v0.0.1 exists privately, but its binary
 packages lack required notices. Corrected v0.0.2 and a matching tap formula are
-staged for review. Windows installer/Scoop checks remain pending; current evidence
-and remaining gates are in [release readiness](release-v0.0.2-readiness.md).
+staged for review. Windows installer/Scoop checks passed on the documentation
+candidate; current evidence and remaining gates are in [release readiness](release-v0.0.2-readiness.md).
 Dated operational evidence is in [historical status](status.md), rather than this
 current procedure. Public installation commands are in [the README](../README.md).
 
@@ -52,7 +52,7 @@ BIBLEIT_INSTALL_ASSETS="$PWD/build/releases/v0.0.2" \
 build/install-test/bibleit version
 ```
 
-Windows, when its pending checks resume:
+Windows:
 
 ```powershell
 python scripts/check_release.py --assets build/releases/v0.0.2
@@ -99,7 +99,8 @@ Scoop retains the complete ZIP contents and manages its own uninstall lifecycle.
 1. Freeze and validate the final source, SDK, notices, packaged README and artifacts.
    Preserve all required notices; review compatibility and the output contract.
 2. Complete native installer/package-manager checks on the supported runner
-   architectures. Windows checks are currently held pending; no waiver is implied.
+   architectures. Windows checks resumed and passed on the documentation candidate;
+   final artifact validation and anonymous retrieval remain separate gates.
 3. Review the old v0.0.1 asset/artifact withdrawal proposal. Keep private evidence
    and preserve its tag/source history; perform cleanup only after approval.
 4. Obtain approval before release tags/assets, the staged tap merge, or visibility

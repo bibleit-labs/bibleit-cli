@@ -3,7 +3,19 @@
 Prepared 2026-10-11. Repositories remain private. No release/tag was created;
 v0.0.1 assets and both default branches remain unchanged.
 
-## Candidate and tap
+## Resumed validation
+
+On owner instruction, Windows validation resumed. Documentation candidate
+b802ea3fa74ef1d1b34d4173b3ef1ee51724f9d6 at
+[run 38176529757](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38176529757)
+built all six targets and passed native Linux and Windows PowerShell 7/5.1,
+parser/failure and Scoop lifecycle checks. It includes the updated README.
+Native macOS Homebrew also passed; the full candidate run succeeded.
+Final CI-hardened source validation is being completed.
+The current README updates require a final fresh candidate; no release/tag,
+old-asset changes or visibility change has occurred.
+
+## Earlier candidate and tap evidence
 
 Corrected candidate source: `9fb7bfc4565ffc3adacbcecf8343042e056ffc8c` on
 `licensing-redistribution-audit`, using the pinned SDK v0.0.1 and Go 1.27.1.
@@ -45,7 +57,8 @@ Local checks passed on the exact fresh candidate:
 
 See [the validation summary](security/v0.0.2-validation-summary-2026-10-11.json)
 for exact archive hashes, GitHub artifact digest and compact local evidence.
-Windows PowerShell 7/5.1 and Scoop checks remain pending by owner instruction.
+The earlier owner hold was lifted; the resumed Windows checks above supersede
+its pending status.
 Tap-owned Linux Homebrew validation also remains outstanding. The public-docs
 update changes README, which is embedded in the archives: the recorded candidate
 and proposed formula remain evidence for source 9fb7bfc only. Build a fresh clean
