@@ -208,10 +208,11 @@ includes package-25 boot/public-origin fixes and their security tests. Full igno
 log: build/validation/package-25-integration-2026-10-11.log.
 
 This is a frozen development snapshot, not deployed compatibility certification.
-The server assessment's independent full suite passed 326 integration, 51 Erlang
-unit, 71 JavaScript, native and ten SSH-bootstrap tests. Its 16 final-image checks
-passed on native ARM64. Campaign progress stays 24/25, leaving approved Fly boundary
-verification and native amd64 server-image execution. The production entrypoint,
+The server assessment's latest independent local full suite passed 331 integration,
+51 Erlang unit, 71 JavaScript, native and ten SSH-bootstrap tests. Its updated
+17 final-image checks passed on ARM64 and separately on native Linux amd64 at
+f54667c; see Native amd64 server validation below. Campaign progress stays 24/25,
+leaving approved Fly boundary verification. The production entrypoint,
 final image and management WebSockets are outside this client integration runner.
 The date here is Europe/Berlin; baseline dates use UTC.
 
@@ -280,7 +281,7 @@ and automated release uploading are outside the initial release requirement.
 | --- | --- | --- | --- |
 | 1 | Confirm version, scope and customer access | Project decision; propose Go/CLI v0.1.0 for the existing core command surface, Homebrew/Bash/PowerShell/manual archives | Version and supported transports/architectures recorded; choose public customer artifacts or implement authenticated delivery; choose whether Scoop bucket ships now or later |
 | 2 | Configure production service and safe test fixtures | Blocked on actual HTTPS URL, SSH host/port and deployed service | Align project-owned HTTPS/browser constants with the approved canonical BIBLEIT_PUBLIC_URL origin, without customer endpoint overrides; isolate disposable fixtures from production; verify stored credential bindings safely reject the old service |
-| 3 | Freeze and validate server compatibility | Pending agreed committed/deployed server revision | Record server and libbibleit revisions; refresh synchronized client/CLI baseline only after full HTTP/SSH/auth/import integration passes; verify approved database migration lineage and packaging/runtime inputs; run explicit controlled production TLS, browser login/token revocation and SSH host verification checks |
+| 3 | Freeze and validate server compatibility | Native amd64 development image verified; pending agreed release/deployed revision | Record server and libbibleit revisions; refresh synchronized client/CLI baseline only after full HTTP/SSH/auth/import integration passes; verify approved database migration lineage and packaging/runtime inputs; run explicit controlled production TLS, browser login/token revocation and SSH host verification checks |
 | 4 | Release Go client and pin standalone CLI dependency | After gates 1–3; go.mod still requires v0.0.0 | Review/promote the client source, publish approved semantic version, pin it in CLI and record sums; clean-cache GOWORK=off test/vet/build succeeds without sibling checkout or replace directives; private access uses appropriate Git credentials/GOPRIVATE |
 | 5 | Validate exact production CLI candidate | After gate 4; current candidate workflow uses --local and go work | Add a standalone production candidate validation path using the released client, GOWORK=off and no --local; clean Go 1.27.1 source produces six archives, installer scripts, formula, Scoop manifest, checksums and provenance; rerun relevant native/platform/installer checks on those exact inputs |
 | 6 | Finalize release sources, notes and delivery policy | Before publishing CLI; release/default branches still need review | Promote reviewed source through normal review; notes name client version/server baseline, protocol limits, old-config migration/revocation, OpenSSH dependency and supported architectures; choose signing policy and test downloaded macOS binaries with normal OS protections; record manual release procedure or implement upload automation |
@@ -424,7 +425,7 @@ Release/deployment checks to carry forward:
 
 ### Package 25 local review and remaining deployed evidence
 
-The assessment reports its local deployment review and full suite passing:
+The initial package-25 local deployment review and full suite passed:
 326 Common Test cases, 51 Erlang unit tests, 71 JavaScript tests, the native
 65536-coordinate corpus and ten SSH-bootstrap regressions. Its isolated
 make test-deployment driver passed 16 final-image/PostgreSQL 18/TLS/recovery
@@ -434,10 +435,11 @@ compatibility evidence for the later server edits is recorded in Latest integrat
 evidence above.
 
 Progress remains 24/25: package 25 has local evidence but no approved Fly target
-or deployed-boundary validation. The final local server image was validated on
-native ARM64. A final immutable server release on native amd64, Fly platform/TOML
-validation and actual edge checks remain required. This is separate from the
-already passing CLI/client native amd64 runners.
+or deployed-boundary validation. Final-image checks now pass on native ARM64 and
+Linux amd64 for the recorded development inputs. Final release selection/freeze,
+Fly platform/TOML validation and actual edge checks remain required; changed release
+inputs need fresh validation. Server image evidence is separate from the already
+passing CLI/client native amd64 runners.
 
 Operational requirements for the release:
 
@@ -467,6 +469,51 @@ No CLI protocol, runtime or native-library update is requested by these findings
 The verified baseline was refreshed after independent integration against the
 frozen package-25 development snapshot. Deployed certification still requires an
 agreed committed release and the approved actual target, not only local image tests.
+
+### Native amd64 server validation — complete for the reviewed snapshot
+
+Coordinated with the assessment chat on 11 October 2026. It owns server source,
+CI and ledger changes and prepared an isolated snapshot on the private server
+branch security-native-validation/package-25, preserving shared main. Final
+[native run 38100648994](https://github.com/bibleit-labs/bibleit-server/actions/runs/38100648994)
+passed at server f54667c26edb4728d7df041f3bcd5a2af5897d19 with native submodule
+f6fed37919c848b1aa0208900af992a5e8a507f2. The server repository remains private.
+
+Downloaded artifact verification confirms:
+
+- Native Linux x86_64 host and Docker daemon, and a linux/amd64 image, without
+  ARM-host emulation or a runtime workaround. Immutable validation image identity:
+  sha256:8b6a1b9d97a79227e72f611b3509199a89420339a3198334f2e00c40ec2c91b9.
+- A clean committed snapshot with 389 tracked-file hashes. All existing client
+  baseline hashes match: 67 source, 66 test and 11 native inputs. Two newer boundary
+  test files are additional evidence; the older independent client baseline remains intact.
+- GCC 15.2.0, Make 4.4.1, Rebar 3.27.0, OTP 29/ERTS 17.1, SSH 6.0.6,
+  SSL 11.7.7 and Alpine 3.24.2 observed on that runner/image.
+- Native seeded/65536-coordinate corpus, ten SSH-bootstrap tests, bounded APK
+  review and all 17 final-image checks pass. These include UID10001 containment,
+  loaded native NIF, least-privilege database bootstrap, HTTP/SSH authorization,
+  key revocation, verified database TLS and specific CA/hostname rejection,
+  IPv6, outage/restart recovery and persisted key/legacy-volume identity.
+- All eight validation stages exit zero; the fixture driver performs owned cleanup
+  and both owned image-tag cleanup codes are zero. The artifact's report.json SHA256
+  is 31f928788a726035ae092778dbcbc73fe17af49f7a4df2ab54e537a79ee38378.
+
+The native job runs image/native/bootstrap checks, not the 331-case full CT suite.
+The separate local full retest passes 331 integration, 51 Erlang unit, 71 JavaScript,
+native and ten SSH-bootstrap tests, including five new TLS/WSS boundary cases.
+Updated ARM64 image checks also pass all 17 cases. Early CI attempts exposed
+submodule checkout and PostgreSQL fixture readiness issues; the final harness
+uses HTTPS for the pinned public submodule, waits for TCP readiness and requires
+specific negative TLS errors. No application/native source fix was needed.
+
+The local native architecture gate is closed for this exact development snapshot.
+The image is not a registry-published production release. Overall assessment
+progress stays 24/25: approved staging/Fly platform validation, actual certificate/
+renewal/redirect/ALPN/WSS/authentication/revocation, proxy identity/fairness and
+spoofing/private bypass, deployed database trust/grants/migrations, volume ownership/
+host identity and rollback/backup operations remain open. Future release input
+changes require relevant checks again. No client runtime, baseline, tag, visibility,
+deployment or shared database change is made by this documentation update.
 
 ### Next actionable increment
 

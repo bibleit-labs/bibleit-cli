@@ -3,7 +3,29 @@
 Updated 2026-10-11. Counts describe explicit acceptance items, not estimated
 percentages of the entire project. The full plan is in `plan.md`.
 
-## Current increment: package 25 final local results and compatibility refresh
+## Current increment: native amd64 server validation coordination
+
+| Item | Status | Evidence / limits |
+| --- | --- | --- |
+| Coordinate with assessment | Complete | Assessment owns server/CI/ledger work; isolated private branch security-native-validation/package-25 preserves shared main |
+| Review native amd64 server results | Complete | Run 38100648994 at f54667c passes on Linux x86_64/native amd64 Docker; native corpus, ten SSH-bootstrap and 17 final-image checks pass; downloaded hashes/image/cleanup verified |
+| Update and publish release plan | Complete | Exact native evidence recorded; local architecture gate closed for this snapshot; approved deployed Fly and release-freeze gates remain |
+
+Progress: **3/3 tracked items complete**. [Native server run](https://github.com/bibleit-labs/bibleit-server/actions/runs/38100648994)
+uses clean native f6fed37. Validation image:
+sha256:8b6a1b9d97a79227e72f611b3509199a89420339a3198334f2e00c40ec2c91b9.
+All eight stages exit zero; both owned image-tag cleanup codes are zero.
+The 389-file report matches every existing client source/test/native baseline hash.
+The two newer boundary test files do not rewrite the independent client snapshot.
+
+The native image job does not run the full CT suite. The separate local full retest
+passes 331 integration/51 Erlang/71 JavaScript/native/ten SSH-bootstrap tests;
+ARM64 image checks also pass 17 cases. No application/native source fix was needed.
+No client runtime, verified baseline, tag or deployment changes here. Assessment
+remains **24/25**, pending approved Fly boundary evidence and production rollout
+inputs. This validation image is not a registry-published release.
+
+## Previous increment: package 25 final local results and compatibility refresh
 
 | Item | Status | Evidence / limits |
 | --- | --- | --- |
