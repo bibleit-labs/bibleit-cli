@@ -334,7 +334,7 @@ work. No production migration or deployed compatibility certification is claimed
 The latest server assessment local full retest passes 331 integration, 51 Erlang
 unit, 71 JavaScript, native and ten SSH-bootstrap tests. Updated ARM64 image checks
 pass all 17 cases. Separate native Linux amd64 image validation also passes at
-f54667c in [run 38100648994]([private service reference withheld]);
+f5f1736 in [run 38101109368]([private service reference withheld]);
 see native-validation.md for the exact image/report hashes and scope. The native
 image job runs native/bootstrap/image checks, not the complete CT suite.
 Independent HTTP/SSH/import integration already passed against the frozen

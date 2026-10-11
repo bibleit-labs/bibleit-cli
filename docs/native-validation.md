@@ -23,14 +23,14 @@ build targets. The original repository's remote main is unchanged.
 
 ## Native amd64 server image — 11 October 2026
 
-The assessment-owned [native server run 38100648994]([private service reference withheld])
-passed at f54667c26edb4728d7df041f3bcd5a2af5897d19 on branch
+The assessment-owned [native server run 38101109368]([private service reference withheld])
+passed at f5f1736b723096e0e3bd80f817ea6701e7856cc1 on branch
 security-native-validation/package-25, with clean submodule
 [private digest withheld]. This is server validation in its private
 repository, separate from the client/CLI matrices below.
 
 The downloaded report confirms native Linux x86_64 host/Docker and linux/amd64
-runtime image sha256:8b6a1b9d97a79227e72f611b3509199a89420339a3198334f2e00c40ec2c91b9.
+runtime image sha256:ab28d63404454a94ac1d891e3d0ae1e042a8ab559c314403c0de37f6adf42706.
 Observed versions: GCC 15.2.0, Make 4.4.1, Rebar 3.27.0, OTP 29/ERTS 17.1,
 SSH 6.0.6, SSL 11.7.7, Alpine 3.24.2, runtime UID/GID10001. No ARM emulation or
 architecture-specific runtime workaround is used.
@@ -43,14 +43,22 @@ identity, specific database CA/hostname rejection, verified TLS, IPv6, outage/re
 recovery and synthetic offline UID100 ownership repair. Both owned image-tag cleanup
 codes are zero. The driver cleans its disposable database/network/volume resources.
 
-Artifact native-amd64-server-f54667c26edb4728d7df041f3bcd5a2af5897d19 contains
+Artifact native-amd64-server-f5f1736b723096e0e3bd80f817ea6701e7856cc1 contains
 389 tracked-file hashes. All existing 67 source/66 test/11 native baseline inputs
 match it. report.json SHA256:
-31f928788a726035ae092778dbcbc73fe17af49f7a4df2ab54e537a79ee38378.
+32402859f8740494c71d3d2a6b6e185474dddf7e69cf55a1c7f30ada0eecfce8.
 GitHub reports artifact archive digest
-sha256:3f2e57ae8776e4d843b97d4acc47a33f4619f3eac22ad796c22f8d78cb889927.
+sha256:c5c0641de38a812a66aa38320984e2501acc20ad8abb92281cf54bf4e5729aac.
 The client baseline remains the independent HTTP/SSH snapshot, with two newer
 server boundary test files outside its recorded test set.
+
+The final rerun includes the repository-transfer documentation and Node24 Actions:
+Checkout 7.0.1 pinned to 3d3c42e5aac5ba805825da76410c181273ba90b1 and Upload
+Artifact 7.0.2 pinned to cf430e030ddbb5b0abf93d22962f4752f3646cd9. Both action
+pins appear in the completed log; artifact upload succeeds, the check run has zero
+annotations and no Node20 deprecation warning appears in its log. Runtime/toolchain
+versions match the initial successful f54667c run 38100648994. Application/native
+source and the existing client baseline remain unchanged.
 
 This job does not run the complete 331-case CT suite; that separate local full
 retest and the updated 17 ARM64 image checks pass. The native validation image
