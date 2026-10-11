@@ -784,3 +784,20 @@ from this deployment; do not infer publication/deployment approval from private
 source pushes. After that approval, qualify the exact corrected source/image,
 verify all eight migrations/startup checks and digest parity, deploy, then rerun
 genuine fresh-token/replay acceptance. The production gate remains open.
+
+
+### Approved security-only deployment candidate
+
+The Fly owner confirms newer explicit human approval for exact server branch
+codex/turnstile-replay-release. Candidate3359535ff92c7b8c56bce2d8f837cfbb52242438
+has parentd160773, adds SQL008 to the release allowlist and requires exact SQL
+source/manifest coverage. It excludes Reader852c changes; native d6 is unchanged.
+Run38163282528 is pinned to that exact source/approved ref and is queued/running.
+The exact approved server naming exception is retained rather than changing the
+identity mid-rollout; client repositories remain on main without that prefix.
+
+Server main also has packaging/preflight/docs2642834 atop preserved Reader source,
+but it is not the target of this deployment. Qualify the isolated335 image and all
+eight migration identities, retain source/image/startup/cleanup/digest provenance,
+then complete genuine fresh-token/replay acceptance. Approval and queued workflow
+are not deployment or provider success. The earlier381620 failure remains recorded.
