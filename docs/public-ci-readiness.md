@@ -12,7 +12,7 @@ private secret; reusable workflows no longer require it. Private authentication
 and module downloads share one step so the credential environment cannot leak
 into an unauthenticated later helper invocation.
 
-Public fork pull requests run read-only native tests. No pull_request_target or
+After cutover, public fork pull requests use read-only native tests. No pull_request_target or
 workflow_run trigger executes contributor code. Release writes remain confined
 to the draft job after native validation, with the existing main ancestry guard.
 Tap release reads select the private cross-repository token only while private;
@@ -33,7 +33,8 @@ Official guidance: [GitHub Actions secure use](https://docs.github.com/en/action
 The [reviewable JSON proposal](security/public-repository-settings-proposal-2026-10-11.json)
 contains main-branch and v* tag rules for all three repositories. Main requires a
 PR, current native/style checks, resolved discussions and linear history, and
-blocks deletion/force pushes. It requires zero approving reviews for the current
+blocks deletion/force pushes. Required checks bind to the verified GitHub Actions
+application (15368). It requires zero approving reviews for the current
 single-maintainer setup: a sole author cannot approve their own PR. Increase that
 count when an independent reviewer is available. Tag rules block update/deletion;
 new tags remain possible only through separately approved release preparation.

@@ -43,13 +43,16 @@
                 "strict_required_status_checks_policy": true,
                 "required_status_checks": [
                   {
-                    "context": "native (ubuntu-24.04)"
+                    "context": "native (ubuntu-24.04)",
+                    "integration_id": 15368
                   },
                   {
-                    "context": "native (macos-15)"
+                    "context": "native (macos-15)",
+                    "integration_id": 15368
                   },
                   {
-                    "context": "native (windows-2025)"
+                    "context": "native (windows-2025)",
+                    "integration_id": 15368
                   }
                 ]
               }
@@ -125,13 +128,16 @@
                 "strict_required_status_checks_policy": true,
                 "required_status_checks": [
                   {
-                    "context": "Native ubuntu-24.04"
+                    "context": "Native ubuntu-24.04",
+                    "integration_id": 15368
                   },
                   {
-                    "context": "Native macos-15"
+                    "context": "Native macos-15",
+                    "integration_id": 15368
                   },
                   {
-                    "context": "Native windows-2025"
+                    "context": "Native windows-2025",
+                    "integration_id": 15368
                   }
                 ]
               }
@@ -207,7 +213,8 @@
                 "strict_required_status_checks_policy": true,
                 "required_status_checks": [
                   {
-                    "context": "test-bot"
+                    "context": "test-bot",
+                    "integration_id": 15368
                   }
                 ]
               }
