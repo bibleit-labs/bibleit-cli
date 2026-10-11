@@ -1,9 +1,10 @@
 # Local release packaging and distribution
 
-Go client and CLI v0.0.1 are approved for release in the existing private
-repositories. Release work validates the Go client first, then pins it in the
-standalone CLI before creating the tag-triggered draft and publishing reviewed
-assets. Repository visibility is unchanged. See CHANGELOG.md for release scope.
+Go client and CLI v0.0.1 are published in the existing private repositories.
+Go tag validation38165332184 passes all three platforms; CLI tag workflow
+38165521337 passes all nine jobs, and its12 release files match the validated
+artifact. CLI pins Go v0.0.1 with verified module sums. Repository visibility is
+unchanged. See CHANGELOG.md for release scope.
 
 The fixed endpoints are https://bibleit.app and bibleit.app:22. Production
 deployment and genuine Turnstile/email acceptance are complete at source3359535,
@@ -560,3 +561,30 @@ mail delivery/verification remains separately confirmed. Ledger53239ad closes
 both provider gates. Choose approved versions/access, semantic client release/pin
 and final candidate inputs before tag/draft publication and the actual tap PR;
 none of those publication actions are performed by this documentation update.
+
+
+## v0.0.1 private releases complete
+
+[Go v0.0.1](https://github.com/bibleit-labs/bibleit-go/releases/tag/v0.0.1) is
+published at78f30bb after three native jobs in38165332184.
+[CLI v0.0.1](https://github.com/bibleit-labs/bibleit-cli/releases/tag/v0.0.1) is
+published at40a8260 after all nine jobs in38165521337. Its12 attached files
+match the validated tagged CI artifact, including six archives and two installers.
+CLI pins Go v0.0.1 with sum h1:cOH6TJ2iLncj7xpbBUG7kkDFwXLZi1cF6l+DQy5w27o=.
+
+Updater38166255153 verified published archives and opened
+[tap PR1](https://github.com/bibleit-labs/homebrew-tap/pull/1). Final61dcf0c
+passes tap validation38167419995 and both native published-package jobs in
+38167449364, including install/test/completions/reinstall/uninstall. The PR
+merged as e0db882 and its merged release branch was deleted. The tap normalizes
+the redundant stable formula version after integrity verification and owns its
+installation fixtures. The fixtures preserve version under local-file URLs and
+prepare Linux metadata before sandboxed installation; normal sandboxing remains
+enabled. Prior failed audit/authentication/fixture runs were fixed before merge.
+
+These are private release validations using authenticated downloads. Public
+customer URLs remain inaccessible without authorization. Enable approved public
+access or test a separate authenticated delivery path before announcing the
+ordinary Homebrew/curl/PowerShell installation commands. Signing/notarization and
+a public Scoop bucket remain optional launch follow-up; binaries are checksummed
+but unsigned. No repository visibility change accompanies v0.0.1.

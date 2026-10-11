@@ -1,8 +1,8 @@
 # Bibleit clients and CLI: revised implementation plan
 
-Source branch pushes and private CI are authorized for all three prepared
-repositories as of 2026-10-11. Customer release tags/assets and repository visibility
-changes remain gated on production readiness. The repositories are currently
+Go client and CLI v0.0.1 were approved and published privately on 2026-10-11.
+Source pushes and CI remain authorized. Public customer distribution and
+repository visibility changes still require a separate delivery decision. The repositories are currently
 private: `bibleit-cli`, `bibleit-go` and `homebrew-tap`. This supersedes earlier
 local-only source instructions. Use Conventional Commits and no codex branch prefix.
 Every client targets the project-managed service, currently
@@ -18,8 +18,8 @@ supplemental alias boot qualification passes at ef63e91, and actual public-domai
 technical acceptance passed on 34d80f8 after the native HTML form repair. The latest
 localized catalogue repair is qualified at deployed 4243c9a/native d6e31dc
 (workflow 38147193441), including independent focused HTTP/SSH client checks.
-Both real-provider follow-up gates now pass. Final release version/dependency
-and packaging input freeze remain; human Google/GitHub sign-in also passes. This revision supersedes the earlier sequence of extracting Go and immediately porting the
+Both real-provider follow-up gates pass. The v0.0.1 version/dependency and
+packaging inputs are frozen and validated; human Google/GitHub sign-in also passes. This revision supersedes the earlier sequence of extracting Go and immediately porting the
 same surface into Python, Ruby, and Rust.
 
 ## Decisions retained
@@ -46,7 +46,7 @@ repositories and declare the tested server baseline with every release.
 | Repository split and fixed endpoint | Complete; independent bibleit-go/bibleit-cli modules, no customer endpoint overrides, fresh fixed-endpoint HTTP/SSH integration passed | Standalone released/pinned dependency |
 | 4. Workspace/event APIs | Contract requirements recorded | Server bearer API contract and implementation |
 | 5. Python/Ruby/Rust clients | Separate repository naming decided | Implementation and portability checks |
-| 6. Release preparation | Local six-target packaging, checksums, version injection, Homebrew/Scoop manifests, Bash/PowerShell installers; isolated native Homebrew install/test/reinstall/uninstall passed | Native Windows PowerShell 7/5.1 and Scoop lifecycle passed; production gates, tags and releases remain paused |
+| 6. Release preparation | Local six-target packaging, checksums, version injection, Homebrew/Scoop manifests, Bash/PowerShell installers; isolated native Homebrew install/test/reinstall/uninstall passed | Native Windows PowerShell 7/5.1 and Scoop lifecycle passed; Go/CLI v0.0.1 privately published after complete production gates and tagged package validation |
 
 Completion describes tracked core scope, not all future product features. Detailed
 evidence and historical increments are in [status.md](status.md).
@@ -306,10 +306,10 @@ and automated release uploading are outside the initial release requirement.
 | 1 | Confirm version, scope and customer access | Go/CLI v0.0.1 approved; initial releases remain private, with Homebrew/Bash/PowerShell/manual archives | Version and supported transports/architectures recorded; choose public customer artifacts or implement authenticated delivery; choose whether Scoop bucket ships now or later |
 | 2 | Configure production service and safe test fixtures | Client implementation complete: custom-domain constants, trust-preserving SSH alias, verified fixtures and changed-key rejection pass; actual public DNS/TLS/HTTP/SSH/rate technical acceptance passes; human Google/GitHub sign-in confirmed; repaired native form technical admission passes; genuine fresh-token/replay and email delivery/verification human-confirmed; exact3359535 production qualification complete | Retain public technical/provider evidence; retain verified3359535 production/provider provenance and separate actual-email evidence |
 | 3 | Freeze and validate server compatibility | New-domain compatibility and boot validation pass at assessed 5969f2f/native f6fed37; committed Erlang inputs verified; supplemental direct alias boot qualification passes at ef63e91; preceding public probes pass on c586107; repaired native admission/rollout qualifies 34d80f8/native f6fed37; catalog6ba81e2/d6e31dc operational qualification and focused4243c9a/d6 client compatibility pass; exact repaired UTF-8 deployment/public qualification complete; replay repair3359535/image0bbb qualified and genuine provider gates complete; final version/dependency/packaging input freeze pending | Retain separately attributed full, boot, sparse-client and deployed image provenance; retain exact repaired UTF-8 rollout provenance; qualify actual token/email flow; retain earlier full integration and supplemental boot provenance; freeze all packaging/deployment inputs; retain the verified boot fix and compare recorded hashes or rerun changed checks; retain approved migration lineage/runtime inputs; public-edge evidence is assessment-owned, and customer login/access decisions remain gate 1 |
-| 4 | Release Go client and pin standalone CLI dependency | Semantic release pending gates 1–3; immutable client snapshot v0.0.0-20261011144051-464d86d7dd41 is pinned with sums; standalone tests/native CI pass | Review/promote the client source, publish approved semantic version, pin it in CLI and record sums; clean-cache GOWORK=off test/vet/build succeeds without sibling checkout or replace directives; private access uses appropriate Git credentials/GOPRIVATE |
-| 5 | Validate exact production CLI candidate | Standalone infrastructure complete: clean non-local six-target candidate and native installer validation pass at CLI13e4b72; final approved semantic client/version inputs still require qualification | Retain the completed standalone GOWORK=off/no --local validation path, then qualify the final released-client input; clean Go 1.27.1 source produces six archives, installer scripts, formula, Scoop manifest, checksums and provenance; rerun relevant native/platform/installer checks on those exact inputs |
+| 4 | Release Go client and pin standalone CLI dependency | Go v0.0.1 published at78f30bb with all three native jobs green; CLI40a8260 pins v0.0.1 with verified sums; clean-cache GOWORK=off race/vet/build pass | Review/promote the client source, publish approved semantic version, pin it in CLI and record sums; clean-cache GOWORK=off test/vet/build succeeds without sibling checkout or replace directives; private access uses appropriate Git credentials/GOPRIVATE |
+| 5 | Validate exact production CLI candidate | Complete: all nine tagged release jobs pass in38165521337 at CLI40a8260; six-target assets use Go v0.0.1; attached release files match the validated CI artifact | Retain the completed standalone GOWORK=off/no --local validation path, then qualify the final released-client input; clean Go 1.27.1 source produces six archives, installer scripts, formula, Scoop manifest, checksums and provenance; rerun relevant native/platform/installer checks on those exact inputs |
 | 6 | Finalize release sources, notes and delivery policy | Source promotion complete; main is the default in all three repos; tag-triggered draft workflow configured; final notes/customer delivery/signing decision remains | Promote reviewed source through normal review; notes name client version/server baseline, protocol limits, old-config migration/revocation, OpenSSH dependency and supported architectures; choose signing policy and test downloaded macOS binaries with normal OS protections; record manual release procedure or implement upload automation |
-| 7 | Publish CLI assets and update package channels | After gate 6 and publication authorization | Approved tag matches source/manifest; customer-accessible assets are attached and hashes verified; dispatch tap updater for real release, review its PR and run/approve validation before merging; publish Scoop bucket only if selected |
+| 7 | Publish CLI assets and update package channels | Complete for private v0.0.1:12 CLI assets published; verified tap PR1 merged after both native installation checks passed; no public Scoop bucket | Approved tag matches source/manifest; customer-accessible assets are attached and hashes verified; dispatch tap updater for real release, review its PR and run/approve validation before merging; publish Scoop bucket only if selected |
 | 8 | Verify fresh customer installs and maintenance | After publication, before announcing availability | Published Homebrew, Bash, PowerShell and manual installs/upgrade paths pass on clean native hosts; selected Scoop channel passes; document uninstall, support, credential preservation, token rotation, approved service-recovery reauthentication and package rollback procedure |
 
 The publication dependency order is Go client → pinned/validated CLI → CLI release
@@ -848,3 +848,44 @@ Private publication does not change visibility or provide ordinary public
 curl/Homebrew installation. Initial binaries are checksummed, unsigned and
 not notarized; normal OS protections remain enabled. CHANGELOG.md records scope
 and release limitations.
+
+
+Go v0.0.1 is published at78f30bb; tag validation38165332184 passes Linux, Windows
+and macOS. CLI v0.0.1 is tagged at40a8260 and pins that semantic client with sum
+h1:cOH6TJ2iLncj7xpbBUG7kkDFwXLZi1cF6l+DQy5w27o=. Clean-cache retrieval via
+existing SSH access, GOWORK=off race tests, vet/build, local six-target packaging
+and archive/Bash/formula verification pass. Exact tag workflow38165521337 passes all nine jobs. The reviewed private CLI
+release is published with12 assets; attached files exactly match the validated
+CI artifact. Updater38166255153 verified the released archives and opened tap
+PR1. Final tap61dcf0c passes style/regressions38167419995 and native
+macOS/Linux published-package validation38167449364. PR1 merged as e0db882;
+the merged release branch is deleted.
+
+
+Private release links: [Go v0.0.1](https://github.com/bibleit-labs/bibleit-go/releases/tag/v0.0.1)
+and [CLI v0.0.1](https://github.com/bibleit-labs/bibleit-cli/releases/tag/v0.0.1).
+The current work does not enable unauthenticated customer downloads. Public
+launch still needs the visibility/delivery decision, public fresh-install checks
+and any selected Scoop bucket/signing/notarization follow-up.
+
+
+### v0.0.1 private release completed
+
+Progress: **5/5 release items complete**: merged branch cleanup; Go v0.0.1
+publication; standalone CLI semantic dependency/pin; validated CLI v0.0.1
+publication; verified Homebrew formula/update. Go tag78f30bb passes38165332184
+(three native jobs); CLI tag40a8260 passes38165521337 (nine release jobs).
+The12 attached CLI files exactly match the validated tag artifact.
+
+The tap updater verifies the released formula/archives and removes only the
+redundant stable version before audit. Tap-owned fixtures preserve the verified
+version under local-file URLs, prepare Linux core metadata before installation
+and isolate runner Git credentials without disabling sandboxing. Final61dcf0c
+passes38167419995 (style/ten updater regressions) and38167449364 (native macOS
+and Linux install/test/completions/reinstall/uninstall). PR1 merged as e0db882;
+failed initial workflow/fixture attempts remain historical. Release assets/tags
+were not replaced, and source branches use no codex prefix.
+
+Only the unmerged local CLI native-validation branch is retained. All three
+repos are on main. Public customer access and fresh unauthenticated installs
+remain launch work; a Scoop bucket and signing/notarization are optional follow-up.

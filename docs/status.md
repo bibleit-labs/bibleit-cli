@@ -3,7 +3,23 @@
 Updated 2026-10-11. Counts describe explicit acceptance items, not estimated
 percentages of the entire project. The full plan is in `plan.md`.
 
-## Current increment: main and release CI
+## Current increment: v0.0.1 release
+
+Merged branch cleanup is complete. Go client v0.0.1 is published at78f30bb;
+Linux, Windows and macOS tag validation38165332184 pass. CLI v0.0.1 is tagged
+at40a8260, pins Go v0.0.1 with sums and passes clean-cache GOWORK=off local
+race tests/vet/build and six-target archive/Bash/formula verification.
+Exact tagged release validation38165521337 passes all nine jobs. CLI v0.0.1
+is published with12 assets; attached files match the validated CI artifact.
+Updater38166255153 opened tap PR1. Final61dcf0c passes style/ten regressions
+38167419995 and macOS/Linux published-package installation38167449364. The
+reviewed PR merged as e0db882 and its release branch was deleted.
+
+Progress: **5/5 private release items complete**: merged branch cleanup, Go
+release, standalone dependency pin, CLI release and Homebrew update. Repositories
+remain private; public customer installation awaits the access decision.
+
+## Completed increment: main and release CI
 
 | Item | Status | Evidence / limits |
 | --- | --- | --- |
