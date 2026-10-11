@@ -1,0 +1,53 @@
+name: Generate draft release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: read
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Require a release tag on master
+        shell: bash
+        run: git merge-base --is-ancestor HEAD origin/master
+  test:
+    needs: source
+    uses: ./.github/workflows/native.yml
+    secrets:
+      BIBLEIT_CLIENT_READ_TOKEN: ${{ secrets.BIBLEIT_CLIENT_READ_TOKEN }}
+  assets:
+    needs: [source, test]
+    uses: ./.github/workflows/release-candidate.yml
+    with:
+      version: ${{ github.ref_name }}
+    secrets:
+      BIBLEIT_CLIENT_READ_TOKEN: ${{ secrets.BIBLEIT_CLIENT_READ_TOKEN }}
+  draft:
+    needs: [test, assets]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: candidate-assets
+          path: assets
+          digest-mismatch: error
+      - name: Create draft with validated assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          VERSION: ${{ github.ref_name }}
+        shell: bash
+        run: |
+          gh release create "$VERSION" assets/* --verify-tag --draft \
+            --title "Bibleit CLI $VERSION" --generate-notes

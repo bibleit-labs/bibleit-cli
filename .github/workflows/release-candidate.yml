@@ -1,14 +1,22 @@
-# Private draft validation is authorized. No tags or releases are published.
+# Builds and validates standalone assets; publication belongs to release.yml.
 name: Validate release candidate
 on:
   push:
-    branches: [package-manager-validation, integration-refresh]
+    branches: [master, integration-refresh]
   workflow_dispatch:
     inputs:
       version:
         description: Candidate version (vMAJOR.MINOR.PATCH, optional prerelease)
         required: true
         type: string
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+    secrets:
+      BIBLEIT_CLIENT_READ_TOKEN:
+        required: true
 permissions:
   contents: read
 jobs:
@@ -18,17 +26,11 @@ jobs:
     timeout-minutes: 20
     env:
       GOTOOLCHAIN: local
+      GOWORK: off
+      GOPRIVATE: github.com/bibleit-labs/bibleit-go
       CANDIDATE_VERSION: ${{ inputs.version || 'v0.1.0-ci.1' }}
     steps:
       - uses: actions/checkout@v6
-      - name: Check out exact private Go client
-        uses: actions/checkout@v6
-        with:
-          repository: bibleit-labs/bibleit-go
-          ref: 59dfaa45836002dc6c159a07407c08e382763b7c
-          path: .ci-client
-          token: ${{ secrets.BIBLEIT_CLIENT_READ_TOKEN }}
-          persist-credentials: false
       - uses: actions/setup-go@v6
         with:
           go-version: '1.27.1'
@@ -36,10 +38,15 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: '3.13'
-      - name: Prepare draft client workspace
-        run: go work init . ./.ci-client
-      - name: Package development candidate (never a production release)
-        run: python scripts/package_release.py --local --version "$CANDIDATE_VERSION"
+      - name: Download pinned private client
+        env:
+          GH_TOKEN: ${{ secrets.BIBLEIT_CLIENT_READ_TOKEN }}
+        run: |
+          gh auth setup-git
+          go mod download
+          go mod verify
+      - name: Package standalone candidate
+        run: python scripts/package_release.py --version "$CANDIDATE_VERSION"
       - name: Save immutable candidate inputs
         uses: actions/upload-artifact@v7
         with:
