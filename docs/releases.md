@@ -421,8 +421,10 @@ Back them up and sign in using a fresh config after the approved cutover.
 This prepared address change passes isolated HTTP/SSH/import, including changed
 saved-host-key rejection, at assessed 5969f2f. That revision’s boot change passes
 canonical/provider unit and synthetic hostname configuration checks. A subsequent
-pre-cutover check found a missing redirect-host environment boot parser entry;
-its assessment-owned repair and full public-route acceptance remain pending.
+pre-cutover check found a missing redirect-host environment boot parser entry.
+Repair ef63e91 passes the independent direct boot regression, with committed
+source/native equivalence and separate supplemental evidence. The unchanged full
+client integration baseline remains 5969f2f; public-route acceptance is pending.
 Actual DNS/TLS/SSH and authentication qualification is still required by the
 assessment/Fly chats before customer release. New-domain client and CLI native matrices pass, as does the
 revised candidate build/installer matrix at CLI bc94231. All native installer jobs

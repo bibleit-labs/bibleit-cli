@@ -209,12 +209,18 @@ known_hosts alias. Old localhost/Fly credentials reject without overwrite.
 The approved import adapter retains URL/authorization/validation/publication
 policy. The unique disposable PostgreSQL container is removed.
 
-Assessment-owned source results at the qualified revision pass 337 CT/62 unit/71
-JavaScript/native/bootstrap. Pre-cutover checks subsequently found a missing
-BIBLEIT_HTTP_REDIRECT_HOSTS boot parser entry: alias GET/HEAD returned 421. The
-assessment is validating the repair with an environment-cleared child-process boot
-regression; do not treat the earlier baseline as evidence for this later repair.
-Canonical client requests and alias method/upgrade denials passed those checks.
+Pre-cutover checks subsequently found a missing BIBLEIT_HTTP_REDIRECT_HOSTS boot
+parser entry: alias GET/HEAD returned 421. Repair ef63e91 adds only that runtime
+parser registration. Independent direct boot qualification passes normalized
+configured aliases, absent aliases and wildcard rejection in cleared-env child
+processes with an empty cwd and no egress. All 69 source/73 test/11 native hashes
+match the repair/native inputs. Both repositories retain supplemental
+contract/server-boot-validation.json alongside the unchanged full integration
+baseline at 5969f2f; the linked baseline hash makes the evidence lineage explicit.
+Unchanged HTTP/SSH/import checks were not unnecessarily repeated. Future full
+integration includes the direct boot test. Assessment-owned repaired-source
+results pass 337 CT/63 EUnit/71 JavaScript/native 65536/10 bootstrap cases.
+Canonical client requests and alias method/upgrade denials passed pre-cutover checks.
 Actual new-domain DNS/TLS/SSH/authentication and real-widget qualification remain
 open with assessment/Fly. Their earlier 25/25 result qualified the Fly hostname.
 Final packaging/deployment inputs still need freezing. Browser/provider login and
@@ -287,7 +293,7 @@ and automated release uploading are outside the initial release requirement.
 | --- | --- | --- | --- |
 | 1 | Confirm version, scope and customer access | Project decision; propose Go/CLI v0.1.0 for the existing core command surface, Homebrew/Bash/PowerShell/manual archives | Version and supported transports/architectures recorded; choose public customer artifacts or implement authenticated delivery; choose whether Scoop bucket ships now or later |
 | 2 | Configure production service and safe test fixtures | Client implementation complete: custom-domain constants, trust-preserving SSH alias, verified fixtures and changed-key rejection pass; actual route qualification pending | Verify new-domain TLS/SSH fixtures and changed-key rejection; assessment/Fly confirms DNS-only apex, certificate/origin, authentication and retained SSH fingerprint before release |
-| 3 | Freeze and validate server compatibility | New-domain compatibility and boot validation pass at assessed 5969f2f/native f6fed37; committed Erlang inputs verified; later alias-environment boot repair, actual route qualification and full packaging input freeze pending | Validate the assessment-owned redirect-host boot repair; freeze all packaging/deployment inputs; retain the verified boot fix and compare recorded hashes or rerun changed checks; retain approved migration lineage/runtime inputs; public-edge evidence is assessment-owned, and customer login/access decisions remain gate 1 |
+| 3 | Freeze and validate server compatibility | New-domain compatibility and boot validation pass at assessed 5969f2f/native f6fed37; committed Erlang inputs verified; supplemental direct alias boot qualification passes at ef63e91; actual route qualification and full packaging input freeze pending | Retain both full integration and supplemental boot provenance; freeze all packaging/deployment inputs; retain the verified boot fix and compare recorded hashes or rerun changed checks; retain approved migration lineage/runtime inputs; public-edge evidence is assessment-owned, and customer login/access decisions remain gate 1 |
 | 4 | Release Go client and pin standalone CLI dependency | After gates 1–3; go.mod still requires v0.0.0 | Review/promote the client source, publish approved semantic version, pin it in CLI and record sums; clean-cache GOWORK=off test/vet/build succeeds without sibling checkout or replace directives; private access uses appropriate Git credentials/GOPRIVATE |
 | 5 | Validate exact production CLI candidate | After gate 4; current candidate workflow uses --local and go work | Add a standalone production candidate validation path using the released client, GOWORK=off and no --local; clean Go 1.27.1 source produces six archives, installer scripts, formula, Scoop manifest, checksums and provenance; rerun relevant native/platform/installer checks on those exact inputs |
 | 6 | Finalize release sources, notes and delivery policy | Before publishing CLI; release/default branches still need review | Promote reviewed source through normal review; notes name client version/server baseline, protocol limits, old-config migration/revocation, OpenSSH dependency and supported architectures; choose signing policy and test downloaded macOS binaries with normal OS protections; record manual release procedure or implement upload automation |
@@ -311,7 +317,9 @@ it on final changed release inputs rather than treating all tooling as unbuilt.
 - Both contract/server-baseline.json files are identical at assessed 5969f2f/native
   f6fed37. Committed Erlang inputs and the 69 source, 72 test and 11 native
   input hashes matched immediately after full HTTP/SSH/import integration. This independently tests
-  client compatibility; actual Fly-edge qualification is assessment-owned.
+  client compatibility. Supplemental server-boot-validation.json files match at
+  ef63e91 (69 source/73 test/11 native) and qualify the sole alias-parser change;
+  actual Fly-edge qualification is assessment-owned.
 - CLI go.mod still requires bibleit-go v0.0.0. Draft CI pins an exact private
   client revision in an ephemeral workspace and packages with --local. All ten
   new-domain native/build/installer jobs pass at client 58505aa and CLI bc94231
@@ -577,8 +585,10 @@ historical Fly host solely as a known_hosts alias, never a network destination;
 changed-key rejection passes. Isolated HTTP/SSH/import passes against the
 assessed revision 5969f2f and both baselines are synchronized; narrow boot and
 provider checks pass. All Erlang inputs match that commit, while unrelated frontend
-working-tree edits remain. The assessment is validating the subsequent alias
-environment boot repair; require its final source and public-edge evidence.
+working-tree edits remain. The subsequent alias environment boot repair ef63e91
+passes the independent direct regression; its provenance is recorded separately
+and the unchanged client compatibility evidence is retained. Require the actual
+public-edge and human-widget acceptance evidence from assessment/Fly.
 Freeze all packaging inputs and rerun checks affected by later changes. Actual
 DNS/certificate,
 canonical-origin authentication and SSH fingerprint proof remain assessment/Fly
