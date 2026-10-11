@@ -21,6 +21,29 @@ At the publication pause, changes stayed local with a sibling workspace. Private
 CI is now authorized; see the latest validation section below. Each matrix targets runner-default architectures, not all six
 build targets. The original repository's remote main is unchanged.
 
+## Package 24 compatibility refresh — 11 October 2026
+
+`python3 scripts/check_server_container.py --imports --baseline
+build/validation/package-24-server-baseline-2026-10-11.json` passed in the isolated
+Linux/arm64 namespace against server c2beef5334c249f65daedd0e279b8d9252f0d51b plus
+assessment working-tree changes, with native f6fed37919c848b1aa0208900af992a5e8a507f2.
+The refreshed baseline records 67 source, 66 test and 11 native build-input hashes.
+All inputs match after the run; native code is rebuilt and the disposable database
+is removed. Client and CLI baseline bytes match; no client runtime change was needed.
+
+Coverage passes: 34 decoder/18 encoder fixtures, seven security cases, 11 HTTP
+subtests, real OpenSSH subscription/pause/reconnect/delete closure and stable output,
+17 auth/key/protocol tests, 11 import-access and 15 publication cases. This includes
+an authorized unreviewed-source denial; suite-local approved delivery preserves
+production URL policy and authorization. Log (ignored):
+build/validation/package-24-integration-2026-10-11.log.
+
+The assessment's separate final suite passes 324 integration, 50 Erlang unit,
+71 JavaScript and native tests with no skips. Local release/tar checks verify
+178 reviewed resources; Linux build/runtime checks pass. Campaign is 24/25,
+with final-image/Fly verification still open. These results do not certify a
+production endpoint or a committed/deployed release baseline.
+
 ## Assessment HTTP/SSH compatibility refresh — 11 October 2026
 
 The isolated command `python3 scripts/check_server_container.py --imports

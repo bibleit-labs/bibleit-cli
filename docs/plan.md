@@ -190,25 +190,27 @@ in authorized private CI. See `native-validation.md` for exact revisions/runs.
 
 ## Latest integration evidence
 
-The latest 2026-10-11 isolated refresh passed against server HEAD
+The latest package-24 2026-10-11 isolated refresh passed against server HEAD
 c2beef5334c249f65daedd0e279b8d9252f0d51b plus assessment working-tree changes,
 using native libbibleit f6fed37919c848b1aa0208900af992a5e8a507f2. The synchronized
-client/CLI baseline records 65 source, 62 test and 11 native build-input hashes.
-The native library is rebuilt inside the isolated Linux container, and capture
-rejects concurrent native input/revision changes. No server files were edited.
+client/CLI baseline records 67 source, 66 test and 11 native build-input hashes.
+Native code is rebuilt inside the isolated Linux container; capture rejects
+concurrent native changes. No server or client runtime source was edited.
 
 Passing coverage: 34 decoder/18 encoder fixtures, seven targeted security cases,
-11 HTTP subtests, actual OpenSSH subscription/pause/reconnect/delete closure and
-single-credential/output parity, 17 auth/key/protocol EUnit tests, 10 real-HTTP
-import-access and 15 publication cases. All checks passed and the disposable
-PostgreSQL container was removed. Recorded file contents matched after the run.
-The assessment subsequently added test/bibleit_combined_infrastructure_SUITE.erl
-and test/bibleit_fault_proxy.erl for its next package; those new tests are outside
-this frozen snapshot. No recorded source/test file changed and native inputs match.
-Log (ignored): build/validation/assessment-final-integration-2026-10-11.log.
-This is a frozen development snapshot, not the full server assessment or a
-compatibility claim against a deployed production release. The review date uses
-UTC while this progress record uses the local date.
+11 HTTP subtests, real OpenSSH subscription/pause/reconnect/delete closure and
+single-credential/output parity, 17 auth/key/protocol tests, 11 real-HTTP import
+access and 15 publication cases. The approved suite delivery adapter retains
+production URL/authorization/validation checks; authorized unreviewed-source
+rejection passes. All recorded source/test/native inputs match after the run and
+the disposable PostgreSQL container is removed. Full ignored log:
+build/validation/package-24-integration-2026-10-11.log.
+
+This is a frozen development snapshot, not deployed compatibility certification.
+The server assessment's independent full suite also passed: 324 integration,
+50 Erlang unit, 71 JavaScript and native tests, without skips. Its release/tar
+resource checks and Linux build stage pass; campaign progress is 24/25, leaving
+Fly deployment verification. The date here is Europe/Berlin; baseline dates use UTC.
 
 Homebrew preparation uses `bibleit-labs/homebrew-tap`, formula `bibleit-cli`,
 and executable `bibleit`. The future one-step installation command is
@@ -295,12 +297,12 @@ it on final changed release inputs rather than treating all tooling as unbuilt.
   placeholders. Native process tests and real-server harness use loopback fixtures;
   adapt them with the endpoint change while keeping the public API credential-only.
 - Both contract/server-baseline.json files are identical and now record server
-  c2beef5334c249f65daedd0e279b8d9252f0d51b plus assessment working-tree changes,
-  with native f6fed37919c848b1aa0208900af992a5e8a507f2. The verified 65 source,
-  62 test and 11 native build-input fingerprints matched after integration.
+  c2beef5334c249f65daedd0e279b8d9252f0d51b plus package-24 working-tree changes,
+  with native f6fed37919c848b1aa0208900af992a5e8a507f2. The verified 67 source,
+  66 test and 11 native build-input fingerprints match after integration.
   A committed/deployed release freeze and production smoke checks are still pending.
 
-- CLI go.mod still requires bibleit-go v0.0.0. Draft CI now pins exact client 8de21e9
+- CLI go.mod still requires bibleit-go v0.0.0. Draft CI now pins exact client 3c43133
   in an ephemeral workspace and packages with --local. Green draft CI does not
   certify standalone dependency retrieval or production release provenance.
 - All three repositories are private. Generated ordinary GitHub release URLs do
@@ -326,9 +328,8 @@ checks from keepalive pings (30-second ping interval). The assessment reports a
 passing 120-second/48-client fanout soak and 30 reconnect cycles. Its final package
 22 full suite now exits zero: 310 integration cases, 48 Erlang unit tests,
 71 JavaScript tests and native C programs, without skips. Package 23 subsequently
-passed its final suite below; the overall campaign is now 23/25 complete. Package
-24 (dependency/history-secret/TLS/SSH/chained tests and final retest) and package
-25 (Fly deployment review) remain pending. These broad results are assessment-reported
+passed its final suite below, followed by package 24. The overall campaign is now
+24/25 complete; package 25 (Fly deployment review) remains pending. These broad results are assessment-reported
 and confirmed in its ledger/log; the independent HTTP/SSH/import compatibility
 refresh above also passed against the current snapshot.
 
@@ -378,13 +379,21 @@ host key changes. No runtime behavior or command schema changes are needed.
 The verified server/native baseline is unchanged; this documentation update is
 not new compatibility evidence for package-23 implementation changes.
 
-### Package 24 operational compatibility follow-up
+### Package 24 final results and operational compatibility
 
-The assessment reports 30 focused SSH/TLS/schema/account/import cases passing;
-its final full retest is still running. Progress stays 23/25 until that result
-is confirmed. No CLI protocol, command or error-name change is reported, and
-libbibleit remains at f6fed37. No client runtime or verified baseline is changed
-by this documentation follow-up.
+The assessment confirms 30 focused SSH/TLS/schema/account/import cases and its
+final full suite pass: 324 integration cases, 50 Erlang unit tests, 71 JavaScript
+tests and native C search/fuzz programs, with no skips. Ordinary release and
+production tar verify 178 reviewed resources with exact hashes and no development
+keys/certificates/private assessment records. The Linux build stage passes; its
+network-disabled runtime probe reports OTP 29.1.1, SSH 6.0.6 and SSL 11.7.7.
+The dedicated database/container volume were removed. These broad results are
+assessment-owned evidence, confirmed in its ledger and final notification.
+
+Progress is 24/25; Fly deployment verification is the remaining package. No CLI
+protocol/command/error-name or native-library change was needed. The independent
+HTTP/SSH/import refresh above passes and both client baselines are synchronized.
+The server working-tree snapshot still needs an agreed committed/deployed freeze.
 
 Release/deployment checks to carry forward:
 
@@ -397,10 +406,11 @@ Release/deployment checks to carry forward:
   Reviewed imports accept approved HTTPS eBible sources; fetch_failed remains a
   safe failed import with no published partial installation. Refresh integration
   fixtures with the approved test delivery adapter while preserving production
-  URL/authorization checks, then rerun against the final frozen server baseline.
+  URL/authorization checks. The current isolated refresh passes that adapter;
+  rerun again when the final deployed server baseline is frozen.
 - Guarded server release/tar staging excludes development PEM/SSH keys and private
   assessment records. Verify the actual deployment image/public resources too;
-  local artifact checks alone do not certify the deployed package.
+  local release/tar/build checks pass, but final-image/Fly checks remain open.
 - Default server VM settings disable inbound Erlang distribution/EPMD and omit
   the shared default cookie. Remote Erlang console/RPC administration is disabled
   by default; the Bibleit SSH command transport is separate and unchanged.

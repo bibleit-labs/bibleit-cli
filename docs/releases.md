@@ -300,9 +300,12 @@ runtime recovery feature is introduced by this documentation update.
 
 ## Server rollout compatibility checks
 
-Package 24's focused local security checks report stricter server startup,
-transport and packaging policies without changing the CLI protocol. Its final
-full retest is still pending; these findings do not refresh the client baseline.
+Package 24's final local suite passed 324 integration, 50 Erlang unit, 71 JavaScript
+and native tests with no skips. Ordinary release/production tar checks verified
+178 reviewed resources; the Linux build stage passed with OTP 29.1.1, SSH 6.0.6
+and SSL 11.7.7. Independent client HTTP/SSH/import compatibility also passes the
+67-source/66-test/11-native-input development snapshot. CLI schemas are unchanged.
+Campaign progress is 24/25; final-image/Fly deployment verification remains open.
 Before a production release, validate the approved deployed server snapshot and
 these operational requirements together:
 
@@ -323,4 +326,4 @@ these operational requirements together:
 These are server rollout prerequisites. The CLI does not repair database lineage,
 change server administration policy or retry an unsafe import automatically.
 Deployment-specific TLS, image contents and rollback checks remain package 25
-work. No production migration or new compatibility run is claimed here.
+work. No production migration or deployed compatibility certification is claimed.

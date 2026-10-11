@@ -3,7 +3,23 @@
 Updated 2026-10-11. Counts describe explicit acceptance items, not estimated
 percentages of the entire project. The full plan is in `plan.md`.
 
-## Current increment: package 23 final-results review
+## Current increment: package 24 final results and compatibility refresh
+
+| Item | Status | Evidence / limits |
+| --- | --- | --- |
+| Verify final assessment result | Complete | 324 integration, 50 Erlang unit, 71 JavaScript and native tests pass, no skips; release/tar resource checks and Linux build stage pass; campaign 24/25, Fly verification pending |
+| Rerun HTTP/SSH/import integration | Complete | 34 decoder/18 encoder fixtures, seven security cases, 11 HTTP subtests, SSH lifecycle/output parity, 17 auth/key/protocol tests and 26 import cases pass; no client runtime change |
+| Synchronize baselines and update release plan | Prepared; hosted validation running | Server c2beef5 plus working-tree changes, native f6fed37; 67 source/66 test/11 native hashes; baseline bytes identical; draft CI pins client 3c43133 |
+
+Progress: **2/3 tracked items complete** pending final publication/hosted evidence.
+No recorded server/test/native drift was found after the isolated run; its database
+was removed. Full ignored log: build/validation/package-24-integration-2026-10-11.log.
+This validates a development snapshot. Production endpoints, committed/deployed
+baseline, migration lineage, standalone released dependency and customer installs
+remain release gates. No shared database, server runtime source or release tag is
+changed by this increment.
+
+## Previous increment: package 23 final-results review
 
 | Item | Status | Evidence / limits |
 | --- | --- | --- |
@@ -17,12 +33,12 @@ backup automation, whole-volume crash consistency, OOM or physical disk exhausti
 Customer fresh-credential/SSH-key guidance remains applicable after an actual
 approved restore. No client integration or production restore is claimed here.
 
-Package-24 follow-up: 30 focused local SSH/TLS/schema/account/import cases pass;
-its final full retest is pending. Release documentation now records migration
+Package-24 follow-up: the final full suite and local release/build checks now
+pass; see the current compatibility refresh above. Release documentation now records migration
 identity/lineage requirements, bounded verified HTTPS import policy and guarded
 server packaging/runtime defaults. CLI commands/error names and native revision
-are reported unchanged. Progress stays 23/25; no runtime edits, database reset or
-verified baseline refresh is performed from this report.
+are unchanged. Campaign progress is 24/25. No runtime edits or database reset
+were needed; the verified baseline was refreshed only after independent integration.
 
 ## Previous increment: assessment compatibility refresh
 
