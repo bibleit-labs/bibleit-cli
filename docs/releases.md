@@ -515,3 +515,11 @@ same tag. It verifies the published archives and formula and performs isolated
 Homebrew install/test/completion/reinstall/uninstall checks on macOS and Linux.
 Merge the reviewed formula only after those checks pass. Cross-repository updater
 access remains Contents-read only; PR creation uses the tap's own GITHUB_TOKEN.
+
+Master CI verification: all 12 hosted jobs pass at CLI 13e4b72, Go 464d86d and
+tap a41e453. Native CLI run 38158698440, standalone package/installers run
+38158698450, Go run 38158759103, tap validation 38158709825 and tap access
+38158727488 are linked in status.md. The exact candidate manifest is clean,
+non-local and non-workspace with the pinned client sum; the tap updater verifies
+its four formula archives. Tag-triggered draft creation and the first published
+tap update remain uninvoked until a release is approved.
