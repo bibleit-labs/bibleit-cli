@@ -68,6 +68,7 @@ def main():
                     reported = subprocess.check_output([str(shim), 'version'], env=env, text=True).strip()
                     assert reported == f'bibleit CLI version {version}', reported
                     assert (root / 'apps/bibleit/current/LICENSE').is_file()
+                    assert (root / 'apps/bibleit/current/THIRD_PARTY_NOTICES').is_file()
                 run('install', '--no-update-scoop', '--independent', str(fixture))
                 verify_binary()
                 run('reset', 'bibleit')
