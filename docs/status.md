@@ -3,11 +3,11 @@
 Updated 2026-10-11. Counts describe explicit acceptance items, not estimated
 percentages of the entire project. The full plan is in `plan.md`.
 
-## Current increment: master and release CI
+## Current increment: main and release CI
 
 | Item | Status | Evidence / limits |
 | --- | --- | --- |
-| Promote reviewed source to master | Complete | All three repos now default to master; previous default history preserved; no release created |
+| Promote reviewed source to main | Complete | All three repos now default to main; previous default history preserved; no release created |
 | Standalone CLI dependency | Complete locally | Exact Go snapshot and checksums; GOWORK=off tests pass |
 | Build/test/draft release workflows | Complete; hosted validation passed | CLI/Go native matrices and all installer jobs pass; six standalone archives built; tag-triggered draft generation configured |
 | Homebrew tap continuation | CI/configuration complete | Tap CI/access pass, eight updater regressions pass and actual standalone candidate formula verification passes; published-package validation added on macOS/Linux; first actual release/install still pending |
@@ -80,7 +80,7 @@ suite passes 337 CT/63 EUnit/71 JavaScript/native 65536/10 bootstrap checks.
 | Authentication, SSH and paired rate behavior | Complete | 11 auth, 10 actual canonical-DNS SSH and 15 paired rate checks pass; retained public SSH fingerprint confirmed; scoped fixture cleanup counts are zero |
 | Real provider sign-in | Complete | Operator confirms Google and GitHub OAuth sign-in at bibleit.app |
 | Native HTML form/browser approval repair | Complete for technical admission | Deployed 34d80f8 real requestSubmit carries canonical Origin/Referer, passes CSRF and reaches missing-token denial; same-origin HTML policy retains sensitive no-referrer; provider traffic blocked, no account/email |
-| Real Turnstile and email acceptance | Pending | Fresh-token backend success/replay and actual email delivery/verification required; visible widget success, native admission and token denials are partial evidence |
+| Real Turnstile and email acceptance | In progress; awaiting human evidence | Assessment requested canonical helper result booleans and controlled signup delivery/verification; visible widget success, native admission and token denials remain partial evidence |
 
 Progress: **4/5 public acceptance items complete**; the client increment remains
 4/4. The preceding technical probes qualified source c586107, runtime repair ef63e91/native f6fed37,

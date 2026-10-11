@@ -15,9 +15,9 @@ jobs:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      - name: Require a release tag on master
+      - name: Require a release tag on main
         shell: bash
-        run: git merge-base --is-ancestor HEAD origin/master
+        run: git merge-base --is-ancestor HEAD origin/main
   test:
     needs: source
     uses: ./.github/workflows/native.yml

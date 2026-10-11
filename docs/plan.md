@@ -305,15 +305,15 @@ and automated release uploading are outside the initial release requirement.
 | 1 | Confirm version, scope and customer access | Project decision; propose Go/CLI v0.1.0 for the existing core command surface, Homebrew/Bash/PowerShell/manual archives | Version and supported transports/architectures recorded; choose public customer artifacts or implement authenticated delivery; choose whether Scoop bucket ships now or later |
 | 2 | Configure production service and safe test fixtures | Client implementation complete: custom-domain constants, trust-preserving SSH alias, verified fixtures and changed-key rejection pass; actual public DNS/TLS/HTTP/SSH/rate technical acceptance passes; human Google/GitHub sign-in confirmed; repaired native form technical admission passes; Turnstile/email manual acceptance pending | Retain public technical/provider evidence; confirm real Turnstile backend success/replay and actual email delivery/verification before release |
 | 3 | Freeze and validate server compatibility | New-domain compatibility and boot validation pass at assessed 5969f2f/native f6fed37; committed Erlang inputs verified; supplemental direct alias boot qualification passes at ef63e91; preceding public probes pass on c586107; repaired native admission/rollout qualifies 34d80f8/native f6fed37; catalog6ba81e2/d6e31dc operational qualification and focused4243c9a/d6 client compatibility pass; exact repaired UTF-8 deployment/public qualification complete; manual token/email acceptance and final packaging input freeze pending | Retain separately attributed full, boot, sparse-client and deployed image provenance; retain exact repaired UTF-8 rollout provenance; qualify actual token/email flow; retain earlier full integration and supplemental boot provenance; freeze all packaging/deployment inputs; retain the verified boot fix and compare recorded hashes or rerun changed checks; retain approved migration lineage/runtime inputs; public-edge evidence is assessment-owned, and customer login/access decisions remain gate 1 |
-| 4 | Release Go client and pin standalone CLI dependency | After gates 1–3; go.mod still requires v0.0.0 | Review/promote the client source, publish approved semantic version, pin it in CLI and record sums; clean-cache GOWORK=off test/vet/build succeeds without sibling checkout or replace directives; private access uses appropriate Git credentials/GOPRIVATE |
-| 5 | Validate exact production CLI candidate | After gate 4; current candidate workflow uses --local and go work | Add a standalone production candidate validation path using the released client, GOWORK=off and no --local; clean Go 1.27.1 source produces six archives, installer scripts, formula, Scoop manifest, checksums and provenance; rerun relevant native/platform/installer checks on those exact inputs |
-| 6 | Finalize release sources, notes and delivery policy | Before publishing CLI; release/default branches still need review | Promote reviewed source through normal review; notes name client version/server baseline, protocol limits, old-config migration/revocation, OpenSSH dependency and supported architectures; choose signing policy and test downloaded macOS binaries with normal OS protections; record manual release procedure or implement upload automation |
+| 4 | Release Go client and pin standalone CLI dependency | Semantic release pending gates 1–3; immutable client snapshot v0.0.0-20261011144051-464d86d7dd41 is pinned with sums; standalone tests/native CI pass | Review/promote the client source, publish approved semantic version, pin it in CLI and record sums; clean-cache GOWORK=off test/vet/build succeeds without sibling checkout or replace directives; private access uses appropriate Git credentials/GOPRIVATE |
+| 5 | Validate exact production CLI candidate | Standalone infrastructure complete: clean non-local six-target candidate and native installer validation pass at CLI13e4b72; final approved semantic client/version inputs still require qualification | Retain the completed standalone GOWORK=off/no --local validation path, then qualify the final released-client input; clean Go 1.27.1 source produces six archives, installer scripts, formula, Scoop manifest, checksums and provenance; rerun relevant native/platform/installer checks on those exact inputs |
+| 6 | Finalize release sources, notes and delivery policy | Source promotion complete; main is the default in all three repos; tag-triggered draft workflow configured; final notes/customer delivery/signing decision remains | Promote reviewed source through normal review; notes name client version/server baseline, protocol limits, old-config migration/revocation, OpenSSH dependency and supported architectures; choose signing policy and test downloaded macOS binaries with normal OS protections; record manual release procedure or implement upload automation |
 | 7 | Publish CLI assets and update package channels | After gate 6 and publication authorization | Approved tag matches source/manifest; customer-accessible assets are attached and hashes verified; dispatch tap updater for real release, review its PR and run/approve validation before merging; publish Scoop bucket only if selected |
 | 8 | Verify fresh customer installs and maintenance | After publication, before announcing availability | Published Homebrew, Bash, PowerShell and manual installs/upgrade paths pass on clean native hosts; selected Scoop channel passes; document uninstall, support, credential preservation, token rotation, approved service-recovery reauthentication and package rollback procedure |
 
 The publication dependency order is Go client → pinned/validated CLI → CLI release
-assets → reviewed Homebrew formula (and Scoop bucket if selected). A reviewed
-manual first release is sufficient; an automated tag/upload workflow is optional.
+assets → reviewed Homebrew formula (and Scoop bucket if selected). The tag-triggered workflow now generates a validated draft; review and publication
+remain explicit first-release steps.
 Native installer validation already passed for development candidates, so repeat
 it on final changed release inputs rather than treating all tooling as unbuilt.
 
@@ -678,16 +678,41 @@ publish a release or change visibility.
 ## Master and release automation next steps
 
 CLI/Go integration-refresh and tap formula-preparation have been promoted to
-`master`, now the default branch in all three repos. All 12 hosted jobs pass:
+`main`, now the default branch in all three repos. All 12 hosted jobs pass:
 three CLI native, three Go native, four candidate build/installer jobs, tap
 validation and private CLI access. Eight updater regressions and verification
 of the actual standalone candidate formula also pass. The CLI now pins a checksummed immutable client snapshot and its local
 standalone `GOWORK=off` tests pass; semantic client release/version selection is
 still a launch decision. `release.yml` generates a draft only after native tests,
-six-target packaging and installer checks succeed for a tag on master.
+six-target packaging and installer checks succeed for a tag on main.
 
 Complete the remaining Turnstile and email acceptance gates, select the approved
 Go/CLI release versions and customer access, then create the approved tags and
 review/publish the draft. Dispatch the tap updater and run its released-package
 validation on the formula PR before merging. No tag or published release is
 created by merging the current source. See releases.md for workflow details.
+
+
+## Real-provider acceptance coordination — 11 October 2026
+
+The assessment confirms real Turnstile backend fresh-token success/replay and
+actual email delivery/verification are still pending. It has requested the human
+steps in the assessment chat: run the canonical browser helper and report only
+its three result booleans, then reload for signup with an unused controlled email
+and confirm the check-email page, message arrival and completed verification.
+No raw challenge tokens, email addresses, credentials, cookies or message contents
+belong in the shared release evidence. Widget success, missing-token denial,
+native CSRF admission and local provider fixtures do not close these gates.
+
+Retain each result separately with deployed source/native/image provenance and
+cleanup status. Source 14628f3 (workflow 38157279015) is reported as a later
+font-only rollout; exact image ownership/evidence is being coordinated. The full
+4243c9a/d6e31dc client/deployment records remain point-in-time evidence and are
+not silently attributed to that newer image. Complete the human acceptance before
+release-baseline freeze; a server regression must be repaired and relevant checks
+requalified before the gate closes.
+
+The user clarified that the intended integration/default branch is `main`.
+CI triggers and the release tag ancestry guard now use main. Existing histories
+are preserved; the accidentally introduced master branches are removed only after
+main is published and verified as default.
