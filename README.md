@@ -167,6 +167,12 @@ sign in with a fresh config; there is no automatic account selection or migratio
 Backing up an old file does not revoke its server credentials. Revoke obsolete CLI
 credentials in account settings when replacing the old configuration.
 
+If support announces a service restore with credential quarantine, existing API
+tokens and registered user SSH keys remain rejected. Wait for support to confirm
+your identity and access have been reconciled, then sign in again or obtain a fresh
+API token and re-register your SSH public key. Replace any old BIBLEIT_TOKEN value
+or automation secret too. See [service recovery](docs/releases.md#service-recovery-and-credentials).
+
 Output defaults to a readable table. Use `--format raw` to preserve finite
 protocol records, `--format json` for a version-1 typed record envelope, or
 `--format ndjson` for an SSH subscription with one object per record. Finite

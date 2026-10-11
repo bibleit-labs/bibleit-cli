@@ -280,7 +280,7 @@ and automated release uploading are outside the initial release requirement.
 | 5 | Validate exact production CLI candidate | After gate 4; current candidate workflow uses --local and go work | Add a standalone production candidate validation path using the released client, GOWORK=off and no --local; clean Go 1.27.1 source produces six archives, installer scripts, formula, Scoop manifest, checksums and provenance; rerun relevant native/platform/installer checks on those exact inputs |
 | 6 | Finalize release sources, notes and delivery policy | Before publishing CLI; release/default branches still need review | Promote reviewed source through normal review; notes name client version/server baseline, protocol limits, old-config migration/revocation, OpenSSH dependency and supported architectures; choose signing policy and test downloaded macOS binaries with normal OS protections; record manual release procedure or implement upload automation |
 | 7 | Publish CLI assets and update package channels | After gate 6 and publication authorization | Approved tag matches source/manifest; customer-accessible assets are attached and hashes verified; dispatch tap updater for real release, review its PR and run/approve validation before merging; publish Scoop bucket only if selected |
-| 8 | Verify fresh customer installs and maintenance | After publication, before announcing availability | Published Homebrew, Bash, PowerShell and manual installs/upgrade paths pass on clean native hosts; selected Scoop channel passes; document uninstall, support, credential preservation, token rotation and package rollback procedure |
+| 8 | Verify fresh customer installs and maintenance | After publication, before announcing availability | Published Homebrew, Bash, PowerShell and manual installs/upgrade paths pass on clean native hosts; selected Scoop channel passes; document uninstall, support, credential preservation, token rotation, approved service-recovery reauthentication and package rollback procedure |
 
 The publication dependency order is Go client → pinned/validated CLI → CLI release
 assets → reviewed Homebrew formula (and Scoop bucket if selected). A reviewed
@@ -340,6 +340,26 @@ passes. Before release, wait for final assessment sign-off, freeze the agreed
 committed/deployed server and native revisions, then run release compatibility and
 production smoke checks. The newly verified development snapshot does not close
 that deployment gate.
+
+### Package 23 recovery documentation follow-up
+
+The assessment added an offline restored-database quarantine procedure in
+scripts/quarantine-restored-database.sql and docs/developers/backup-recovery.md.
+It disables restored principals, revokes API tokens/user SSH registrations,
+invalidates restored password hashes and clears browser/action/OAuth/CLI auth
+flows before reopening the recovered target. Identity and current grants must be
+reconciled before approved users receive fresh credentials. Focused recovery/fault
+tests passed; the full package-23 suite was still running at notification time.
+This does not advance the recorded 22/25 completion count or claim a production
+restore has occurred.
+
+CLI customer implications are documented in README.md and releases.md: after an
+actual approved restore, wait for reconciliation, obtain fresh HTTP/API credentials,
+replace automation/environment tokens and re-register the SSH public key. Preserve
+SSH host verification and follow a verified trust-update process if the service
+host key changes. No runtime behavior or command schema changes are needed.
+The verified server/native baseline is unchanged; this documentation update is
+not new compatibility evidence for package-23 implementation changes.
 
 ### Next actionable increment
 

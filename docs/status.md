@@ -26,6 +26,12 @@ remain open. The assessment has subsequently added two package-23 test files
 outside this frozen snapshot; recorded source/test/native inputs still match.
 No server edits or release tags/assets are created here.
 
+Package-23 follow-up: isolated recovery/fault tests pass; its full suite was still
+running at notification. Customer guidance now covers fresh credentials and SSH
+key re-registration after an approved restore/quarantine and identity/grant
+reconciliation. CLI runtime and the verified baseline are unchanged; no production
+restore or additional completed assessment package is claimed.
+
 ## Previous increment: first-release readiness review
 
 | Item | Status | Evidence / limits |
