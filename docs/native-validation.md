@@ -52,8 +52,19 @@ module inputs unchanged since the green client run at 58505aa. CLI runtime Go
 source and module inputs are unchanged since 9243489. A previous candidate run
 38126789985 timed out on Windows during duplicated cross-compilation, before
 installer assertions. Building once resolved it; the replacement run is green.
-Actual DNS/TLS/SSH public-route qualification and the subsequently discovered
-redirect-host environment boot repair remain assessment/Fly-owned.
+Supplemental direct alias boot qualification at [private revision withheld] passes configured-host
+normalization, absent-host behavior and wildcard rejection. It uses the actual
+server EUnit regression in cleared-env child processes with empty cwd, synthetic
+DB settings and no egress. No service or database is started. All 69 source/73
+test hashes match the committed repair; 11 native inputs remain [private revision withheld]. The
+sole runtime difference from the full client run is the one-line parser entry.
+`contract/server-boot-validation.json` retains this evidence separately from the
+full [private revision withheld] integration baseline, with a hash linking the earlier evidence.
+The full future integration runner includes the new direct boot test; its unit
+count becomes 25 when run, rather than retroactively changing the earlier 24.
+Assessment-owned broad repaired-source evidence is 337 CT/63 EUnit/71 JavaScript/
+native 65536/10 bootstrap. Actual DNS/TLS/SSH/authentication and human-widget
+public-route qualification remains assessment/Fly-owned and pending.
 
 ## Prior Fly-hostname endpoint validation — 11 October 2026
 
