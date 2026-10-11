@@ -21,6 +21,42 @@ At the publication pause, changes stayed local with a sibling workspace. Private
 CI is now authorized; see the latest validation section below. Each matrix targets runner-default architectures, not all six
 build targets. The original repository's remote main is unchanged.
 
+## Native amd64 server image — 11 October 2026
+
+The assessment-owned [native server run 38100648994]([private service reference withheld])
+passed at f54667c26edb4728d7df041f3bcd5a2af5897d19 on branch
+security-native-validation/package-25, with clean submodule
+[private digest withheld]. This is server validation in its private
+repository, separate from the client/CLI matrices below.
+
+The downloaded report confirms native Linux x86_64 host/Docker and linux/amd64
+runtime image sha256:8b6a1b9d97a79227e72f611b3509199a89420339a3198334f2e00c40ec2c91b9.
+Observed versions: GCC 15.2.0, Make 4.4.1, Rebar 3.27.0, OTP 29/ERTS 17.1,
+SSH 6.0.6, SSL 11.7.7, Alpine 3.24.2, runtime UID/GID10001. No ARM emulation or
+architecture-specific runtime workaround is used.
+
+All eight stages pass: build/toolchain, seeded native/65536-coordinate corpus,
+ten SSH-bootstrap tests, final image build/runtime inventory, bounded APK comparison
+and 17 final-image checks. The image checks exercise containment/loaded NIF,
+least-privilege SQL bootstrap, HTTP/SSH authorization/revocation, persistent SSH
+identity, specific database CA/hostname rejection, verified TLS, IPv6, outage/restart
+recovery and synthetic offline UID100 ownership repair. Both owned image-tag cleanup
+codes are zero. The driver cleans its disposable database/network/volume resources.
+
+Artifact native-amd64-server-f54667c26edb4728d7df041f3bcd5a2af5897d19 contains
+389 tracked-file hashes. All existing 67 source/66 test/11 native baseline inputs
+match it. report.json SHA256:
+31f928788a726035ae092778dbcbc73fe17af49f7a4df2ab54e537a79ee38378.
+GitHub reports artifact archive digest
+sha256:3f2e57ae8776e4d843b97d4acc47a33f4619f3eac22ad796c22f8d78cb889927.
+The client baseline remains the independent HTTP/SSH snapshot, with two newer
+server boundary test files outside its recorded test set.
+
+This job does not run the complete 331-case CT suite; that separate local full
+retest and the updated 17 ARM64 image checks pass. The native validation image
+is not registry-published. Approved Fly edge/proxy/database/volume checks and final
+production source/image selection remain open; overall assessment stays 24/25.
+
 ## Package 25 compatibility refresh — 11 October 2026
 
 `python3 scripts/check_server_container.py --imports --baseline
@@ -39,9 +75,9 @@ Log (ignored): build/validation/package-25-integration-2026-10-11.log.
 
 The separate assessment passes 326 integration, 51 Erlang unit, 71 JavaScript,
 native and ten SSH-bootstrap tests, plus 16 final-image checks on native ARM64.
-Its overall progress remains 24/25. Native amd64 server-image execution and actual
-Fly boundary evidence remain open. This client runner does not exercise the
-production entrypoint/image, management WebSockets or a deployed edge.
+Its overall progress remains 24/25. Native amd64 server-image execution was open
+at this refresh and is now verified above; actual Fly boundary evidence remains
+open. This client runner does not exercise the production entrypoint/image, management WebSockets or a deployed edge.
 
 Fresh private CI passed on the exact refreshed inputs:
 

@@ -331,11 +331,15 @@ work. No production migration or deployed compatibility certification is claimed
 
 ## Package 25 local deployment evidence and launch gates
 
-The server assessment's local full suite and image driver passed (326 integration,
-51 Erlang unit, 71 JavaScript, native coordinate corpus and ten SSH-bootstrap tests; 16 isolated
-image/database/TLS/recovery checks). Its final local image runs on native ARM64.
-Independent HTTP/SSH/import integration subsequently passed against the frozen
+The latest server assessment local full retest passes 331 integration, 51 Erlang
+unit, 71 JavaScript, native and ten SSH-bootstrap tests. Updated ARM64 image checks
+pass all 17 cases. Separate native Linux amd64 image validation also passes at
+f54667c in [run 38100648994]([private service reference withheld]);
+see native-validation.md for the exact image/report hashes and scope. The native
+image job runs native/bootstrap/image checks, not the complete CT suite.
+Independent HTTP/SSH/import integration already passed against the frozen
 package-25 development source, and both client/CLI baselines were refreshed.
+All those recorded source/test/native inputs match the native image report.
 These results still do not certify the final deployed release.
 Assessment progress remains 24/25 until approved deployed-boundary evidence exists.
 
@@ -345,9 +349,10 @@ Before customer publication:
   an origin and requires HTTPS with secure cookies; browser Host/Origin must match.
   Align the CLI's fixed service/browser URL before testing actual approval/login,
   code exchange and revocation through the approved edge. Customers get no override.
-- Verify a final server image on native amd64 and the actual Fly certificate,
-  routing/proxy identity, fairness, spoofing/bypass and platform configuration.
-  Passing CLI/client amd64 jobs do not certify the server image or Fly edge.
+- Preserve the reviewed native amd64 server evidence and select/freeze the approved
+  production image; changed release inputs need fresh relevant validation. Verify
+  the actual Fly certificate, routing/proxy identity, fairness, spoofing/bypass and
+  platform configuration. Local server/client/CLI checks do not certify that edge.
 - Confirm writable server volumes for UID/GID10001. Legacy UID100 storage needs
   an approved offline ownership migration that preserves private key permissions
   and SSH host identity; do not silently replace the host key. This does not
