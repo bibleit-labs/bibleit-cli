@@ -677,9 +677,11 @@ publish a release or change visibility.
 
 ## Master and release automation next steps
 
-Promote CLI/Go integration-refresh and tap formula-preparation to `master` and
-make it the default branch. Validate the updated native/candidate matrices and
-tap CI. The CLI now pins a checksummed immutable client snapshot and its local
+CLI/Go integration-refresh and tap formula-preparation have been promoted to
+`master`, now the default branch in all three repos. All 12 hosted jobs pass:
+three CLI native, three Go native, four candidate build/installer jobs, tap
+validation and private CLI access. Eight updater regressions and verification
+of the actual standalone candidate formula also pass. The CLI now pins a checksummed immutable client snapshot and its local
 standalone `GOWORK=off` tests pass; semantic client release/version selection is
 still a launch decision. `release.yml` generates a draft only after native tests,
 six-target packaging and installer checks succeed for a tag on master.

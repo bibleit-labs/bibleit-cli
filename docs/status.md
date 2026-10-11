@@ -7,10 +7,23 @@ percentages of the entire project. The full plan is in `plan.md`.
 
 | Item | Status | Evidence / limits |
 | --- | --- | --- |
-| Promote reviewed source to master | Prepared | CLI/Go integration-refresh and tap formula-preparation; source promotion creates no release |
+| Promote reviewed source to master | Complete | All three repos now default to master; previous default history preserved; no release created |
 | Standalone CLI dependency | Complete locally | Exact Go snapshot and checksums; GOWORK=off tests pass |
-| Build/test/draft release workflows | Implemented; hosted checks pending | Three native platforms, six archives and tag-triggered draft generation after native installer checks |
-| Homebrew tap continuation | Implemented; hosted checks pending | Eight updater regressions pass; released package validation added on macOS/Linux; first actual release/install still pending |
+| Build/test/draft release workflows | Complete; hosted validation passed | CLI/Go native matrices and all installer jobs pass; six standalone archives built; tag-triggered draft generation configured |
+| Homebrew tap continuation | CI/configuration complete | Tap CI/access pass, eight updater regressions pass and actual standalone candidate formula verification passes; published-package validation added on macOS/Linux; first actual release/install still pending |
+
+Hosted evidence: CLI native [38158698440](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38158698440)
+and candidate [38158698450](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38158698450)
+use source 13e4b72; Go native [38158759103](https://github.com/bibleit-labs/bibleit-go/actions/runs/38158759103)
+uses 464d86d; tap validation [38158709825](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38158709825)
+and access [38158727488](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38158727488)
+use a41e453. Candidate manifest confirms clean, GOWORK=off, non-local assets and
+the exact pinned Go-client checksum. Documentation-only updates retain these
+explicitly tested revisions.
+
+Progress: **4/4 infrastructure items complete**, with all 12 hosted jobs green.
+Draft creation itself runs on the first approved tag; no release was created
+during these validation runs.
 
 No tags, published releases or visibility changes are part of this increment.
 Turnstile success/replay and email delivery/verification remain release gates.
