@@ -12,10 +12,18 @@ import tempfile
 import threading
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from fixture_tls import HOST, MATERIAL, server_context, verify_boundary
+
+FIXTURE_BINARY = None
+
+def command(binary, args):
+    if FIXTURE_BINARY is not None:
+        return [str(FIXTURE_BINARY), "-test.run=^TestRuntimeFixtureProcess$", "--", *args]
+    return [str(binary), *args]
 
 
 def run(binary, args, env, code=0):
-    result = subprocess.run([str(binary), *args], env=env, input="", text=True,
+    result = subprocess.run(command(binary, args), env=env, input="", text=True,
                             capture_output=True, timeout=20)
     assert result.returncode == code, (args, result.returncode, result.stdout, result.stderr)
     return result
@@ -65,7 +73,7 @@ def terminal_checks(binary, env, requests):
     for answer, code, delta in (("yes", 1, 0), ("", 1, 0), ("delete all", 0, 1)):
         master, slave = pty.openpty()
         before = len(requests)
-        child = subprocess.Popen([str(binary), "live", "delete", "all"], env=env,
+        child = subprocess.Popen(command(binary, ["live", "delete", "all"]), env=env,
                                  stdin=slave, stderr=slave, stdout=subprocess.PIPE)
         os.close(slave)
         try:
@@ -75,7 +83,7 @@ def terminal_checks(binary, env, requests):
                 if select.select([master], [], [], 0.5)[0]:
                     output += os.read(master, 4096)
             assert b'Type "delete all" to confirm: ' in output, output
-            assert b"http" in output and b"localhost:8080" in output and b"bt_runtime" not in output, output
+            assert b"http" in output and HOST.encode() in output and b"bt_runtime" not in output, output
             os.write(master, (answer + "\n").encode())
             stdout, _ = child.communicate(timeout=10)
             assert child.returncode == code and len(requests) == before + delta, (answer, child.returncode, requests)
@@ -90,11 +98,18 @@ def terminal_checks(binary, env, requests):
 
 
 def main():
+    global FIXTURE_BINARY
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--binary", type=Path, required=True)
     parser.add_argument("--shells", nargs="*", choices=["bash", "zsh", "fish"], default=[])
     args = parser.parse_args()
     source_binary = args.binary.resolve(strict=True)
+    # First execute the actual shipped entry point, then build an offline-only
+    # test entry point for process dispatch/PTY tests on every native OS.
+    run(source_binary, ["version"], os.environ)
+    test_directory = tempfile.TemporaryDirectory(prefix="bibleit-runtime-test-")
+    FIXTURE_BINARY = Path(test_directory.name) / ("runtime.test.exe" if os.name == "nt" else "runtime.test")
+    subprocess.run(["go", "test", "-c", "-o", str(FIXTURE_BINARY), "."], check=True)
     requests = []
 
     class Handler(BaseHTTPRequestHandler):
@@ -116,9 +131,11 @@ def main():
             self.end_headers()
             self.wfile.write(reply)
 
-    server = ThreadingHTTPServer(("127.0.0.1", 8080), Handler)
+    server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    server.socket = server_context().wrap_socket(server.socket, server_side=True)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
+    verify_boundary(server.server_port)
     try:
         with tempfile.TemporaryDirectory(prefix="bibleit runtime ") as tmp:
             directory = Path(tmp)
@@ -126,8 +143,10 @@ def main():
             shutil.copy2(source_binary, binary)
             config = directory / "credentials with spaces.json"
             env = {**os.environ, "BIBLEIT_CONFIG": str(config), "BIBLEIT_PROFILE": "",
+                   "BIBLEIT_RUNTIME_FIXTURE": "1", "BIBLEIT_RUNTIME_CA": str(MATERIAL / "server.pem"),
+                   "BIBLEIT_RUNTIME_ADDRESS": f"127.0.0.1:{server.server_port}",
                    "BIBLEIT_TOKEN": "bt_runtime", "BIBLEIT_ENDPOINT": "https://other.example", "PATH": str(directory) + os.pathsep + os.environ["PATH"]}
-            config.write_text(json.dumps({"version": 2, "endpoint": "http://localhost:8080", "ssh_server": "127.0.0.1:2222", "access_token": "bt_saved"}))
+            config.write_text(json.dumps({"version": 2, "endpoint": "https://" + HOST, "ssh_server": HOST + ":22", "access_token": "bt_saved"}))
             before = len(requests)
             for invalid_args in (["profile", "list"], ["--profile", "old", "ping"], ["--endpoint", "https://other.example", "ping"]):
                 run(binary, invalid_args, env, code=2)
@@ -146,7 +165,7 @@ def main():
             response = json.loads(run(binary, ["live", "delete", "all", "--yes", "--format", "json"], env).stdout)
             assert response["ok"] is True and len(requests) == before + 1
             assert json.loads(requests[-1][2])["command"] == "LIVE DELETE ALL"
-            print(f"Native {platform.system()}/{platform.machine()}: single configuration, spaced paths, loopback HTTP, JSON and destructive guards pass", flush=True)
+            print(f"Native {platform.system()}/{platform.machine()}: single configuration, spaced paths, fixed hostname with verified loopback TLS, JSON and destructive guards pass", flush=True)
             terminal_checks(binary, env, requests)
             before_config, before_requests = config.read_bytes(), len(requests)
             shells(binary, env, directory, args.shells)
@@ -156,6 +175,7 @@ def main():
         server.shutdown()
         server.server_close()
         thread.join(timeout=5)
+        test_directory.cleanup()
 
 
 if __name__ == "__main__":

@@ -23,9 +23,9 @@ func TestServerSSHSubscription(t *testing.T) {
 	if os.Getenv("BIBLEIT_CLIENT_TEST_DISPOSABLE") != "1" {
 		t.Skip("run python3 scripts/check_server.py --integration")
 	}
-	previous := defaultSSHServer
-	defaultSSHServer = os.Getenv("BIBLEIT_INTEGRATION_SSH")
-	defer func() { defaultSSHServer = previous }()
+	if defaultSSHServer != "bibleit-server.fly.dev:22" || os.Getenv("BIBLEIT_FIXED_ENDPOINT_FIXTURE") != "1" {
+		t.Fatal("fixed production SSH address requires the isolated fixture gateway")
+	}
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 	t.Setenv("BIBLEIT_ENDPOINT", "https://other.example")

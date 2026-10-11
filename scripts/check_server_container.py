@@ -97,15 +97,15 @@ ENV PATH="/usr/local/go/bin:$PATH" GOTOOLCHAIN=local GOCACHE=/tmp/go-cache GOMOD
 ''')
         image = 'bibleit-client-integration:local'
         run(['docker', 'build', '-t', image, str(build)])
-        # Both processes share this disposable namespace. localhost:8080 belongs
-        # only to the fixture; the developer's localhost:8080 is never reachable.
+        # Both processes share an egress-disabled namespace. The production
+        # hostname resolves to its loopback fixture; no public route or host ports.
         name = 'bibleit-client-db-' + uuid.uuid4().hex[:12]
         started = False
         results = temporary / 'results'
         results.mkdir()
         try:
             run(['docker', 'run', '--pull=never', '--detach', '--name', name,
-                 '--tmpfs', '/var/lib/postgresql/data', '--env', 'POSTGRES_USER=bibleit_test',
+                 '--network', 'none', '--tmpfs', '/var/lib/postgresql/data', '--env', 'POSTGRES_USER=bibleit_test',
                  '--env', 'POSTGRES_PASSWORD=bibleit-test-only', '--env', 'POSTGRES_DB=bibleit_test',
                  'postgres:17-alpine'], stdout=subprocess.DEVNULL)
             started = True

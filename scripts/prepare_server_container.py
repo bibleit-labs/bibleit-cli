@@ -2,6 +2,10 @@
 """Build fixture NIFs for the container OS, then execute the real-server harness."""
 from pathlib import Path
 import argparse
+import os
+import socket
+import threading
+from fixture_tls import HOST, MATERIAL, Relay, verify_boundary
 import shutil
 import subprocess
 import tempfile
@@ -15,6 +19,23 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--imports', action='store_true')
     args = parser.parse_args()
+    # Refuse a routed namespace before mapping the real service name. This
+    # gateway is confined to the disposable Linux container, never the host.
+    if not Path('/.dockerenv').exists() or any(line.split()[1] == '00000000' for line in Path('/proc/net/route').read_text().splitlines()[1:]):
+        raise SystemExit('fixture requires an egress-disabled Docker namespace')
+    with Path('/etc/hosts').open('a') as hosts:
+        hosts.write('\n127.0.0.1 ' + HOST + '\n')
+    if {item[4][0] for item in socket.getaddrinfo(HOST, 443)} != {'127.0.0.1'}:
+        raise SystemExit('fixed service hostname must resolve exclusively to fixture loopback')
+    os.environ['SSL_CERT_FILE'] = str(MATERIAL / 'server.pem')
+    os.environ['SSL_CERT_DIR'] = '/tmp/bibleit-empty-trust'
+    Path(os.environ['SSL_CERT_DIR']).mkdir(exist_ok=True)
+    os.environ['BIBLEIT_FIXED_ENDPOINT_FIXTURE'] = '1'
+    for name in ('HTTP_PROXY', 'HTTPS_PROXY', 'ALL_PROXY', 'http_proxy', 'https_proxy', 'all_proxy'):
+        os.environ.pop(name, None)
+    relay = Relay(443, 8080)
+    threading.Thread(target=relay.serve_forever, daemon=True).start()
+    verify_boundary(443)
     with tempfile.TemporaryDirectory(prefix='bibleit-linux-snapshot-') as directory:
         workspace = Path(directory) / 'workspace'
         shutil.copytree('/sources', workspace)

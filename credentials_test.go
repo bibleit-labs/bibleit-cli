@@ -106,7 +106,7 @@ func TestNDJSONAndControlRendering(t *testing.T) {
 func TestInvalidCredentialDocumentsAndLocalHelp(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "config.json")
 	t.Setenv("BIBLEIT_CONFIG", path)
-	for _, data := range []string{
+	for _, data := range []string{`{"version":2,"endpoint":"https://bibleit-server.fly.dev","ssh_server":"foreign.example:22","identity":"key"}`, `{"version":2,"endpoint":"https://foreign.example","ssh_server":"bibleit-server.fly.dev:22","access_token":"old"}`, `{"version":2,"endpoint":"http://localhost:8080","ssh_server":"127.0.0.1:2222","access_token":"old","identity":"key"}`,
 		`null`, `{"unknown":true}`, `{"profiles":{}}`,
 		`{"version":2,"active_profile":"a","profiles":{}}`,
 		`{"version":1,"active_profile":"missing","profiles":{"a":{"transport":"http","endpoint":"https://a.example"}}}`,

@@ -6,8 +6,9 @@ is created. Private validation branches and CI are authorized. The separate
 `bibleit-labs/homebrew-tap` exists; prepared source branches may be pushed
 to the private repositories as of 2026-10-11. Customer package publication remains
 gated on production readiness.
-Production service addresses and a published Go-client dependency remain release
-gates. Local candidates still connect to `http://localhost:8080`.
+The fixed production addresses are configured: `https://bibleit-server.fly.dev`
+and ordinary SSH at `bibleit-server.fly.dev:22`. A released, pinned Go-client
+dependency and standalone production candidate validation remain release gates.
 
 ## Public distribution versus private validation
 
@@ -133,9 +134,9 @@ The implementation here is written for Bibleit's Go release layout.
 
 ## Release gates and future validation
 
-1. Set the production HTTPS/SSH addresses, adapt the localhost-based test fixtures
-   and rerun integration against the agreed server baseline. The tracked core
-   protocol discrepancies are resolved.
+1. Production HTTPS/SSH constants and safe fixtures are configured. Fresh frozen
+   HTTP/SSH/import integration passes at server 8923d86 (deployed code 7442010),
+   native f6fed37. Revalidate relevant checks if those release inputs change.
 2. Release the reviewed Go client when authorized, pin its version in go.mod,
    record dependency sums and verify builds with GOWORK=off. No replacement modules.
 3. Commit reviewed sources and use a semantic version. Running the packager without
@@ -373,8 +374,8 @@ passes 334 CT, 56 Erlang unit, 71 JavaScript, native and ten bootstrap tests.
 Assessment-owned deployed results pass 23 HTTPS, 11 authenticated HTTP/WSS,
 four SSH authentication and 13 paired-client spoofing/isolation/recovery checks.
 Seven migrations are retained; isolated on-Fly restoration and provenance-guarded
-fixture cleanup pass. These server results do not refresh the CLI's older verified
-client baseline. Current localhost constants still block production packaging.
+fixture cleanup pass. At this historical checkpoint these server results had not refreshed the CLI
+client baseline or endpoint constants; the following increment supersedes that state.
 
 Scope limits remain: only the Fly hostname is qualified, per-node fixed-window
 admission/reset/shared NAT behavior, single Machine/volume, five-day backup retention
@@ -382,3 +383,22 @@ without continuous RPO/full failover RTO, incomplete provider form/email/OAuth
 acceptance and operator deploy-token scope/expiry review. Preserve approved database
 trust/grants/migrations, volume ownership and SSH host identity on future rollout.
 No CLI runtime, baseline, server deployment or customer publication is changed here.
+
+## Fixed production endpoints and fresh client compatibility — 11 October 2026
+
+Clients now target the qualified HTTPS origin and SSH port 22. Credential-only
+constructors, redirect blocking, certificate and OpenSSH host verification remain
+in force. Existing schema-2 localhost credentials are rejected without overwriting
+or forwarding them; back up the old config and authenticate with a fresh config.
+
+Fresh integration uses those exact destinations through an egress-disabled
+container's loopback TLS/SSH fixtures. It passes 34 decoder/18 encoder fixtures,
+seven security cases, 11 Go HTTP subtests, OpenSSH subscription/pause/reconnect/
+closure and JSON parity, 18 auth/key/protocol tests, and 26 import cases. Baselines
+record clean server 8923d86, native f6fed37, and 68 source/70 test/11 native hashes.
+TLS positive, wrong-name and untrusted-CA checks pass. This is independent client
+compatibility evidence, not a new test of the public Fly routing or provider login.
+
+Next: confirm release version and customer access, release/pin the Go dependency,
+validate a standalone production candidate with GOWORK=off and no --local, then
+review/publish approved assets and test the real tap updater/customer installations.

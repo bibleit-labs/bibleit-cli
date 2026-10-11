@@ -20,6 +20,8 @@ if args.external_disposable_database:
     if not args.integration or database.scheme != 'postgresql' or database.hostname != '127.0.0.1' or database.path != '/bibleit_test':
         raise SystemExit('External disposable database must be the isolated loopback bibleit_test maintenance database')
 
+if args.integration and (not args.external_disposable_database or os.environ.get('BIBLEIT_FIXED_ENDPOINT_FIXTURE') != '1' or not pathlib.Path('/.dockerenv').exists()):
+    raise SystemExit('Run fixed-endpoint integration via scripts/check_server_container.py; host integration is disabled')
 server = args.server.resolve()
 if args.integration:
     # A busy port must never cause the harness to connect to a developer service.
@@ -145,7 +147,7 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
               application:set_env(bibleit_server,http,#{port=>8080,host=>{127,0,0,1}}),
               {ok,FixedHTTP}=bibleit_http_listener:start_link(),unlink(FixedHTTP),
               8080=ranch:get_port(bibleit_http),
-              io:format("Fixed service integration: http://localhost:8080 (no client endpoint override)~n"),
+              io:format("Fixed service integration: https://bibleit-server.fly.dev (verified fixture TLS, no client endpoint override)~n"),
               gen_server:stop(bibleit_rate_limit),
               application:set_env(bibleit_server,rate_limits,#{ssh_command=>#{limit=>100},ssh_search=>#{limit=>100}}),
               {ok,L}=bibleit_rate_limit:start_link(),unlink(L),
@@ -190,14 +192,14 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
               PublicLine=ssh_file:encode([{Public,[]}],openssh_key),
               ok=file:write_file(Identity++".pub",PublicLine),
               {ok,_}=bibleit_account:add_key(<<"security-owner">>,PublicLine),
-              {ok,SSHListener=#{daemon:=Daemon}}=bibleit_ssh_listener:init(#{port=>0,system_dir=>SSHDirectory}),
+              {ok,SSHListener=#{daemon:=Daemon}}=bibleit_ssh_listener:init(#{port=>22,system_dir=>SSHDirectory}),
               try
                 {ok,SSHInfo}=ssh:daemon_info(Daemon),
-                SSHAddress="127.0.0.1:"++integer_to_list(proplists:get_value(port,SSHInfo)),
+                22=proplists:get_value(port,SSHInfo),
                 CLI=open_port({spawn_executable,os:getenv("BIBLEIT_CLI_TEST_BIN")},[exit_status,use_stdio,stderr_to_stdout,
                   {args,["-test.run=^TestServerSSHSubscription$","-test.v"]},
                   {env,[{"BIBLEIT_CLIENT_TEST_DISPOSABLE","1"},
-                        {"BIBLEIT_INTEGRATION_TOKEN",binary_to_list(Token)},{"BIBLEIT_INTEGRATION_SSH",SSHAddress},
+                        {"BIBLEIT_INTEGRATION_TOKEN",binary_to_list(Token)},
                         {"BIBLEIT_INTEGRATION_IDENTITY",Identity}]}]),
                 CLIWait=fun F()->receive {CLI,{data,Data}}->io:put_chars(Data),F();{CLI,{exit_status,0}}->ok;
                   {CLI,{exit_status,Status}}->{error,{cli_subscription_failed,Status}} after 30000->error(cli_subscription_timeout) end end,
@@ -237,7 +239,10 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
     if args.baseline:
         baseline['verification'].update({
             'request_decoder_cases': len(json.loads(fixture.read_text())),
-            'fixed_http_endpoint': 'http://localhost:8080' if args.integration else None,
+            'fixed_http_endpoint': 'https://bibleit-server.fly.dev' if args.integration else None,
+            'fixed_ssh_endpoint': 'bibleit-server.fly.dev:22' if args.integration else None,
+            'tls_boundary_cases': 3 if args.integration else 0,
+            'egress_disabled_fixture': args.integration,
             'response_encoder_cases': sum('server_response_term' in case for case in json.loads((root/'contract/fixtures/responses-v1.json').read_text())),
             'import_suite_cases': args.imports,
         })

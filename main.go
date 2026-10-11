@@ -49,7 +49,7 @@ const defaultWebURL = bibleit.ServerEndpoint
 
 var (
 	cliVersion       = "dev"
-	defaultSSHServer = "127.0.0.1:2222"
+	defaultSSHServer = "bibleit-server.fly.dev:22"
 	cliHTTPClient    = &http.Client{Timeout: 15 * time.Second}
 )
 

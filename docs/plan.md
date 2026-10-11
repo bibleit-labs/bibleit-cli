@@ -6,12 +6,12 @@ changes remain gated on production readiness. The repositories are currently
 private: `bibleit-cli`, `bibleit-go` and `homebrew-tap`. This supersedes earlier
 local-only source instructions. Use Conventional Commits and no codex branch prefix.
 Every client targets the project-managed service, currently
-`http://localhost:8080`; SSH uses `127.0.0.1:2222`. See
+`https://bibleit-server.fly.dev`; ordinary SSH uses `bibleit-server.fly.dev:22`. See
 [endpoint-policy.md](endpoint-policy.md) and [releases.md](releases.md).
 
 Revised 2026-10-11 after the assessment closed its scoped campaign at server
-ledger 8923d86. Qualified deployed source is 7442010; the client-tested baseline
-remains the older c2beef5 working-tree snapshot pending a fresh refresh. This revision
+ledger 8923d86. Qualified deployed source is 7442010; fresh fixed-endpoint
+HTTP/SSH/import integration now verifies clean server 8923d86/native f6fed37. This revision
 supersedes the earlier sequence of extracting Go and immediately porting the
 same surface into Python, Ruby, and Rust.
 
@@ -36,7 +36,7 @@ repositories and declare the tested server baseline with every release.
 | 1. Verified integration contract | 7/7 tracked items; operation matrix, fresh 34 decoder/18 encoder fixtures and full tracked HTTP/auth/SSH integration | Core protocol discrepancies resolved; browser-only API contracts and publication gates remain separate |
 | 2. Core Go client | 5/5 tracked items; typed discovery, account, tokens, translations, reading and Live results; `NewClient(apiToken)` and fixed service | Future workspace/event APIs are separate |
 | 3. CLI customer surface | 5/5 tracked items; single credential configuration, authentication, stable output, completion and destructive UX | Fresh private Windows/Ubuntu/macOS matrix passed; production release gates remain |
-| Repository split and fixed endpoint | Complete; independent bibleit-go/bibleit-cli modules, no customer endpoint overrides, fresh fixed-endpoint HTTP/SSH integration passed | Production service addresses and standalone pinned dependency |
+| Repository split and fixed endpoint | Complete; independent bibleit-go/bibleit-cli modules, no customer endpoint overrides, fresh fixed-endpoint HTTP/SSH integration passed | Standalone released/pinned dependency |
 | 4. Workspace/event APIs | Contract requirements recorded | Server bearer API contract and implementation |
 | 5. Python/Ruby/Rust clients | Separate repository naming decided | Implementation and portability checks |
 | 6. Release preparation | Local six-target packaging, checksums, version injection, Homebrew/Scoop manifests, Bash/PowerShell installers; isolated native Homebrew install/test/reinstall/uninstall passed | Native Windows PowerShell 7/5.1 and Scoop lifecycle passed; production gates, tags and releases remain paused |
@@ -190,32 +190,25 @@ in authorized private CI. See `native-validation.md` for exact revisions/runs.
 
 ## Latest integration evidence
 
-The latest package-25 2026-10-11 isolated refresh passed against server HEAD
-c2beef5334c249f65daedd0e279b8d9252f0d51b plus assessment working-tree changes,
-using native libbibleit f6fed37919c848b1aa0208900af992a5e8a507f2. The synchronized
-client/CLI baseline records 67 source, 66 test and 11 native build-input hashes.
-Native code is rebuilt inside the isolated Linux container; capture rejects
-concurrent native changes. No server or client runtime source was edited.
+Fresh 2026-10-11 fixed-production-endpoint integration passes against clean server
+8923d8675b2e129bdd868e307dd89c599235f25a (deployed code 7442010), using native
+f6fed37919c848b1aa0208900af992a5e8a507f2. Synchronized client/CLI baselines
+record 68 source, 70 test and 11 native build-input fingerprints. The fixture
+namespace has no egress; the fixed hostname resolves only to loopback, HTTPS
+certificate/name verification is enforced and SSH uses the fixed port 22.
+Native NIFs are rebuilt from frozen source. No server checkout or shared database
+is modified. Direct host integration is rejected; old localhost credential
+bindings are rejected without overwrite or forwarding.
 
-Passing coverage: 34 decoder/18 encoder fixtures, seven targeted security cases,
-11 HTTP subtests, real OpenSSH subscription/pause/reconnect/delete closure and
-single-credential/output parity, 17 auth/key/protocol tests, 11 real-HTTP import
-access and 15 publication cases. The approved suite delivery adapter retains
-production URL/authorization/validation checks; authorized unreviewed-source
-rejection passes. All recorded source/test/native inputs matched on the immediate
-post-run check and the disposable PostgreSQL container was removed. This refresh
-includes package-25 boot/public-origin fixes and their security tests. Full ignored
-log: build/validation/package-25-integration-2026-10-11.log.
-
-This is a frozen development snapshot, not deployed compatibility certification.
-At the native-validation checkpoint the separate assessment suite passed
-331 integration,
-51 Erlang unit, 71 JavaScript, native and ten SSH-bootstrap tests. Its updated
-17 final-image checks passed on ARM64 and separately on native Linux amd64 at
-f5f1736; see Native amd64 server validation below. Campaign progress was 24/25
-at that checkpoint; Final assessment closure below records the subsequent
-25/25 result. The production entrypoint,
-final image and management WebSockets are outside this client integration runner.
+Passing coverage: 34 decoder/18 encoder fixtures, seven security cases, 11 HTTP
+subtests, real OpenSSH subscription/pause/reconnect/delete closure, JSON parity,
+18 auth/key/protocol tests, and 26 import cases (11 access, 15 publication).
+Three TLS boundary checks prove correct name/trust succeeds and wrong name or
+untrusted CA fails. The import adapter retains URL, authorization, validation
+and publication policy. Disposable PostgreSQL is removed after completion.
+Assessment-owned public-edge qualification remains separate: 25/25 scoped
+packages complete, 334 CT/56 Erlang/71 JavaScript/native/ten bootstrap tests.
+Browser/provider login and management WebSockets are outside this client runner.
 The date here is Europe/Berlin; baseline dates use UTC.
 
 Homebrew preparation uses `bibleit-labs/homebrew-tap`, formula `bibleit-cli`,
@@ -282,8 +275,8 @@ and automated release uploading are outside the initial release requirement.
 | Order | Item | Current status / required input | Done when |
 | --- | --- | --- | --- |
 | 1 | Confirm version, scope and customer access | Project decision; propose Go/CLI v0.1.0 for the existing core command surface, Homebrew/Bash/PowerShell/manual archives | Version and supported transports/architectures recorded; choose public customer artifacts or implement authenticated delivery; choose whether Scoop bucket ships now or later |
-| 2 | Configure production service and safe test fixtures | Qualified Fly addresses known; project constants and safe fixtures still use localhost | Align project-owned HTTPS/browser constants with the approved canonical BIBLEIT_PUBLIC_URL origin, without customer endpoint overrides; isolate disposable fixtures from production; verify stored credential bindings safely reject the old service |
-| 3 | Freeze and validate server compatibility | Assessment 25/25, deployed source 7442010/native f6fed37 known; fresh client integration/release freeze pending | Record server and libbibleit revisions; refresh synchronized client/CLI baseline only after full HTTP/SSH/auth/import integration passes; verify approved database migration lineage and packaging/runtime inputs; run explicit controlled production TLS, browser login/token revocation and SSH host verification checks |
+| 2 | Configure production service and safe test fixtures | Complete: fixed Fly HTTPS/browser and SSH constants, verified TLS and egress-disabled fixtures, old credential rejection | Preserve certificate/host verification and fail-closed fixture isolation; requalify changes to the origin or routing |
+| 3 | Freeze and validate server compatibility | Client compatibility complete at clean 8923d86/native f6fed37; assessment 25/25 qualifies deployed source 7442010 | Freeze those exact release inputs or rerun changed checks; retain approved migration lineage/runtime inputs; public-edge evidence is assessment-owned, and customer login/access decisions remain gate 1 |
 | 4 | Release Go client and pin standalone CLI dependency | After gates 1–3; go.mod still requires v0.0.0 | Review/promote the client source, publish approved semantic version, pin it in CLI and record sums; clean-cache GOWORK=off test/vet/build succeeds without sibling checkout or replace directives; private access uses appropriate Git credentials/GOPRIVATE |
 | 5 | Validate exact production CLI candidate | After gate 4; current candidate workflow uses --local and go work | Add a standalone production candidate validation path using the released client, GOWORK=off and no --local; clean Go 1.27.1 source produces six archives, installer scripts, formula, Scoop manifest, checksums and provenance; rerun relevant native/platform/installer checks on those exact inputs |
 | 6 | Finalize release sources, notes and delivery policy | Before publishing CLI; release/default branches still need review | Promote reviewed source through normal review; notes name client version/server baseline, protocol limits, old-config migration/revocation, OpenSSH dependency and supported architectures; choose signing policy and test downloaded macOS binaries with normal OS protections; record manual release procedure or implement upload automation |
@@ -298,21 +291,19 @@ it on final changed release inputs rather than treating all tooling as unbuilt.
 
 ### Concrete evidence and limits
 
-- The service constants remain http://localhost:8080 in the Go client and
-  127.0.0.1:2222 in the CLI. The production packager intentionally rejects these
-  placeholders. Native process tests and real-server harness use loopback fixtures;
-  adapt them with the endpoint change while keeping the public API credential-only.
-- Both contract/server-baseline.json files are identical and now record server
-  c2beef5334c249f65daedd0e279b8d9252f0d51b plus package-25 working-tree changes,
-  with native f6fed37919c848b1aa0208900af992a5e8a507f2. The verified 67 source,
-  66 test and 11 native build-input fingerprints matched immediately after integration.
-  Boot/public-origin and security-test edits previously outside package 24 are now
-  included. A committed/deployed release freeze and production smoke checks remain pending.
-- CLI go.mod still requires bibleit-go v0.0.0. Draft CI now pins exact client 3bec5bc
-  in an ephemeral workspace and packages with --local. Fresh client native and CLI
-  native/candidate matrices pass on all three platforms at client 3bec5bc / CLI
-  438c0ca; see native-validation.md for runs. Green draft CI does not certify
-  standalone dependency retrieval or production release provenance.
+- The fixed HTTPS/browser origin is https://bibleit-server.fly.dev; ordinary SSH
+  uses bibleit-server.fly.dev:22. Tests route only to verified loopback fixtures;
+  the full integration namespace has no external route. Credential-only APIs,
+  redirect blocking and certificate/host verification remain intact.
+- Both contract/server-baseline.json files are identical at clean server 8923d86
+  and native f6fed37. The 68 source, 70 test and 11 native input hashes matched
+  immediately after full HTTP/SSH/import integration. This independently tests
+  client compatibility; actual Fly-edge qualification is assessment-owned.
+- CLI go.mod still requires bibleit-go v0.0.0. Draft CI pins an exact private
+  client revision in an ephemeral workspace and packages with --local. Fresh
+  native/candidate validation is underway for the production-constant changes;
+  results will be recorded in native-validation.md. Green draft CI does not
+  certify standalone dependency retrieval or production release provenance.
 - All three repositories are private. Generated ordinary GitHub release URLs do
   not authenticate customers. The intended open source launch requires approved
   public client/CLI/tap access, or a deliberately tested authenticated channel.
@@ -553,8 +544,8 @@ Assessment-owned final evidence:
 Fly injects the server's trusted PROXY v2 envelope. Clients continue ordinary SSH
 and must not inject a PROXY preamble. HTTP commands/PKCE/callback contracts remain
 unchanged; forwarding identity is server-owned. The newer server admission changes
-are outside the current independently verified client baseline. Preserve that
-baseline until fresh HTTP/SSH/import checks pass against a frozen newer snapshot.
+were outside the independently verified client baseline at that checkpoint.
+The fixed-endpoint refresh below now verifies them in a frozen isolated snapshot.
 
 The Fly hostname is qualified; a new custom domain/renewal or routing/peer change
 needs relevant requalification. Other scope limits are per-node fixed-window
@@ -565,14 +556,12 @@ These remain operator/product decisions; they do not reopen the 25 scoped packag
 
 ### Next actionable increment
 
-Update the project-owned Go service/browser origin and CLI SSH address to the
-qualified Fly addresses, keeping constructors credential-only and no customer
-endpoint override. Adapt tests and isolated integration routing/TLS fixtures in
-the same increment so routine tests cannot hit production; preserve credential
-binding rejection for the old service and SSH host verification. Then rerun frozen
-HTTP/SSH/import integration against the newer server/native inputs and refresh both
-baselines only on success. Any production smoke uses explicitly approved disposable
-principals and a bounded scope, without restoring shared data or changing admission.
+Completed in this increment: project-owned HTTPS/browser and SSH production
+constants, credential-only constructors, old-service config rejection, verified
+TLS fixtures with no external route, and fresh HTTP/SSH/import integration.
+Both baselines now record clean server 8923d86/native f6fed37. Ordinary SSH uses
+port 22 and injects no PROXY preamble. Native process fixtures use a test-only
+loopback transport; the shipped binary has no fixture dialer or public override.
 
 Confirm first-release version/customer access, release and pin the Go client,
 validate a standalone CLI candidate without sibling workspace/--local, promote

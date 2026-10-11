@@ -3,7 +3,27 @@
 Updated 2026-10-11. Counts describe explicit acceptance items, not estimated
 percentages of the entire project. The full plan is in `plan.md`.
 
-## Current increment: final assessment closure and release-plan reconciliation
+## Current increment: fixed production endpoints and compatibility refresh
+
+| Item | Status | Evidence / limits |
+| --- | --- | --- |
+| Configure service addresses | Complete | Go/client browser origin https://bibleit-server.fly.dev; ordinary CLI SSH bibleit-server.fly.dev:22; credential-only constructors, redirects blocked, TLS/host verification retained |
+| Isolate tests and preserve credentials | Complete | Egress-disabled namespace and verified TLS/hostname fixtures; direct host integration rejected; native test-only loopback dialer; old HTTP/SSH bindings rejected without overwrite |
+| Rerun HTTP/SSH/import checks | Complete | Clean server 8923d86/native f6fed37; 34 decoder/18 encoder, seven security, 11 HTTP, real OpenSSH lifecycle/JSON parity, 18 auth/key/protocol and 26 import cases; synchronized 68 source/70 test/11 native hashes |
+| Update release plan and private CI | In progress | Plan marks endpoint/client compatibility work complete; Go branch pushed, CLI CI pins client b081081; fresh native/candidate matrices pending |
+
+Progress: **3/4 increment acceptance items complete**; assessment remains **25/25**.
+Local Go/client and CLI race tests/vet pass; Darwin process TLS/PTY and Bash/Zsh
+checks pass. Linux CI supplies Fish; Windows CI verifies the test-only TLS path.
+Integration uses synthetic local principals and a unique disposable database,
+which was removed. No production principal, deployment or shared database changed.
+Full ignored log: build/validation/production-endpoint-integration-2026-10-11.log.
+
+Release work still requires version/customer-access decisions, a released pinned
+Go dependency, standalone production-candidate validation and approved customer
+assets followed by real tap/installation checks. No release tags/assets are published.
+
+## Previous increment: final assessment closure and release-plan reconciliation
 
 | Item | Status | Evidence / limits |
 | --- | --- | --- |
