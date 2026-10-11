@@ -7,9 +7,11 @@ is a separate release decision.
 The Go client declares `ServerEndpoint = "https://bibleit.app"` in `client.go`.
 The CLI derives its HTTP and browser authentication address from that constant.
 SSH connects to `bibleit.app:22`, with standard OpenSSH host verification. The
-user confirmed these canonical addresses for the custom-domain cutover; actual
-DNS/TLS/SSH qualification remains assessment/Fly-owned and pending. Earlier
-Fly-hostname qualification at source 7442010 is historical evidence only.
+user confirmed these canonical addresses for the custom-domain cutover. Actual
+public DNS/TLS/SSH technical qualification passed on 2026-10-11, with the
+assessment’s redacted provenance retained in contract/canonical-deployment-validation.json.
+The operator confirms Google/GitHub sign-in; real Turnstile backend success/replay
+remains pending. Earlier Fly-hostname qualification at source 7442010 is historical evidence only.
 Fly supplies the trusted PROXY envelope to the server; clients send ordinary
 SSH and never inject a PROXY preamble.
 
@@ -17,10 +19,9 @@ SSH sets `HostKeyAlias=legacy.bibleit.example` solely for OpenSSH's `known_hosts
 lookup. This preserves an existing verified service key while connecting to the
 new hostname. It does not resolve or connect to that historical name. A changed
 key still fails; the CLI never removes or rewrites the user's known_hosts entries.
-The pre-cutover verified production fingerprint is
-`[host fingerprint withheld]`; the assessment must
-confirm it again through the new route. New users should verify that fingerprint
-through a trusted channel before first connection. The disposable integration
+The production fingerprint was reconfirmed through actual public bibleit.app SSH:
+`[host fingerprint withheld]`. New users should
+verify that fingerprint through a trusted channel before first connection. The disposable integration
 uses separate temporary keys and known_hosts, including changed-key rejection.
 
 Create an authenticated client with `NewClient(apiToken)`. Use
