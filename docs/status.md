@@ -26,7 +26,8 @@ Draft creation itself runs on the first approved tag; no release was created
 during these validation runs.
 
 No tags, published releases or visibility changes are part of this increment.
-Real Turnstile replay rejection remains the provider release gate; email delivery/verification and fresh-token acceptance are human-confirmed.
+Both provider release gates are complete: actual email delivery/verification and
+genuine fresh-token/replay acceptance are human-confirmed.
 
 ## Current increment: canonical custom-domain migration
 
@@ -48,7 +49,8 @@ The subsequent missing
 BIBLEIT_HTTP_REDIRECT_HOSTS parser entry is repaired at ef63e91 and independently
 passes direct boot qualification. Actual public-route technical acceptance now
 passes, and the operator confirms Google/GitHub sign-in. Real Turnstile backend
-success/replay remains pending.
+success/replay was pending at that checkpoint; final3359535 acceptance below
+closes both provider gates.
 The client uses the canonical origin directly and does not follow aliases. Dirty
 metadata preserves unrelated frontend working-tree edits; final packaging inputs
 still need freezing.
@@ -80,11 +82,11 @@ suite passes 337 CT/63 EUnit/71 JavaScript/native 65536/10 bootstrap checks.
 | Authentication, SSH and paired rate behavior | Complete | 11 auth, 10 actual canonical-DNS SSH and 15 paired rate checks pass; retained public SSH fingerprint confirmed; scoped fixture cleanup counts are zero |
 | Real provider sign-in | Complete | Operator confirms Google and GitHub OAuth sign-in at bibleit.app |
 | Native HTML form/browser approval repair | Complete for technical admission | Deployed 34d80f8 real requestSubmit carries canonical Origin/Referer, passes CSRF and reaches missing-token denial; same-origin HTML policy retains sensitive no-referrer; provider traffic blocked, no account/email |
-| Real Turnstile fresh-token acceptance | Complete, human confirmed | Original helper freshAcceptedBeforeInputValidation=true; real signup also completed; source14628f3, assessment ledger a40d27d |
+| Real Turnstile fresh-token acceptance | Complete, human confirmed | Repaired3359535/image0bbb retest freshAcceptedBeforeInputValidation=true; no CSRF/rate interference; ledger53239ad |
 | Actual email delivery and verification | Complete, human confirmed | Check-email page, delivered message and verification into the new account confirmed; identifiers and message contents omitted |
-| Real Turnstile replay rejection | Approved deployment in progress; real gate open | d160773 local suite passes; missing SQL008 packaging corrected at3359535; exact approved security-only run38163282528 queued/running; final image/eight-migration qualification and genuine retest pending |
+| Real Turnstile replay rejection | Complete, genuine human retest | Qualified3359535/image0bbb; passed=true/fresh=true/replayRejected=true; replay human denial/no invalid-email validation; eight migration hashes match |
 
-Progress: **6/7 public acceptance items complete**; the client increment remains
+Progress: **7/7 public acceptance items complete**; the client increment remains
 4/4. The preceding technical probes qualified source c586107, runtime repair ef63e91/native f6fed37,
 image sha256:1140436c3d9e7de1b1f80e88aa208a0a6c06cff4b7ba371e0f5ddcbb5b6ace22,
 from [deployment 38129282912](https://github.com/bibleit-labs/bibleit-server/actions/runs/38129282912).
@@ -1113,3 +1115,24 @@ Fly confirms explicit human approval for exact isolated server branch; corrected
 exception supersedes the earlier branch preference for that approved path;
 client branches remain main. Deployment qualification and genuine replay closure
 remain pending, with the earlier failed381620 build preserved as failed evidence.
+
+
+## Provider acceptance complete — 11 October 2026
+
+Qualified production3359535/native d6e31dc/image0bbb449/run38163282528 passes
+408 committed hashes/eight zero-exit stages/20 actual-image checks/native amd64/
+cleanup[0,0]/published-running digest parity;185 APK comparisons have zero fixed
+alerts. All eight SQL identities match, legacy001-007 are unchanged and the claim
+table exists (metadata only; no token rows queried). Fresh native form admission
+and boundary23/alias39 checks pass independently on IPv4 and IPv6.
+
+Direct human helper output is passed=true, freshAcceptedBeforeInputValidation=true,
+replayRejected=true. Fresh400 contains invalid-email feedback; replay400 contains
+human denial and no invalid-email feedback, with unchanged CSRF/no rate limiting.
+No account or email is created by the helper. The separate real email delivery/
+verification result remains attributed to the preceding14628 flow. All six report
+hashes, including the redacted human result, are in the shared contract summary.
+Assessment ledger53239ad closes both human follow-up gates; no client runtime,
+customer tag/publication or additional deployment is implied. Next: approved
+versions/access, semantic Go release/pin, final exact candidate and reviewed
+publication/tap update.

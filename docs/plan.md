@@ -8,7 +8,8 @@ local-only source instructions. Use Conventional Commits and no codex branch pre
 Every client targets the project-managed service, currently
 `https://bibleit.app`; ordinary SSH uses `bibleit.app:22`. Custom-domain
 technical qualification, human Google/GitHub sign-in, fresh Turnstile acceptance
-and actual email delivery/verification pass; real replay rejection has failed and requires assessment repair/retest. See
+and actual email delivery/verification pass. Genuine fresh-token/replay acceptance
+also passes on qualified3359535/image0bbb (ledger53239ad). See
 [endpoint-policy.md](endpoint-policy.md) and [releases.md](releases.md).
 
 Revised 2026-10-11 after the assessment closed its scoped campaign at server
@@ -17,8 +18,8 @@ supplemental alias boot qualification passes at ef63e91, and actual public-domai
 technical acceptance passed on 34d80f8 after the native HTML form repair. The latest
 localized catalogue repair is qualified at deployed 4243c9a/native d6e31dc
 (workflow 38147193441), including independent focused HTTP/SSH client checks.
-Real Turnstile replay rejection and final packaging input freeze remain pending;
-human Google/GitHub sign-in, fresh-token acceptance and email verification pass. This revision supersedes the earlier sequence of extracting Go and immediately porting the
+Both real-provider follow-up gates now pass. Final release version/dependency
+and packaging input freeze remain; human Google/GitHub sign-in also passes. This revision supersedes the earlier sequence of extracting Go and immediately porting the
 same surface into Python, Ruby, and Rust.
 
 ## Decisions retained
@@ -303,8 +304,8 @@ and automated release uploading are outside the initial release requirement.
 | Order | Item | Current status / required input | Done when |
 | --- | --- | --- | --- |
 | 1 | Confirm version, scope and customer access | Project decision; propose Go/CLI v0.1.0 for the existing core command surface, Homebrew/Bash/PowerShell/manual archives | Version and supported transports/architectures recorded; choose public customer artifacts or implement authenticated delivery; choose whether Scoop bucket ships now or later |
-| 2 | Configure production service and safe test fixtures | Client implementation complete: custom-domain constants, trust-preserving SSH alias, verified fixtures and changed-key rejection pass; actual public DNS/TLS/HTTP/SSH/rate technical acceptance passes; human Google/GitHub sign-in confirmed; repaired native form technical admission passes; fresh Turnstile and email delivery/verification human-confirmed; replay failed; assessment repair/retest required | Retain public technical/provider evidence; retain human fresh-token/email evidence and confirm real replay rejection before release |
-| 3 | Freeze and validate server compatibility | New-domain compatibility and boot validation pass at assessed 5969f2f/native f6fed37; committed Erlang inputs verified; supplemental direct alias boot qualification passes at ef63e91; preceding public probes pass on c586107; repaired native admission/rollout qualifies 34d80f8/native f6fed37; catalog6ba81e2/d6e31dc operational qualification and focused4243c9a/d6 client compatibility pass; exact repaired UTF-8 deployment/public qualification complete; confirmed replay failure requires repair/retest; final packaging input freeze pending | Retain separately attributed full, boot, sparse-client and deployed image provenance; retain exact repaired UTF-8 rollout provenance; qualify actual token/email flow; retain earlier full integration and supplemental boot provenance; freeze all packaging/deployment inputs; retain the verified boot fix and compare recorded hashes or rerun changed checks; retain approved migration lineage/runtime inputs; public-edge evidence is assessment-owned, and customer login/access decisions remain gate 1 |
+| 2 | Configure production service and safe test fixtures | Client implementation complete: custom-domain constants, trust-preserving SSH alias, verified fixtures and changed-key rejection pass; actual public DNS/TLS/HTTP/SSH/rate technical acceptance passes; human Google/GitHub sign-in confirmed; repaired native form technical admission passes; genuine fresh-token/replay and email delivery/verification human-confirmed; exact3359535 production qualification complete | Retain public technical/provider evidence; retain verified3359535 production/provider provenance and separate actual-email evidence |
+| 3 | Freeze and validate server compatibility | New-domain compatibility and boot validation pass at assessed 5969f2f/native f6fed37; committed Erlang inputs verified; supplemental direct alias boot qualification passes at ef63e91; preceding public probes pass on c586107; repaired native admission/rollout qualifies 34d80f8/native f6fed37; catalog6ba81e2/d6e31dc operational qualification and focused4243c9a/d6 client compatibility pass; exact repaired UTF-8 deployment/public qualification complete; replay repair3359535/image0bbb qualified and genuine provider gates complete; final version/dependency/packaging input freeze pending | Retain separately attributed full, boot, sparse-client and deployed image provenance; retain exact repaired UTF-8 rollout provenance; qualify actual token/email flow; retain earlier full integration and supplemental boot provenance; freeze all packaging/deployment inputs; retain the verified boot fix and compare recorded hashes or rerun changed checks; retain approved migration lineage/runtime inputs; public-edge evidence is assessment-owned, and customer login/access decisions remain gate 1 |
 | 4 | Release Go client and pin standalone CLI dependency | Semantic release pending gates 1–3; immutable client snapshot v0.0.0-20261011144051-464d86d7dd41 is pinned with sums; standalone tests/native CI pass | Review/promote the client source, publish approved semantic version, pin it in CLI and record sums; clean-cache GOWORK=off test/vet/build succeeds without sibling checkout or replace directives; private access uses appropriate Git credentials/GOPRIVATE |
 | 5 | Validate exact production CLI candidate | Standalone infrastructure complete: clean non-local six-target candidate and native installer validation pass at CLI13e4b72; final approved semantic client/version inputs still require qualification | Retain the completed standalone GOWORK=off/no --local validation path, then qualify the final released-client input; clean Go 1.27.1 source produces six archives, installer scripts, formula, Scoop manifest, checksums and provenance; rerun relevant native/platform/installer checks on those exact inputs |
 | 6 | Finalize release sources, notes and delivery policy | Source promotion complete; main is the default in all three repos; tag-triggered draft workflow configured; final notes/customer delivery/signing decision remains | Promote reviewed source through normal review; notes name client version/server baseline, protocol limits, old-config migration/revocation, OpenSSH dependency and supported architectures; choose signing policy and test downloaded macOS binaries with normal OS protections; record manual release procedure or implement upload automation |
@@ -332,8 +333,9 @@ it on final changed release inputs rather than treating all tooling as unbuilt.
   client compatibility. Supplemental server-boot-validation.json files match at
   ef63e91 (69 source/73 test/11 native) and qualify the sole alias-parser change;
   actual Fly-edge qualification is assessment-owned.
-- CLI go.mod still requires bibleit-go v0.0.0. Draft CI pins an exact private
-  client revision in an ephemeral workspace and packages with --local. All ten
+- At this earlier review, CLI go.mod required bibleit-go v0.0.0 and draft CI
+  used an ephemeral workspace with --local. Current main pins immutable client
+  v0.0.0-20261011144051-464d86d7dd41 and passes standalone GOWORK=off CI. All ten
   new-domain native/build/installer jobs pass at client 58505aa and CLI bc94231
   (private client metadata pin 59dfaa4); exact runs are in native-validation.md.
   The Windows duplicate-build timeout was resolved by sharing one archive set.
@@ -347,11 +349,9 @@ it on final changed release inputs rather than treating all tooling as unbuilt.
 - The tap formula is still v0.1.0-dev.1 with unpublished URLs. Read-secret and PR
   policy setup are complete; actual release archive verification, bot PR creation
   and customer formula installation await the first production CLI release.
-- Current default branches are CLI package-manager-validation, Go
-  private-platform-validation and tap formula-preparation. Review/promote the
-  approved source before release; do not accidentally tag stale default-branch
-  code. Continue on integration-refresh (CLI/client) and formula-preparation (tap),
-  using Conventional Commits and no codex prefix.
+- All three repositories now default to main; the older work branches are
+  integrated. Continue on main using Conventional Commits and no codex prefix.
+  The tap updater will open a formula PR after approved CLI assets are published.
 
 ### Assessment update after the readiness review
 
@@ -589,7 +589,10 @@ five-day Fly backup retention without continuous RPO/full failover RTO, incomple
 provider signup/OAuth/email acceptance and operator deploy-token scope/expiry review.
 These remain operator/product decisions; they do not reopen the 25 scoped packages.
 
-### Next actionable increment
+### Canonical-domain validation history
+
+The sequence below retains earlier gates at their tested revisions. Both provider
+gates are now complete; current release steps appear in the final closure below.
 
 The canonical-domain migration supersedes the prior Fly-hostname endpoint choice.
 HTTPS/browser origin is https://bibleit.app and SSH is bibleit.app:22. Preserve the
@@ -801,3 +804,32 @@ but it is not the target of this deployment. Qualify the isolated335 image and a
 eight migration identities, retain source/image/startup/cleanup/digest provenance,
 then complete genuine fresh-token/replay acceptance. Approval and queued workflow
 are not deployment or provider success. The earlier381620 failure remains recorded.
+
+
+### Final provider closure and next release steps
+
+The corrected security-only3359535/native d6e31dc image
+sha256:0bbb44909ac0c171789bdf8522c3e941f753042389cbcd271070406e5b35df89 is qualified
+and running from run38163282528, excluding Reader changes. Independent408 hashes,
+eight stages,20 actual-image checks/native amd64/cleanup[0,0]/digest parity and
+185 APK comparisons/zero fixed alerts pass. Production metadata validates all
+eight migration hashes/table presence, without reading token rows. Native form
+and23 boundary/39 alias cases pass separately on both address families.
+
+Assessment ledger53239ad and redacted replayguard-human-turnstile.json confirm
+genuine freshAcceptedBeforeInputValidation=true, replayRejected=true and passed=true.
+Fresh input-validation feedback and replay human denial are distinct, with stable
+CSRF/no rate limiting. Actual email delivery/verification was already human-
+confirmed on14628 and remains separately attributed. Both provider gates are
+complete; the earlier replay failure and missing008 build remain historical
+failed attempts, superseded by this exact qualified repair and real acceptance.
+No broad unchanged client protocol suite is claimed as repeated, and no customer
+release/tag/visibility change is made.
+
+Next, choose Go/CLI release versions and customer access, release the reviewed
+semantic Go client, replace the immutable snapshot pin and record sums, validate
+the final standalone six-target CLI candidate and reviewed release notes/signing
+policy, then approve the tag-generated draft for publication. After actual asset
+publication, dispatch the tap updater, run published-package validation on its
+formula PR and review/merge it before announcing customer installation. Main and
+all older work branches are already integrated; no transfer to the tap is pending.
