@@ -10,7 +10,7 @@ SSH commands connect to `bibleit.app:22`.
 The CLI, Go client and Homebrew tap are **private**. Private CLI v0.0.1 exists,
 but its binary packages lack required third-party notices. Corrected **v0.0.2**
 packages and a matching tap formula are staged for review; they are not a
-published release. Native Windows installer/Scoop checks remain pending.
+published release. Native Windows installer/Scoop checks passed on the documentation candidate.
 See [release readiness](docs/release-v0.0.2-readiness.md) for the remaining gates.
 
 Authorized contributors can build from source using Go 1.27.1 and authenticated
@@ -36,7 +36,7 @@ Bash (macOS/Linux):
 curl -fsSL https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.2/install.sh | bash -s -- v0.0.2
 ```
 
-PowerShell (Windows; validation pending):
+PowerShell (Windows):
 
 ```powershell
 Invoke-WebRequest -UseBasicParsing -Uri https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.2/install.ps1 -OutFile install.ps1
@@ -216,8 +216,9 @@ GOWORK=off go build -o build/bibleit .
 
 For joint client/CLI development, an uncommitted local workspace can include both
 checkouts: `go work init . ../bibleit-go`.
-Native code tests cover macOS/Linux/Windows. Corrected-release Windows installer
-and Scoop checks remain pending; fixture checks do not prove public downloads.
+Native code tests cover macOS/Linux/Windows. Windows installer and Scoop checks
+passed on the documentation candidate; final artifact checks are recorded in
+[release readiness](docs/release-v0.0.2-readiness.md). Fixtures do not prove public downloads.
 See [native validation](docs/native-validation.md), [release maintenance](docs/releases.md),
 and the [changelog](CHANGELOG.md).
 
