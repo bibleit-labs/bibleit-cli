@@ -1,4 +1,11 @@
-# Bibleit clients and CLI: revised implementation plan
+# Historical client implementation plan
+
+This is a dated implementation/operations record, not the current release guide.
+Use [release maintenance](releases.md), [release readiness](release-v0.0.2-readiness.md)
+and [the publication plan](publication-plan.md) for current gates. Repositories
+remain private; corrected-release Windows checks are pending. Earlier completion
+claims apply only to their recorded revisions and scopes.
+
 
 Go client and CLI v0.0.1 were approved and published privately on 2026-10-11.
 Source pushes and CI remain authorized. Public customer distribution and

@@ -1,90 +1,34 @@
-# Service endpoint policy
+# Service endpoint and credential policy
 
-Updated 2026-10-11. All language clients target the single project-managed Bibleit
-service. The server repository remains private; client/CLI distribution access
-is a separate release decision.
+The Go client and CLI target the project-managed service `https://bibleit.app`.
+SSH uses `bibleit.app:22`. Repository/download access and service authorization
+are separate. The server repository remains private.
 
-The Go client declares `ServerEndpoint = "https://bibleit.app"` in `client.go`.
-The CLI derives its HTTP and browser authentication address from that constant.
-SSH connects to `bibleit.app:22`, with standard OpenSSH host verification. The
-user confirmed these canonical addresses for the custom-domain cutover. Actual
-public DNS/TLS/SSH technical qualification passed on 2026-10-11, with the
-assessment’s redacted provenance retained in contract/canonical-deployment-validation.json.
-The operator confirms Google/GitHub sign-in. The latest repaired deployment 4243c9a/native
-d6e31dc (workflow 38147193441) passes native form CSRF admission and refreshed
-public boundary/alias checks on IPv4 and IPv6; real fresh-token acceptance and actual email delivery/verification are now
-human-confirmed in ledger a40d27d on font-only deployment14628f3/native d6e31dc.
-The repaired production3359535/native d6e31dc/image0bbb now passes genuine
-fresh-token/replay acceptance (ledger53239ad); both provider follow-up gates are
-complete. Earlier failures remain historical evidence. Earlier Fly-hostname qualification at source 7442010 is historical evidence only.
-Fly supplies the trusted PROXY envelope to the server; clients send ordinary
-SSH and never inject a PROXY preamble.
+The SDK declares ServerEndpoint in client.go. HTTP commands, browser approval,
+code exchange and revocation use that origin. HTTPS verification remains enabled
+and redirects are blocked. NewClient(apiToken) validates explicit credentials;
+NewClientWithHTTPClient customizes transport/timeouts without an endpoint option.
+The library does not read environment variables or CLI configuration.
 
-SSH sets `HostKeyAlias=bibleit-server.fly.dev` solely for OpenSSH's `known_hosts`
-lookup. This preserves an existing verified service key while connecting to the
-new hostname. It does not resolve or connect to that historical name. A changed
-key still fails; the CLI never removes or rewrites the user's known_hosts entries.
-The production fingerprint was reconfirmed through actual public bibleit.app SSH:
-`SHA256:MUnCXVIEU/t8AZk0es6XgyeE9c9Ak6LmCZdEmy99ips`. New users should
-verify that fingerprint through a trusted channel before first connection. The disposable integration
-uses separate temporary keys and known_hosts, including changed-key rejection.
+The CLI defaults to HTTP; `--transport ssh` selects OpenSSH explicitly.
+`BIBLEIT_TOKEN` supplies an HTTP token; it is not an SSH credential. SSH identity
+selection and host verification use OpenSSH, including the user's SSH config.
+The CLI exposes no endpoint/hostname overrides or named profiles.
+For host trust, the SSH adapter uses HostKeyAlias=bibleit-server.fly.dev to reuse
+the verified legacy known_hosts entry; the network destination remains
+bibleit.app:22. The alias is a trust lookup, not a destination override.
 
-Create an authenticated client with `NewClient(apiToken)`. Use
-`NewClientWithHTTPClient(apiToken, httpClient)` for custom transport/timeouts.
-`NewAuthClient()` creates the browser-code exchange client; its custom transport
-constructor is `NewAuthClientWithHTTPClient(httpClient)`. No constructor exposes
-an endpoint. Both simple constructors retain an error return for validation. Commands, code exchange,
-and revocation all construct URLs at the fixed service, and redirects remain
-blocked. Credentials remain explicit; the library reads no environment variables.
-Custom HTTP clients configure transport/timeouts, not a service URL option.
-As with any open source library, callers can modify source or implement their own
-network transport; this API policy does not replace server-side authorization.
+Configuration schema version 2 binds saved credentials to both service addresses.
+A mismatched address, legacy bearer-only config or older profile config fails
+locally. Credentials are never silently copied to a new service. BIBLEIT_CONFIG
+selects a credential file, not a destination. Keep an old file as a protected
+backup if needed and authenticate into a fresh configuration after a migration.
 
-CLI configuration stores one HTTP token and optional SSH identity. HTTP is the
-default; --transport ssh selects SSH explicitly. Named profiles are removed. There is no
-`--endpoint` option, completion candidate, or endpoint environment setting.
-The persisted endpoint is a service-binding record. Its value must match the
-current project-managed address. A mismatch fails locally; cached credentials
-are never silently copied to a new service. Legacy bearer-only and version-1 profile configs are rejected. Schema version 2
-binds both HTTP and SSH addresses; it never auto-selects an old profile. Users can retain the old config as a backup and
-sign in with a fresh config after an address change.
+Never disable TLS verification or SSH host-key checking to resolve a migration.
+Confirm a new server fingerprint through a trusted project channel before
+updating known_hosts. Source changes or custom network transports do not bypass
+server authentication, permissions or quotas.
 
-Apply the same policy to future Python, Ruby and Rust clients: a project-owned
-service constant, no constructor/environment/config endpoint override, and
-matching authentication and data-request destinations.
-
-## Local development and verification
-
-Keep `bibleit-cli` and `bibleit-go` as sibling checkouts. A local ignored
-`go.work` uses both while `go.mod` has an unreleased client version placeholder.
-Do not publish standalone builds until a real client version is pinned and
-`GOWORK=off` validation passes.
-
-Unit tests use injected in-memory HTTP transports. Real-server integration calls
-public constructors at the fixed production URL with standard TLS verification.
-The container runner uses an egress-disabled namespace (`--network none`), maps
-only the service hostname to loopback, and trusts a disposable fixture certificate
-only inside that container. HTTPS on port 443 relays to the real server fixture;
-ordinary SSH uses the fixed port 22. The developer's ports and host trust store
-are untouched. Direct host integration is rejected. Wrong hostname and untrusted
-certificate checks must fail before integration proceeds.
-
-The native process harness first checks the actual binary's version, then compiles
-a Go test executable using the same CLI entry function. Its test-only HTTP transport
-allows only the production destination, dials an ephemeral IPv4 loopback TLS
-fixture and verifies the hostname against a fixture-only trust pool. This works
-on Windows, macOS and Linux without installing certificates. The dialer is absent
-from production binaries. Process, PTY and shell-completion tests run offline;
-no public endpoint option or insecure TLS setting is added.
-
-The runner rebuilds Linux NIFs from the frozen source snapshot and uses only a
-unique disposable database. No server checkout or developer database is modified.
-Both client repositories record the verified server/native fingerprints only
-when all requested HTTP/SSH/import checks pass.
-
-Release tags and binary publication remain paused. The user recreated the client
-repositories privately and authorized validation-branch pushes and CI; the
-user authorized all prepared source branch pushes on 2026-10-11. Customer
-release tags/assets remain gated on production readiness; the fixed-endpoint
-rule remains in effect. Local Git bundles
-in the CLI's ignored `.local-backups/` directory preserve the pre-change histories.
+See [authentication](../README.md#authentication-and-service-address),
+[SECURITY.md](../SECURITY.md), and [historical status](status.md) for dated migration
+evidence. Historical records do not establish readiness for a new release.

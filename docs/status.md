@@ -1,4 +1,11 @@
-# Implementation status
+# Historical implementation and validation status
+
+This is a dated implementation/operations record, not the current release guide.
+Use [release maintenance](releases.md), [release readiness](release-v0.0.2-readiness.md)
+and [the publication plan](publication-plan.md) for current gates. Repositories
+remain private; corrected-release Windows checks are pending. Earlier completion
+claims apply only to their recorded revisions and scopes.
+
 
 Updated 2026-10-11. Counts describe explicit acceptance items, not estimated
 percentages of the entire project. The full plan is in `plan.md`.

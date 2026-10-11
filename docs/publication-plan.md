@@ -30,7 +30,7 @@ The final READMEs were reviewed for private/public availability, current module
 pin, fixed endpoints, transport/auth behavior and installation instructions;
 local links resolve. They correctly mark anonymous installations as pending.
 The Go quickstart compilation and released CLI version/help checks were reported
-by that chat. CONTRIBUTING and archive README snapshots still need the separate
+by that chat. CONTRIBUTING and archive README snapshots are covered by the separate
 launch review below. Server inspection used `4c1f60e` plus an existing dirty working tree;
 prepare its docs changes independently without including unrelated work.
 
@@ -155,20 +155,16 @@ repositories private if required permissions cannot be established.
 
 ## 4. Prepare public documentation, CI and repository settings
 
-- [ ] Review the README chat's results. Show private availability accurately until
-  cutover, then switch to validated public commands. Clearly distinguish the
-  software license from hosted-service access, accounts, quotas and billing.
-- [ ] Fix stale CONTRIBUTING files in all three repos. CLI still describes
-  v0.0.0, required sibling go.work and paused releases despite its v0.0.1 pin.
-  Describe clean standalone builds and make private-server integration optional;
-  public contributors must be able to run normal tests without server access.
-- [ ] Replace historical rollout narratives with a concise current public
-  maintenance/release guide. Preserve dated release history as history; use a
-  new current-status note instead of pretending private v0.0.1 launched publicly.
-- [ ] Add SECURITY.md with a working private vulnerability-reporting route,
-  supported-version policy and instructions to redact credentials. Add support
-  guidance/issue templates and a focused PR template; CODEOWNERS and a conduct
-  policy are useful if the maintainer intends to support community contributions.
+- [x] Review the README chat's results and update availability, commands,
+  standalone development and redistribution guidance across all three repos.
+  Final public commands and anonymous retrieval remain cutover checks.
+- [x] Correct all three CONTRIBUTING guides; ordinary unit tests work without
+  private-server access and the CLI pins SDK v0.0.1 without a required workspace.
+- [x] Replace the CLI release/native-validation/endpoint guides with current
+  procedures and mark retained rollout ledgers as historical evidence.
+- [x] Add SECURITY.md, bug-report and PR templates in all three repositories.
+  The owner approved security@bibleit.app for private reports. Community conduct
+  and CODEOWNERS policies can be added if contributor governance needs them.
 - [ ] Prepare CLI changes in `native.yml`, `release-candidate.yml` and
   `release.yml`: remove required `BIBLEIT_CLIENT_READ_TOKEN`, private-only
   `GOPRIVATE`, and `gh auth setup-git` once the Go dependency is public. Use
@@ -195,21 +191,34 @@ private server access, and explicit release/security ownership.
 
 ## 5. Prepare bibleit-server documentation updates
 
+Prepared locally on 2026-10-11: current CLI reference, existing Markdown mentions,
+all three locale catalogs, the rendered CLI/developer links and the public-doc
+allowlist. Availability stays private. Deployment and full server integration
+checks remain separate; unrelated server implementation work is excluded.
+
+Documentation validation: 77 local Markdown link destinations resolved; offline
+v0.0.2 help/version and auth/translation/live/completion usage checked; eight
+Erlang docs-rendering tests and nine docs JavaScript tests passed. Erlang checks
+used the existing compiled renderer with current templates/catalogs, not a new
+server build. No live browser, database-backed server suite or deployment was run.
+The final packaged README still requires a fresh candidate and formula hashes.
+
+
 The rendered docs are owned by `src/http/bibleit_http_docs.erl`,
 `priv/templates/docs-page.html` and `priv/i18n/docs-{en,pt,de}.json`.
 Editing only files under `docs/` will leave the live CLI page stale.
 
-| Location in bibleit-server | Planned change |
+| Location in bibleit-server | Prepared change |
 | --- | --- |
-| priv/i18n/docs-en.json, docs-pt.json, docs-de.json | Replace docs_cli_preview/intro/body coming-soon text in every locale; describe actual released availability and capabilities |
-| priv/templates/docs-page.html, src/http/bibleit_http_docs.erl | Replace CLI planned badge; add install, auth, reading/search and Live quickstart, output/exit-code links, and Go/CLI/tap repository links |
-| docs/reference/http.md:245 | Replace forthcoming-CLI wording with released PKCE login/logout behavior and link to CLI documentation |
-| docs/reference/protocol.md:236 | Update released CLI transport/storage description; keep raw local-server SSH examples distinct from the fixed production CLI |
-| docs/developers/architecture.md:114 | Update browser/CLI flow status and links; verify the diagram against released behavior |
+| priv/i18n/docs-en.json, docs-pt.json, docs-de.json | Replace docs_cli_preview/intro/body coming-soon text in every locale; describe implemented capabilities and private availability |
+| priv/templates/docs-page.html | Remove the CLI planned badge; show auth, translation and Live examples; link the detailed CLI reference and Go/CLI/tap repositories |
+| docs/reference/http.md | Replace forthcoming-CLI wording with implemented PKCE login behavior and link to CLI documentation |
+| docs/reference/protocol.md | Update implemented CLI transport/storage description; keep raw local-server SSH examples distinct from the fixed production CLI |
+| docs/developers/architecture.md | Update browser/CLI flow status and links; preserve the existing browser/session flow |
 | docs/developers/development.md | Clarify that raw OpenSSH can target the development server but the distributed CLI targets bibleit.app; do not promise an endpoint flag |
-| docs/index.html:48 | If retained/served, replace the localhost CLI configuration guidance with production bibleit.app; validate examples against the released executable |
+| docs/index.html | Remove invented personal output and add the private-availability CLI reference |
 | docs/maintenance.md | Update the local CLI status and release-check procedure; keep distribution validation as the publication gate |
-| docs/docs.js, priv/config/public-docs.txt | Preserve legacy #install/#cli redirects; amend the static allowlist only if adding a public reference file, never expose operations records |
+| priv/config/public-docs.txt | Add only reference/cli.md; preserve existing routes and the operations-record exclusion |
 
 Keep the website quickstart concise and link detailed CLI output/exit-code
 contracts to the public CLI docs. Explain HTTP as the default, explicit

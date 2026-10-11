@@ -1,88 +1,76 @@
 # Contributing to bibleit-cli
 
-Bibleit CLI is a public MIT-licensed project in the `bibleit-labs` organization.
-Bug reports, documentation improvements, and focused pull requests are welcome.
-For larger API or behavior changes, open an issue describing the customer use
-case before implementation. Never include credentials or private server data
-in issues, commits, or test fixtures.
+Bibleit CLI is MIT licensed. The repositories currently remain private;
+public contributions and anonymous package installation await approved launch.
+Authorized contributors can use issues and focused pull requests now. Discuss
+larger behavior changes before implementation. Report security problems through
+[SECURITY.md](SECURITY.md); redact credentials and private account/server data.
 
-## Development
+## Standalone development
 
-Use Go **1.27.1** and build with `go build -o build/bibleit .`.
-The CLI uses the sibling `bibleit-go` checkout through an ignored local
-`go.work` while publication is paused. The version in `go.mod` is an unreleased
-placeholder; pin a real client release before standalone builds. Keep library behavior in that repository; credential storage, terminal output,
-browser orchestration, and OpenSSH process integration belong here.
-
-For changes to executable behavior, run:
+Use Go **1.27.1**. The CLI pins `github.com/bibleit-labs/bibleit-go v0.0.1` in
+go.mod/go.sum. A sibling checkout or workspace is optional. While that module is
+private, authenticate Git with an authorized account and mark the module private:
 
 ```sh
-go test -race -count=1 ./...
-go vet ./...
-go build -o build/bibleit .
+export GOPRIVATE='github.com/bibleit-labs/*'
+GOWORK=off go mod download
+GOWORK=off go mod verify
+GOWORK=off go test -race -count=1 ./...
+GOWORK=off go vet ./...
+GOWORK=off go build -o build/bibleit .
 python3 scripts/check_cli_runtime.py --binary build/bibleit
 ```
 
+GOPRIVATE controls proxy/checksum lookup; it does not supply Git credentials.
+These unit/runtime checks do not need the private server or a production account.
 Linux contributors can add `--shells bash zsh fish` to the runtime check.
-CI runs Windows, Ubuntu, and macOS checks. Documentation-only changes need
-link/content review rather than additional executable tests.
+Native code CI covers Linux, macOS and Windows. Windows race tests need a supported
+C compiler. Documentation-only changes require content/link review rather than
+new executable tests.
 
-A local `go.work` must include the sibling `../bibleit-go` checkout for now.
-Do not commit workspace files or local `replace` directives. Published CLI
-builds must resolve the pinned client without access to a sibling checkout.
-Real-server tests require the separate server checkout; see
-[native validation](docs/native-validation.md) and `scripts/check_server.py`.
+For joint SDK/CLI changes, use an ignored local workspace:
 
-## Commits and pull requests
+```sh
+go work init . ../bibleit-go
+```
 
-Use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/):
-`type(scope): description`, with an optional scope. Examples:
+If go.work already exists, use `go work use . ../bibleit-go`. Keep library behavior
+in the SDK; terminal output, credential storage, browser login and OpenSSH process
+integration belong here. Never commit workspace files or local replace directives.
+Verify release inputs with GOWORK=off and no replacement modules.
 
-- `feat(auth): simplify credential configuration`
-- `fix(windows): protect credential file permissions`
-- `docs: explain Go client dependency updates`
-- `ci: validate Fish completion`
+## Compatibility and validation
 
-Use `!` or a `BREAKING CHANGE:` footer for incompatible changes. Keep PRs
-focused and explain the user-visible change and relevant validation.
-Do not use the `codex/` prefix for branch names.
+[Native validation](docs/native-validation.md) describes offline checks and
+optional isolated server integration. Contributors without server access can run
+the normal unit/runtime tests. Protocol fixtures are versioned snapshots; update
+them deliberately with the SDK and record the tested server baseline. Passing
+fixtures do not establish live-service behavior or anonymous distribution access.
+The [output contract](docs/output.md) defines JSON/NDJSON and exit codes.
 
-## Releases and compatibility
+The project manages [service addresses](docs/endpoint-policy.md). Keep strict
+HTTPS/SSH verification and explicit credentials; there are no customer endpoint
+or profile overrides. Never log bearer values, browser codes, Live secrets, or
+private keys. Use synthetic fixtures for account and translation data.
 
-CLI releases and Go client releases are independent. Update the pinned client
-explicitly and commit `go.mod` and `go.sum` together. Document supported server
-operations, required Go version, and compatibility limitations. Protocol fixtures
-are versioned snapshots; synchronize changes deliberately across client
-repositories. A passing local fixture test is not a real-server compatibility
-claim. Semantic-version tags and downloadable binary releases are separate
-from publishing development branches.
+## Commits and reviews
 
-The service endpoint is project-managed; see [the endpoint policy](docs/endpoint-policy.md).
-Private validation-branch pushes and CI are now authorized in the recreated
-private repositories. Release tags, public installation and binary releases
-remain paused until explicitly authorized. The separate `homebrew-tap` stores
-the formula; its local development candidate is not ready for distribution.
+Use Conventional Commits, for example `fix(auth): preserve credentials on failed
+revocation` or `docs: clarify source builds`. Use `!` or a BREAKING CHANGE footer
+for incompatible changes. Branches must not use a codex prefix. Explain changed
+behavior and relevant validation; avoid unrelated work in a pull request.
 
-Local candidates are built with `scripts/package_release.py --local --version
-v0.1.0-dev.1`; this creates no Git tags. Run `scripts/check_release.py --assets
-build/releases` to check archives and exercise your platform's installer offline.
-See [release preparation](docs/releases.md) for output paths, Windows checks,
-package-manager manifests, and the production gates. The prepared candidate
-workflow has read-only repository permissions and no publication steps.
+## Releases
 
-Run `python3 scripts/check_homebrew.py --assets build/releases/<candidate>` on
-macOS/Linux with Homebrew already installed. This clones a disposable prefix,
-uses local archive URLs, tests install/completions/reinstall/uninstall, and removes
-the fixture. To validate the separate tap, add `--formula ../homebrew-tap/Formula/bibleit-cli.rb`.
-On Windows, `scripts/check_scoop.py --assets <candidate> --scoop-source <source>`
-uses an existing Scoop checkout, a disposable root, and loopback archive downloads.
-Private CI needs `BIBLEIT_CLIENT_READ_TOKEN`, restricted to contents-read on
-`bibleit-labs/bibleit-go`, to check out the exact client SHA. Workspace validation
-does not close the standalone `GOWORK=off` production-release gate.
+SDK and CLI versions are independent. Update go.mod/go.sum together when changing
+the pinned SDK. Source builds report dev unless a version is injected. Release
+packaging requires a clean committed standalone checkout and Go 1.27.1.
+See [release maintenance](docs/releases.md) for candidate commands and gates.
 
-For real-server integration while the developer service occupies port 8080, run
-`python3 scripts/check_server_container.py --baseline contract/server-baseline.json`.
-This uses a disposable container namespace and database; it reads a frozen
-server snapshot and rebuilds NIFs without editing the server checkout.
-Use `NewClient(apiToken)` for standard client construction and the separate
-`NewClientWithHTTPClient` constructor for transport/timeout customization.
+v0.0.1 remains private with deficient binary notices. Corrected v0.0.2 is staged;
+Windows installer/Scoop checks stay pending. Do not publish tags/assets, merge the
+staged tap formula, withdraw old assets or change visibility without approval.
+The separate tap owns formula review and package-manager validation. Keep LICENSE
+and THIRD_PARTY_NOTICES with redistributed binaries. Software MIT does not grant
+translation redistribution rights or service/account access.
