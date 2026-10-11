@@ -89,7 +89,11 @@ Release, cleanup and visibility approval remain separate from this decision.
 
 SDK/CLI read defaults and disabled Actions PR creation/approval are applied and
 verified. Tap read defaults/PR creation remain unchanged. Ruleset inspection still
-returns the private-plan HTTP 403; no protections have been applied.
+returns the private-plan HTTP 403; no protections have been applied. The owner
+authorized immediate main protection on 2026-10-12, but all three classic
+protection writes were also rejected. [Payloads/results](security/main-branch-protection-2026-10-12.json)
+record the exact requested configuration. An eligible organization plan can unblock
+private protection; otherwise apply it immediately at separately approved cutover.
 
 [Settings proposal](security/public-repository-settings-proposal-2026-10-11.json)
 requires PRs, current GitHub Actions checks, resolved threads and linear history;

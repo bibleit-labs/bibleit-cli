@@ -71,3 +71,18 @@ approval. Windows PowerShell 7/5.1 and Scoop checks passed, along with tap-owned
 macOS/Linux installation checks on the exact final candidate. Native SDK and CLI
 code tests passed on all three hosted platforms. Exact run/source references
 are recorded in release readiness.
+
+## Immediate main protection request — 2026-10-12
+
+The owner requested protection for all three main branches. Admin access and
+private visibility were confirmed. Classic branch protection PUT requests were
+attempted with PR requirements, strict GitHub Actions checks, admin enforcement,
+linear history, resolved discussions and force-push/deletion blocking. All three
+were rejected by GitHub with HTTP 403 requiring an eligible plan or public access.
+No protection was applied; main remains unprotected.
+
+[Exact payloads and results](security/main-branch-protection-2026-10-12.json) are
+ready to apply without another main-protection approval once eligibility changes.
+For organization-owned private repos, GitHub Team or Enterprise provides this
+feature; personal GitHub Pro does not upgrade the organization. No plan purchase
+or visibility change was made. [GitHub protection availability](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches).
