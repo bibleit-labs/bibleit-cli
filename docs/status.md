@@ -13,11 +13,14 @@ increment below is complete; the new route needs its own evidence.
 | --- | --- | --- |
 | Configure canonical endpoints and trust migration | Complete | Go HTTP/browser origin and CLI SSH use bibleit.app; HostKeyAlias preserves the verified Fly-host known_hosts entry solely as a trust lookup; no user endpoint overrides |
 | Update isolated fixtures and credential tests | Complete | Verified TLS fixture names bibleit.app; old localhost and Fly configurations reject without overwrite; real changed-host-key regression added |
-| Refresh HTTP/SSH/import compatibility | Complete for candidate | HEAD 0c0da9f plus canonical-host changes; 69 source/71 test/11 native hashes; full prior coverage plus actual changed-host-key rejection passes; final committed source pending |
-| Publish source and record fresh private CI | In progress | Client 58505aa pushed; CLI CI pins that exact revision; new-domain matrices pending; earlier nine jobs below cover Fly-hostname inputs only |
+| Refresh HTTP/SSH/import compatibility | Complete | Assessed revision 5969f2f; 69 source/72 test/11 native hashes; HTTP/SSH/import, changed-key rejection, 24 unit and one boot configuration case pass; committed Erlang input equivalence verified |
+| Publish source and record fresh private CI | In progress | Six native jobs pass at client 58505aa/CLI 9243489; Windows candidate timed out during repeated cross-compilation; revised CI builds once on Linux and validates identical native inputs; client metadata pin 59dfaa4 |
 
 Progress: **3/4 custom-domain client items complete**. Local Go/CLI race tests and
-vet pass; Darwin TLS/PTY/Bash/Zsh checks pass. Actual DNS-only apex cutover,
+vet pass; Darwin TLS/PTY/Bash/Zsh checks pass. The assessment’s final Turnstile/canonical-host boot change is qualified; all
+Erlang inputs match commit 5969f2f. Dirty metadata preserves unrelated frontend
+working-tree edits; final packaging inputs still need freezing.
+Actual DNS-only apex cutover,
 certificate/canonical-origin/authentication and retained production SSH fingerprint
 verification remain assessment/Fly-owned release gates. They are not certified by
 local fixtures. No customer release tag/assets or production data changes are made.

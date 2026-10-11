@@ -136,8 +136,8 @@ The implementation here is written for Bibleit's Go release layout.
 ## Release gates and future validation
 
 1. Canonical HTTPS/SSH constants and safe fixtures are configured. Frozen
-   HTTP/SSH/import passes at 0c0da9f plus canonical-host candidate/native f6fed37.
-   Final committed source and actual new-domain DNS/TLS/SSH qualification remain
+   HTTP/SSH/import and boot validation pass at assessed 5969f2f/native f6fed37.
+   Final packaging-input freeze and actual new-domain DNS/TLS/SSH qualification remain
    assessment/Fly gates; revalidate changed inputs before release.
 2. Release the reviewed Go client when authorized, pin its version in go.mod,
    record dependency sums and verify builds with GOWORK=off. No replacement modules.
@@ -147,8 +147,8 @@ The implementation here is written for Bibleit's Go release layout.
 4. The draft `release-candidate.yml` workflow validates development candidates in
    private CI, using an exact private Go-client SHA and ephemeral workspace. Its
    `BIBLEIT_CLIENT_READ_TOKEN` secret must have contents-read access only to
-   `bibleit-go`. It tests native installers, Homebrew and Scoop, saving private
-   validation artifacts with no Release/tag write permission. Restore standalone
+   `bibleit-go`. It builds six-target archives once on Linux, then tests the same downloaded
+   inputs with native installers, Homebrew and Scoop, saving private validation artifacts with no Release/tag write permission. Restore standalone
    packaging without `--local` and use GOWORK=off after the client is released.
 5. Validate actual native Windows installation/replacement, macOS downloaded-binary
    behavior/signing policy, Homebrew install/test and Scoop install. A Ruby syntax
@@ -419,7 +419,8 @@ known_hosts. Old service-bound HTTP/SSH credentials fail locally and remain inta
 Back them up and sign in using a fresh config after the approved cutover.
 
 This prepared address change passes isolated HTTP/SSH/import, including changed
-saved-host-key rejection, at 0c0da9f plus assessment candidate changes. Actual
+saved-host-key rejection, at assessed 5969f2f. The final boot change passes
+canonical/provider unit and synthetic hostname configuration checks. Actual
 DNS/TLS/SSH and authentication qualification is still required by the assessment/Fly chats before
 customer release. The prior nine green native/candidate jobs cover the Fly-origin
 increment, and must not be presented as new-domain validation.
