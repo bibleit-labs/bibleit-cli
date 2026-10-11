@@ -328,3 +328,35 @@ These are server rollout prerequisites. The CLI does not repair database lineage
 change server administration policy or retry an unsafe import automatically.
 Deployment-specific TLS, image contents and rollback checks remain package 25
 work. No production migration or deployed compatibility certification is claimed.
+
+## Package 25 local deployment evidence and launch gates
+
+The server assessment's local full suite and image driver passed (326 integration,
+51 Erlang unit, 71 JavaScript, native coordinate corpus and ten SSH-bootstrap tests; 16 isolated
+image/database/TLS/recovery checks). Its final local image runs on native ARM64.
+These results do not replace the client's earlier verified compatibility snapshot.
+Assessment progress remains 24/25 until approved deployed-boundary evidence exists.
+
+Before customer publication:
+
+- Choose and verify the canonical HTTPS origin. BIBLEIT_PUBLIC_URL is validated as
+  an origin and requires HTTPS with secure cookies; browser Host/Origin must match.
+  Align the CLI's fixed service/browser URL before testing actual approval/login,
+  code exchange and revocation through the approved edge. Customers get no override.
+- Verify a final server image on native amd64 and the actual Fly certificate,
+  routing/proxy identity, fairness, spoofing/bypass and platform configuration.
+  Passing CLI/client amd64 jobs do not certify the server image or Fly edge.
+- Confirm writable server volumes for UID/GID10001. Legacy UID100 storage needs
+  an approved offline ownership migration that preserves private key permissions
+  and SSH host identity; do not silently replace the host key. This does not
+  change the CLI's per-user credential-file permissions.
+- Review the actual database attach result, role/grants and migration lineage.
+  Missing sslmode uses verify-full and bad CA/hostname fails closed. Any explicit
+  sslmode=disable needs approved private-mesh trust; no automatic downgrade or
+  database reset is implied. Keep credential-bearing URLs out of operational logs.
+- Record deployed backups/recovery and rollback, package inventory and persistent
+  SSH trust across restart/replacement. Local distribution/EPMD listeners remain
+  disabled; the normal Bibleit SSH protocol stays available.
+
+No deployment, ownership migration, TLS policy change, client runtime change or
+baseline rewrite is performed by this documentation update.

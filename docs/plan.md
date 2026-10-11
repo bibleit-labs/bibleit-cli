@@ -278,7 +278,7 @@ and automated release uploading are outside the initial release requirement.
 | Order | Item | Current status / required input | Done when |
 | --- | --- | --- | --- |
 | 1 | Confirm version, scope and customer access | Project decision; propose Go/CLI v0.1.0 for the existing core command surface, Homebrew/Bash/PowerShell/manual archives | Version and supported transports/architectures recorded; choose public customer artifacts or implement authenticated delivery; choose whether Scoop bucket ships now or later |
-| 2 | Configure production service and safe test fixtures | Blocked on actual HTTPS URL, SSH host/port and deployed service | Change project-owned constants without exposing endpoint overrides; isolate disposable fixtures from production; verify stored credential bindings safely reject the old service |
+| 2 | Configure production service and safe test fixtures | Blocked on actual HTTPS URL, SSH host/port and deployed service | Align project-owned HTTPS/browser constants with the approved canonical BIBLEIT_PUBLIC_URL origin, without customer endpoint overrides; isolate disposable fixtures from production; verify stored credential bindings safely reject the old service |
 | 3 | Freeze and validate server compatibility | Pending agreed committed/deployed server revision | Record server and libbibleit revisions; refresh synchronized client/CLI baseline only after full HTTP/SSH/auth/import integration passes; verify approved database migration lineage and packaging/runtime inputs; run explicit controlled production TLS, browser login/token revocation and SSH host verification checks |
 | 4 | Release Go client and pin standalone CLI dependency | After gates 1–3; go.mod still requires v0.0.0 | Review/promote the client source, publish approved semantic version, pin it in CLI and record sums; clean-cache GOWORK=off test/vet/build succeeds without sibling checkout or replace directives; private access uses appropriate Git credentials/GOPRIVATE |
 | 5 | Validate exact production CLI candidate | After gate 4; current candidate workflow uses --local and go work | Add a standalone production candidate validation path using the released client, GOWORK=off and no --local; clean Go 1.27.1 source produces six archives, installer scripts, formula, Scoop manifest, checksums and provenance; rerun relevant native/platform/installer checks on those exact inputs |
@@ -421,6 +421,51 @@ Release/deployment checks to carry forward:
   by default; the Bibleit SSH command transport is separate and unchanged.
 - Package 25 still needs deployed database trust, migration/rollback lineage,
   image contents, runtime versions, persistent keys and Fly edge/proxy evidence.
+
+### Package 25 local review and remaining deployed evidence
+
+The assessment reports its local deployment review and full suite passing:
+326 Common Test cases, 51 Erlang unit tests, 71 JavaScript tests, the native
+65536-coordinate corpus and ten SSH-bootstrap regressions. Its isolated
+make test-deployment driver passed 16 final-image/PostgreSQL 18/TLS/recovery
+checks; owned containers, networks and volumes were cleaned up. Native checkouts
+remain clean at f6fed37. These are assessment-owned results, not new client
+compatibility evidence for the later server edits.
+
+Progress remains 24/25: package 25 has local evidence but no approved Fly target
+or deployed-boundary validation. The final local server image was validated on
+native ARM64. A final immutable server release on native amd64, Fly platform/TOML
+validation and actual edge checks remain required. This is separate from the
+already passing CLI/client native amd64 runners.
+
+Operational requirements for the release:
+
+- BIBLEIT_PUBLIC_URL must be a validated origin and HTTPS when secure cookies are
+  enabled. Browser Host/Origin must match it. The CLI's /cli/auth approval URL is
+  built from its fixed Go-client service origin; align the production constant
+  with the approved canonical public host and test browser login/code exchange
+  through the actual edge. Keep localhost placeholders until that target is chosen.
+- Server runtime UID/GID is 10001. Older UID100 volumes require an explicitly
+  approved offline ownership migration preserving SSH host-key identity and
+  private-file modes. This is a server volume change, not CLI config ownership.
+  Validate persistent listener keys and unchanged trust across restart/replacement.
+- Missing database sslmode remains verify-full; unknown CA and wrong hostname fail
+  closed. Inspect the actual Fly attach result and approve its trust model explicitly:
+  sslmode=disable requires a deliberate private-mesh trust decision, not an automatic
+  downgrade. Preserve role/grant/migration lineage and redact credential-bearing URLs.
+- Verify deployed certificate/renewal, redirects, TLS/ALPN/WSS, authentication and
+  revocation, public-origin enforcement, proxy peer grouping/fairness, spoofed
+  forwarding headers and private-route bypasses. Local socket-peer budgets do not
+  establish deployed fairness. Preserve final-image package inventory and key identity.
+- No Erlang distribution/EPMD listeners were observed in local image diagnostics;
+  remote console/RPC remains disabled by default. The Bibleit SSH command transport
+  is unchanged. Final-image/edge/database/volume checks and approved rollback/recovery
+  remain release operations work.
+
+No CLI protocol, runtime or native-library update is requested by these findings.
+The existing verified baseline stays intact until a fresh integration run against
+an agreed frozen server snapshot; deployed certification requires the approved
+actual target, not only the local image tests.
 
 ### Next actionable increment
 

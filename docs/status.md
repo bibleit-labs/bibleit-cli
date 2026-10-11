@@ -26,6 +26,14 @@ baseline, migration lineage, standalone released dependency and customer install
 remain release gates. No shared database, server runtime source or release tag is
 changed by this increment.
 
+Package-25 local follow-up: the assessment's 326 integration/51 Erlang/71
+JavaScript/native/ten SSH-bootstrap tests and 16 isolated image/database checks
+pass. Overall progress stays 24/25 because approved Fly deployed-boundary evidence
+is missing. Canonical public-origin login, server UID10001 volume ownership with
+preserved SSH identity, explicit database trust and native amd64 server-image
+verification are now recorded as launch gates. These are separate from the green
+CLI native jobs. No client runtime or verified baseline update is performed here.
+
 ## Previous increment: package 23 final-results review
 
 | Item | Status | Evidence / limits |
