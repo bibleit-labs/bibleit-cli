@@ -82,7 +82,7 @@ suite passes 337 CT/63 EUnit/71 JavaScript/native 65536/10 bootstrap checks.
 | Native HTML form/browser approval repair | Complete for technical admission | Deployed 34d80f8 real requestSubmit carries canonical Origin/Referer, passes CSRF and reaches missing-token denial; same-origin HTML policy retains sensitive no-referrer; provider traffic blocked, no account/email |
 | Real Turnstile fresh-token acceptance | Complete, human confirmed | Original helper freshAcceptedBeforeInputValidation=true; real signup also completed; source14628f3, assessment ledger a40d27d |
 | Actual email delivery and verification | Complete, human confirmed | Check-email page, delivered message and verification into the new account confirmed; identifiers and message contents omitted |
-| Real Turnstile replay rejection | Failed; assessment repair in progress | Improved same-body human test reached invalid-email validation twice; human denial false; CSRF/rate/continuity interference ruled out; repair and genuine fresh-token/replay retest required |
+| Real Turnstile replay rejection | Repair committed; deployment/real retest pending | d160773 local full344 CT/68 EUnit/75 JS/bootstrap/native checks pass; shared atomic claim fixes repeated-provider-success HTTP regression; genuine provider closure still required |
 
 Progress: **6/7 public acceptance items complete**; the client increment remains
 4/4. The preceding technical probes qualified source c586107, runtime repair ef63e91/native f6fed37,
@@ -1091,3 +1091,10 @@ The assessment is investigating deployed credentials/request handling and owns
 the repair. Hold release publication, qualify the changed source/image as needed,
 and rerun genuine fresh-token/replay acceptance after repair. Email acceptance
 remains recorded separately; no raw challenge material is retained.
+
+
+Replay repair d160773 is committed and full-suite green:344 CT/68 EUnit/75 JS/
+10 bootstrap/native65536; six focused unit and four database/HTTP cases pass.
+Exact deployment and genuine fresh-token/replay acceptance remain open. All
+remaining older work branches are contained in main; no transfer to Homebrew is
+waiting. The tap formula update still requires approved published CLI assets.

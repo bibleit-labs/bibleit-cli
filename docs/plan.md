@@ -746,3 +746,22 @@ only temporary token SHA-256 hashes. Required closure: commit/review the repair,
 pass relevant server concurrency/restart/failure and migration/startup checks,
 qualify the exact deployed image, then complete genuine fresh-token acceptance
 and replay rejection. These planned checks are not yet reported as passed.
+
+
+### Committed replay repair and next acceptance
+
+Server d1607733da5c93b8eccc7b3d8fcb3037f51f2f75 commits the atomic shared PostgreSQL
+claim: temporary token SHA-256 only, ten-minute retention, indexed bounded
+1000-row expired cleanup, appended migration008 preserving001-007. Hostname,
+action and TLS checks remain strict; native d6e31dc and client runtime are unchanged.
+Focused six unit/four database-HTTP tests pass, including twenty concurrent
+attempts with exactly one accepted, restart persistence, expiry cleanup and
+fail-closed database errors. Full344 CT/68 EUnit/75 JS/10 bootstrap/native65536
+checks pass and the disposable DB is removed. This is local committed evidence;
+exact image deployment and genuine fresh-token/replay acceptance remain pending.
+
+The remaining old work branches are contained in main. Homebrew needs no branch
+or packaging-code transfer: CLI owns archive/formula generation and candidate
+installer tests; homebrew-tap owns the released formula, updater and tap CI.
+After repaired production acceptance and approved version/customer access,
+publish the CLI assets, run the tap updater and validate/review its formula PR.
