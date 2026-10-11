@@ -32,12 +32,28 @@ HTTP/SSH/import passes at assessment revision [private revision withheld]:
 parity and changed-key rejection, 24 auth/key/protocol/canonical/provider unit tests, one boot case and 26 import cases.
 Three TLS checks pass; synchronized 69 source/72 test/11 native hashes match
 after the run and match the committed Erlang inputs. Unrelated frontend edits
-keep the server dirty flag true. Six native jobs pass at client 58505aa/CLI 9243489. Candidate macOS/Linux pass,
-while Windows hit the job timeout during duplicate six-target compilation before
-installer checks. Candidate CI now builds one archive set on Linux and downloads
-those exact inputs for each native installer job, preserving checksum validation.
-Fresh validation of the revised workflow is pending.
-Actual DNS/TLS/SSH public-route qualification remains assessment/Fly-owned.
+keep the server dirty flag true.
+
+All ten fresh private CI jobs pass:
+
+- [Go native matrix](https://github.com/bibleit-labs/bibleit-go/actions/runs/38126756591)
+  at 58505aac9059d41d68cae4485549109467cc0d8c: Windows/Ubuntu/macOS.
+- [CLI native matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38128631673)
+  at bc94231489e2a6f7c32549055667877fd357ecfc: Windows/Ubuntu/macOS,
+  including verified-TLS process checks and Linux Bash/Zsh/Fish completion.
+- [Candidate build and native installers](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38128631681)
+  at the same CLI revision: one six-target build on Linux, then identical archive
+  inputs downloaded and checksum-verified on Windows/Ubuntu/macOS. PowerShell
+  7/5.1, Scoop, Bash and Homebrew installation/replacement checks pass.
+
+The CLI workflows pin client 59dfaa45836002dc6c159a07407c08e382763b7c;
+that follow-up changes documentation/contract metadata only, with Go source and
+module inputs unchanged since the green client run at 58505aa. CLI runtime Go
+source and module inputs are unchanged since 9243489. A previous candidate run
+38126789985 timed out on Windows during duplicated cross-compilation, before
+installer assertions. Building once resolved it; the replacement run is green.
+Actual DNS/TLS/SSH public-route qualification and the subsequently discovered
+redirect-host environment boot repair remain assessment/Fly-owned.
 
 ## Prior Fly-hostname endpoint validation — 11 October 2026
 
