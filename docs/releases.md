@@ -460,3 +460,16 @@ The separately approved catalog rollout uses server [private revision withheld]/
 (workflow 38144732991) and requires independent deployment/catalog qualification
 before joining the release baseline. The [private revision withheld]/[private revision withheld] evidence remains
 point-in-time and is not inherited by that newer image. No customer tags/assets are published.
+
+## Focused changed-native/client qualification
+
+The[private revision withheld]/[private revision withheld] catalogue deployment is independently qualified; the later
+UTF-8 catalogue repair[private revision withheld] passes exact-source focused client qualification:
+five typed HTTP groups, Portuguese/German catalogue and named reads, five HTTP/SSH
+parity cases, invalid-index publication safety and TLS3 boundaries. Recorded
+69source/75test/11native hashes match committed and after-run inputs. The server
+full340 CT/66 EUnit/75 JS/native/10 bootstrap suite also passes. Native d6 is
+unchanged by the UTF-8 repair and the client decoder remains strict. Earlier broad
+protocol integration remains separately attributed. Exact repaired deployment/
+public qualification and real Turnstile/email acceptance remain release gates.
+No customer tags/assets are published.

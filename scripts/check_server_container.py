@@ -46,7 +46,11 @@ def main():
     parser.add_argument('--go-client', type=Path, default=ROOT.parent / 'bibleit-go')
     parser.add_argument('--baseline', type=Path)
     parser.add_argument('--imports', action='store_true', help='include server import-access/publication suite cases')
+    parser.add_argument('--catalog-only', action='store_true', help='only sparse catalogue/read/publication compatibility, without broad protocol repetition')
+    parser.add_argument('--revision', help='exact assessed source revision for focused catalogue qualification')
     args = parser.parse_args()
+    if args.catalog_only and (args.imports or not args.revision):
+        parser.error('--catalog-only requires --revision and excludes --imports')
     server = args.server.resolve()
     with tempfile.TemporaryDirectory(prefix='bibleit-isolated-integration-') as directory:
         temporary = Path(directory)
@@ -86,6 +90,22 @@ def main():
                 'files_sha256': native_before,
             },
         }
+        if args.catalog_only:
+            revision = run(['git', '-C', str(server), 'rev-parse', args.revision], capture_output=True).stdout.strip()
+            for path, digest in before.items():
+                committed = subprocess.run(['git', '-C', str(server), 'show', revision + ':' + path],
+                                           check=True, capture_output=True).stdout
+                if hashlib.sha256(committed).hexdigest() != digest:
+                    raise RuntimeError('Erlang input differs from assessed catalogue revision: ' + path)
+            native_pointer = run(['git', '-C', str(server), 'ls-tree', revision, 'libbibleit'], capture_output=True).stdout.split()[2]
+            if native_head != native_pointer:
+                raise RuntimeError('native checkout does not match assessed catalogue revision')
+            for path, digest in native_before.items():
+                committed = subprocess.run(['git', '-C', str(native), 'show', native_head + ':' + path],
+                                           check=True, capture_output=True).stdout
+                if hashlib.sha256(committed).hexdigest() != digest:
+                    raise RuntimeError('native input differs from assessed revision: ' + path)
+            metadata['qualified_source_revision'] = revision
         (sources / 'server-metadata.json').write_text(json.dumps(metadata))
         build = temporary / 'tools'
         build.mkdir()
@@ -122,7 +142,10 @@ ENV PATH="/usr/local/go/bin:$PATH" GOTOOLCHAIN=local GOCACHE=/tmp/go-cache GOMOD
                  '--mount', f'type=bind,src={results},dst=/results',
                  '--env', 'BIBLEIT_TEST_DATABASE_URL=postgresql://bibleit_test:bibleit-test-only@127.0.0.1:5432/bibleit_test?sslmode=disable',
                  image, 'python3', '/sources/bibleit-cli/scripts/prepare_server_container.py',
+                 *(['--catalog-only'] if args.catalog_only else []),
                  *(['--imports'] if args.imports else [])])
+            if before != fingerprints(server) or native_before != native_fingerprints(native):
+                raise RuntimeError('server/native inputs changed during validation')
             if args.baseline:
                 shutil.copy2(results / 'server-baseline.json', args.baseline)
         finally:

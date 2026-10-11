@@ -95,6 +95,25 @@ verification remain pending. The newer catalog rollout uses server [private revi
 (workflow 38144732991) and needs independent deployment/catalog qualification.
 This [private revision withheld]/[private revision withheld] evidence is point-in-time and does not qualify the later image; no client runtime change is needed here.
 
+Focused changed-native qualification at server[private revision withheld]/native [private revision withheld] passes
+five typed HTTP groups (Portuguese/German catalogue and accented named reads),
+five HTTP/SSH parity cases, invalid-index rejection preserving the prior sparse
+generation and three verified TLS boundaries. All69source/75test/11native hashes
+match committed inputs and remain unchanged after the run. Full independent
+HTTP/SSH/auth/Live/import proof remains at[private revision withheld]/f6; it is not claimed as repeated
+on the later native/source. The fixture builds d6 and its NIF from frozen inputs,
+uses synthetic66-book sparse data and removes its unique disposable database.
+Report contract/server-catalog-validation.json is synchronized with the Go client;
+full ignored log is build/validation/catalog-native-validation-2026-10-11.log.
+
+The original[private revision withheld]/d6 deployment is independently qualified by405 source hashes,
+eight stages,20 actual-image checks/native amd64, matching published/running
+digest and clean fixtures; public boundary23/alias39 passes each family. The
+focused client run found a server localized-literal UTF-8 bug, and repair[private revision withheld]
+now passes server340 CT/66 EUnit/75 JS/native65536/10 bootstrap. Exact repaired
+image/public-edge qualification remains pending assessment/Fly; do not reuse the
+old image's proof. Real Turnstile/email acceptance remains pending separately.
+
 ## Prior Fly-hostname endpoint validation — 11 October 2026
 
 Client runtime 867dcbe and documentation follow-up b081081 use the fixed production
