@@ -69,7 +69,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-24.04, macos-15, windows-2025]
+        os: [ubuntu-24.04, macos-15, windows-2025, windows-11-arm]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 20
     steps:
@@ -87,6 +87,14 @@ jobs:
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: '3.13'
+      - name: Require native Windows ARM64 execution
+        if: matrix.os == 'windows-11-arm'
+        shell: pwsh
+        run: |
+          if ([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString() -ne 'Arm64') {
+            throw 'Windows ARM64 validation requires an ARM64 operating system'
+          }
+          python -c "import platform; assert platform.machine().lower() in ('arm64', 'aarch64'), platform.machine()"
       - name: Download exact candidate inputs from this run
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
