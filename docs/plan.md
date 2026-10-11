@@ -765,3 +765,22 @@ or packaging-code transfer: CLI owns archive/formula generation and candidate
 installer tests; homebrew-tap owns the released formula, updater and tap CI.
 After repaired production acceptance and approved version/customer access,
 publish the CLI assets, run the tap updater and validate/review its formula PR.
+
+
+### Deployment packaging blocker
+
+Workflow38162034582 failed before image publication/deployment: the production
+release allowlist omitted SQL008. Local runtime344 CT/68 EUnit qualification
+remains valid, but it did not prove the assembled release contained the migration.
+Production is unchanged at font-only14628f3/image28fb9a0b, so replay remains failed.
+The assessment prepared a packaging fix and early SQL-manifest coverage; staging
+all eight migrations and rejecting omission pass. No final corrected image is
+qualified yet, and the packaging correction changes no runtime logic.
+
+Server main now also includes Reader changes the user chose not to deploy. The
+Fly deployment owner is requesting approval for a narrow security-release branch
+exception to its main-only workflow. Keep Reader source preserved and excluded
+from this deployment; do not infer publication/deployment approval from private
+source pushes. After that approval, qualify the exact corrected source/image,
+verify all eight migrations/startup checks and digest parity, deploy, then rerun
+genuine fresh-token/replay acceptance. The production gate remains open.

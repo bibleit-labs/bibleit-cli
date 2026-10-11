@@ -545,3 +545,11 @@ The replay guard is now committed as server d160773/native d6e31dc, with full
 344 CT/68 EUnit/75 JS/bootstrap/native validation and focused concurrency/restart/
 expiry/database-error/HTTP regression checks green. Deployment image qualification
 and genuine fresh-token/replay retest remain required before gate closure.
+
+Replay deployment build38162034582 subsequently failed before publication: SQL008
+was missing from the explicit release allowlist. A staged packaging correction
+and early eight-SQL/omission coverage pass; production is unchanged and real
+replay still fails there. Final corrected-image qualification awaits the Fly
+owner's narrow security-release branch approval, excluding undeployed Reader
+changes on server main. Only after that rollout can real-provider retesting close
+the gate. Customer CLI release and tap formula publication remain held.

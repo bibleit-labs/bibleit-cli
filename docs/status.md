@@ -82,7 +82,7 @@ suite passes 337 CT/63 EUnit/71 JavaScript/native 65536/10 bootstrap checks.
 | Native HTML form/browser approval repair | Complete for technical admission | Deployed 34d80f8 real requestSubmit carries canonical Origin/Referer, passes CSRF and reaches missing-token denial; same-origin HTML policy retains sensitive no-referrer; provider traffic blocked, no account/email |
 | Real Turnstile fresh-token acceptance | Complete, human confirmed | Original helper freshAcceptedBeforeInputValidation=true; real signup also completed; source14628f3, assessment ledger a40d27d |
 | Actual email delivery and verification | Complete, human confirmed | Check-email page, delivered message and verification into the new account confirmed; identifiers and message contents omitted |
-| Real Turnstile replay rejection | Repair committed; deployment/real retest pending | d160773 local full344 CT/68 EUnit/75 JS/bootstrap/native checks pass; shared atomic claim fixes repeated-provider-success HTTP regression; genuine provider closure still required |
+| Real Turnstile replay rejection | Packaging/deployment blocked; real gate open | d160773 local full suite passes; workflow38162034582 caught missing SQL008 before deploy; staged packaging fix passes coverage; narrow security-release approval, final image qualification and real retest pending |
 
 Progress: **6/7 public acceptance items complete**; the client increment remains
 4/4. The preceding technical probes qualified source c586107, runtime repair ef63e91/native f6fed37,
@@ -1098,3 +1098,11 @@ Replay repair d160773 is committed and full-suite green:344 CT/68 EUnit/75 JS/
 Exact deployment and genuine fresh-token/replay acceptance remain open. All
 remaining older work branches are contained in main; no transfer to Homebrew is
 waiting. The tap formula update still requires approved published CLI assets.
+
+
+Production-image workflow38162034582 failed before publish/deploy because SQL008
+was absent from the release allowlist. Production remains14628f3/image28fb9a0b.
+The packaging fix and early eight-migration/omission checks pass staging; final
+image qualification is pending. Fly owns requesting the narrow security-release
+branch exception, since main also includes Reader changes not approved to deploy.
+No real-provider gate is closed by these local/staging checks.
