@@ -211,7 +211,7 @@ This is a frozen development snapshot, not deployed compatibility certification.
 The server assessment's latest independent local full suite passed 331 integration,
 51 Erlang unit, 71 JavaScript, native and ten SSH-bootstrap tests. Its updated
 17 final-image checks passed on ARM64 and separately on native Linux amd64 at
-f54667c; see Native amd64 server validation below. Campaign progress stays 24/25,
+f5f1736; see Native amd64 server validation below. Campaign progress stays 24/25,
 leaving approved Fly boundary verification. The production entrypoint,
 final image and management WebSockets are outside this client integration runner.
 The date here is Europe/Berlin; baseline dates use UTC.
@@ -475,15 +475,15 @@ agreed committed release and the approved actual target, not only local image te
 Coordinated with the assessment chat on 11 October 2026. It owns server source,
 CI and ledger changes and prepared an isolated snapshot on the private server
 branch security-native-validation/package-25, preserving shared main. Final
-[native run 38100648994](https://github.com/bibleit-labs/bibleit-server/actions/runs/38100648994)
-passed at server f54667c26edb4728d7df041f3bcd5a2af5897d19 with native submodule
+[native run 38101109368](https://github.com/bibleit-labs/bibleit-server/actions/runs/38101109368)
+passed at server f5f1736b723096e0e3bd80f817ea6701e7856cc1 with native submodule
 f6fed37919c848b1aa0208900af992a5e8a507f2. The server repository remains private.
 
 Downloaded artifact verification confirms:
 
 - Native Linux x86_64 host and Docker daemon, and a linux/amd64 image, without
   ARM-host emulation or a runtime workaround. Immutable validation image identity:
-  sha256:8b6a1b9d97a79227e72f611b3509199a89420339a3198334f2e00c40ec2c91b9.
+  sha256:ab28d63404454a94ac1d891e3d0ae1e042a8ab559c314403c0de37f6adf42706.
 - A clean committed snapshot with 389 tracked-file hashes. All existing client
   baseline hashes match: 67 source, 66 test and 11 native inputs. Two newer boundary
   test files are additional evidence; the older independent client baseline remains intact.
@@ -496,7 +496,13 @@ Downloaded artifact verification confirms:
   IPv6, outage/restart recovery and persisted key/legacy-volume identity.
 - All eight validation stages exit zero; the fixture driver performs owned cleanup
   and both owned image-tag cleanup codes are zero. The artifact's report.json SHA256
-  is 31f928788a726035ae092778dbcbc73fe17af49f7a4df2ab54e537a79ee38378.
+  is 32402859f8740494c71d3d2a6b6e185474dddf7e69cf55a1c7f30ada0eecfce8.
+
+The final rerun also validates the repository-transfer documentation and full-SHA
+Node24 Checkout/Upload Artifact pins. Artifact upload succeeds, the completed job
+has zero annotations and its log contains no Node20 deprecation warning. The
+initial f54667c native proof remains valid; this rerun records the final workflow
+and packaged documentation inputs without changing application/native source.
 
 The native job runs image/native/bootstrap checks, not the 331-case full CT suite.
 The separate local full retest passes 331 integration, 51 Erlang unit, 71 JavaScript,
