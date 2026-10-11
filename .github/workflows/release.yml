@@ -37,6 +37,7 @@ jobs:
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@v6
       - uses: actions/download-artifact@v8
         with:
           name: candidate-assets
@@ -50,4 +51,4 @@ jobs:
         shell: bash
         run: |
           gh release create "$VERSION" assets/* --verify-tag --draft \
-            --title "Bibleit CLI $VERSION" --generate-notes
+            --title "Bibleit CLI $VERSION" --notes-file CHANGELOG.md
