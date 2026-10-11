@@ -482,9 +482,9 @@ canonical-deployment-validation.json. Real Turnstile backend success/replay and 
 email delivery/verification remain open.
 No customer tags/assets are published.
 
-## Master CI and draft release generation — 11 October 2026
+## Main CI and draft release generation — 11 October 2026
 
-`master` is the integration/default branch for CLI, Go client and tap. Native CI
+`main` is the integration/default branch for CLI, Go client and tap. Native CI
 runs build, race tests, vet and CLI runtime/shell checks on Linux, Windows and
 macOS. CLI go.mod/go.sum pin client snapshot
 `v0.0.0-20261011144051-464d86d7dd41`; CI and packaging use `GOWORK=off`, with
@@ -495,7 +495,7 @@ release version when that release is ready.
 The candidate workflow builds six archives once and validates those identical
 artifacts with native installers, PowerShell, Homebrew and Scoop. It is reusable
 by `release.yml`. Pushing a `v*` tag invokes native tests, verifies the tagged
-commit belongs to master, builds a clean standalone candidate and runs all native
+commit belongs to main, builds a clean standalone candidate and runs all native
 installer jobs before creating a **draft** GitHub release with archives,
 checksums, manifest, Bash/PowerShell installers, formula and Scoop manifest.
 Existing releases are not overwritten. No tag is created by branch pushes.
@@ -516,7 +516,7 @@ Homebrew install/test/completion/reinstall/uninstall checks on macOS and Linux.
 Merge the reviewed formula only after those checks pass. Cross-repository updater
 access remains Contents-read only; PR creation uses the tap's own GITHUB_TOKEN.
 
-Master CI verification: all 12 hosted jobs pass at CLI 13e4b72, Go 464d86d and
+Main CI verification: all 12 hosted jobs pass at CLI 13e4b72, Go 464d86d and
 tap a41e453. Native CLI run 38158698440, standalone package/installers run
 38158698450, Go run 38158759103, tap validation 38158709825 and tap access
 38158727488 are linked in status.md. The exact candidate manifest is clean,
