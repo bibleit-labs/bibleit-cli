@@ -40,8 +40,14 @@ public constructors and fixed SSH port 22 are unchanged during the tests.
 Host trust stores/ports and production data are untouched. Both baselines match
 68 source, 70 test and 11 native input fingerprints after the run.
 
-Fresh private native/client and CLI candidate matrix results will be recorded here
-once complete. These are development workspace candidates, not standalone release
+Fresh private native matrices pass on all three platforms:
+
+- [Go client b081081](https://github.com/bibleit-labs/bibleit-go/actions/runs/38125983246).
+- [CLI 26bbfaa](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38126046169), including Windows verified-TLS process checks and Linux Bash/Zsh/Fish.
+
+The [candidate matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38126046149)
+passes on all three platforms with the same exact inputs, including native
+Homebrew, Scoop, Bash and PowerShell 7/5.1 lifecycle checks. These are development workspace candidates, not standalone release
 provenance or a new public-edge qualification.
 
 ## Final assessed deployment — 11 October 2026
