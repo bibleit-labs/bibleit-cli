@@ -540,3 +540,8 @@ The improved human replay test subsequently confirms duplicate token acceptance,
 with CSRF/rate/continuity interference ruled out. Replay is now a failed gate,
 not merely inconclusive classification. Assessment repair and deployed fresh-token/
 replay retesting are required before draft publication or customer release.
+
+The replay guard is now committed as server [private revision withheld]/native [private revision withheld], with full
+344 CT/68 EUnit/75 JS/bootstrap/native validation and focused concurrency/restart/
+expiry/database-error/HTTP regression checks green. Deployment image qualification
+and genuine fresh-token/replay retest remain required before gate closure.
