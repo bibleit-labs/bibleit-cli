@@ -306,9 +306,10 @@ it on final changed release inputs rather than treating all tooling as unbuilt.
   Boot/public-origin and security-test edits previously outside package 24 are now
   included. A committed/deployed release freeze and production smoke checks remain pending.
 - CLI go.mod still requires bibleit-go v0.0.0. Draft CI now pins exact client 3bec5bc
-  in an ephemeral workspace and packages with --local. Fresh native/candidate CI
-  is pending this push; green draft CI does not certify standalone dependency
-  retrieval or production release provenance.
+  in an ephemeral workspace and packages with --local. Fresh client native and CLI
+  native/candidate matrices pass on all three platforms at client 3bec5bc / CLI
+  438c0ca; see native-validation.md for runs. Green draft CI does not certify
+  standalone dependency retrieval or production release provenance.
 - All three repositories are private. Generated ordinary GitHub release URLs do
   not authenticate customers. The intended open source launch requires approved
   public client/CLI/tap access, or a deliberately tested authenticated channel.
@@ -428,8 +429,9 @@ The assessment reports its local deployment review and full suite passing:
 65536-coordinate corpus and ten SSH-bootstrap regressions. Its isolated
 make test-deployment driver passed 16 final-image/PostgreSQL 18/TLS/recovery
 checks; owned containers, networks and volumes were cleaned up. Native checkouts
-remain clean at f6fed37. These are assessment-owned results. The fresh client compatibility evidence
-for the later server edits is recorded in Latest integration evidence above.
+remain clean at f6fed37. These are assessment-owned results. The fresh client
+compatibility evidence for the later server edits is recorded in Latest integration
+evidence above.
 
 Progress remains 24/25: package 25 has local evidence but no approved Fly target
 or deployed-boundary validation. The final local server image was validated on
