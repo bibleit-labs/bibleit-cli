@@ -215,3 +215,15 @@ cleanup procedure. Server source/production credentials remain outside this audi
 
 Sources: [Gitleaks](https://github.com/gitleaks/gitleaks),
 [GitHub sensitive-data removal guidance](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository).
+
+## Follow-up gate review — 2026-10-12
+
+The owner approved publicly retaining the audited operational records and personal
+commit metadata. This supersedes the pending disclosure decision in the original
+snapshot; no history rewrite is needed. The [gate review](security/launch-gate-review-2026-10-12.json)
+records a zero-finding delta scan of new history and refreshed hosted outputs.
+Actions are now pinned; SDK/CLI Actions PR creation/approval capability is disabled
+and verified, and SECURITY.md uses the approved security@bibleit.app contact.
+These completed changes supersede the corresponding original security gaps.
+Rulesets remain unavailable on the private plan; visibility and old-asset cleanup
+still require explicit approval under the [launch package](launch-approval.md).
