@@ -83,8 +83,13 @@ def main():
         before = hashlib.sha256(binary.read_bytes()).hexdigest()
         for path in ('etc/bash_completion.d/bibleit', 'share/zsh/site-functions/_bibleit', 'share/fish/vendor_completions.d/bibleit.fish'):
             assert (prefix / path).is_file(), path
+        def verify_notices():
+            for notice in ('LICENSE', 'THIRD_PARTY_NOTICES'):
+                assert (prefix / 'share' / formula_name / notice).read_bytes() == (Path(__file__).resolve().parents[1] / notice).read_bytes(), notice
+        verify_notices()
         run('reinstall', '--formula', '--build-from-source', name)
         assert hashlib.sha256(binary.read_bytes()).hexdigest() == before
+        verify_notices()
         run('test', name)
         # The disposable prefix has no dependent packages. Avoid Homebrew's
         # dependent checks/autoremove where supported by the installed Homebrew.
@@ -94,7 +99,7 @@ def main():
         assert not (prefix / 'Cellar' / formula_name).exists()
     report = Path(args.report)
     report.parent.mkdir(parents=True, exist_ok=True)
-    report.write_text(json.dumps({'platform': os.uname().sysname, 'architecture': os.uname().machine, 'version': version, 'local_cli_archives': True, 'isolated_prefix': True, 'checks': evidence}, indent=2) + '\n')
+    report.write_text(json.dumps({'platform': os.uname().sysname, 'architecture': os.uname().machine, 'version': version, 'local_cli_archives': True, 'isolated_prefix': True, 'redistribution_notices_verified': True, 'checks': evidence}, indent=2) + '\n')
     print(f'PASS: Homebrew install/test/reinstall/completions/uninstall; report {report}')
 
 

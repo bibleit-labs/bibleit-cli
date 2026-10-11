@@ -28,7 +28,7 @@ jobs:
       GOTOOLCHAIN: local
       GOWORK: off
       GOPRIVATE: github.com/bibleit-labs/bibleit-go
-      CANDIDATE_VERSION: ${{ inputs.version || 'v0.0.1-ci.1' }}
+      CANDIDATE_VERSION: ${{ inputs.version || 'v0.0.2-ci.1' }}
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-go@v6
