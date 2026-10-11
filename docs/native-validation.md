@@ -28,8 +28,10 @@ build/validation/package-24-server-baseline-2026-10-11.json` passed in the isola
 Linux/arm64 namespace against server [private digest withheld] plus
 assessment working-tree changes, with native [private digest withheld].
 The refreshed baseline records 67 source, 66 test and 11 native build-input hashes.
-All inputs match after the run; native code is rebuilt and the disposable database
-is removed. Client and CLI baseline bytes match; no client runtime change was needed.
+All inputs matched immediately after the run; native code was rebuilt and the
+fixture database removed. Later package-25 boot/public-origin and security-test
+edits are outside this snapshot; the native input set still matches. Client and
+CLI baseline bytes match; no client runtime change was needed.
 
 Coverage passes: 34 decoder/18 encoder fixtures, seven security cases, 11 HTTP
 subtests, real OpenSSH subscription/pause/reconnect/delete closure and stable output,
@@ -43,6 +45,17 @@ The assessment's separate final suite passes 324 integration, 50 Erlang unit,
 178 reviewed resources; Linux build/runtime checks pass. Campaign is 24/25,
 with final-image/Fly verification still open. These results do not certify a
 production endpoint or a committed/deployed release baseline.
+
+Fresh hosted client and CLI checks passed on these exact inputs:
+
+- Client 3c43133: [Windows/macOS/Ubuntu native matrix](https://github.com/bibleit-labs/bibleit-go/actions/runs/38098572121).
+- CLI 990215d with exact client 3c43133: [native matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38098645524) and [candidate matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38098645722), all three platforms.
+
+Candidate validation covers six-target packaging, native installers, PowerShell
+7/5.1 replacement/failure paths, Scoop and macOS Homebrew. These are workspace/
+development-endpoint builds; production packaging/customer downloads remain open.
+No client runtime or integration harness change was required; later documentation
+commits do not change the tested inputs' runtime behavior.
 
 ## Assessment HTTP/SSH compatibility refresh — 11 October 2026
 
@@ -66,8 +79,8 @@ build/validation/assessment-final-integration-2026-10-11.log.
 The broader assessment's package 22 full suite also passed: 310 integration
 cases, 48 Erlang unit tests, 71 JavaScript tests and native C programs, no skips.
 The assessment ledger/log and its chat confirm this separate result. Campaign
-progress is 22/25; combined faults/restore, final dependency/TLS/SSH review and
-Fly deployment verification remain, so overall final sign-off is still pending. Production URLs and a committed/
+progress was 22/25 at that earlier snapshot; combined faults/restore, final
+security review and Fly deployment verification were still open, so overall final sign-off is still pending. Production URLs and a committed/
 deployed release baseline remain open. The prior named-profile removal and
 platform evidence below remains historical; draft CI now pins client 8de21e9,
 whose changes are the baseline and contract documentation, not client runtime.
