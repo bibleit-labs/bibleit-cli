@@ -51,7 +51,7 @@ client's supported operations and limits.
 
 [Release maintenance](releases.md) owns archive/checksum, Bash/PowerShell,
 Homebrew and Scoop checks. Corrected v0.0.2 is staged privately. Windows
-PowerShell 7/5.1 and Scoop checks passed on documentation candidate b802ea3;
+PowerShell 7/5.1 and Scoop checks passed on final package candidate f0c080c;
 validate the final approved artifacts before release. A build or Linux PowerShell
 parser test alone does not close those gates. Native code tests passed
 on the three hosted platforms at the recorded candidate source; current artifact

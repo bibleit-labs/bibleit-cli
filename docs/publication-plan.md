@@ -239,6 +239,10 @@ payload has been applied.
 
 ## 6. Approval and staged cutover
 
+The [concrete approval package](launch-approval.md) records the current PRs,
+release inputs, disclosure choices, exact cleanup and launch sequence. SDK/CLI
+Actions PR creation/approval is now disabled; rulesets remain feature-blocked.
+
 Homebrew needs public access to both the tap and the CLI release assets; opening
 the tap alone only enables discovery/tapping. The Go library is not a runtime
 dependency of the downloaded executable. If Homebrew distribution is prioritized,

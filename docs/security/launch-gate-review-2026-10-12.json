@@ -1,0 +1,94 @@
+{
+  "reviewed": "2026-10-12",
+  "scanner": "Gitleaks 8.30.1",
+  "config_sha256": "71386bce4bc60f9a54b3b9c6e8505aaa4e6b9762a896dc3de798ae1928ead227",
+  "repositories": [
+    {
+      "repository": "bibleit-go",
+      "baseline": "11a2858adff4545d0f57d665f4145671fd0963c8",
+      "reviewed_head": "5bd8418a774137533a5defb7d7063b0bd47ec99c",
+      "new_commits": 4,
+      "gitleaks_new_history_findings": 0
+    },
+    {
+      "repository": "bibleit-cli",
+      "baseline": "f121fa87ecb232f7441d93bde24189061117ca63",
+      "reviewed_head": "396e456dd1479ca8b9682e6c482cd124b450e673",
+      "new_commits": 11,
+      "gitleaks_new_history_findings": 0
+    },
+    {
+      "repository": "homebrew-tap",
+      "baseline": "b7bed330459f9c3797b4230363fe7f0cd2f71ec7",
+      "reviewed_head": "278ce5515a0e3aeeaaafc3f9c202d9f25c6172a4",
+      "new_commits": 11,
+      "gitleaks_new_history_findings": 0
+    }
+  ],
+  "validation_logs_scanned": [
+    {
+      "repository": "bibleit-cli",
+      "run": 38177668163
+    },
+    {
+      "repository": "bibleit-cli",
+      "run": 38176879632
+    },
+    {
+      "repository": "homebrew-tap",
+      "run": 38178224204
+    },
+    {
+      "repository": "bibleit-go",
+      "run": 38176883572
+    }
+  ],
+  "validation_log_findings": 0,
+  "old_release_assets_reconciled": 12,
+  "deficient_ci_artifacts_reconciled": 38,
+  "deficient_ci_artifact_digests": "all unchanged and still present",
+  "actions_permissions_applied": {
+    "bibleit-go": {
+      "default_workflow_permissions": "read",
+      "can_approve_pull_request_reviews": false
+    },
+    "bibleit-cli": {
+      "default_workflow_permissions": "read",
+      "can_approve_pull_request_reviews": false
+    },
+    "homebrew-tap": "unchanged; formula PR creation retained"
+  },
+  "rulesets": "HTTP 403 under current private plan; payload corrected against official schema, not applied",
+  "limits": [
+    "Delta audit supplements 2026-10-11 full audit; no new full-hosted inventory or production audit.",
+    "Operational narratives and personal commit metadata need disclosure approval.",
+    "No visibility change, merge, tag/release or deletion."
+  ],
+  "hosted_refresh": {
+    "inventory": [
+      {
+        "repository": "bibleit-go",
+        "new_completed_runs": 2,
+        "new_artifacts": 0
+      },
+      {
+        "repository": "bibleit-cli",
+        "new_completed_runs": 12,
+        "new_artifacts": 12
+      },
+      {
+        "repository": "homebrew-tap",
+        "new_completed_runs": 10,
+        "new_artifacts": 2
+      }
+    ],
+    "new_downloads": 39,
+    "unavailable": 0,
+    "findings": 0,
+    "unique_nested_packages": 24,
+    "all_new_packages_have_notices": true,
+    "binary_instances_scanned": 24,
+    "binary_byte_pattern_hits": 0,
+    "scope": "All new completed run attempts and unexpired artifacts relative to the original audit snapshot, plus current PR/comment/release metadata; snapshot captured before fresh head-check runs completed."
+  }
+}

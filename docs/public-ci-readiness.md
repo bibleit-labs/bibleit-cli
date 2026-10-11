@@ -1,7 +1,9 @@
 # Public CI and repository settings preparation
 
 Prepared 2026-10-11. All repositories remain private. Workflow changes are on
-private review branches; no rulesets, visibility or secret settings were changed.
+private review branches. On 2026-10-12 SDK/CLI Actions PR creation/approval
+capability was disabled, with read-only defaults retained. Tap permissions remain
+unchanged. No rulesets, visibility or secrets were changed.
 
 ## Contributor and release workflows
 
@@ -42,8 +44,8 @@ No bypass actor is proposed. Validate live check contexts and the final merge
 method before enabling the rules, especially around the tap updater.
 
 Read-only inspection found default workflow permissions read and PR creation/
-approval capability enabled in all three repos. Recommend disabling that
-capability for SDK and CLI. The tap needs it enabled to create formula PRs; its
+approval capability enabled in all three repos. That capability was disabled for SDK and CLI on 2026-10-12 and read back from
+the API. The tap needs it enabled to create formula PRs; its
 workflow never approves a review. Configure available secret scanning, push
 protection, dependency alerts and private vulnerability reporting at launch,
 and verify each feature rather than inferring it from an omitted API field.
