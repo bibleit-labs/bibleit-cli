@@ -14,11 +14,12 @@ bibleit is the Go CLI for Bibleit Server protocol version 1, built on the
 implements a useful, typed subset of the API instead of providing a raw-command
 escape hatch, so shell input cannot accidentally become protocol input.
 
-The service address is controlled by the project, **`https://legacy.bibleit.example`**.
+The service address is controlled by the project, **`https://bibleit.app`**.
 Customers cannot select another endpoint through constructor options, CLI flags,
 environment variables, or saved configuration. HTTPS and OpenSSH host verification
 remain enabled. See the
-[endpoint policy](docs/endpoint-policy.md).
+[endpoint policy](docs/endpoint-policy.md). The custom-domain cutover is being
+qualified; customer release publication remains paused. SSH uses `bibleit.app:22`.
 
 The CLI stores one credential configuration for the fixed service:
 

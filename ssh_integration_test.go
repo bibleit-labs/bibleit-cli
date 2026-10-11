@@ -23,7 +23,7 @@ func TestServerSSHSubscription(t *testing.T) {
 	if os.Getenv("BIBLEIT_CLIENT_TEST_DISPOSABLE") != "1" {
 		t.Skip("run python3 scripts/check_server.py --integration")
 	}
-	if defaultSSHServer != "legacy.bibleit.example:22" || os.Getenv("BIBLEIT_FIXED_ENDPOINT_FIXTURE") != "1" {
+	if defaultSSHServer != "bibleit.app:22" || os.Getenv("BIBLEIT_FIXED_ENDPOINT_FIXTURE") != "1" {
 		t.Fatal("fixed production SSH address requires the isolated fixture gateway")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
@@ -166,4 +166,29 @@ func TestServerSSHSubscription(t *testing.T) {
 	if err != nil || !acknowledged {
 		t.Fatalf("closure after reconnect: %v", err)
 	}
+	t.Run("migration rejects changed host key", func(t *testing.T) {
+		foreign := filepath.Join(t.TempDir(), "foreign_host")
+		if output, err := exec.Command("ssh-keygen", "-q", "-t", "rsa", "-b", "2048", "-N", "", "-f", foreign).CombinedOutput(); err != nil {
+			t.Fatalf("create foreign fixture host key: %v %s", err, output)
+		}
+		public, err := os.ReadFile(foreign + ".pub")
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(knownHosts, []byte(sshHostKeyAlias+" "+strings.TrimSpace(string(public))+"\n"), 0600); err != nil {
+			t.Fatal(err)
+		}
+		base, _, err := sshCommand(cfg, bibleit.PingCommand())
+		if err != nil {
+			t.Fatal(err)
+		}
+		argv := append([]string{"-o", "UserKnownHostsFile=" + knownHosts, "-o", "BatchMode=yes"}, base.Args[1:]...)
+		child := exec.CommandContext(ctx, base.Path, argv...)
+		child.Env = append(os.Environ(), "LC_ALL=C")
+		output, err := child.CombinedOutput()
+		if err == nil || !bytes.Contains(output, []byte("REMOTE HOST IDENTIFICATION HAS CHANGED")) {
+			t.Fatalf("changed service key accepted or wrong failure: %v %s", err, output)
+		}
+	})
+
 }

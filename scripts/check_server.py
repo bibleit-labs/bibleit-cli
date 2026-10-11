@@ -145,9 +145,11 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
               _=bibleit_security_SUITE:init_per_testcase(go_client,Config),
               ok=gen_server:stop(bibleit_http_listener),
               application:set_env(bibleit_server,http,#{port=>8080,host=>{127,0,0,1}}),
+              application:set_env(bibleit_server,http_public_origin,<<"https://bibleit.app">>),
+              application:set_env(bibleit_server,http_redirect_hosts,[<<"legacy.bibleit.example">>,<<"live.bibleit.app">>]),
               {ok,FixedHTTP}=bibleit_http_listener:start_link(),unlink(FixedHTTP),
               8080=ranch:get_port(bibleit_http),
-              io:format("Fixed service integration: https://legacy.bibleit.example (verified fixture TLS, no client endpoint override)~n"),
+              io:format("Fixed service integration: https://bibleit.app (verified fixture TLS, no client endpoint override)~n"),
               gen_server:stop(bibleit_rate_limit),
               application:set_env(bibleit_server,rate_limits,#{ssh_command=>#{limit=>100},ssh_search=>#{limit=>100}}),
               {ok,L}=bibleit_rate_limit:start_link(),unlink(L),
@@ -205,7 +207,9 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
                   {CLI,{exit_status,Status}}->{error,{cli_subscription_failed,Status}} after 30000->error(cli_subscription_timeout) end end,
                 {GoResult,CLIWait()}
               after bibleit_ssh_listener:terminate(normal,SSHListener) end
-              after bibleit_security_SUITE:end_per_suite(Config) end,
+              after application:unset_env(bibleit_server,http_public_origin),
+                    application:unset_env(bibleit_server,http_redirect_hosts),
+                    bibleit_security_SUITE:end_per_suite(Config) end,
               application:unset_env(bibleit_server,rate_limits),
               DB=bibleit_test_database:start(),
               UnitResult=try eunit:test([bibleit_cli_auth_tests,bibleit_ssh_key_cb_tests,bibleit_protocol_request_tests],[verbose])
@@ -239,8 +243,9 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
     if args.baseline:
         baseline['verification'].update({
             'request_decoder_cases': len(json.loads(fixture.read_text())),
-            'fixed_http_endpoint': 'https://legacy.bibleit.example' if args.integration else None,
-            'fixed_ssh_endpoint': 'legacy.bibleit.example:22' if args.integration else None,
+            'fixed_http_endpoint': 'https://bibleit.app' if args.integration else None,
+            'fixed_ssh_endpoint': 'bibleit.app:22' if args.integration else None,
+            'ssh_host_key_alias': 'legacy.bibleit.example' if args.integration else None,
             'tls_boundary_cases': 3 if args.integration else 0,
             'egress_disabled_fixture': args.integration,
             'response_encoder_cases': sum('server_response_term' in case for case in json.loads((root/'contract/fixtures/responses-v1.json').read_text())),

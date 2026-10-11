@@ -45,11 +45,15 @@ type outputRecord struct {
 
 const sshUser = "bibleit-cli"
 
+// Preserve the verified service identity through the custom-domain migration.
+// This is a known_hosts lookup alias, never the network destination.
+const sshHostKeyAlias = "legacy.bibleit.example"
+
 const defaultWebURL = bibleit.ServerEndpoint
 
 var (
 	cliVersion       = "dev"
-	defaultSSHServer = "legacy.bibleit.example:22"
+	defaultSSHServer = "bibleit.app:22"
 	cliHTTPClient    = &http.Client{Timeout: 15 * time.Second}
 )
 
@@ -453,7 +457,8 @@ func sshCommand(cfg config, command bibleit.Command) (*exec.Cmd, string, error) 
 	args = append(args,
 		"-o", "PreferredAuthentications=publickey",
 		"-o", "PasswordAuthentication=no", "-o", "KbdInteractiveAuthentication=no",
-		"-o", "StrictHostKeyChecking=accept-new", "-o", "ConnectTimeout=5")
+		"-o", "StrictHostKeyChecking=accept-new", "-o", "ConnectTimeout=5",
+		"-o", "HostKeyAlias="+sshHostKeyAlias)
 	args = append(args, "--", sshUser+"@"+targetHost, command.String())
 	ssh := exec.Command("ssh", args...)
 	ssh.Stdin = os.Stdin
