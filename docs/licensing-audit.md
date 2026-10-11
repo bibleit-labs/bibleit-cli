@@ -168,8 +168,8 @@ created. Checks passed:
 
 Subsequent corrected-release preparation is recorded in
 [release-v0.0.2-readiness.md](release-v0.0.2-readiness.md). Tap-owned native macOS
-Homebrew checks now pass; native Windows/Scoop and tap Linux validation remain
-blocked by GitHub Actions billing/spending limits. The SDK source needed no
+Homebrew and native Windows PowerShell 7/5.1, Scoop and tap Linux validation
+now pass on the final candidate, superseding the earlier billing block. The SDK source needed no
 licensing changes; the tap review branch now includes the corrected formula
 and notice validation.
 Private visibility was rechecked after this work; all three remain private.

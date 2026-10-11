@@ -34,7 +34,11 @@
                 "dismiss_stale_reviews_on_push": true,
                 "require_code_owner_review": false,
                 "require_last_push_approval": false,
-                "required_review_thread_resolution": true
+                "required_review_thread_resolution": true,
+                "allowed_merge_methods": [
+                  "squash",
+                  "rebase"
+                ]
               }
             },
             {
@@ -74,7 +78,10 @@
           },
           "rules": [
             {
-              "type": "update"
+              "type": "update",
+              "parameters": {
+                "update_allows_fetch_and_merge": false
+              }
             },
             {
               "type": "deletion"
@@ -119,7 +126,11 @@
                 "dismiss_stale_reviews_on_push": true,
                 "require_code_owner_review": false,
                 "require_last_push_approval": false,
-                "required_review_thread_resolution": true
+                "required_review_thread_resolution": true,
+                "allowed_merge_methods": [
+                  "squash",
+                  "rebase"
+                ]
               }
             },
             {
@@ -159,7 +170,10 @@
           },
           "rules": [
             {
-              "type": "update"
+              "type": "update",
+              "parameters": {
+                "update_allows_fetch_and_merge": false
+              }
             },
             {
               "type": "deletion"
@@ -204,7 +218,11 @@
                 "dismiss_stale_reviews_on_push": true,
                 "require_code_owner_review": false,
                 "require_last_push_approval": false,
-                "required_review_thread_resolution": true
+                "required_review_thread_resolution": true,
+                "allowed_merge_methods": [
+                  "squash",
+                  "rebase"
+                ]
               }
             },
             {
@@ -236,7 +254,10 @@
           },
           "rules": [
             {
-              "type": "update"
+              "type": "update",
+              "parameters": {
+                "update_allows_fetch_and_merge": false
+              }
             },
             {
               "type": "deletion"
@@ -249,5 +270,7 @@
         "can_approve_pull_request_reviews": true
       }
     }
-  }
+  },
+  "last_reviewed": "2026-10-12",
+  "workflow_permissions_applied": "2026-10-12: SDK/CLI PR creation and approval capability disabled; read default retained; tap unchanged."
 }
