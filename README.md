@@ -1,332 +1,229 @@
-# bibleit CLI
+# Bibleit CLI
 
-The CLI module is `github.com/bibleit-labs/bibleit-cli` and requires Go 1.27.1.
-Development uses local checkouts and authorized private CI validation branches.
-Public releases and tags remain paused. The independent Go client is the sibling
-`../bibleit-go` checkout. Create a local workspace with `go work init . ../bibleit-go`
-if `go.work` does not already exist, then build with `go build -o build/bibleit .`.
-`go.mod` uses an unreleased `v0.0.0` placeholder; it must be replaced with a real
-client release before publishing standalone CLI builds. No tags or binary releases
-are being published yet.
+Read and search Bible translations, manage Lives, and inspect your account from the terminal.
+The `bibleit` executable uses the [Bibleit Go client](https://github.com/bibleit-labs/bibleit-go)
+and connects to the project-managed service at `https://bibleit.app`.
+SSH commands connect to `bibleit.app:22`.
 
-bibleit is the Go CLI for Bibleit Server protocol version 1, built on the
-[Go client](https://github.com/bibleit-labs/bibleit-go). It
-implements a useful, typed subset of the API instead of providing a raw-command
-escape hatch, so shell input cannot accidentally become protocol input.
+## Installation
 
-The service address is controlled by the project, **`https://bibleit.app`**.
-Customers cannot select another endpoint through constructor options, CLI flags,
-environment variables, or saved configuration. HTTPS and OpenSSH host verification
-remain enabled. See the
-[endpoint policy](docs/endpoint-policy.md). The custom-domain cutover is being
-qualified; customer release publication remains paused. SSH uses `bibleit.app:22`.
+Version **v0.0.1** is available in [GitHub Releases](https://github.com/bibleit-labs/bibleit-cli/releases/tag/v0.0.1).
+The repositories and release assets are currently private, so installation requires
+an authorized GitHub account. Archives support macOS, Linux, and Windows on amd64 and arm64.
 
-The CLI stores one credential configuration for the fixed service:
+### While the repository is private
+
+Authenticate GitHub CLI with an account that has repository access, then download the release:
+
+```sh
+gh release download v0.0.1 --repo bibleit-labs/bibleit-cli --dir assets
+BIBLEIT_INSTALL_ASSETS="$PWD/assets" bash assets/install.sh v0.0.1
+```
+
+On Windows, use Windows PowerShell 5.1 or PowerShell 7:
+
+```powershell
+gh release download v0.0.1 --repo bibleit-labs/bibleit-cli --dir assets
+& .\assets\install.ps1 -Version v0.0.1 -AssetsDir .\assets
+```
+
+The default installation directory is `~/.local/bin` on macOS/Linux and
+`%LOCALAPPDATA%\Bibleit\bin` on Windows. Add it to your `PATH` if needed.
+Both installers check SHA-256 checksums and the binary version before replacing an existing executable.
+They do not require administrator access or edit your shell profile.
+
+### After public release access is enabled
+
+These commands are intended for the public launch. Unauthenticated installation
+is unavailable while the repositories remain private; fresh public installation checks are pending.
+
+Homebrew:
+
+```sh
+brew install bibleit-labs/tap/bibleit-cli
+```
+
+Bash:
+
+```sh
+curl -fsSL https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.1/install.sh | bash -s -- v0.0.1
+```
+
+PowerShell:
+
+```powershell
+Invoke-WebRequest -UseBasicParsing -Uri https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.1/install.ps1 -OutFile install.ps1
+& .\install.ps1 -Version v0.0.1
+```
+
+Release assets also include a Scoop manifest and archives for manual installation.
+See [distribution and release checks](docs/releases.md) for packaging and validation details.
+
+## Quickstart
+
+Sign in through your browser, then inspect the translations available to your account:
 
 ```sh
 bibleit auth login
 bibleit auth info
-bibleit --transport ssh auth login --identity ~/.ssh/bibleit_key
+bibleit translation list
+```
+
+Use an enabled translation slug from that list. For example, if `web` is enabled:
+
+```sh
+bibleit translation catalog web
+bibleit read web John 3 16
+bibleit search web "love"
+bibleit --format json account info
+```
+
+Book names come from the translation catalogue and may be localized. Book identifiers
+from the catalogue also work. Quote arguments containing spaces.
+
+For automation, provide an **API token** through your secret store as `BIBLEIT_TOKEN`.
+The CLI uses it for HTTP commands without saving or printing it.
+
+## Authentication and service address
+
+HTTP is the default transport. Browser login saves an HTTP credential; an environment
+API token takes precedence for data commands and `auth info`.
+
+SSH requires a key registered with your Bibleit account and OpenSSH on your machine:
+
+```sh
+bibleit auth login ssh --identity ~/.ssh/bibleit_key
+bibleit --transport ssh auth info
 bibleit --transport ssh live list
+```
+
+An explicitly selected identity requires its corresponding `.pub` file. OpenSSH
+verifies the server host key. HTTP and SSH credentials may belong to different
+accounts; `auth info` reports the identity for the selected transport.
+`BIBLEIT_TOKEN` applies only to HTTP. There is no automatic transport fallback.
+
+The CLI stores one credential configuration at `~/.bibleit/config.json`.
+`BIBLEIT_CONFIG` selects another configuration file. Unix permissions and Windows
+ACLs restrict saved credentials to the current user. SSH private keys stay in their original files.
+
+```sh
 bibleit auth logout
 ```
 
-HTTP is always the default. `--transport ssh` explicitly selects OpenSSH; there
-is no automatic fallback. `auth login ssh` is an alias for SSH login. SSH login
-caches an optional identity path without removing the saved HTTP token or changing
-the default transport. HTTP and SSH identities can belong to different accounts;
-`auth info` reports the actor for the selected transport. No named profiles,
-`--profile` or account-switching commands are provided. `BIBLEIT_PROFILE` is ignored.
-`--endpoint` is rejected and `BIBLEIT_ENDPOINT` is ignored.
+Logout revokes the saved HTTP credential and clears saved HTTP/SSH selections.
+Failed revocation preserves credentials for retry. It does not revoke an environment
+API token, remove SSH keys, or unregister them from your account.
 
-`auth login` opens browser authorization. Use `--identity` only with SSH.
-Logout revokes the cached HTTP credential and clears both cached credential
-selections; failed revocation preserves them for retry. Registered SSH keys and
-the agent remain under your control. Login/logout operate on saved credentials,
-not an environment token.
+The service address is fixed; there are no endpoint overrides or named profiles.
+HTTPS certificate and SSH host verification remain enabled.
+See the [endpoint and credential policy](docs/endpoint-policy.md) for binding and migration details.
 
-For automation, set `BIBLEIT_TOKEN` through your environment/secret store. It
-overrides the HTTP token for data commands and `auth info`, without being saved
-or printed. Explicit SSH commands ignore this HTTP-only token. Use `--` before
-literal command arguments that would otherwise be interpreted as global flags.
+## Commands
 
-Use Go **1.27.1**. With the local workspace configured, build and test from the repository root:
+Use `bibleit help` or `bibleit <command> --help` for usage.
 
-    go build -o cli .
-    go test ./...
+| Command | Purpose |
+| --- | --- |
+| `version` | Show the installed CLI version |
+| `auth login`, `auth info`, `auth whoami`, `auth logout` | Manage and inspect authentication |
+| `ping`, `server info`, `server help [topic]` | Inspect service availability and capabilities |
+| `account info`, `account quotas`, `account tokens` | Inspect account details and active token metadata |
+| `translation list` | List account translations |
+| `translation add\|remove\|info\|catalog <translation>` | Manage translations and inspect metadata/references |
+| `read <translation> <book> [chapter] [verse]` | Read a reference |
+| `search <translation> <query>` | Search a translation |
+| `live list`, `live create [name]` | Discover and create Lives |
+| `live <id> info\|stats\|start\|stop\|pause\|resume` | Inspect or control a Live |
+| `live <id> set name\|reference\|translations <value...>` | Update a Live |
+| `live <id> secret create\|rotate\|delete` | Manage a server-generated Live secret |
+| `live <id> stack info\|clear\|pop [count]` | Inspect or remove stack entries |
+| `live <id> stack push [translation] <book> [chapter] [verse]` | Add a reference to the stack |
+| `live <id> clear\|delete`, `live delete all` | Clear or delete Lives |
+| `--transport ssh live <id> subscribe` | Stream Live events |
 
-## Versioning
+Custom Live secrets are unsupported. Live subscriptions require SSH, start with a
+snapshot, and do not offer a replay cursor. Run the command again for a fresh snapshot
+after a disconnect. Ctrl+C closes the subscription.
 
-The CLI and server are released independently:
+The CLI version, server version, and protocol version are independent.
+Use `bibleit version` for the CLI and `bibleit server info` for the service.
+Ordinary source builds report `dev`.
 
-- Local CLI builds report `dev`; version tags and downloadable releases are paused.
-- The independent server version is reported by `bibleit server info`.
-- Protocol compatibility is reported separately as `protocol_version`.
+## Output and automation
 
-Use the local version command to inspect the installed client, and server info
-to inspect the server to which it is authenticated:
+The default output is a human-readable table. Select `--format raw` for finite
+protocol replies or `--format json` for the versioned JSON envelope.
+SSH subscriptions support `--format ndjson`, with one event per line.
+Errors go to stderr and display control characters safely.
+See the [output contract](docs/output.md).
 
-    bibleit version
-    # bibleit CLI version dev
-
-    bibleit server info
-    bibleit server help [topic]
-    bibleit account info
-    bibleit account quotas
-    bibleit account tokens
-    bibleit translation info <translation>
-    bibleit translation catalog <translation>
-    # includes version=<server version> and protocol_version=1
-
-The CLI version is independent of the server version. Local candidate packaging
-injects the chosen version; ordinary source builds continue to report `dev`.
-
-## Installation and release candidates
-
-Public installation is not available yet. Local packaging prepares six binary
-archives (macOS/Linux/Windows, amd64/arm64), SHA-256 checksums, Homebrew and Scoop
-manifests, and Bash/PowerShell installers. Everything stays local while
-publication is paused:
+Commands that delete Lives, clear content, pop stack entries, or rotate/delete
+secrets require confirmation. Interactive prompts require a terminal;
+automation must explicitly supply `--yes`:
 
 ```sh
-python3 scripts/package_release.py --local --version v0.1.0-dev.1 --output build/releases/local-dev-1
-python3 scripts/check_release.py --assets build/releases/local-dev-1
+bibleit --yes --format json live delete all
 ```
 
-See [release packaging and distribution](docs/releases.md) for local installer
-tests, future Homebrew/cURL/PowerShell/Scoop commands, and remaining release gates.
+Use this command only when you intend to delete all your Lives. Confirmation does
+not bypass server permissions. Mutations are not retried automatically.
+Use `--` before literal arguments that resemble global options.
 
-Commands:
-
-    bibleit version
-    bibleit auth login
-    bibleit auth login ssh [--identity <private-key>]
-    bibleit auth logout|info|whoami
-    bibleit ping
-    bibleit server info
-    bibleit account info|quotas|tokens
-    bibleit translation list
-    bibleit translation add|remove <translation>
-    bibleit read <translation> <book> [chapter] [verse]
-    bibleit search <translation> <query>
-    bibleit live list|create [name]|delete all
-    bibleit live <id> info|stats|start|stop|pause|resume|subscribe|clear|delete
-    bibleit live <id> set name|reference|translations <value...>
-    bibleit live <id> secret <secret>|create|rotate|delete
-    bibleit live <id> stack info|clear|pop [count]
-    bibleit live <id> stack push [translation] <book> [chapter] [verse]
-
-For web authentication, the CLI starts a temporary loopback callback, opens
-the project-managed service URL in the default browser, and asks the signed-in
-account to approve the terminal. The authorization code is protected with PKCE
-and exchanged for a persistent account token; the token never appears in the
-browser URL.
-
-For SSH authentication, the CLI first delegates identity selection to OpenSSH,
-including matching `~/.ssh/config` entries and keys loaded in your SSH agent.
-When `--identity` is supplied, the private key and its `.pub` file must both
-exist. The CLI uses `ssh-keygen` to validate Ed25519, RSA (at least 2048 bits),
-and ECDSA P-256/P-384/P-521 public keys. Its fingerprint must already be
-registered with an account. The SSH transport username is `bibleit-cli`; the
-server identifies the account from the key fingerprint, not that username.
-
-For the local SSH development server, generate a dedicated key and run:
-
-    ssh-keygen -t ed25519 -f ~/.ssh/bibleit_local_dev -C bibleit-local-dev
-    make -C ../bibleit-server run
-    go build -o cli .
-    ./cli auth login
-
-After web sign-in, open the dashboard and add the contents of
-`~/.ssh/bibleit_local_dev.pub` under **SSH keys**. Only then will SSH login
-succeed:
-
-    cat ~/.ssh/bibleit_local_dev.pub
-    ./cli --transport ssh auth login --identity ~/.ssh/bibleit_local_dev
-    ./cli --transport ssh live list
-
-On the first connection, OpenSSH saves a previously unseen server host key in
-`known_hosts`; it still rejects a host whose saved key later changes. Every
-SSH-backed command creates a fresh authenticated SSH connection using the
-cached settings.
-
-With email or OAuth configured, the equivalent web flow is:
-
-    ./cli auth login
-    ./cli live list
-
-Credentials are stored in `~/.bibleit/config.json`, with newly created
-directories mode `0700` and file writes mode `0600` on Unix. On Windows, each
-new config file receives a current-user-only ACL before credentials are written;
-failed ACL setup aborts saving. Atomic replacements retain these protections.
-`BIBLEIT_CONFIG` selects another file. Schema version 2 stores fixed HTTP/SSH
-service bindings, an optional access_token and SSH identity path. It contains
-no profiles or saved transport choice; private keys are never stored here.
-Foreign service bindings, old configuration files and legacy credential files are
-rejected before network access and never rewritten. Back up an old file and
-sign in with a fresh config; there is no automatic account selection or migration.
-Backing up an old file does not revoke its server credentials. Revoke obsolete CLI
-credentials in account settings when replacing the old configuration.
-
-If support announces a service restore with credential quarantine, existing API
-tokens and registered user SSH keys remain rejected. Wait for support to confirm
-your identity and access have been reconciled, then sign in again or obtain a fresh
-API token and re-register your SSH public key. Replace any old BIBLEIT_TOKEN value
-or automation secret too. See [service recovery](docs/releases.md#service-recovery-and-credentials).
-
-Output defaults to a readable table. Use `--format raw` to preserve finite
-protocol records, `--format json` for a version-1 typed record envelope, or
-`--format ndjson` for an SSH subscription with one object per record. Finite
-commands reject ndjson; subscriptions reject json. Error envelopes go to stderr
-and retain server metadata. Human tables escape embedded control characters.
-See [the stable output contract](docs/output.md) for types and examples.
-
-```sh
-bibleit --format json account tokens
-bibleit --transport ssh --format ndjson live <id> subscribe
-bibleit --format raw live list
-```
-
-Exit codes are stable:
-
-| Code | Meaning |
+| Exit code | Meaning |
 | --- | --- |
 | 0 | Success |
-| 1 | Network, server, or local failure |
-| 2 | Invalid CLI usage |
-| 3 | Authentication required or credential rejected |
+| 1 | Network, server, local failure, or cancellation |
+| 2 | Usage or confirmation required |
+| 3 | Authentication failure |
 | 4 | Permission denied |
-| 5 | Requested resource not found |
-| 6 | Conflict or quota rejection |
+| 5 | Not found |
+| 6 | Conflict or quota limit |
 | 7 | Rate limited |
-
-## Client development
-
-Keep `bibleit-go` beside this repository for joint development. The local workspace
-uses both modules (`go work init . ../bibleit-go`) and is ignored by Git. It is
-required while the client is unreleased. When publication resumes, pin a released
-client in `go.mod` and validate with `GOWORK=off`; published builds must not need
-a sibling checkout or local replacement.
-
-The real-server harness accepts `--go-client ../bibleit-go`; client integration
-tests compile from that checkout, while CLI integration tests compile here.
-It exercises public `NewClient(apiToken)` and `NewAuthClient()` constructors
-against an actual server at the fixed endpoint. If host port 8080 is busy, run
-`python3 scripts/check_server_container.py --baseline contract/server-baseline.json`.
-That runner freezes the sources and builds Linux NIFs in a disposable namespace,
-with no published ports and no access to the developer's running service.
-
-See the [item-by-item progress](docs/status.md),
-[operation inventory](contract/features.md), and [revised implementation plan](docs/plan.md), reviewed against the server
-working tree on 2026-10-09. The current CLI is a development draft; organization
-management and bearer-authenticated event watching are not implemented.
-
-The reusable [Go client](https://github.com/bibleit-labs/bibleit-go) owns validated customer commands,
-HTTP transport, and finite response decoding. The CLI owns browser login,
-credential storage, terminal output, and its OpenSSH adapter. The shared protocol contract
-and response fixtures are documented in [contract/README.md](contract/README.md).
-
-The CLI depends on the independent `github.com/bibleit-labs/bibleit-go` module.
-Python, Ruby, and Rust clients will live in `bibleit-python`, `bibleit-ruby`, and
-`bibleit-rust` repositories under `bibleit-labs`. They have not been implemented yet.
-
-Run a standalone client example with an existing account token:
-
-```sh
-cd ../bibleit-go
-BIBLEIT_TOKEN=your-token go run ./examples/read
-```
-
-`secret set <value>` is rejected until the server command API supports custom
-secret setting. Use `secret create` or `secret rotate` to
-generate a server-managed secret. Live subscriptions require explicit SSH transport.
-
-Subscriptions begin with a current Live snapshot, then emit live changes. Live
-closure ends the watch successfully; revoked access and unexpected disconnects
-return errors. Ctrl-C stops the SSH child cleanly. After a disconnect, run the
-subscription command again to obtain a fresh snapshot. Protocol v1 does not
-provide event replay or a resume cursor, so intervening events are not replayed.
-Arguments containing embedded double quotes are rejected because the server's
-current request tokenizer cannot represent them reliably.
 
 ## Shell completion
 
-Generate scripts with `bibleit completion bash`, `bibleit completion zsh`, or
-`bibleit completion fish`. Generation works without authentication or a valid
-configuration file. It prints the script and does not change your shell settings.
+Completion generation runs locally without authentication or network access.
 
-For the current Bash session:
+Bash:
 
 ```sh
 source <(bibleit completion bash)
 ```
 
-For Zsh, initialize completion first:
+Zsh:
 
 ```sh
-autoload -Uz compinit
-compinit
+autoload -Uz compinit && compinit
 source <(bibleit completion zsh)
 ```
 
-Alternatively, save Zsh output as `_bibleit` in a directory on `$fpath` before
-running `compinit`. For Fish:
+Fish:
 
 ```fish
 mkdir -p ~/.config/fish/completions
 bibleit completion fish > ~/.config/fish/completions/bibleit.fish
 ```
 
-Completion covers command words, flags and format/transport values. It never
-reads credentials, contacts the server, writes configuration or suggests tokens,
-secrets, Live IDs or translation/reference data. It works even when configuration
-is missing or invalid. Script generation accepts normal or raw format;
-JSON/NDJSON are not script formats.
+Homebrew installs the completion files with the executable.
 
-## Destructive commands
+## Development
 
-Live deletion (including `live delete all`), stack clear/pop, and secret
-rotation/removal require confirmation before a request is sent. A terminal
-prompt shows the transport, endpoint and affected target. Type `yes`
-for a single target, or `delete all` for bulk deletion. An empty answer, another
-answer, EOF or an overlong answer cancels without sending a request.
-
-Both stdin and stderr must be terminals for prompting. JSON output and
-noninteractive use require `--yes`:
+Use **Go 1.27.1**. The CLI pins the released Go client; a sibling checkout is optional.
+While the Go repository is private, configure Git access and set
+`GOPRIVATE=github.com/bibleit-labs/*` when downloading private modules.
 
 ```sh
-bibleit live session-id delete --yes
-bibleit --format json live delete all --yes
+GOWORK=off go mod download
+GOWORK=off go test -race ./...
+GOWORK=off go vet ./...
+GOWORK=off go build -o build/bibleit .
 ```
 
-`--yes` confirms the command once; server authentication and permissions still
-apply, and failed mutations are not retried. It takes no value (`--yes=false`
-is rejected). Options after `--` are literal command arguments.
+For joint client/CLI development, an uncommitted local workspace can include both
+checkouts: `go work init . ../bibleit-go`.
+CI validates native macOS/Linux/Windows builds and release installers.
+See [native validation](docs/native-validation.md), the [release plan](docs/plan.md),
+and the [changelog](CHANGELOG.md).
 
-Cancellation exits **1**. Missing confirmation exits **2**, with error code
-`confirmation_required` in JSON; cancellation uses `cancelled`. Errors go to
-stderr and leave stdout empty. Read commands, reversible Live controls/settings,
-translation library removal, logout
-retain their existing behavior. Creating a secret cannot replace an existing
-secret; use guarded rotation to replace one.
-
-
-## Native platform checks
-
-The [native CI workflow](.github/workflows/native.yml) pins Go 1.27.1 and runs
-race tests, vet, builds and executable smoke checks on Ubuntu, Windows and macOS.
-Linux also runs actual Bash/Zsh/Fish completion. See
-[native validation](docs/native-validation.md) for commands, coverage and verification evidence. Native macOS/arm64 and Linux/arm64 checks
-pass locally for the fixed-endpoint draft, including Fish/Bash/Zsh on Linux.
-All six Linux/macOS/Windows amd64/arm64 targets cross-build. Hosted results are tied to the exact revisions in the validation records.
-Current private source pushes are authorized, and workflows pin the reviewed
-Go client commit. Fresh native and package-candidate checks must pass on the
-final release inputs; historical green runs do not certify later changes.
-
-
-## Contributing and license
-
-Bibleit CLI is a public open source project maintained in `bibleit-labs`.
-See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, validation and Conventional
-Commits. This project is distributed under the [MIT license](LICENSE).
-The Go, Python, Ruby and Rust clients have independent repositories and releases.
+Contributions use Conventional Commits. See [contributing](CONTRIBUTING.md).
+Licensed under [MIT](LICENSE).
