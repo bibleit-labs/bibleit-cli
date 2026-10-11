@@ -21,6 +21,25 @@ At the publication pause, changes stayed local with a sibling workspace. Private
 CI is now authorized; see the latest validation section below. Each matrix targets runner-default architectures, not all six
 build targets. The original repository's remote main is unchanged.
 
+## Final assessed deployment — 11 October 2026
+
+Assessment ledger [private revision withheld] closes the scoped campaign at 25/25. Final source
+7442010eebcfb1a2a9105db312ebaeae5f789003 passes [native run 38106224843]([private service reference withheld]):
+398 tracked-file checks, eight stages and cleanup; native and rebuilt deployment
+image campaigns each pass 20 checks. Native submodule remains [private revision withheld]. Registry
+digest sha256:44f2278362bd73f26a2f1c4abb78bf4d72eb02a99c177629656b72391c79fc11
+is deployed at legacy.bibleit.example, with ordinary public SSH port 22.
+
+The final assessment suite passes 334 CT/56 Erlang/71 JavaScript/native/ten bootstrap
+tests. Deployed HTTP/SSH/proxy client-isolation and recovery results are recorded
+in plan.md. These are assessment-owned results; this follow-up does not rerun the
+client harness. Its older development baseline is retained until fresh frozen
+HTTP/SSH/import integration covers the newer server admission changes.
+
+Native evidence below describes historical snapshots. Their 24/25 progress and
+then-open deployed gates are superseded by the final 25/25 result, while production
+client configuration, release provenance/dependency and customer install gates remain.
+
 ## Native amd64 server image — 11 October 2026
 
 The assessment-owned [native server run 38101109368]([private service reference withheld])
