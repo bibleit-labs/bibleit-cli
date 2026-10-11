@@ -1,0 +1,1261 @@
+{
+  "status": "proposal only; deletion requires approval",
+  "reviewed": "2026-10-11",
+  "source": "security audit inventory before corrected candidate runs",
+  "artifacts": [
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11682069273,
+      "name": "validation-windows-2025",
+      "run_id": 38087556694,
+      "artifact_digest": "sha256:6990aa8c5dc8e5b4f636bb149fb9962b46f4b89f4ad1b983c283c0c2477e8bca",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "5d834eb8f378253477313f28c48cc4b7bfa9fe84f2c610c109ef3b653ab87a64"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "be8076cd3079b09abb1ba157fbaadaf24b802ec6b70998426db0b868d2bdaab2"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "b0f4cf062f8cd140a49e5807b3de0f5aa5365000548f3bc71e6e0ea6447a50a4"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "b95ad9fd45cc4be60442549871d4b79e1265fc7fb7190e45379c489f26b4649e"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "a17ea287325430fc9fb2f8b2af0cde4d63e78bd8d95e6c1b55580bd8f5e4fc9d"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "a588c55ae935e73c5371107d239b7ea9c5769882f199954222d85290b736ccd4"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11682269647,
+      "name": "validation-windows-2025",
+      "run_id": 38087249077,
+      "artifact_digest": "sha256:5862f3fec6eec8e240394eb0ab99b038b91165ae5411a9827ee485e6a458b8cc",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "5d834eb8f378253477313f28c48cc4b7bfa9fe84f2c610c109ef3b653ab87a64"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "be8076cd3079b09abb1ba157fbaadaf24b802ec6b70998426db0b868d2bdaab2"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "b0f4cf062f8cd140a49e5807b3de0f5aa5365000548f3bc71e6e0ea6447a50a4"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "b95ad9fd45cc4be60442549871d4b79e1265fc7fb7190e45379c489f26b4649e"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "a17ea287325430fc9fb2f8b2af0cde4d63e78bd8d95e6c1b55580bd8f5e4fc9d"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "a588c55ae935e73c5371107d239b7ea9c5769882f199954222d85290b736ccd4"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11682309505,
+      "name": "validation-ubuntu-24.04",
+      "run_id": 38087249077,
+      "artifact_digest": "sha256:c50a12d2b49bc115ee816ea9fa69b4403c021d06d849dbee3641a27ce7d3700e",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "dd279f0ec556eda445da92c887ee99e02aaf8477880c64317ed55e77ff3c113d"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "ec5b04e1bbe142da41e69f6e929a39c4bc72034fb23027920c048d7831dac86b"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "197a5add0538ad14219b16961b3b963571837997c5e2efae699bc01607d203fd"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "d12273a94061d57d5f818541400860e4069f8c1e3f146afb09ffc35223a42107"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "0ff927daec575f2109330e05f9fe7af66656e2df418c2a164b4ca5ff4744d8fb"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "323178a1271fa4ea9d10179204c2d112701900f8987ca9b8606b779adf4bd23b"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11682694257,
+      "name": "validation-macos-15",
+      "run_id": 38087249077,
+      "artifact_digest": "sha256:87d85242d1ccbb983ff766f9ffe61766227f99175a469aff701efd2d17a6ca00",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "dd279f0ec556eda445da92c887ee99e02aaf8477880c64317ed55e77ff3c113d"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "ec5b04e1bbe142da41e69f6e929a39c4bc72034fb23027920c048d7831dac86b"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "197a5add0538ad14219b16961b3b963571837997c5e2efae699bc01607d203fd"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "d12273a94061d57d5f818541400860e4069f8c1e3f146afb09ffc35223a42107"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "0ff927daec575f2109330e05f9fe7af66656e2df418c2a164b4ca5ff4744d8fb"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "323178a1271fa4ea9d10179204c2d112701900f8987ca9b8606b779adf4bd23b"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11682872038,
+      "name": "validation-macos-15",
+      "run_id": 38088193158,
+      "artifact_digest": "sha256:cfc6f0af88e356c63f1557ae02e5d918452023c0b70c05aebd624fe1f4801b53",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "dd279f0ec556eda445da92c887ee99e02aaf8477880c64317ed55e77ff3c113d"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "ec5b04e1bbe142da41e69f6e929a39c4bc72034fb23027920c048d7831dac86b"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "197a5add0538ad14219b16961b3b963571837997c5e2efae699bc01607d203fd"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "d12273a94061d57d5f818541400860e4069f8c1e3f146afb09ffc35223a42107"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "0ff927daec575f2109330e05f9fe7af66656e2df418c2a164b4ca5ff4744d8fb"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "323178a1271fa4ea9d10179204c2d112701900f8987ca9b8606b779adf4bd23b"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11682940451,
+      "name": "validation-ubuntu-24.04",
+      "run_id": 38087556694,
+      "artifact_digest": "sha256:9334b4c1c8bc66ff15110ad9be252e7307401038e54baaa3b8769d45f2b04d40",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "dd279f0ec556eda445da92c887ee99e02aaf8477880c64317ed55e77ff3c113d"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "ec5b04e1bbe142da41e69f6e929a39c4bc72034fb23027920c048d7831dac86b"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "197a5add0538ad14219b16961b3b963571837997c5e2efae699bc01607d203fd"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "d12273a94061d57d5f818541400860e4069f8c1e3f146afb09ffc35223a42107"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "0ff927daec575f2109330e05f9fe7af66656e2df418c2a164b4ca5ff4744d8fb"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "323178a1271fa4ea9d10179204c2d112701900f8987ca9b8606b779adf4bd23b"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11682995063,
+      "name": "validation-macos-15",
+      "run_id": 38087556694,
+      "artifact_digest": "sha256:4a826a4c5f90c4738ba264121df8d35caea9c910d38c69e34ea601e0697ea9ef",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "dd279f0ec556eda445da92c887ee99e02aaf8477880c64317ed55e77ff3c113d"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "ec5b04e1bbe142da41e69f6e929a39c4bc72034fb23027920c048d7831dac86b"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "197a5add0538ad14219b16961b3b963571837997c5e2efae699bc01607d203fd"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "d12273a94061d57d5f818541400860e4069f8c1e3f146afb09ffc35223a42107"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "0ff927daec575f2109330e05f9fe7af66656e2df418c2a164b4ca5ff4744d8fb"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "323178a1271fa4ea9d10179204c2d112701900f8987ca9b8606b779adf4bd23b"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11683074709,
+      "name": "validation-macos-15",
+      "run_id": 38091481159,
+      "artifact_digest": "sha256:ae4e076db766adbfd7a6415c20b82a92c0f4fb6d68051cb4e953a5c1ecdfb369",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "0a96e27db75190f59cbd0533dba2e88035dda172d1f7b493b3dd7e8f5674f072"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "2b6ec5a7b7d2e0e7d7e80f96939ff9bee67e5d1a412922026a9c12e732c096ef"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "c35420c4495c5574607647608c107a76d9e7573b2ff7b0c42754973a14b0705a"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "a2c1cf46d373ed0d7d7aa5b784f1d0be1813c1ef55dd0fe3858a4274f1ebdcc1"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "9fe362b23916e016f4b89bf339f94fd51f10951340710ca0872f8d9adc147648"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "f4a32dfc15d157dea3a55700b1db8812804b34ccf4dccdcf21c8b42bcafb31a9"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11683075830,
+      "name": "validation-windows-2025",
+      "run_id": 38087813163,
+      "artifact_digest": "sha256:7881689a164aa15588050010f736bbb47831b4fdc23b9848ad6728ba01848512",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "5d834eb8f378253477313f28c48cc4b7bfa9fe84f2c610c109ef3b653ab87a64"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "be8076cd3079b09abb1ba157fbaadaf24b802ec6b70998426db0b868d2bdaab2"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "b0f4cf062f8cd140a49e5807b3de0f5aa5365000548f3bc71e6e0ea6447a50a4"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "b95ad9fd45cc4be60442549871d4b79e1265fc7fb7190e45379c489f26b4649e"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "a17ea287325430fc9fb2f8b2af0cde4d63e78bd8d95e6c1b55580bd8f5e4fc9d"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "a588c55ae935e73c5371107d239b7ea9c5769882f199954222d85290b736ccd4"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11683209548,
+      "name": "validation-windows-2025",
+      "run_id": 38091481159,
+      "artifact_digest": "sha256:d1f6a98589180503a417070ca03adfcd7bfea3c798ba1c73a4cf116236990d63",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "5621416e417b281b8976fe2a78ddcebe0f472f35f048a924833a0b7f88550ac3"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "3d35662c4676fec6a45166f69080d11f5c29ac0d6f55d65ab3f0501fcb41f08b"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "d1533418ec9e180a0d405da181f499cb53a9aff199a20b283a4af04b58a943f2"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "b3575cc9b4c4ddf5f6dc44b9934f5cbb242eda6e0051934c0a0de785c6a57adf"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "ca84e41f92b4c94f074291682e095f34ff27d4adc32447ab12cd63500415f73e"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "01f8b42a20e1e41a8b73b8f98035e12b92d291f24bcae725521f5324996d4a67"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11683530340,
+      "name": "validation-macos-15",
+      "run_id": 38087813163,
+      "artifact_digest": "sha256:600779af49d0395e9327b078907b19ff503c5c856c037d5d471ab1eaaf78d350",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "dd279f0ec556eda445da92c887ee99e02aaf8477880c64317ed55e77ff3c113d"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "ec5b04e1bbe142da41e69f6e929a39c4bc72034fb23027920c048d7831dac86b"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "197a5add0538ad14219b16961b3b963571837997c5e2efae699bc01607d203fd"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "d12273a94061d57d5f818541400860e4069f8c1e3f146afb09ffc35223a42107"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "0ff927daec575f2109330e05f9fe7af66656e2df418c2a164b4ca5ff4744d8fb"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "323178a1271fa4ea9d10179204c2d112701900f8987ca9b8606b779adf4bd23b"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11683580189,
+      "name": "validation-ubuntu-24.04",
+      "run_id": 38087813163,
+      "artifact_digest": "sha256:bd1534dbb55ddf7588e2131dcb384961133670246711538cc9f1068aabbb0c63",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "dd279f0ec556eda445da92c887ee99e02aaf8477880c64317ed55e77ff3c113d"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "ec5b04e1bbe142da41e69f6e929a39c4bc72034fb23027920c048d7831dac86b"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "197a5add0538ad14219b16961b3b963571837997c5e2efae699bc01607d203fd"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "d12273a94061d57d5f818541400860e4069f8c1e3f146afb09ffc35223a42107"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "0ff927daec575f2109330e05f9fe7af66656e2df418c2a164b4ca5ff4744d8fb"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "323178a1271fa4ea9d10179204c2d112701900f8987ca9b8606b779adf4bd23b"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11683854428,
+      "name": "validation-ubuntu-24.04",
+      "run_id": 38090456683,
+      "artifact_digest": "sha256:64792895022cfa6b17a849a7065181ff3aed545d5e28b288c88b17a84b6f9396",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "d92107f6170b9f8b198b6279879d1f91ffa3c4b1b81d541f9597ca998638dfeb"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "e85a32d4be2b40c45d959e089e5a1e6167aa7b132747342920db03247903da12"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "7be0d34381762f354c9ebb7272d9e34594ec236a89dcf1f40022c903edf9824f"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "cf9da82e39a0d1e308ff9a3acbe9f7ba679d2fe7b865fabf6056b3219c2ebbf4"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "437de59144d1ef2191e666158e8ae713adfc8c125acc0ce7a415694022c9521d"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "fa3ed3f6489ea800017beb72b116d3d9d9f4dff2be0ba3fb4fc91533173f8f0d"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11683875357,
+      "name": "validation-ubuntu-24.04",
+      "run_id": 38088193158,
+      "artifact_digest": "sha256:1b9f97ab8b7b50ab977949f070abc98bb2970e8c63d83109fb42b92c20217cf2",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "dd279f0ec556eda445da92c887ee99e02aaf8477880c64317ed55e77ff3c113d"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "ec5b04e1bbe142da41e69f6e929a39c4bc72034fb23027920c048d7831dac86b"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "197a5add0538ad14219b16961b3b963571837997c5e2efae699bc01607d203fd"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "d12273a94061d57d5f818541400860e4069f8c1e3f146afb09ffc35223a42107"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "0ff927daec575f2109330e05f9fe7af66656e2df418c2a164b4ca5ff4744d8fb"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "323178a1271fa4ea9d10179204c2d112701900f8987ca9b8606b779adf4bd23b"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11683945118,
+      "name": "validation-windows-2025",
+      "run_id": 38088193158,
+      "artifact_digest": "sha256:9bb7c86db1ab21e2717cfa8c053978425a58c9abb499f9167d8e32a0cac6db07",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "5d834eb8f378253477313f28c48cc4b7bfa9fe84f2c610c109ef3b653ab87a64"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "be8076cd3079b09abb1ba157fbaadaf24b802ec6b70998426db0b868d2bdaab2"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "b0f4cf062f8cd140a49e5807b3de0f5aa5365000548f3bc71e6e0ea6447a50a4"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "b95ad9fd45cc4be60442549871d4b79e1265fc7fb7190e45379c489f26b4649e"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "a17ea287325430fc9fb2f8b2af0cde4d63e78bd8d95e6c1b55580bd8f5e4fc9d"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "a588c55ae935e73c5371107d239b7ea9c5769882f199954222d85290b736ccd4"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11684310158,
+      "name": "validation-windows-2025",
+      "run_id": 38090456683,
+      "artifact_digest": "sha256:a691dea277d78bfac1c18faf36e60753bc03a8ce69a1ee59e2dc1f0a48f4dabb",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "ff0f04055d3a7bd3ac4724eef9cb8df82e834d8400a8e317b5cfd186c6a3bda6"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "fe7599aa2bf1c9446b04a2bd9d80c68c03d1b726cffe1bed0a51aaa32aebdbf6"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "5173cae53ff13e60ebce3233bceac2d146c5a88919cc5eb7042199603161f232"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "5ca99d855e9f3d4887177a2ff1c65f4e2d670f1d4a7ee2fdddb439bd014feefc"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "6cce61ddd2c9fecf8571a867f0e75f66bc6d8e18de535719d798255e92526a8f"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "2a4c243f6323b21c7b758a48df03dc08f47fc319b307cab448c62e3f42eb82dc"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11684315107,
+      "name": "validation-macos-15",
+      "run_id": 38090456683,
+      "artifact_digest": "sha256:6fbeb832d2a85b128b48b113a7bed0d64e1bcc33c2ade3991c9aecae24d03019",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "d92107f6170b9f8b198b6279879d1f91ffa3c4b1b81d541f9597ca998638dfeb"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "e85a32d4be2b40c45d959e089e5a1e6167aa7b132747342920db03247903da12"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "7be0d34381762f354c9ebb7272d9e34594ec236a89dcf1f40022c903edf9824f"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "cf9da82e39a0d1e308ff9a3acbe9f7ba679d2fe7b865fabf6056b3219c2ebbf4"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "437de59144d1ef2191e666158e8ae713adfc8c125acc0ce7a415694022c9521d"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "fa3ed3f6489ea800017beb72b116d3d9d9f4dff2be0ba3fb4fc91533173f8f0d"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11684526368,
+      "name": "validation-ubuntu-24.04",
+      "run_id": 38091481159,
+      "artifact_digest": "sha256:04d350906c42a35a939b2673952ab7f60be1415980e914b2c498148c5e41d4e2",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "0a96e27db75190f59cbd0533dba2e88035dda172d1f7b493b3dd7e8f5674f072"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "2b6ec5a7b7d2e0e7d7e80f96939ff9bee67e5d1a412922026a9c12e732c096ef"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "c35420c4495c5574607647608c107a76d9e7573b2ff7b0c42754973a14b0705a"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "a2c1cf46d373ed0d7d7aa5b784f1d0be1813c1ef55dd0fe3858a4274f1ebdcc1"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "9fe362b23916e016f4b89bf339f94fd51f10951340710ca0872f8d9adc147648"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "f4a32dfc15d157dea3a55700b1db8812804b34ccf4dccdcf21c8b42bcafb31a9"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11686019439,
+      "name": "validation-windows-2025",
+      "run_id": 38098645722,
+      "artifact_digest": "sha256:b60c1745c53b976a761e9c7c977945b2d2614d0be496d03cbe24fd242d58596c",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "8c347fe987976bd4eb1eb6b33fa4208b4dc1271c30da6ce66f094ee8b756ee81"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "5530241fef80fe2df548318722c1614cdc8742d246befb46092b2e7f3ce3ee2a"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "23d7901db3a2e95949bb7b53b3708bf81d9fbcc653b3900d6da5195472f5cdd2"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "451a91003202443256d107f967cc82742c2a81293e89da316bc800c5ddb2afa3"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "adf088acaf69952ea73d455699e689f805ef48ec794ea503812d5cc73f5943ea"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "efa3e5ee4e39656aef22e0c076eca7d023beecaefee930785b76e4af0f70b827"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11686095777,
+      "name": "validation-windows-2025",
+      "run_id": 38096515593,
+      "artifact_digest": "sha256:ab7bfb546f7dcaf9ead84f2249177fc61cb1311fe33290706566e85e5492d29d",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "1b232b11134488897f6e93ae8456996f558441340396ab70a6a56294f86f8055"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "5639e24fc830bdf806eb07499deab8475a10c0e3fb80a577f621a145258f2837"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "ff2baf91021cfc1be1479d387c4f7a68cad7c3a7d010527d36abfe3ddb9063da"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "0fe563bf32c9f0a9199f15e384b3a7181f171a8e138bb24d37e933e984d435cf"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "8a68df31df2f013974e02c3ef36518388bece26cdf47a0192fcbf1d54fd2d8d3"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "6910d24dd97d0786e4c08a74a8ba702da5e91a312447dc75b2a59dba9c898828"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11686314345,
+      "name": "validation-macos-15",
+      "run_id": 38099709267,
+      "artifact_digest": "sha256:23aafa3a5a6d659f7976a66a24b1cf804a90f0f74c6a62e5c007506037dc4e53",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "0f5d9c1bc470d7287b09f3fc22cced32f9b49b44bfdb670317671ceb53d52a45"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "1b22160d6cebfaa8386fec67e1edad228f6a0d9328ce09b7c531deec58d330a6"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "5f158b27b80dbae26b2d7c8208e9c188b56d62f73ee4d63d3d2f57919b635cd6"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "284f3efc53b21095e807705a46a598faf65a32d06b71510a17e8d2f5ce934763"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "d85fdb18d4471cbe5c8f86d41db4ccde999e53e25f976dac84ff68a5f984f6d4"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "e329d17f7ba8b00c2238fc6760cff46e1ba87023b3a3fb9a50c4424d04f43f9f"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11686494187,
+      "name": "validation-macos-15",
+      "run_id": 38098645722,
+      "artifact_digest": "sha256:b21adbeda114f2cc526946f722ca2122a0fea8b100acf2bba9b7830b1bcdde9a",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "0f5d9c1bc470d7287b09f3fc22cced32f9b49b44bfdb670317671ceb53d52a45"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "1b22160d6cebfaa8386fec67e1edad228f6a0d9328ce09b7c531deec58d330a6"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "5f158b27b80dbae26b2d7c8208e9c188b56d62f73ee4d63d3d2f57919b635cd6"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "284f3efc53b21095e807705a46a598faf65a32d06b71510a17e8d2f5ce934763"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "d85fdb18d4471cbe5c8f86d41db4ccde999e53e25f976dac84ff68a5f984f6d4"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "e329d17f7ba8b00c2238fc6760cff46e1ba87023b3a3fb9a50c4424d04f43f9f"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11686560565,
+      "name": "validation-macos-15",
+      "run_id": 38096515593,
+      "artifact_digest": "sha256:6d664dbcf49d514f1980c18ad9f1e35cd7a3528168c0164786e28c7875c9888c",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "81600dad7c685d58ffa0d44007908ec5324fe5edc427c255b1585707391f2b89"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "11ea3851d8ce11ab817c30614a37ec85b1b1ee53baa0a4cf16e21d8e3e78496c"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "b05308168e16565114ca38616706a847df1c7b194836423d202b03e378615e3d"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "7c7f318830d26ca6c812b3846d118acb15625ce4c92195b16f0583054d76f469"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "403d65d72473042cfad4fff106eb254e28e0fb188cce6ec8c86af2cb0bed175b"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "b8c40a3a5b4003ced91856b5e2a74d1b1d20bf63603a544bb98e8a796581b884"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11686575352,
+      "name": "validation-ubuntu-24.04",
+      "run_id": 38096515593,
+      "artifact_digest": "sha256:996ee1eebb834f6aa2044161401843af96712e9c68e11cedd9c6cb6b808cdecd",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "81600dad7c685d58ffa0d44007908ec5324fe5edc427c255b1585707391f2b89"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "11ea3851d8ce11ab817c30614a37ec85b1b1ee53baa0a4cf16e21d8e3e78496c"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "b05308168e16565114ca38616706a847df1c7b194836423d202b03e378615e3d"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "7c7f318830d26ca6c812b3846d118acb15625ce4c92195b16f0583054d76f469"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "403d65d72473042cfad4fff106eb254e28e0fb188cce6ec8c86af2cb0bed175b"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "b8c40a3a5b4003ced91856b5e2a74d1b1d20bf63603a544bb98e8a796581b884"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11686678779,
+      "name": "validation-ubuntu-24.04",
+      "run_id": 38098645722,
+      "artifact_digest": "sha256:75c0ca02df5d41b677156fd2a04e4a79b041408e75a4b0473f5a46b2fc7b0dc5",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "0f5d9c1bc470d7287b09f3fc22cced32f9b49b44bfdb670317671ceb53d52a45"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "1b22160d6cebfaa8386fec67e1edad228f6a0d9328ce09b7c531deec58d330a6"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "5f158b27b80dbae26b2d7c8208e9c188b56d62f73ee4d63d3d2f57919b635cd6"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "284f3efc53b21095e807705a46a598faf65a32d06b71510a17e8d2f5ce934763"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "d85fdb18d4471cbe5c8f86d41db4ccde999e53e25f976dac84ff68a5f984f6d4"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "e329d17f7ba8b00c2238fc6760cff46e1ba87023b3a3fb9a50c4424d04f43f9f"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11687184705,
+      "name": "validation-ubuntu-24.04",
+      "run_id": 38099709267,
+      "artifact_digest": "sha256:67292e3ab19055a0e796012f93ec4225767475bfdfc104603c856d0e71b0e6d3",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "0f5d9c1bc470d7287b09f3fc22cced32f9b49b44bfdb670317671ceb53d52a45"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "1b22160d6cebfaa8386fec67e1edad228f6a0d9328ce09b7c531deec58d330a6"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "5f158b27b80dbae26b2d7c8208e9c188b56d62f73ee4d63d3d2f57919b635cd6"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "284f3efc53b21095e807705a46a598faf65a32d06b71510a17e8d2f5ce934763"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "d85fdb18d4471cbe5c8f86d41db4ccde999e53e25f976dac84ff68a5f984f6d4"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "e329d17f7ba8b00c2238fc6760cff46e1ba87023b3a3fb9a50c4424d04f43f9f"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11687570781,
+      "name": "validation-windows-2025",
+      "run_id": 38099709267,
+      "artifact_digest": "sha256:723a0c7063be73c5633546adea52ba7849acfe8120a00d539a36295a845406b4",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "8c347fe987976bd4eb1eb6b33fa4208b4dc1271c30da6ce66f094ee8b756ee81"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "5530241fef80fe2df548318722c1614cdc8742d246befb46092b2e7f3ce3ee2a"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "23d7901db3a2e95949bb7b53b3708bf81d9fbcc653b3900d6da5195472f5cdd2"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "451a91003202443256d107f967cc82742c2a81293e89da316bc800c5ddb2afa3"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "adf088acaf69952ea73d455699e689f805ef48ec794ea503812d5cc73f5943ea"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "efa3e5ee4e39656aef22e0c076eca7d023beecaefee930785b76e4af0f70b827"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11696978547,
+      "name": "validation-macos-15",
+      "run_id": 38126789985,
+      "artifact_digest": "sha256:2d28a67a5ac8f74dca6e6d199a9299f044a31a2777fcaae2bae978e20478f912",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "1cde17a7320c738df337e2e37b6da1cdfd8fa63fc02aaf0d69678684254a5f9e"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "0b8c1d20e271bda66db4dac3dc5606b0efc5de8c7e71baad097db282e1b2104d"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "2c2342892dc569393f515c3c8714388d9ca0fc72959d164fb4900f4488cab57f"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "20ec8156df3072781ee9566d0dbf6942e7d6646cf8e86ae5e0e66eaa059fc1ce"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "9ed0728d4afc7a09d6ce63849a847c517bd91760e43268a6256b7177f0397c27"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "25b342be8bacbcef95f82af70b91de49fe02f36cdf0508a0b35d35a37af5dfb7"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11697012247,
+      "name": "validation-ubuntu-24.04",
+      "run_id": 38126046149,
+      "artifact_digest": "sha256:8c5bdf8d789fb6a6c5bf77a7a2ac8873b5d33205bf15600d7890b9a041aafa59",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "aa53fa358abda9c0a9174fd6f07dfc6adb68d72c8d8a8d6c5c289c791d21c7c6"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "7718916483205fb7e3b7c32d597f70ce486111c73006004990e42d523f1b479b"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "cb31719645572c30fef591b59466b53f54cc33cacc6278931e51da89965989dc"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "24990eb0c3d641a707ab89a6f79130fb08e79cbc9f349c9af33cc45e8df7f2bc"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "f9b53d09948426c8d523cbd25100640d3b84a49356cc7d849f42cd3f5bc5acad"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "c1e80841625319010d6d05f2f8481347fa72f496d53d1865b4273325116f55e4"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11697622643,
+      "name": "validation-ubuntu-24.04",
+      "run_id": 38126789985,
+      "artifact_digest": "sha256:d06138a686fde00e62e8bdb81c129c4e2c948f976a3057493c7ec647014d318c",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "1cde17a7320c738df337e2e37b6da1cdfd8fa63fc02aaf0d69678684254a5f9e"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "0b8c1d20e271bda66db4dac3dc5606b0efc5de8c7e71baad097db282e1b2104d"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "2c2342892dc569393f515c3c8714388d9ca0fc72959d164fb4900f4488cab57f"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "20ec8156df3072781ee9566d0dbf6942e7d6646cf8e86ae5e0e66eaa059fc1ce"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "9ed0728d4afc7a09d6ce63849a847c517bd91760e43268a6256b7177f0397c27"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "25b342be8bacbcef95f82af70b91de49fe02f36cdf0508a0b35d35a37af5dfb7"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11697746434,
+      "name": "validation-windows-2025",
+      "run_id": 38126046149,
+      "artifact_digest": "sha256:9e0ea6782c79fc5f06c1e9c685fb7ab5f2eef5382580418e2c4302c126f13d8f",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "a8ad936fb047972ddd69377e460aaf0f6eb63bed91b3c2bf133e1620bcfad234"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "54a558b103bd45dd3eeaafe7c0be9053b8b2fc2a0391e7aea5da29955e520266"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "d449ffa3103403b1f7ae419fd7c4e5162388af8b7c5b613d228a60ff65ec5af0"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "03eb390db9bded732e062e33aa1347ebb8ce14ab61a4e3e5e301238beb038863"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "c9952358f99fde2193aa81a7dec8b191971399ad03d8bda473a73e3c33e6deb9"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "dcc2ef46af936420ec8d6ea34d44228e0e3a88955fcfdb7b8df7c81c77af3eb7"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11697786237,
+      "name": "validation-macos-15",
+      "run_id": 38126046149,
+      "artifact_digest": "sha256:0847c8a87768cabbdecc4002fcf5f758be7772c42a9f9ea7ad6ee94f3b5fc6ed",
+      "deficient_archives": [
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "aa53fa358abda9c0a9174fd6f07dfc6adb68d72c8d8a8d6c5c289c791d21c7c6"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "7718916483205fb7e3b7c32d597f70ce486111c73006004990e42d523f1b479b"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "cb31719645572c30fef591b59466b53f54cc33cacc6278931e51da89965989dc"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "24990eb0c3d641a707ab89a6f79130fb08e79cbc9f349c9af33cc45e8df7f2bc"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "f9b53d09948426c8d523cbd25100640d3b84a49356cc7d849f42cd3f5bc5acad"
+        },
+        {
+          "archive": "releases/bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "c1e80841625319010d6d05f2f8481347fa72f496d53d1865b4273325116f55e4"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11698930691,
+      "name": "candidate-assets",
+      "run_id": 38128631681,
+      "artifact_digest": "sha256:48ae0c415b4c0d12552b49b38870d8f57f2933547d52baca043a34c09c318d7e",
+      "deficient_archives": [
+        {
+          "archive": "bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "1cde17a7320c738df337e2e37b6da1cdfd8fa63fc02aaf0d69678684254a5f9e"
+        },
+        {
+          "archive": "bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "0b8c1d20e271bda66db4dac3dc5606b0efc5de8c7e71baad097db282e1b2104d"
+        },
+        {
+          "archive": "bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "2c2342892dc569393f515c3c8714388d9ca0fc72959d164fb4900f4488cab57f"
+        },
+        {
+          "archive": "bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "20ec8156df3072781ee9566d0dbf6942e7d6646cf8e86ae5e0e66eaa059fc1ce"
+        },
+        {
+          "archive": "bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "9ed0728d4afc7a09d6ce63849a847c517bd91760e43268a6256b7177f0397c27"
+        },
+        {
+          "archive": "bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "25b342be8bacbcef95f82af70b91de49fe02f36cdf0508a0b35d35a37af5dfb7"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11709212435,
+      "name": "candidate-assets",
+      "run_id": 38158698450,
+      "artifact_digest": "sha256:f515c18e821f9dee8f7b86d47ed9ab43659de1172aec646c01f68bc06791ab4e",
+      "deficient_archives": [
+        {
+          "archive": "bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "ec239baa3026aaccbba5ed47fc0cdeda5eed26a6eb23b2aa34c9d0c276831285"
+        },
+        {
+          "archive": "bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "54e07bd046bed6b30f470b59628c997d2c978e22e3f9c11cc6c251e1877a37b6"
+        },
+        {
+          "archive": "bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "4cbd5f9a8f4ec4cefb359ca4489bdfa6a097f8d09f5315bd0ef4b9410fed3f8b"
+        },
+        {
+          "archive": "bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "fd7ddca46b91efaf88c7d4c40ebd4781c0876c0ca081dd1a950e7dee5847214e"
+        },
+        {
+          "archive": "bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "1c680b53e150fe8d34d5d10120e03cda9116b984cbea5e9d7bc4a57f8ba11977"
+        },
+        {
+          "archive": "bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "1c17da77f6269aaad40d09631d3d97a850b337dd953bf3622ad930ff8799ffb5"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11710450775,
+      "name": "candidate-assets",
+      "run_id": 38160808600,
+      "artifact_digest": "sha256:56a4ccbed6a5c8ab91c08f2e5fcf744625d03072a836a056afb09559f5f37f64",
+      "deficient_archives": [
+        {
+          "archive": "bibleit_0.1.0-ci.1_windows_arm64.zip",
+          "sha256": "ec239baa3026aaccbba5ed47fc0cdeda5eed26a6eb23b2aa34c9d0c276831285"
+        },
+        {
+          "archive": "bibleit_0.1.0-ci.1_linux_arm64.tar.gz",
+          "sha256": "54e07bd046bed6b30f470b59628c997d2c978e22e3f9c11cc6c251e1877a37b6"
+        },
+        {
+          "archive": "bibleit_0.1.0-ci.1_darwin_amd64.tar.gz",
+          "sha256": "4cbd5f9a8f4ec4cefb359ca4489bdfa6a097f8d09f5315bd0ef4b9410fed3f8b"
+        },
+        {
+          "archive": "bibleit_0.1.0-ci.1_windows_amd64.zip",
+          "sha256": "fd7ddca46b91efaf88c7d4c40ebd4781c0876c0ca081dd1a950e7dee5847214e"
+        },
+        {
+          "archive": "bibleit_0.1.0-ci.1_linux_amd64.tar.gz",
+          "sha256": "1c680b53e150fe8d34d5d10120e03cda9116b984cbea5e9d7bc4a57f8ba11977"
+        },
+        {
+          "archive": "bibleit_0.1.0-ci.1_darwin_arm64.tar.gz",
+          "sha256": "1c17da77f6269aaad40d09631d3d97a850b337dd953bf3622ad930ff8799ffb5"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11711837360,
+      "name": "candidate-assets",
+      "run_id": 38165521337,
+      "artifact_digest": "sha256:f316be2a0b6ffec3db0536106db4a2388a204285739eb17514148f15655d83ee",
+      "deficient_archives": [
+        {
+          "archive": "bibleit_0.0.1_linux_amd64.tar.gz",
+          "sha256": "4c9ecc4dcca075d202ad502c49e916440fd1a92f9c5cb2e55a32f92a9944b601"
+        },
+        {
+          "archive": "bibleit_0.0.1_darwin_amd64.tar.gz",
+          "sha256": "319a9c4d24b2911fc4963600d18b86d080019af3d76c99b7fabad3b7752add7e"
+        },
+        {
+          "archive": "bibleit_0.0.1_linux_arm64.tar.gz",
+          "sha256": "9a90adcc344bdd52e4868cbc78886b07cde0a0c05a161fb6ffeb2e5d5fce579a"
+        },
+        {
+          "archive": "bibleit_0.0.1_darwin_arm64.tar.gz",
+          "sha256": "8a25b1957ef1b358d7027ee3782122e53b7ebe1d685c756e7a609de7f865c942"
+        },
+        {
+          "archive": "bibleit_0.0.1_windows_amd64.zip",
+          "sha256": "807d88ba9364f332cc2b2fab815db54f3a8a2ef688826a7dae5d874916cf2759"
+        },
+        {
+          "archive": "bibleit_0.0.1_windows_arm64.zip",
+          "sha256": "5e9e5ac75190ef5c7798bcf9e9e2f748f07228ea497c09803966b2b250d3cffd"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11712310498,
+      "name": "candidate-assets",
+      "run_id": 38165422005,
+      "artifact_digest": "sha256:30840117268b350686b2e64c48520a48bbf117af31c42f80b94fd512838a90c7",
+      "deficient_archives": [
+        {
+          "archive": "bibleit_0.0.1-ci.1_windows_arm64.zip",
+          "sha256": "c2018769d732af9eaccd82336bd6b990162df204addbe772517dadb58252d912"
+        },
+        {
+          "archive": "bibleit_0.0.1-ci.1_darwin_amd64.tar.gz",
+          "sha256": "90e44960342a57b19726b514c3f29c04704878d3ffd672f7082a2e77191830e5"
+        },
+        {
+          "archive": "bibleit_0.0.1-ci.1_windows_amd64.zip",
+          "sha256": "303a0e073dd896aa360db4e5718bdb2aad0c0c65cbba8b8876f528a325eab30a"
+        },
+        {
+          "archive": "bibleit_0.0.1-ci.1_linux_arm64.tar.gz",
+          "sha256": "7955333cad105509eb11518fca0ce0fc0ec404b9af0377a9f1915ea06f4d8531"
+        },
+        {
+          "archive": "bibleit_0.0.1-ci.1_linux_amd64.tar.gz",
+          "sha256": "950f47392a2a8209caf73dfddba26e08800497f97844ce1e23dfff2ddddc8f95"
+        },
+        {
+          "archive": "bibleit_0.0.1-ci.1_darwin_arm64.tar.gz",
+          "sha256": "727b3c95681a717a4e33155dab27859bcbea22552d2e675411a496e3219b7ce3"
+        }
+      ]
+    },
+    {
+      "repository": "bibleit-labs/bibleit-cli",
+      "artifact_id": 11713940545,
+      "name": "candidate-assets",
+      "run_id": 38169127365,
+      "artifact_digest": "sha256:d6076dedb73c3f3bfbc75649ce2f3a78b800b5e5a561e08242799818e8a065b8",
+      "deficient_archives": [
+        {
+          "archive": "bibleit_0.0.1-ci.1_windows_arm64.zip",
+          "sha256": "e59c6e3da9e10400b93fcdeac3fe8f79bd9d287bdcb0bf2ebd8475db2ca37ec1"
+        },
+        {
+          "archive": "bibleit_0.0.1-ci.1_darwin_amd64.tar.gz",
+          "sha256": "66fe0832604519615a3b00b6700cb9ab91a78bb941dd4e793f7837873c0b9937"
+        },
+        {
+          "archive": "bibleit_0.0.1-ci.1_windows_amd64.zip",
+          "sha256": "6d5d81104515cbf4600dae7e31b4c4778b7997ccf79d4961f5d29b3a6b38f3c5"
+        },
+        {
+          "archive": "bibleit_0.0.1-ci.1_linux_arm64.tar.gz",
+          "sha256": "4224f14e78b6985027f0a415cf50fa963d2d3418d7e445d6f8bebe264882d7f4"
+        },
+        {
+          "archive": "bibleit_0.0.1-ci.1_linux_amd64.tar.gz",
+          "sha256": "6bb8e2f1d64ae2fd2dc3f1bd7e3f3be4aa9a3d057b0a9d1b39b435f05c3083b6"
+        },
+        {
+          "archive": "bibleit_0.0.1-ci.1_darwin_arm64.tar.gz",
+          "sha256": "635bc344a3f4ce93f4534d90eb46532f418f62c29b0489b01b1a3ac471686989"
+        }
+      ]
+    }
+  ]
+}
