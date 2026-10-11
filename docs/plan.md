@@ -14,7 +14,9 @@ backend success/replay and actual email delivery/verification remain pending. Se
 Revised 2026-10-11 after the assessment closed its scoped campaign at server
 ledger 8923d86. The custom-domain client refresh verifies assessment revision 5969f2f/native f6fed37, including the narrow boot fix;
 supplemental alias boot qualification passes at ef63e91, and actual public-domain
-technical acceptance passes on deployed 34d80f8 after the native HTML form repair.
+technical acceptance passed on 34d80f8 after the native HTML form repair. The latest
+localized catalogue repair is qualified at deployed 4243c9a/native d6e31dc
+(workflow 38147193441), including independent focused HTTP/SSH client checks.
 Real Turnstile backend success/replay, actual email delivery/verification and final
 packaging input freeze remain pending; human Google/GitHub sign-in passes. This revision supersedes the earlier sequence of extracting Go and immediately porting the
 same surface into Python, Ruby, and Rust.
@@ -302,7 +304,7 @@ and automated release uploading are outside the initial release requirement.
 | --- | --- | --- | --- |
 | 1 | Confirm version, scope and customer access | Project decision; propose Go/CLI v0.1.0 for the existing core command surface, Homebrew/Bash/PowerShell/manual archives | Version and supported transports/architectures recorded; choose public customer artifacts or implement authenticated delivery; choose whether Scoop bucket ships now or later |
 | 2 | Configure production service and safe test fixtures | Client implementation complete: custom-domain constants, trust-preserving SSH alias, verified fixtures and changed-key rejection pass; actual public DNS/TLS/HTTP/SSH/rate technical acceptance passes; human Google/GitHub sign-in confirmed; repaired native form technical admission passes; Turnstile/email manual acceptance pending | Retain public technical/provider evidence; confirm real Turnstile backend success/replay and actual email delivery/verification before release |
-| 3 | Freeze and validate server compatibility | New-domain compatibility and boot validation pass at assessed 5969f2f/native f6fed37; committed Erlang inputs verified; supplemental direct alias boot qualification passes at ef63e91; preceding public probes pass on c586107; repaired native admission/rollout qualifies 34d80f8/native f6fed37; catalog6ba81e2/d6e31dc operational qualification and focused4243c9a/d6 client compatibility pass; exact UTF-8 repair deployment, manual token/email acceptance and final packaging input freeze pending | Retain separately attributed full, boot, sparse-client and deployed image provenance; qualify exact UTF-8 repair rollout; qualify actual token/email flow; retain earlier full integration and supplemental boot provenance; freeze all packaging/deployment inputs; retain the verified boot fix and compare recorded hashes or rerun changed checks; retain approved migration lineage/runtime inputs; public-edge evidence is assessment-owned, and customer login/access decisions remain gate 1 |
+| 3 | Freeze and validate server compatibility | New-domain compatibility and boot validation pass at assessed 5969f2f/native f6fed37; committed Erlang inputs verified; supplemental direct alias boot qualification passes at ef63e91; preceding public probes pass on c586107; repaired native admission/rollout qualifies 34d80f8/native f6fed37; catalog6ba81e2/d6e31dc operational qualification and focused4243c9a/d6 client compatibility pass; exact repaired UTF-8 deployment/public qualification complete; manual token/email acceptance and final packaging input freeze pending | Retain separately attributed full, boot, sparse-client and deployed image provenance; retain exact repaired UTF-8 rollout provenance; qualify actual token/email flow; retain earlier full integration and supplemental boot provenance; freeze all packaging/deployment inputs; retain the verified boot fix and compare recorded hashes or rerun changed checks; retain approved migration lineage/runtime inputs; public-edge evidence is assessment-owned, and customer login/access decisions remain gate 1 |
 | 4 | Release Go client and pin standalone CLI dependency | After gates 1–3; go.mod still requires v0.0.0 | Review/promote the client source, publish approved semantic version, pin it in CLI and record sums; clean-cache GOWORK=off test/vet/build succeeds without sibling checkout or replace directives; private access uses appropriate Git credentials/GOPRIVATE |
 | 5 | Validate exact production CLI candidate | After gate 4; current candidate workflow uses --local and go work | Add a standalone production candidate validation path using the released client, GOWORK=off and no --local; clean Go 1.27.1 source produces six archives, installer scripts, formula, Scoop manifest, checksums and provenance; rerun relevant native/platform/installer checks on those exact inputs |
 | 6 | Finalize release sources, notes and delivery policy | Before publishing CLI; release/default branches still need review | Promote reviewed source through normal review; notes name client version/server baseline, protocol limits, old-config migration/revocation, OpenSSH dependency and supported architectures; choose signing policy and test downloaded macOS binaries with normal OS protections; record manual release procedure or implement upload automation |
@@ -642,8 +644,15 @@ chapter Verses is the highest source identifier, not a dense row count; omitted
 verse reads retain verse_not_found and chapter reads preserve present IDs.
 server-catalog-validation.json is synchronized across Go/CLI. Earlier broad
 protocol evidence remains at its tested source without unnecessary repetition.
-The exact UTF-8 repaired deployment/public qualification is pending assessment/Fly;
-retain independent image provenance before final release-baseline freeze. Keep real Turnstile/email manual acceptance open.
+Exact repaired deployment/public qualification is complete at server 4243c9a/native
+d6e31dc, image sha256:46670b5fba63859a6892d64c1501122ecdddfd1edc1410555eba7c165143b5c1
+(workflow 38147193441): 406 committed hashes, eight successful stages, 20 actual-image
+startup checks, published/running digest parity and 185 APK comparisons with zero fixed-
+advisory alerts. Refreshed boundary 23/alias 39 checks pass independently on IPv4 and
+IPv6; native form CSRF admission and missing-token denial pass. Production BPML has 66
+strict UTF-8 BOOK records and matching Gênesis. The five public report hashes are
+recorded in canonical-deployment-validation.json. Real Turnstile backend success/replay
+and actual email delivery/verification remain open.
 
 Confirm first-release version/customer access, release and pin the Go client,
 validate a standalone CLI candidate without sibling workspace/--local, promote

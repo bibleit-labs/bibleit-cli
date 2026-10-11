@@ -10,8 +10,9 @@ SSH connects to `bibleit.app:22`, with standard OpenSSH host verification. The
 user confirmed these canonical addresses for the custom-domain cutover. Actual
 public DNS/TLS/SSH technical qualification passed on 2026-10-11, with the
 assessment’s redacted provenance retained in contract/canonical-deployment-validation.json.
-The operator confirms Google/GitHub sign-in. Repaired deployment 34d80f8/native
-f6fed37 passes native form CSRF admission; real Turnstile backend success/replay
+The operator confirms Google/GitHub sign-in. The latest repaired deployment 4243c9a/native
+d6e31dc (workflow 38147193441) passes native form CSRF admission and refreshed
+public boundary/alias checks on IPv4 and IPv6; real Turnstile backend success/replay
 and actual email delivery/verification remain pending. Earlier Fly-hostname qualification at source 7442010 is historical evidence only.
 Fly supplies the trusted PROXY envelope to the server; clients send ordinary
 SSH and never inject a PROXY preamble.

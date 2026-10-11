@@ -111,8 +111,15 @@ eight stages,20 actual-image checks/native amd64, matching published/running
 digest and clean fixtures; public boundary23/alias39 passes each family. The
 focused client run found a server localized-literal UTF-8 bug, and repair4243c9a
 now passes server340 CT/66 EUnit/75 JS/native65536/10 bootstrap. Exact repaired
-image/public-edge qualification remains pending assessment/Fly; do not reuse the
-old image's proof. Real Turnstile/email acceptance remains pending separately.
+deployment/public qualification is complete at server 4243c9a/native d6e31dc, image
+sha256:46670b5fba63859a6892d64c1501122ecdddfd1edc1410555eba7c165143b5c1 (workflow
+38147193441): 406 committed hashes, eight successful stages, 20 actual-image startup
+checks, published/running digest parity and 185 APK comparisons with zero fixed-advisory
+alerts. Refreshed boundary 23/alias 39 checks pass independently on IPv4 and IPv6;
+native form CSRF admission and missing-token denial pass. Production BPML has 66 strict
+UTF-8 BOOK records and matching Gênesis. The five public report hashes are recorded in
+canonical-deployment-validation.json. Real Turnstile backend success/replay and actual
+email delivery/verification remain open.
 
 ## Prior Fly-hostname endpoint validation — 11 October 2026
 

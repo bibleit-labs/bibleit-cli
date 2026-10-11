@@ -108,8 +108,16 @@ Portuguese/German catalogues and accented named reads, five HTTP/SSH parity case
 one invalid-index publication case and three TLS checks at exact4243c9a/native
 d6e31dc. All69source/75test/11native hashes match that commit and remain unchanged
 after validation. The SDK/CLI decoder remains strict; no runtime decoding change.
-server-catalog-validation.json retains this focused evidence separately. Exact
-UTF-8 repair deployment/public qualification remains pending with assessment/Fly.
+server-catalog-validation.json retains this focused evidence separately. Exact repaired
+deployment/public qualification is complete at server 4243c9a/native d6e31dc, image
+sha256:46670b5fba63859a6892d64c1501122ecdddfd1edc1410555eba7c165143b5c1 (workflow
+38147193441): 406 committed hashes, eight successful stages, 20 actual-image startup
+checks, published/running digest parity and 185 APK comparisons with zero fixed-advisory
+alerts. Refreshed boundary 23/alias 39 checks pass independently on IPv4 and IPv6;
+native form CSRF admission and missing-token denial pass. Production BPML has 66 strict
+UTF-8 BOOK records and matching Gênesis. The five public report hashes are recorded in
+canonical-deployment-validation.json. Real Turnstile backend success/replay and actual
+email delivery/verification remain open.
 Earlier broad
 client protocol integration stays attributed to its tested source. No customer
 release; real Turnstile/email acceptance remains open separately.
