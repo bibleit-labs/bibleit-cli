@@ -3,7 +3,27 @@
 Updated 2026-10-11. Counts describe explicit acceptance items, not estimated
 percentages of the entire project. The full plan is in `plan.md`.
 
-## Current increment: native amd64 server validation coordination
+## Current increment: final assessment closure and release-plan reconciliation
+
+| Item | Status | Evidence / limits |
+| --- | --- | --- |
+| Verify assessment closure | Complete | Ledger 8923d86 records 25/25 scoped packages complete; source 7442010 deployed, native f6fed37 unchanged; 334 CT/56 Erlang/71 JavaScript/native/ten bootstrap tests pass |
+| Record production qualification | Complete | HTTPS bibleit-server.fly.dev, ordinary SSH port 22; 23 HTTPS/11 authenticated HTTP-WSS/4 SSH/13 paired checks pass; native/deployed image campaigns pass 20 checks |
+| Reconcile release plan | Complete | Removes obsolete deployment/unknown-address blockers; records fresh client integration, fixed-address configuration, version/access and standalone packaging/install gates |
+
+Progress: **3/3 closure-review items complete; assessment 25/25**. The current
+CLI/client runtime still targets localhost and the verified contract baseline is
+an older development snapshot. No endpoint, runtime, baseline, release tag or
+production mutation is performed in this documentation follow-up. Final deployed
+admission code needs a fresh independent client integration refresh before release.
+SSH clients continue normal SSH and must not inject a PROXY preamble.
+
+Evidence: [native source 7442010 run](https://github.com/bibleit-labs/bibleit-server/actions/runs/38106224843),
+assessment ledger 8923d86 and final qualification section. See plan.md for the exact
+production image digest, scoped results and operational limits. The qualified
+Fly hostname does not qualify a future custom domain or establish capacity/failover.
+
+## Previous increment: native amd64 server validation coordination
 
 | Item | Status | Evidence / limits |
 | --- | --- | --- |
@@ -24,8 +44,9 @@ The native image job does not run the full CT suite. The separate local full ret
 passes 331 integration/51 Erlang/71 JavaScript/native/ten SSH-bootstrap tests;
 ARM64 image checks also pass 17 cases. No application/native source fix was needed.
 No client runtime, verified baseline, tag or deployment changes here. Assessment
-remains **24/25**, pending approved Fly boundary evidence and production rollout
-inputs. This validation image is not a registry-published release.
+was **24/25** at this native checkpoint, with Fly boundary evidence then pending.
+The final closure above supersedes that assessment blocker. This validation image
+is not a registry-published release.
 
 ## Previous increment: package 25 final local results and compatibility refresh
 

@@ -306,7 +306,7 @@ and native tests with no skips. Ordinary release/production tar checks verified
 178 reviewed resources; the Linux build stage passed with OTP 29.1.1, SSH 6.0.6
 and SSL 11.7.7. Independent client HTTP/SSH/import compatibility also passes the
 67-source/66-test/11-native-input development snapshot. CLI schemas are unchanged.
-Campaign progress is 24/25; final-image/Fly deployment verification remains open.
+Campaign progress was 24/25 at that checkpoint; final closure is recorded below.
 Before a production release, validate the approved deployed server snapshot and
 these operational requirements together:
 
@@ -326,8 +326,8 @@ these operational requirements together:
 
 These are server rollout prerequisites. The CLI does not repair database lineage,
 change server administration policy or retry an unsafe import automatically.
-Deployment-specific TLS, image contents and rollback checks remain package 25
-work. No production migration or deployed compatibility certification is claimed.
+Deployment-specific TLS/image/rollback evidence was subsequently recorded by the
+assessment. These older client checks do not independently certify that newer deployment.
 
 ## Package 25 local deployment evidence and launch gates
 
@@ -341,29 +341,44 @@ Independent HTTP/SSH/import integration already passed against the frozen
 package-25 development source, and both client/CLI baselines were refreshed.
 All those recorded source/test/native inputs match the native image report.
 These results still do not certify the final deployed release.
-Assessment progress remains 24/25 until approved deployed-boundary evidence exists.
+Assessment progress was 24/25 at this local checkpoint; the later deployed closure
+below supersedes its pending assessment gates.
 
-Before customer publication:
+The later production qualification is complete; the following release steps are
+still required:
 
-- Choose and verify the canonical HTTPS origin. BIBLEIT_PUBLIC_URL is validated as
-  an origin and requires HTTPS with secure cookies; browser Host/Origin must match.
-  Align the CLI's fixed service/browser URL before testing actual approval/login,
-  code exchange and revocation through the approved edge. Customers get no override.
-- Preserve the reviewed native amd64 server evidence and select/freeze the approved
-  production image; changed release inputs need fresh relevant validation. Verify
-  the actual Fly certificate, routing/proxy identity, fairness, spoofing/bypass and
-  platform configuration. Local server/client/CLI checks do not certify that edge.
-- Confirm writable server volumes for UID/GID10001. Legacy UID100 storage needs
-  an approved offline ownership migration that preserves private key permissions
-  and SSH host identity; do not silently replace the host key. This does not
-  change the CLI's per-user credential-file permissions.
-- Review the actual database attach result, role/grants and migration lineage.
-  Missing sslmode uses verify-full and bad CA/hostname fails closed. Any explicit
-  sslmode=disable needs approved private-mesh trust; no automatic downgrade or
-  database reset is implied. Keep credential-bearing URLs out of operational logs.
-- Record deployed backups/recovery and rollback, package inventory and persistent
-  SSH trust across restart/replacement. Local distribution/EPMD listeners remain
-  disabled; the normal Bibleit SSH protocol stays available.
+- Configure the fixed service/browser origin https://bibleit-server.fly.dev and
+  SSH bibleit-server.fly.dev:22 together with isolated fixtures and credential
+  bindings; run fresh client HTTP/SSH/import checks against a frozen newer server.
+  Clients send ordinary SSH, with no PROXY preamble or customer endpoint override.
+- Freeze approved release inputs, preserve qualified image/migration/host identity
+  and validate changed inputs. New domain/routing changes need requalification.
+- Confirm version and public/authenticated customer delivery, release/pin the Go
+  dependency and validate standalone production CLI packaging and native installers.
+- Publish only approved tags/assets, then validate real tap updates and customer
+  installs/upgrade/rollback. Existing private workspace builds are development candidates.
 
 No deployment, ownership migration, TLS policy or client runtime change was
 performed. Baselines changed only after independent integration passed.
+
+## Final server assessment closure — 25/25
+
+Ledger 8923d86 closes all 25 scoped packages. Qualified deployed source is
+7442010eebcfb1a2a9105db312ebaeae5f789003 with native f6fed37 and registry digest
+sha256:44f2278362bd73f26a2f1c4abb78bf4d72eb02a99c177629656b72391c79fc11.
+Its [native run](https://github.com/bibleit-labs/bibleit-server/actions/runs/38106224843)
+and rebuilt deployment image campaigns each pass 20 checks. The final source suite
+passes 334 CT, 56 Erlang unit, 71 JavaScript, native and ten bootstrap tests.
+
+Assessment-owned deployed results pass 23 HTTPS, 11 authenticated HTTP/WSS,
+four SSH authentication and 13 paired-client spoofing/isolation/recovery checks.
+Seven migrations are retained; isolated on-Fly restoration and provenance-guarded
+fixture cleanup pass. These server results do not refresh the CLI's older verified
+client baseline. Current localhost constants still block production packaging.
+
+Scope limits remain: only the Fly hostname is qualified, per-node fixed-window
+admission/reset/shared NAT behavior, single Machine/volume, five-day backup retention
+without continuous RPO/full failover RTO, incomplete provider form/email/OAuth
+acceptance and operator deploy-token scope/expiry review. Preserve approved database
+trust/grants/migrations, volume ownership and SSH host identity on future rollout.
+No CLI runtime, baseline, server deployment or customer publication is changed here.

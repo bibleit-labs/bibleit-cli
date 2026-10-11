@@ -9,9 +9,9 @@ Every client targets the project-managed service, currently
 `http://localhost:8080`; SSH uses `127.0.0.1:2222`. See
 [endpoint-policy.md](endpoint-policy.md) and [releases.md](releases.md).
 
-Revised 2026-10-11 against the local `../bibleit-server` checkout. Its HEAD is
-`c2beef5`, with uncommitted assessment changes; this is a working-tree review,
-not a compatibility claim against a published server release. This revision
+Revised 2026-10-11 after the assessment closed its scoped campaign at server
+ledger 8923d86. Qualified deployed source is 7442010; the client-tested baseline
+remains the older c2beef5 working-tree snapshot pending a fresh refresh. This revision
 supersedes the earlier sequence of extracting Go and immediately porting the
 same surface into Python, Ruby, and Rust.
 
@@ -208,11 +208,13 @@ includes package-25 boot/public-origin fixes and their security tests. Full igno
 log: build/validation/package-25-integration-2026-10-11.log.
 
 This is a frozen development snapshot, not deployed compatibility certification.
-The server assessment's latest independent local full suite passed 331 integration,
+At the native-validation checkpoint the separate assessment suite passed
+331 integration,
 51 Erlang unit, 71 JavaScript, native and ten SSH-bootstrap tests. Its updated
 17 final-image checks passed on ARM64 and separately on native Linux amd64 at
-f5f1736; see Native amd64 server validation below. Campaign progress stays 24/25,
-leaving approved Fly boundary verification. The production entrypoint,
+f5f1736; see Native amd64 server validation below. Campaign progress was 24/25
+at that checkpoint; Final assessment closure below records the subsequent
+25/25 result. The production entrypoint,
 final image and management WebSockets are outside this client integration runner.
 The date here is Europe/Berlin; baseline dates use UTC.
 
@@ -280,8 +282,8 @@ and automated release uploading are outside the initial release requirement.
 | Order | Item | Current status / required input | Done when |
 | --- | --- | --- | --- |
 | 1 | Confirm version, scope and customer access | Project decision; propose Go/CLI v0.1.0 for the existing core command surface, Homebrew/Bash/PowerShell/manual archives | Version and supported transports/architectures recorded; choose public customer artifacts or implement authenticated delivery; choose whether Scoop bucket ships now or later |
-| 2 | Configure production service and safe test fixtures | Blocked on actual HTTPS URL, SSH host/port and deployed service | Align project-owned HTTPS/browser constants with the approved canonical BIBLEIT_PUBLIC_URL origin, without customer endpoint overrides; isolate disposable fixtures from production; verify stored credential bindings safely reject the old service |
-| 3 | Freeze and validate server compatibility | Native amd64 development image verified; pending agreed release/deployed revision | Record server and libbibleit revisions; refresh synchronized client/CLI baseline only after full HTTP/SSH/auth/import integration passes; verify approved database migration lineage and packaging/runtime inputs; run explicit controlled production TLS, browser login/token revocation and SSH host verification checks |
+| 2 | Configure production service and safe test fixtures | Qualified Fly addresses known; project constants and safe fixtures still use localhost | Align project-owned HTTPS/browser constants with the approved canonical BIBLEIT_PUBLIC_URL origin, without customer endpoint overrides; isolate disposable fixtures from production; verify stored credential bindings safely reject the old service |
+| 3 | Freeze and validate server compatibility | Assessment 25/25, deployed source 7442010/native f6fed37 known; fresh client integration/release freeze pending | Record server and libbibleit revisions; refresh synchronized client/CLI baseline only after full HTTP/SSH/auth/import integration passes; verify approved database migration lineage and packaging/runtime inputs; run explicit controlled production TLS, browser login/token revocation and SSH host verification checks |
 | 4 | Release Go client and pin standalone CLI dependency | After gates 1–3; go.mod still requires v0.0.0 | Review/promote the client source, publish approved semantic version, pin it in CLI and record sums; clean-cache GOWORK=off test/vet/build succeeds without sibling checkout or replace directives; private access uses appropriate Git credentials/GOPRIVATE |
 | 5 | Validate exact production CLI candidate | After gate 4; current candidate workflow uses --local and go work | Add a standalone production candidate validation path using the released client, GOWORK=off and no --local; clean Go 1.27.1 source produces six archives, installer scripts, formula, Scoop manifest, checksums and provenance; rerun relevant native/platform/installer checks on those exact inputs |
 | 6 | Finalize release sources, notes and delivery policy | Before publishing CLI; release/default branches still need review | Promote reviewed source through normal review; notes name client version/server baseline, protocol limits, old-config migration/revocation, OpenSSH dependency and supported architectures; choose signing policy and test downloaded macOS binaries with normal OS protections; record manual release procedure or implement upload automation |
@@ -396,7 +398,7 @@ network-disabled runtime probe reports OTP 29.1.1, SSH 6.0.6 and SSL 11.7.7.
 The dedicated database/container volume were removed. These broad results are
 assessment-owned evidence, confirmed in its ledger and final notification.
 
-Progress is 24/25; Fly deployment verification is the remaining package. No CLI
+Progress was 24/25 here; Fly deployment verification was the remaining package. No CLI
 protocol/command/error-name or native-library change was needed. The independent
 HTTP/SSH/import refresh above passes and both client baselines are synchronized.
 The server working-tree snapshot still needs an agreed committed/deployed freeze.
@@ -434,8 +436,9 @@ remain clean at f6fed37. These are assessment-owned results. The fresh client
 compatibility evidence for the later server edits is recorded in Latest integration
 evidence above.
 
-Progress remains 24/25: package 25 has local evidence but no approved Fly target
-or deployed-boundary validation. Final-image checks now pass on native ARM64 and
+At this initial local checkpoint, progress was 24/25 and approved Fly evidence
+was pending; the subsequent final closure below supersedes that blocker.
+Final-image checks passed on native ARM64 and
 Linux amd64 for the recorded development inputs. Final release selection/freeze,
 Fly platform/TOML validation and actual edge checks remain required; changed release
 inputs need fresh validation. Server image evidence is separate from the already
@@ -513,21 +516,69 @@ uses HTTPS for the pinned public submodule, waits for TCP readiness and requires
 specific negative TLS errors. No application/native source fix was needed.
 
 The local native architecture gate is closed for this exact development snapshot.
-The image is not a registry-published production release. Overall assessment
-progress stays 24/25: approved staging/Fly platform validation, actual certificate/
+The image is not a registry-published production release. At this historical
+checkpoint assessment progress was 24/25: staging/Fly platform validation,
+actual certificate/
 renewal/redirect/ALPN/WSS/authentication/revocation, proxy identity/fairness and
 spoofing/private bypass, deployed database trust/grants/migrations, volume ownership/
-host identity and rollback/backup operations remain open. Future release input
+host identity and rollback/backup operations were open. The final closure below
+supersedes those assessment blockers. Future release input
 changes require relevant checks again. No client runtime, baseline, tag, visibility,
 deployment or shared database change is made by this documentation update.
 
+### Final assessment closure and remaining CLI release work
+
+The assessment ledger at 8923d86 records **25/25 scoped packages complete**.
+Qualified production service: HTTPS origin https://bibleit-server.fly.dev and
+ordinary SSH at bibleit-server.fly.dev:22. Deployed source is
+7442010eebcfb1a2a9105db312ebaeae5f789003, native remains
+f6fed37919c848b1aa0208900af992a5e8a507f2, and deployed registry digest is
+sha256:44f2278362bd73f26a2f1c4abb78bf4d72eb02a99c177629656b72391c79fc11.
+
+Assessment-owned final evidence:
+
+- Native [run 38106224843](https://github.com/bibleit-labs/bibleit-server/actions/runs/38106224843)
+  passes all eight stages, 398 tracked-file checks and cleanup. Native and rebuilt
+  deployment image campaigns each pass 20 checks. Full suite passes 334 CT,
+  56 Erlang unit, 71 JavaScript, native and ten SSH-bootstrap tests.
+- Actual deployed boundaries pass 23 HTTPS, 11 authenticated HTTP/WSS,
+  four registered-key SSH and 13 paired public-client checks. These cover
+  authentication, actor/account isolation, revocation, spoof rejection, independent
+  client admission, controlled denial and natural recovery without counter resets.
+- All seven tested migrations remain intact. On-Fly isolated backup restoration
+  verifies SQL identities/data/sequence equivalence and app manifest/SSH host identity;
+  synthetic users, accounts, Lives, sessions, keys and temporary restore fixtures
+  were removed. This is assessment-owned production evidence, not a new CLI test run.
+
+Fly injects the server's trusted PROXY v2 envelope. Clients continue ordinary SSH
+and must not inject a PROXY preamble. HTTP commands/PKCE/callback contracts remain
+unchanged; forwarding identity is server-owned. The newer server admission changes
+are outside the current independently verified client baseline. Preserve that
+baseline until fresh HTTP/SSH/import checks pass against a frozen newer snapshot.
+
+The Fly hostname is qualified; a new custom domain/renewal or routing/peer change
+needs relevant requalification. Other scope limits are per-node fixed-window
+budgets/reset on restart and shared NAT grouping, one Machine/volume exposure,
+five-day Fly backup retention without continuous RPO/full failover RTO, incomplete
+provider signup/OAuth/email acceptance and operator deploy-token scope/expiry review.
+These remain operator/product decisions; they do not reopen the 25 scoped packages.
+
 ### Next actionable increment
 
-Obtain the production HTTPS URL, SSH host/port and intended deployed server
-revision, plus the first-release version/access decision. Then change service
-constants and endpoint-dependent fixtures together and run the frozen integration
-gate. Until deployment inputs are ready, keep validation as private development
-staging. The seven core contract items and tap updater setup remain complete.
+Update the project-owned Go service/browser origin and CLI SSH address to the
+qualified Fly addresses, keeping constructors credential-only and no customer
+endpoint override. Adapt tests and isolated integration routing/TLS fixtures in
+the same increment so routine tests cannot hit production; preserve credential
+binding rejection for the old service and SSH host verification. Then rerun frozen
+HTTP/SSH/import integration against the newer server/native inputs and refresh both
+baselines only on success. Any production smoke uses explicitly approved disposable
+principals and a bounded scope, without restoring shared data or changing admission.
+
+Confirm first-release version/customer access, release and pin the Go client,
+validate a standalone CLI candidate without sibling workspace/--local, promote
+reviewed sources and publish approved assets. Then run the real Homebrew updater
+and customer install/upgrade checks (Scoop if selected). The ordered gates above
+remain authoritative. Source-only pushes do not publish a release or change visibility.
 
 ## Sources reviewed
 
