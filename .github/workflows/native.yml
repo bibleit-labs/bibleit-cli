@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           repository: bibleit-labs/bibleit-go
-          ref: 3c43133dc92d004697b069174a30bb36484fbc6b
+          ref: 3bec5bc0bfa9e5205da7c49b0563fd61762a7d27
           path: .ci-client
           token: ${{ secrets.BIBLEIT_CLIENT_READ_TOKEN }}
           persist-credentials: false

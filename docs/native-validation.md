@@ -21,6 +21,31 @@ At the publication pause, changes stayed local with a sibling workspace. Private
 CI is now authorized; see the latest validation section below. Each matrix targets runner-default architectures, not all six
 build targets. The original repository's remote main is unchanged.
 
+## Package 25 compatibility refresh — 11 October 2026
+
+`python3 scripts/check_server_container.py --imports --baseline
+build/validation/package-25-server-baseline-2026-10-11.json` passed in the isolated
+Linux/arm64 namespace. Server [private digest withheld] plus assessment
+working-tree changes and clean native [private digest withheld] were
+frozen. The client/CLI baselines are identical: 67 source, 66 test and 11 native
+build-input hashes. All input sets matched immediately after the run; the temporary
+database was removed. This includes the later boot/public-origin and security-test
+changes that were outside the package-24 snapshot below.
+
+Passing coverage: 34 decoder/18 encoder fixtures, seven security cases, 11 HTTP
+subtests, actual OpenSSH subscription/pause/reconnect/delete closure and output
+parity, 17 auth/key/protocol tests, 11 import-access and 15 publication cases.
+Log (ignored): build/validation/package-25-integration-2026-10-11.log.
+
+The separate assessment passes 326 integration, 51 Erlang unit, 71 JavaScript,
+native and ten SSH-bootstrap tests, plus 16 final-image checks on native ARM64.
+Its overall progress remains 24/25. Native amd64 server-image execution and actual
+Fly boundary evidence remain open. This client runner does not exercise the
+production entrypoint/image, management WebSockets or a deployed edge.
+
+Fresh private CI is pinned to client 3bec5bc; native and candidate results are
+pending this push. Runtime code and the integration harness required no changes.
+
 ## Package 24 compatibility refresh — 11 October 2026
 
 `python3 scripts/check_server_container.py --imports --baseline
