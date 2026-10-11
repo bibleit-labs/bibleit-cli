@@ -125,8 +125,11 @@ withdrawal/new-version strategy before proceeding.
 Reviewed on 2026-10-11 in [licensing-audit.md](licensing-audit.md). The owner
 confirmed the MIT grant and ownership/permissions. Source review found no
 licensing blocker. CLI v0.0.1 binary assets lack Go redistribution notices;
-future packaging is corrected privately, but the old assets remain a launch
-blocker until their disposition and a new release are approved.
+future packaging and a verified v0.0.2 tap review branch are prepared privately.
+[Release preparation](release-v0.0.2-readiness.md) records passed local/native
+checks and the GitHub billing block on final Windows/Scoop and tap Linux checks.
+Old assets remain a launch blocker until their disposition and a new release
+are approved.
 
 - [x] Confirm the owner intends MIT for code, documentation and formula in each
   repository and has rights to license all contributions. All three currently
