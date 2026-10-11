@@ -1,21 +1,14 @@
 # Local release packaging and distribution
 
-Release publication is paused. The commands below prepare files locally; no
-release tag, GitHub Release, distributed formula, Scoop bucket or hosted installer
-is created. Private validation branches and CI are authorized. The separate
-`bibleit-labs/homebrew-tap` exists; prepared source branches may be pushed
-to the private repositories as of 2026-10-11. Customer package publication remains
-gated on production readiness.
-The fixed canonical addresses are configured: `https://bibleit.app`
-and ordinary SSH at `bibleit.app:22`. Actual public custom-domain DNS/TLS/SSH
-technical acceptance and human Google/GitHub sign-in now pass; real Turnstile
-fresh-token acceptance and email delivery/verification are human-confirmed, but
-the repaired3359535/image0bbb genuine fresh-token/replay retest now passes
-(ledger53239ad). Both provider follow-up gates are complete.
-Native HTML form technical admission is qualified on repaired deployment 34d80f8.
-A checksummed client snapshot and standalone candidate validation now pass.
-An approved semantic Go-client version and final release-input qualification
-remain launch steps.
+Go client and CLI v0.0.1 are approved for release in the existing private
+repositories. Release work validates the Go client first, then pins it in the
+standalone CLI before creating the tag-triggered draft and publishing reviewed
+assets. Repository visibility is unchanged. See CHANGELOG.md for release scope.
+
+The fixed endpoints are https://bibleit.app and bibleit.app:22. Production
+deployment and genuine Turnstile/email acceptance are complete at source3359535,
+native d6e31dc, image0bbb and workflow38163282528 (assessment ledger53239ad).
+Earlier client compatibility evidence remains at its tested revisions.
 
 ## Public distribution versus private validation
 

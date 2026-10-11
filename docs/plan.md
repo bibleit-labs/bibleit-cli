@@ -303,7 +303,7 @@ and automated release uploading are outside the initial release requirement.
 
 | Order | Item | Current status / required input | Done when |
 | --- | --- | --- | --- |
-| 1 | Confirm version, scope and customer access | Project decision; propose Go/CLI v0.1.0 for the existing core command surface, Homebrew/Bash/PowerShell/manual archives | Version and supported transports/architectures recorded; choose public customer artifacts or implement authenticated delivery; choose whether Scoop bucket ships now or later |
+| 1 | Confirm version, scope and customer access | Go/CLI v0.0.1 approved; initial releases remain private, with Homebrew/Bash/PowerShell/manual archives | Version and supported transports/architectures recorded; choose public customer artifacts or implement authenticated delivery; choose whether Scoop bucket ships now or later |
 | 2 | Configure production service and safe test fixtures | Client implementation complete: custom-domain constants, trust-preserving SSH alias, verified fixtures and changed-key rejection pass; actual public DNS/TLS/HTTP/SSH/rate technical acceptance passes; human Google/GitHub sign-in confirmed; repaired native form technical admission passes; genuine fresh-token/replay and email delivery/verification human-confirmed; exact3359535 production qualification complete | Retain public technical/provider evidence; retain verified3359535 production/provider provenance and separate actual-email evidence |
 | 3 | Freeze and validate server compatibility | New-domain compatibility and boot validation pass at assessed 5969f2f/native f6fed37; committed Erlang inputs verified; supplemental direct alias boot qualification passes at ef63e91; preceding public probes pass on c586107; repaired native admission/rollout qualifies 34d80f8/native f6fed37; catalog6ba81e2/d6e31dc operational qualification and focused4243c9a/d6 client compatibility pass; exact repaired UTF-8 deployment/public qualification complete; replay repair3359535/image0bbb qualified and genuine provider gates complete; final version/dependency/packaging input freeze pending | Retain separately attributed full, boot, sparse-client and deployed image provenance; retain exact repaired UTF-8 rollout provenance; qualify actual token/email flow; retain earlier full integration and supplemental boot provenance; freeze all packaging/deployment inputs; retain the verified boot fix and compare recorded hashes or rerun changed checks; retain approved migration lineage/runtime inputs; public-edge evidence is assessment-owned, and customer login/access decisions remain gate 1 |
 | 4 | Release Go client and pin standalone CLI dependency | Semantic release pending gates 1–3; immutable client snapshot v0.0.0-20261011144051-464d86d7dd41 is pinned with sums; standalone tests/native CI pass | Review/promote the client source, publish approved semantic version, pin it in CLI and record sums; clean-cache GOWORK=off test/vet/build succeeds without sibling checkout or replace directives; private access uses appropriate Git credentials/GOPRIVATE |
@@ -833,3 +833,18 @@ policy, then approve the tag-generated draft for publication. After actual asset
 publication, dispatch the tap updater, run published-package validation on its
 formula PR and review/merge it before announcing customer installation. Main and
 all older work branches are already integrated; no transfer to the tap is pending.
+
+
+### v0.0.1 release preparation
+
+The user approved v0.0.1 for both Go and CLI. All merged local/remote work
+branches are deleted; the unmerged local CLI native-validation branch is retained.
+Main remains the integration branch in all three repositories.
+
+Release order: validate/tag/publish the private Go client, pin v0.0.1 with sums,
+validate the standalone CLI, tag it and validate its exact assets/native installers,
+then publish its reviewed private release and open/validate the tap formula PR.
+Private publication does not change visibility or provide ordinary public
+curl/Homebrew installation. Initial binaries are checksummed, unsigned and
+not notarized; normal OS protections remain enabled. CHANGELOG.md records scope
+and release limitations.
