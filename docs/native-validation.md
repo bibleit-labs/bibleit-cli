@@ -80,6 +80,16 @@ remains pending. Two missing/bogus-token backend denials pass; visible widget su
 alone does not close that gate. No client/native runtime change or customer
 release is required to record the technical acceptance.
 
+Subsequent browser-flow blocker: real Chromium requestSubmit reproduces
+Origin:null under global no-referrer, breaking native signup/login/CLI approval/
+settings forms. Prior fetch/explicit-Origin probes did not cover this. The
+assessment is validating ordinary-HTML same-origin policy, preserving sensitive
+URL no-referrer and strict Origin/CSRF rejection. The earlier technical report
+remains point-in-time evidence; final qualification freeze awaits repaired source,
+real-browser regression, full server suite and coordinated deployment acceptance.
+No client/native protocol/runtime change is needed; Turnstile backend success/
+replay remains pending separately.
+
 ## Prior Fly-hostname endpoint validation — 11 October 2026
 
 Client runtime 867dcbe and documentation follow-up b081081 use the fixed production
