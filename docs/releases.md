@@ -9,7 +9,8 @@ gated on production readiness.
 The fixed canonical addresses are configured: `https://bibleit.app`
 and ordinary SSH at `bibleit.app:22`. Actual public custom-domain DNS/TLS/SSH
 technical acceptance and human Google/GitHub sign-in now pass; real Turnstile
-backend success/replay and the subsequent native HTML form repair remain pending.
+backend success/replay and actual email delivery/verification remain pending.
+Native HTML form technical admission is qualified on repaired deployment [private revision withheld].
 A released, pinned Go-client
 dependency and standalone production candidate validation remain release gates.
 
@@ -142,8 +143,9 @@ The implementation here is written for Bibleit's Go release layout.
    Supplemental alias boot qualification passes at [private revision withheld]. Actual public-DNS
    HTTPS/aliases/auth/SSH/rate acceptance passes on deployed [private revision withheld]. The operator
    confirms Google/GitHub sign-in; real Turnstile backend success/replay remains
-   an assessment/Fly gate. The later native HTML form referrer-policy repair
-   also requires real-browser/server-suite and repaired-rollout acceptance;
+   an assessment/Fly gate, together with actual email delivery/verification.
+   Repaired deployment [private revision withheld]/native [private revision withheld] passes real native form CSRF admission
+   and updated boundary/alias checks; provider traffic was blocked in that probe;
    freeze final packaging inputs and revalidate changed inputs before release.
 2. Release the reviewed Go client when authorized, pin its version in go.mod,
    record dependency sums and verify builds with GOWORK=off. No replacement modules.
@@ -441,3 +443,20 @@ revised candidate build/installer matrix at CLI bc94231. All native installer jo
 validate one shared six-target archive set. See [native-validation.md](native-validation.md)
 for the exact private runs. Standalone production dependency/packaging validation
 remains a separate release gate.
+
+## Repaired native HTML form deployment qualification
+
+Source [private revision withheld]/native [private revision withheld] is technically qualified on image
+sha256:[private digest withheld],
+[run 38144206075]([private service reference withheld]).
+Real production requestSubmit carries canonical Origin/Referer and passes CSRF
+before the expected missing-token denial. The probe blocks provider traffic and
+creates no account/email. Updated boundary23/alias39 checks pass per address
+family; full source338 CT/63 EUnit/71 JS/native/10 bootstrap passes. Credential-free
+report hashes are in contract/canonical-deployment-validation.json, retaining
+earlier auth/SSH/rate evidence at its tested source. Human real Turnstile backend
+success/replay and actual email delivery/verification remain release gates.
+The separately approved catalog rollout uses server [private revision withheld]/native [private revision withheld]
+(workflow 38144732991) and requires independent deployment/catalog qualification
+before joining the release baseline. The [private revision withheld]/[private revision withheld] evidence remains
+point-in-time and is not inherited by that newer image. No customer tags/assets are published.

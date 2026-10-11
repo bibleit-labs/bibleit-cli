@@ -80,15 +80,20 @@ remains pending. Two missing/bogus-token backend denials pass; visible widget su
 alone does not close that gate. No client/native runtime change or customer
 release is required to record the technical acceptance.
 
-Subsequent browser-flow blocker: real Chromium requestSubmit reproduces
-Origin:null under global no-referrer, breaking native signup/login/CLI approval/
-settings forms. Prior fetch/explicit-Origin probes did not cover this. The
-assessment is validating ordinary-HTML same-origin policy, preserving sensitive
-URL no-referrer and strict Origin/CSRF rejection. The earlier technical report
-remains point-in-time evidence; final qualification freeze awaits repaired source,
-real-browser regression, full server suite and coordinated deployment acceptance.
-No client/native protocol/runtime change is needed; Turnstile backend success/
-replay remains pending separately.
+The subsequent native-form repair is technically qualified on source [private revision withheld],
+native [private revision withheld] and image sha256:[private digest withheld]
+in [deployment 38144206075]([private service reference withheld]).
+403 source hashes and 20 actual-image checks match. Real production requestSubmit
+carries canonical Origin/Referer, passes CSRF and reaches missing-token denial;
+ordinary HTML response policy is same-origin. Provider traffic is blocked and no
+account/email is created. Updated boundary23/alias39 checks pass on each address
+family; local source338 CT/63 EUnit/71 JS/native/10 bootstrap passes. The current
+contract provenance records each repaired report’s source/native/image and hash,
+while retaining earlier auth/SSH/rate results separately at their tested source.
+Real Turnstile backend fresh-token success/replay and actual email delivery/
+verification remain pending. The newer catalog rollout uses server [private revision withheld]/native [private revision withheld]
+(workflow 38144732991) and needs independent deployment/catalog qualification.
+This [private revision withheld]/[private revision withheld] evidence is point-in-time and does not qualify the later image; no client runtime change is needed here.
 
 ## Prior Fly-hostname endpoint validation — 11 October 2026
 
