@@ -165,20 +165,16 @@ repositories private if required permissions cannot be established.
 - [x] Add SECURITY.md, bug-report and PR templates in all three repositories.
   The owner approved security@bibleit.app for private reports. Community conduct
   and CODEOWNERS policies can be added if contributor governance needs them.
-- [ ] Prepare CLI changes in `native.yml`, `release-candidate.yml` and
-  `release.yml`: remove required `BIBLEIT_CLIENT_READ_TOKEN`, private-only
-  `GOPRIVATE`, and `gh auth setup-git` once the Go dependency is public. Use
-  ordinary `go mod download` and `go mod verify` with GOWORK=off. Public fork
-  PR tests must work without repository secrets.
-- [ ] Prepare tap workflows to read public CLI metadata/assets without the
-  cross-repository `BIBLEIT_CLI_READ_TOKEN`. Retain narrowly scoped write
-  permissions only for the formula updater; preserve the human-reviewed PR flow.
-  Revoke obsolete tokens after replacement paths are verified.
-- [ ] Pin third-party Actions to reviewed full commit SHAs with an update policy;
-  most current actions use mutable version tags. Keep untrusted PR execution
-  separate from release/write credentials. Do not use pull_request_target to
-  execute PR code with privileged tokens. Review caches, reusable workflows,
-  input handling, approvals and Actions spending for public contributions.
+- [x] Prepare CLI native/candidate/release workflows for public dependencies:
+  retain conditional authenticated private downloads until cutover, use ordinary
+  public module downloads afterwards, and make reusable read secrets optional.
+- [x] Prepare tap reads to stop using the private cross-repository token in public
+  mode while retaining scoped formula-PR writes. Revoke obsolete tokens only
+  after replacement paths pass at launch.
+- [x] Pin external Actions to upstream full SHAs and prepare weekly Dependabot
+  update review in all three repos. Preserve read-only PR execution, manual
+  release/formula triggers and the main ancestry gate. Actionlint passes.
+  Native workflow execution and anonymous public-fork retrieval are separate checks.
 - [ ] Configure main protection/rulesets, passing checks, force-push/deletion
   restrictions and release-tag protections. Choose review requirements that
   work for the actual maintainer count and formula bot, without bypassing checks.
@@ -235,6 +231,10 @@ JavaScript tests, then the required server suite with a disposable database.
 Retain the home-page separation checked by `bibleit_http_docs_tests.erl`; add
 released-install assertions on the CLI page. Server deployment is a separate
 reviewed action, coordinated with its existing work.
+
+See [public CI and settings preparation](public-ci-readiness.md) for the exact
+reviewable settings proposal and the private-plan ruleset limitation. No settings
+payload has been applied.
 
 ## 6. Approval and staged cutover
 
