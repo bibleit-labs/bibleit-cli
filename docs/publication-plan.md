@@ -122,20 +122,30 @@ withdrawal/new-version strategy before proceeding.
 
 ## 3. Confirm licensing and redistribution rights
 
-- [ ] Confirm the owner intends MIT for code, documentation and formula in each
+Reviewed on 2026-10-11 in [licensing-audit.md](licensing-audit.md). The owner
+confirmed the MIT grant and ownership/permissions. Source review found no
+licensing blocker. CLI v0.0.1 binary assets lack Go redistribution notices;
+future packaging is corrected privately, but the old assets remain a launch
+blocker until their disposition and a new release are approved.
+
+- [x] Confirm the owner intends MIT for code, documentation and formula in each
   repository and has rights to license all contributions. All three currently
   contain the same MIT notice, copyright 2022 Felipe Mamud; verify attribution
   and dates rather than automatically changing ownership to the organization.
-- [ ] Inventory dependencies, copied/adapted code, historical Python dependencies,
+- [x] Inventory dependencies, copied/adapted code, historical Python dependencies,
   fixtures, images and generated material. Identify any required third-party
   notices, including material distributed in compiled Go binaries.
-- [ ] Review Bible text and translation metadata separately. Software MIT does
+- [x] Review Bible text and translation metadata separately. Software MIT does
   not grant rights to a Bible translation or third-party artwork. Record source,
   edition, attribution, redistribution terms and territorial limitations for
   any bundled excerpts/data; prefer clearly licensed synthetic test content.
   Consult the server's `docs/translation-rights-policy.md` for project policy.
 - [ ] Confirm every distributed archive contains the correct license and any
-  required notices. Ensure Homebrew's `license "MIT"` matches that decision.
+  required notices. Future packages now include THIRD_PARTY_NOTICES; validate
+  the final new release and resolve the deficient private v0.0.1 assets before
+  public exposure. Generated Homebrew formulas retain the notices. The primary
+  project/formula MIT license remains appropriate; dependencies retain their
+  own terms.
 
 Exit: a rights inventory with no unknown or incompatible material. Keep the
 repositories private if required permissions cannot be established.
