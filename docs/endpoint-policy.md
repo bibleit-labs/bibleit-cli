@@ -1,8 +1,8 @@
 # Service endpoint policy
 
 Updated 2026-10-11. All language clients target the single project-managed Bibleit
-service. The server repository is private; its eventual organizational move is
-separate from publishing public client repositories.
+service. The server repository remains private; client/CLI distribution access
+is a separate release decision.
 
 The Go client declares `ServerEndpoint = "https://bibleit.app"` in `client.go`.
 The CLI derives its HTTP and browser authentication address from that constant.

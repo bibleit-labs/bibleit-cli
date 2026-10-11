@@ -27,11 +27,16 @@ Prepared HTTPS/browser origin https://bibleit.app and ordinary SSH bibleit.app:2
 OpenSSH uses the historical Fly hostname only as a known_hosts lookup alias to
 preserve verified trust; a foreign saved key must fail. Local race tests/vet in
 both repositories and native Darwin TLS/PTY/Bash/Zsh checks pass. Fresh isolated
-HTTP/SSH/import passes at [private revision withheld] plus canonical-host working-tree changes:
+HTTP/SSH/import passes at assessment revision [private revision withheld]:
 34 decoder/18 encoder, seven security, 11 HTTP, real OpenSSH lifecycle/JSON
-parity and changed-key rejection, 18 auth/key/protocol and 26 import cases.
-Three TLS checks pass; synchronized 69 source/71 test/11 native hashes match
-after the run. Exact new-domain private native/candidate results are pending.
+parity and changed-key rejection, 24 auth/key/protocol/canonical/provider unit tests, one boot case and 26 import cases.
+Three TLS checks pass; synchronized 69 source/72 test/11 native hashes match
+after the run and match the committed Erlang inputs. Unrelated frontend edits
+keep the server dirty flag true. Six native jobs pass at client 58505aa/CLI 9243489. Candidate macOS/Linux pass,
+while Windows hit the job timeout during duplicate six-target compilation before
+installer checks. Candidate CI now builds one archive set on Linux and downloads
+those exact inputs for each native installer job, preserving checksum validation.
+Fresh validation of the revised workflow is pending.
 Actual DNS/TLS/SSH public-route qualification remains assessment/Fly-owned.
 
 ## Prior Fly-hostname endpoint validation — 11 October 2026

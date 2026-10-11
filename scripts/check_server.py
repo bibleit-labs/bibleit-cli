@@ -113,7 +113,7 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
         run(['go','test','-c','-o',str(cli_binary),'.'],cwd=root,env=go_env)
         env['BIBLEIT_CLI_TEST_BIN']=str(cli_binary)
         shutil.copy(server/'_build/default/lib/bibleit_server/ebin/bibleit_server.app', ebin)
-        suites = [server/'test/bibleit_test_database.erl', server/'test/bibleit_security_SUITE.erl', server/'test/http/bibleit_cli_auth_tests.erl', server/'test/ssh/bibleit_ssh_key_cb_tests.erl', server/'test/unit/bibleit_protocol_request_tests.erl']
+        suites = [server/'test/bibleit_test_database.erl', server/'test/bibleit_security_SUITE.erl', server/'test/http/bibleit_cli_auth_tests.erl', server/'test/ssh/bibleit_ssh_key_cb_tests.erl', server/'test/unit/bibleit_protocol_request_tests.erl', server/'test/bibleit_security_review_SUITE.erl', server/'test/unit/bibleit_http_canonical_host_tests.erl', server/'test/unit/bibleit_turnstile_tests.erl']
         if args.imports:
             suites += [server/'test/bibleit_import_access_SUITE.erl', server/'test/bibleit_import_publication_SUITE.erl']
         run(['erlc', *paths,'-o',str(ebin),*map(str,suites)],cwd=temporary)
@@ -136,6 +136,8 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
             private=temporary/'test-data';private.mkdir();env['BIBLEIT_TEST_PRIV']=str(private)
             integration='''
               {ok,_}=application:ensure_all_started(cowboy),
+              ok=bibleit_security_review_SUITE:optional_configuration([]),
+              io:format("Server boot configuration: canonical Turnstile hostname/default/normalization/rejection passed~n"),
               Config=bibleit_security_SUITE:init_per_suite([{priv_dir,os:getenv("BIBLEIT_TEST_PRIV")}]),
               Results=try lists:foreach(fun(Case)->
                 C=bibleit_security_SUITE:init_per_testcase(Case,Config),
@@ -212,7 +214,7 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
                     bibleit_security_SUITE:end_per_suite(Config) end,
               application:unset_env(bibleit_server,rate_limits),
               DB=bibleit_test_database:start(),
-              UnitResult=try eunit:test([bibleit_cli_auth_tests,bibleit_ssh_key_cb_tests,bibleit_protocol_request_tests],[verbose])
+              UnitResult=try eunit:test([bibleit_cli_auth_tests,bibleit_ssh_key_cb_tests,bibleit_protocol_request_tests,bibleit_http_canonical_host_tests,bibleit_turnstile_tests],[verbose])
               after bibleit_test_database:stop(DB) end,
               case {Results,UnitResult} of
                 {{ok,ok},ok}->halt();
@@ -246,6 +248,8 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
             'fixed_http_endpoint': 'https://bibleit.app' if args.integration else None,
             'fixed_ssh_endpoint': 'bibleit.app:22' if args.integration else None,
             'ssh_host_key_alias': 'legacy.bibleit.example' if args.integration else None,
+            'boot_configuration_cases': 1 if args.integration else 0,
+            'eunit_cases': 24 if args.integration else 0,
             'tls_boundary_cases': 3 if args.integration else 0,
             'egress_disabled_fixture': args.integration,
             'response_encoder_cases': sum('server_response_term' in case for case in json.loads((root/'contract/fixtures/responses-v1.json').read_text())),
