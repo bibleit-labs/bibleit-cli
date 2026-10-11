@@ -3,7 +3,21 @@
 Updated 2026-10-11. Counts describe explicit acceptance items, not estimated
 percentages of the entire project. The full plan is in `plan.md`.
 
-## Current increment: assessment compatibility refresh
+## Current increment: package 23 final-results review
+
+| Item | Status | Evidence / limits |
+| --- | --- | --- |
+| Verify final assessment result | Complete | Assessment confirms 313 integration cases, 48 Erlang unit tests, 71 JavaScript tests and native search/fuzz tests pass without skips; test container/volume removed; package 23 complete for bounded local scope |
+| Update release gates and recovery evidence | Complete | Campaign now 23/25; packages 24–25 remain; local fault/restore success distinguished from pending production recovery/deployment verification |
+| Publish documentation | Complete | Plan, release guide and status updated on integration-refresh with a Conventional Commit; runtime and verified server/native baseline unchanged |
+
+Progress: **3/3 requested review items complete**. Package 23's local fixtures
+validate restore quarantine and controlled degradation, not production RPO/RTO,
+backup automation, whole-volume crash consistency, OOM or physical disk exhaustion.
+Customer fresh-credential/SSH-key guidance remains applicable after an actual
+approved restore. No client integration or production restore is claimed here.
+
+## Previous increment: assessment compatibility refresh
 
 | Item | Status | Evidence / limits |
 | --- | --- | --- |
@@ -26,11 +40,11 @@ remain open. The assessment has subsequently added two package-23 test files
 outside this frozen snapshot; recorded source/test/native inputs still match.
 No server edits or release tags/assets are created here.
 
-Package-23 follow-up: isolated recovery/fault tests pass; its full suite was still
-running at notification. Customer guidance now covers fresh credentials and SSH
-key re-registration after an approved restore/quarantine and identity/grant
-reconciliation. CLI runtime and the verified baseline are unchanged; no production
-restore or additional completed assessment package is claimed.
+Package-23 follow-up: the final local assessment suite now passes and campaign
+progress is 23/25; see the current review above. Customer guidance covers fresh
+credentials and SSH key re-registration after an approved restore/quarantine and
+identity/grant reconciliation. CLI runtime and the verified baseline are unchanged;
+no production restore is claimed.
 
 ## Previous increment: first-release readiness review
 

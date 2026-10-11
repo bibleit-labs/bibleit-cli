@@ -325,10 +325,10 @@ points at that revision. Package 22 separates management WebSocket authorization
 checks from keepalive pings (30-second ping interval). The assessment reports a
 passing 120-second/48-client fanout soak and 30 reconnect cycles. Its final package
 22 full suite now exits zero: 310 integration cases, 48 Erlang unit tests,
-71 JavaScript tests and native C programs, without skips. The overall campaign is
-22/25 complete. Package 23 (combined faults/backup restoration), package 24
-(dependency/history-secret/TLS/SSH/chained tests and final retest), and package 25
-(Fly deployment review) remain pending. These broad results are assessment-reported
+71 JavaScript tests and native C programs, without skips. Package 23 subsequently
+passed its final suite below; the overall campaign is now 23/25 complete. Package
+24 (dependency/history-secret/TLS/SSH/chained tests and final retest) and package
+25 (Fly deployment review) remain pending. These broad results are assessment-reported
 and confirmed in its ledger/log; the independent HTTP/SSH/import compatibility
 refresh above also passed against the current snapshot.
 
@@ -341,17 +341,34 @@ committed/deployed server and native revisions, then run release compatibility a
 production smoke checks. The newly verified development snapshot does not close
 that deployment gate.
 
-### Package 23 recovery documentation follow-up
+### Package 23 final results and recovery guidance
 
 The assessment added an offline restored-database quarantine procedure in
 scripts/quarantine-restored-database.sql and docs/developers/backup-recovery.md.
 It disables restored principals, revokes API tokens/user SSH registrations,
 invalidates restored password hashes and clears browser/action/OAuth/CLI auth
 flows before reopening the recovered target. Identity and current grants must be
-reconciled before approved users receive fresh credentials. Focused recovery/fault
-tests passed; the full package-23 suite was still running at notification time.
-This does not advance the recorded 22/25 completion count or claim a production
-restore has occurred.
+reconciled before approved users receive fresh credentials.
+
+Final package 23 validation passed: 313 Common Test integration cases, 48 Erlang
+unit tests, 71 JavaScript tests and native C search/fuzz programs, without skips.
+The dedicated test container and volume were removed. The assessment chat confirms
+completion; its log /tmp/bibleit-combined-full-final.log records all
+313 integration cases passing. Campaign progress is 23/25, with packages 24–25
+remaining. This is assessment-owned evidence, not a new client integration run.
+
+The three focused cases cover combined response loss/CPU/memory/write-permission
+faults, isolated backup restoration and transaction rollback of a truncated dump.
+Quarantine denies restored tokens, sessions, SSH keys and old passwords. The
+120-second PostgreSQL pause/restart campaign passed 3,379 completed requests,
+including 101 controlled 503 responses, with no unexpected responses or health
+canary failures; it recorded five generator drops at the 16-in-flight cap.
+
+Production recovery validation remains open: these small local fixtures do not
+establish production RPO/RTO, encrypted/offsite backup automation, whole-volume
+crash consistency, OOM behavior, physical disk exhaustion or deployed failover.
+Package 25 must assess the applicable deployment controls and the approved restore
+procedure before those production claims can be made.
 
 CLI customer implications are documented in README.md and releases.md: after an
 actual approved restore, wait for reconciliation, obtain fresh HTTP/API credentials,
