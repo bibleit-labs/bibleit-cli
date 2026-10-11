@@ -5,6 +5,13 @@ v0.0.1 assets and both default branches remain unchanged.
 
 ## Final candidate validation
 
+Follow-up 2026-10-12: source `cbe588d81aa300d59f5f5fc76f705e5e4476b73b`
+passed [candidate run 38179740828](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38179740828),
+including native Windows ARM64 PowerShell 7/5.1 and Scoop lifecycle/rejection checks.
+All eight package hashes equal the frozen f0c080c inputs below, and the tap verifier
+generates the exact reviewed formula. [Final ARM64 evidence](security/v0.0.2-final-validation-2026-10-12.json)
+records source, jobs and artifact digests; the ARM64 runtime gap is now closed.
+
 Frozen package source: `f0c080c1505346aee78dde9e0e24f80bb9d76a74`.
 [CLI candidate run 38177668163](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38177668163)
 succeeded: six clean archives, eight checksums, native Linux/macOS installers,
@@ -12,7 +19,8 @@ Windows AMD64 PowerShell 7 and 5.1, parser/rejection checks and Scoop lifecycle.
 All archives contain exact LICENSE, THIRD_PARTY_NOTICES and the version-free README.
 Additional exact-candidate checks passed locally on Darwin arm64 and offline,
 unprivileged native Linux arm64, including the Bash latest-download fixture.
-Windows arm64 received archive/hash validation, without native runtime execution.
+The original candidate validated Windows arm64 archives/hashes only; the follow-up
+above adds native runtime/installer evidence on the same package bytes.
 
 [Tap native run 38178224204](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38178224204)
 succeeded on Darwin arm64 and Linux x86_64 at tap source

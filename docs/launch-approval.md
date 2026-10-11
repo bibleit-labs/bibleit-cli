@@ -17,12 +17,15 @@ created, or old asset/artifact removed. Server deployment is excluded.
   Keep the server private; merge/deploy its docs separately after public installs.
 
 Frozen package candidate f0c080c passed CLI run 38177668163. Six archives and both
-installers have eight approved hashes in
+installers have eight reviewed hashes in
 [final validation](security/v0.0.2-final-validation-2026-10-11.json).
 Tap run 38178224204 passed exact formula/native Darwin arm64/Linux x86_64 lifecycle.
-Windows AMD64 PowerShell 7/5.1 and Scoop passed; Windows arm64 runtime is a recorded
-coverage gap, not a release check claimed complete. Linux/macOS arm64 installer
-checks passed locally. Signing/notarization is outside this release scope.
+Windows AMD64 and ARM64 PowerShell 7/5.1 and Scoop passed. ARM64 source cbe588d
+passed candidate run 38179740828 with the same eight package hashes and matching
+verified tap formula. [ARM64 evidence](security/v0.0.2-final-validation-2026-10-12.json)
+records exact jobs/artifact digests. Linux/macOS arm64 installer checks also passed
+locally. Native Intel macOS execution is not claimed. Signing/notarization is outside
+this release scope.
 
 [Gate review](security/launch-gate-review-2026-10-12.json) supplements the full
 [security audit](security-audit.md) and [licensing audit](licensing-audit.md).
@@ -33,24 +36,24 @@ nested packages retained notices and binary byte/string checks passed. Raw repor
 remain private. The fresh merge-head checks started after this inventory snapshot;
 review their results/logs and recheck any later changes before visibility changes.
 
-## Disclosure decisions needed
+## Disclosure decision — approved
 
-Approve retaining audited operational records and personal author/committer email
-metadata in hosted history, or choose removal preparation before launch. The
+On 2026-10-12 the owner approved retaining the audited operational records and
+personal author/committer email metadata in public hosted history. The
 operational records include docs/status.md, docs/plan.md and contract deployment
 validation narratives in CLI/SDK: private server revision/image identifiers,
 source fingerprints and recovery/coordination history. The audit found no
 production credential leak. Current historical banners do not erase old history.
 
-A removal choice requires a separate reviewed plan for affected Git history,
-Go tags/checksums and hosted references/assets. No history rewrite is proposed
-or authorized by this approval package.
+This closes the disclosure gate. No history rewrite is needed or proposed.
+Release, cleanup and visibility approval remain separate from this decision.
 
 ## Requested release, cleanup and public-launch actions
 
 1. Approve the three SDK/CLI/tap PRs for squash merge with Conventional Commit
    titles and no codex prefix. Require current head checks and no unresolved
-   changes/findings. Record exact heads immediately before each merge.
+   changes/findings. Merge SDK/CLI first; hold the tap merge until the matching
+   private corrected release is available. Record exact heads before each merge.
 2. Keep repos private while preparing the corrected CLI v0.0.2 draft. Build/test
    the final merged source through the guarded release workflow, then compare
    all eight artifact hashes, notices and formula with the frozen candidate.
@@ -60,13 +63,16 @@ or authorized by this approval package.
    [withdrawal proposal](security/v0.0.1-asset-withdrawal-proposal-2026-10-11.json),
    and only the 38 exact deficient CI artifacts in
    [cleanup proposal](security/deficient-artifact-cleanup-proposal-2026-10-11.json).
-   All IDs/digests were rechecked present/unchanged on 2026-10-12. Recheck again at
+   All IDs/digests were rechecked present/unchanged on 2026-10-12, and all 12 assets
+   and 38 artifact archives have verified ignored private backups. Recheck again at
    execution; preserve corrected candidates and unrelated logs/report artifacts.
    Keep the v0.0.1 source/tag; add an explanatory withdrawn-downloads release note
    pointing to the corrected release. Deletions are irreversible.
 4. Publish the verified corrected release while CLI remains private, then make
-   SDK public first and prove empty-cache normal Go proxy/sumdb retrieval without
-   credentials. Validate SDK exported docs and public contributor execution.
+   merge the matching verified tap formula. Make SDK public first, immediately
+   configure/read back its proposed protections/security settings, then prove
+   empty-cache normal Go proxy/sumdb retrieval without credentials. Validate SDK
+   exported docs and public contributor execution.
 5. Make CLI public, configure protections/security features and validate public
    dependency CI, all released assets, latest and explicit-version Bash/PowerShell
    installers on native runners. Stop at any unexpected checksum/access result.

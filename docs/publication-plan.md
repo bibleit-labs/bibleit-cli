@@ -96,8 +96,9 @@ include them in the audit, not just Git files.
   are not automatically credentials, but need a deliberate disclosure decision.
   Keep public API contracts and useful compatibility summaries; move internal
   operations records to approved private storage before removing public copies.
-- [ ] Obtain the owner's disclosure decision for operational records and personal
-  commit-email metadata. Prepare any removal in an isolated clone for approval.
+- [x] Obtain the owner's disclosure decision for operational records and personal
+  commit-email metadata. On 2026-10-12 the owner approved retaining the audited
+  records and metadata in public history; no rewrite is needed.
 - [x] Review older CLI Python/client code, fixtures and deleted files, including
   translation metadata and attribution. Deleting them from main does not remove
   their history. Do not publish proprietary server code or customer recordings.

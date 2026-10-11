@@ -61,7 +61,6 @@
   "rulesets": "HTTP 403 under current private plan; payload corrected against official schema, not applied",
   "limits": [
     "Delta audit supplements 2026-10-11 full audit; no new full-hosted inventory or production audit.",
-    "Operational narratives and personal commit metadata need disclosure approval.",
     "No visibility change, merge, tag/release or deletion."
   ],
   "hosted_refresh": {
@@ -90,5 +89,28 @@
     "binary_instances_scanned": 24,
     "binary_byte_pattern_hits": 0,
     "scope": "All new completed run attempts and unexpired artifacts relative to the original audit snapshot, plus current PR/comment/release metadata; snapshot captured before fresh head-check runs completed."
-  }
+  },
+  "disclosure_decision": {
+    "approved_by_owner": "2026-10-12",
+    "scope": "Retain audited operational records and personal commit metadata in public hosted history",
+    "history_rewrite": "not needed"
+  },
+  "new_reachable_objects_scan": {
+    "objects": 130,
+    "findings": 0,
+    "scope": "New reachable blob, commit and tag contents relative to original audited main; includes CLI approval-package commit ded6372"
+  },
+  "windows_arm64": {
+    "candidate_run": 38179740828,
+    "source_commit": "cbe588d81aa300d59f5f5fc76f705e5e4476b73b",
+    "conclusion": "success",
+    "powershell": [
+      "7",
+      "5.1"
+    ],
+    "scoop": "success",
+    "package_hashes": "eight unchanged"
+  },
+  "new_validation_logs_followup": "Final head checks and ARM64 candidate log scanned with zero findings",
+  "private_cleanup_backups": "12 assets and 38 deficient artifacts preserved and hash-verified in ignored private backup"
 }
