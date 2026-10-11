@@ -127,7 +127,7 @@ confirmed the MIT grant and ownership/permissions. Source review found no
 licensing blocker. CLI v0.0.1 binary assets lack Go redistribution notices;
 future packaging and a verified v0.0.2 tap review branch are prepared privately.
 [Release preparation](release-v0.0.2-readiness.md) records passed local/native
-checks and the GitHub billing block on final Windows/Scoop and tap Linux checks.
+checks, including completed Windows/Scoop and tap native macOS/Linux validation.
 Old assets remain a launch blocker until their disposition and a new release
 are approved.
 
@@ -197,7 +197,8 @@ v0.0.2 help/version and auth/translation/live/completion usage checked; eight
 Erlang docs-rendering tests and nine docs JavaScript tests passed. Erlang checks
 used the existing compiled renderer with current templates/catalogs, not a new
 server build. No live browser, database-backed server suite or deployment was run.
-The final packaged README still requires a fresh candidate and formula hashes.
+The final version-free packaged README and matching formula passed fresh candidate
+and tap native validation; exact evidence is in the release readiness record.
 
 
 The rendered docs are owned by `src/http/bibleit_http_docs.erl`,

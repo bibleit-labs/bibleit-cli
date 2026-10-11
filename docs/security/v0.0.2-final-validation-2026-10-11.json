@@ -1,0 +1,152 @@
+{
+  "reviewed": "2026-10-11",
+  "version": "v0.0.2",
+  "source_commit": "f0c080c1505346aee78dde9e0e24f80bb9d76a74",
+  "manifest": {
+    "version": "v0.0.2",
+    "commit": "f0c080c1505346aee78dde9e0e24f80bb9d76a74",
+    "dirty": false,
+    "local_only": false,
+    "go": "1.27.1",
+    "client": {
+      "Path": "github.com/bibleit-labs/bibleit-go",
+      "Version": "v0.0.1",
+      "GoVersion": "1.27.1",
+      "Sum": "h1:cOH6TJ2iLncj7xpbBUG7kkDFwXLZi1cF6l+DQy5w27o=",
+      "workspace": false
+    },
+    "artifacts": {
+      "bibleit_0.0.2_darwin_amd64.tar.gz": "bb7f30afb207c4eb67b95235507b16589d5aeb9eb245808733fcdde87b657a71",
+      "bibleit_0.0.2_darwin_arm64.tar.gz": "59658e724ad2e0df4600dbfb7253faeb265772d25af620702bb0b8762864b33d",
+      "bibleit_0.0.2_linux_amd64.tar.gz": "8545f5f41c5b3964b6e66376d2573e2c33a2abf5ef881f84ca1d754f6a39282e",
+      "bibleit_0.0.2_linux_arm64.tar.gz": "dc699c2d95515aa6f754ebe645b7d28dff0a3978186ac9f04bbbcdfd58640d74",
+      "bibleit_0.0.2_windows_amd64.zip": "9fb400e2fb3d47856e836689f78983970f6c0a54d0a4ee8ea506f2731cc4c39e",
+      "bibleit_0.0.2_windows_arm64.zip": "0edc7b07b167d6a2f5411ffae641769826250d7297c0ada2e81612309c16d2a6",
+      "install.sh": "0e01b88839185faa985fd578c16c0c57c71cdb17e4520f27d75bac8e7b184b61",
+      "install.ps1": "9d8d4fa8a0464e5edaccd561390b4f49c6254c203e5ef5eaa72021e77627b091"
+    }
+  },
+  "candidate_run": {
+    "id": 38177668163,
+    "url": "https://github.com/bibleit-labs/bibleit-cli/actions/runs/38177668163",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "name": "Build six-target candidate",
+        "conclusion": "success"
+      },
+      {
+        "name": "Native installers ubuntu-24.04",
+        "conclusion": "success"
+      },
+      {
+        "name": "Native installers windows-2025",
+        "conclusion": "success"
+      },
+      {
+        "name": "Native installers macos-15",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "candidate_artifact": [
+    {
+      "id": 11716731506,
+      "name": "candidate-assets",
+      "digest": "sha256:fcd29744007806d89f3c59ea45899472600d23002c668fafaacf6c6cb641503f",
+      "size_in_bytes": 18142281,
+      "expired": false
+    }
+  ],
+  "native_cli_code_tests": {
+    "run_id": 38176879632,
+    "source_commit": "2a03e204bc45c38b1914d60c45555c9a290c3d00",
+    "conclusion": "success",
+    "scope": "All three native platforms; later CLI changes only update documentation/settings proposals."
+  },
+  "native_sdk_code_tests": {
+    "run_id": 38176883572,
+    "conclusion": "success",
+    "source_commit": "0cf0fb10312896cdbf3157fe821896acc48565b0"
+  },
+  "extra_native_checks": {
+    "darwin_arm64": "Exact final candidate installer/layout/checksum/notices/failure/latest-curl fixture checks passed locally.",
+    "linux_arm64": "Same checks passed in an offline, unprivileged, native-architecture Docker container."
+  },
+  "windows_scope": {
+    "architecture": "AMD64",
+    "powershell": [
+      "7",
+      "5.1"
+    ],
+    "checks": [
+      "installation",
+      "replacement",
+      "exact notice retention",
+      "parser and rejection paths",
+      "Scoop install/reset/uninstall/reinstall and corrupt-hash rejection"
+    ],
+    "windows_arm64_runtime": "not executed; archive structure/checksum validated"
+  },
+  "anonymous_distribution": "pending public access approval; authenticated/local fixtures do not establish anonymous installation",
+  "tap_native_validation": {
+    "status": "success",
+    "run_id": 38178224204,
+    "url": "https://github.com/bibleit-labs/homebrew-tap/actions/runs/38178224204",
+    "source_commit": "ab1fc27f1ef7b3722ac6a5648df1949d30072a96",
+    "candidate_run_id": 38177668163,
+    "jobs": [
+      {
+        "name": "install (ubuntu-24.04)",
+        "conclusion": "success"
+      },
+      {
+        "name": "install (macos-15)",
+        "conclusion": "success"
+      }
+    ],
+    "artifacts": [
+      {
+        "id": 11716757643,
+        "name": "homebrew-macos-15",
+        "digest": "sha256:f558da476cb6dc7f72c7e90a2bbb8def578d0705c0d17fdaf4faa34da24c5b36",
+        "size_in_bytes": 2001
+      },
+      {
+        "id": 11716292675,
+        "name": "homebrew-ubuntu-24.04",
+        "digest": "sha256:e52aedbc70bf57b5d09fb71710dc85ea9bb3e8be86744a6b084be0147c963780",
+        "size_in_bytes": 1780
+      }
+    ],
+    "reports": [
+      {
+        "platform": "Linux",
+        "architecture": "x86_64",
+        "isolated_prefix": true,
+        "redistribution_notices_verified": true,
+        "published_formula_sha256": "4bc0c10b2c36daf838240a2d11685bfcccbf240eeb039497124f289e9364fc1a",
+        "validation_helper_sha256": "b39414a0fd34f559a6339d773b3b767dacf3807923739481c63d64e18d320675",
+        "fixture_explicit_version": true,
+        "git_configuration_isolated": true
+      },
+      {
+        "platform": "Darwin",
+        "architecture": "arm64",
+        "isolated_prefix": true,
+        "redistribution_notices_verified": true,
+        "published_formula_sha256": "4bc0c10b2c36daf838240a2d11685bfcccbf240eeb039497124f289e9364fc1a",
+        "validation_helper_sha256": "b39414a0fd34f559a6339d773b3b767dacf3807923739481c63d64e18d320675",
+        "fixture_explicit_version": true,
+        "git_configuration_isolated": true
+      }
+    ],
+    "scope": "Exact reviewed formula; private downloaded archives in isolated prefixes. Anonymous real release URLs remain a cutover check."
+  },
+  "old_release_assets": {
+    "tag": "v0.0.1",
+    "count": 12,
+    "ids_digests_sizes": "rechecked unchanged"
+  },
+  "privacy": "all three repositories remain private; no release/tag, merge or old-asset change"
+}

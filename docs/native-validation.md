@@ -55,7 +55,7 @@ PowerShell 7/5.1 and Scoop checks passed on documentation candidate b802ea3;
 validate the final approved artifacts before release. A build or Linux PowerShell
 parser test alone does not close those gates. Native code tests passed
 on the three hosted platforms at the recorded candidate source; current artifact
-and billing limits are in [release readiness](release-v0.0.2-readiness.md).
+and final native results are in [release readiness](release-v0.0.2-readiness.md).
 
 Dated implementation and deployment records remain in [historical status](status.md).
 They establish only their recorded revision/scope, not a new validation claim.

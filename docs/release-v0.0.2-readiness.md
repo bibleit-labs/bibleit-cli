@@ -3,69 +3,46 @@
 Prepared 2026-10-11. Repositories remain private. No release/tag was created;
 v0.0.1 assets and both default branches remain unchanged.
 
-## Resumed validation
+## Final candidate validation
 
-On owner instruction, Windows validation resumed. Documentation candidate
-b802ea3fa74ef1d1b34d4173b3ef1ee51724f9d6 at
-[run 38176529757](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38176529757)
-built all six targets and passed native Linux and Windows PowerShell 7/5.1,
-parser/failure and Scoop lifecycle checks. It includes the updated README.
-Native macOS Homebrew also passed; the full candidate run succeeded.
-Final CI-hardened source validation is being completed.
-The current README updates require a final fresh candidate; no release/tag,
-old-asset changes or visibility change has occurred.
+Frozen package source: `f0c080c1505346aee78dde9e0e24f80bb9d76a74`.
+[CLI candidate run 38177668163](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38177668163)
+succeeded: six clean archives, eight checksums, native Linux/macOS installers,
+Windows AMD64 PowerShell 7 and 5.1, parser/rejection checks and Scoop lifecycle.
+All archives contain exact LICENSE, THIRD_PARTY_NOTICES and the version-free README.
+Additional exact-candidate checks passed locally on Darwin arm64 and offline,
+unprivileged native Linux arm64, including the Bash latest-download fixture.
+Windows arm64 received archive/hash validation, without native runtime execution.
 
-## Earlier candidate and tap evidence
+[Tap native run 38178224204](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38178224204)
+succeeded on Darwin arm64 and Linux x86_64 at tap source
+`ab1fc27f1ef7b3722ac6a5648df1949d30072a96`. Both jobs verified candidate provenance,
+all package hashes and exact formula equality, then install/test/reinstall,
+completions, byte-for-byte notices and uninstall in isolated Homebrew prefixes.
+The updated read token's Actions/Contents access worked. Downloads occur after
+Homebrew setup, which replaces the checkout; a permission preflight runs before it.
+Tap style/syntax run 38178072711 and all 13 updater regressions passed.
 
-Corrected candidate source: `9fb7bfc4565ffc3adacbcecf8343042e056ffc8c` on
-`licensing-redistribution-audit`, using the pinned SDK v0.0.1 and Go 1.27.1.
-[Candidate CI](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38174450362)
-builds six archives once and passes those exact inputs to native installer jobs.
-It produces a clean, standalone production candidate, not a local-only build.
-The earlier run exposed Windows checkout line-ending conversion; .gitattributes
-now preserves LF license bytes rather than weakening exact notice checks.
+Hardened native CLI code tests passed on Linux/macOS/Windows at run 38176879632;
+SDK native tests passed on all three at run 38176883572. Subsequent source changes
+are documentation only. Actions are pinned and private/public authentication is
+conditional; public anonymous dependency retrieval awaits approved cutover.
 
-Tap review branch: `release/v0.0.2`. Its formula is generated from verified CI
-archives; the updater rejects missing/inconsistent notices and missing pkgshare
-installation. Candidate validation downloads the exact successful CLI run,
-checks workflow/event/repository/source SHA/version and verifies hashes and
-formula equality before installation. Published-release validation remains
-available when no candidate run ID is supplied.
+[Final validation evidence](security/v0.0.2-final-validation-2026-10-11.json)
+records exact source, all package hashes, artifact digests and native scope.
+Evidence-only documentation commits after the frozen source do not change packaged
+inputs. Any final merge/tag build must be validated and compared with these inputs.
+Authenticated artifact access and local URL fixtures do not prove anonymous public
+installation. No release, tag, merge, visibility or old-asset change was made.
 
-The build passed and all eight checksums match the first candidate; the line-ending
-fix did not change the shipped bytes. Native code tests passed on all three hosted
-platforms at [run 38174449692](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38174449692).
-The candidate's three installation jobs did not start: GitHub reports failed
-account payments or a spending limit. Overall candidate CI is therefore failing,
-and the tap workflow deliberately cannot accept it as a successful candidate yet.
-This remains a release gate, not a waived check.
+## Earlier evidence
 
-Local checks passed on the exact fresh candidate:
-
-- Darwin arm64: all six archive layouts/eight checksums, Bash installation and
-  replacement, notice retention, latest/download fixture and rejection paths.
-- Linux arm64: actual archive execution and the same installer checks in an offline,
-  native-architecture Docker Linux container.
-- PowerShell 7.4 in offline Linux: parser and failure paths, including a valid
-  checksum with a missing notice. Native Windows behavior remains unverified.
-- Tap-owned Homebrew on native Darwin arm64: exact generated formula verification,
-  install/test/reinstall/completions, byte-for-byte notices after install/reinstall,
-  and uninstall, entirely in a disposable prefix.
-- Tap syntax/style CI passed at
-  [run 38174382048](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38174382048);
-  all 13 updater regression tests passed locally.
-
-See [the validation summary](security/v0.0.2-validation-summary-2026-10-11.json)
-for exact archive hashes, GitHub artifact digest and compact local evidence.
-The earlier owner hold was lifted; the resumed Windows checks above supersede
-its pending status.
-Tap-owned Linux Homebrew validation also remains outstanding. The public-docs
-update changes README, which is embedded in the archives: the recorded candidate
-and proposed formula remain evidence for source 9fb7bfc only. Build a fresh clean
-candidate from the final approved documentation/source, regenerate the tap hashes,
-and validate those exact artifacts before release. Once Actions capacity is
-available, use that new successful candidate run for tap validation. Do not treat
-the old source's checks as approval for new package bytes.
+[Earlier validation summary](security/v0.0.2-validation-summary-2026-10-11.json)
+records source `9fb7bfc4565ffc3adacbcecf8343042e056ffc8c` and the initial billing
+block. That candidate's installer jobs did not start. Its package bytes differ
+from the final README candidate and are retained solely as historical evidence.
+The owner lifted the Windows hold; the successful final checks above supersede
+all earlier pending Windows and tap Linux statuses.
 
 ## Recommended disposition of v0.0.1 — approval required
 

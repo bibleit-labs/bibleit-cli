@@ -65,4 +65,7 @@ Retain private tokens until their replacement paths are verified, then revoke
 obsolete tokens deliberately. Settings payloads are proposals, not applied state.
 Native installation evidence is recorded in [release readiness](release-v0.0.2-readiness.md);
 package validation does not establish public download access or a waived release
-approval. Windows validation resumed at the owner's request on 2026-10-11.
+approval. Windows PowerShell 7/5.1 and Scoop checks passed, along with tap-owned native
+macOS/Linux installation checks on the exact final candidate. Native SDK and CLI
+code tests passed on all three hosted platforms. Exact run/source references
+are recorded in release readiness.
