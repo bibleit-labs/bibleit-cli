@@ -54,10 +54,10 @@ suite passes 337 CT/63 EUnit/71 JavaScript/native 65536/10 bootstrap checks.
 | Public DNS/TLS/alias routing | Complete | Two authorities plus Cloudflare/Google resolve the new DNS-only routes; 23 boundary and 39 alias checks pass on each address family |
 | Authentication, SSH and paired rate behavior | Complete | 11 auth, 10 actual canonical-DNS SSH and 15 paired rate checks pass; retained public SSH fingerprint confirmed; scoped fixture cleanup counts are zero |
 | Real provider sign-in | Complete | Operator confirms Google and GitHub OAuth sign-in at bibleit.app |
-| Native HTML form/browser approval repair | Pending | Real Chromium requestSubmit reproduces Origin:null under global no-referrer; assessment is validating ordinary-HTML same-origin policy and repaired rollout while retaining strict Origin/CSRF checks |
-| Real Turnstile backend acceptance | Pending | Fresh-token backend success and replay rejection required; visible widget success and two missing/bogus-token backend denials are partial evidence |
+| Native HTML form/browser approval repair | Complete for technical admission | Deployed 34d80f8 real requestSubmit carries canonical Origin/Referer, passes CSRF and reaches missing-token denial; same-origin HTML policy retains sensitive no-referrer; provider traffic blocked, no account/email |
+| Real Turnstile and email acceptance | Pending | Fresh-token backend success/replay and actual email delivery/verification required; visible widget success, native admission and token denials are partial evidence |
 
-Progress: **3/5 public acceptance items complete**; the client increment remains
+Progress: **4/5 public acceptance items complete**; the client increment remains
 4/4. The preceding technical probes qualified source c586107, runtime repair ef63e91/native f6fed37,
 image sha256:1140436c3d9e7de1b1f80e88aa208a0a6c06cff4b7ba371e0f5ddcbb5b6ace22,
 from [deployment 38129282912](https://github.com/bibleit-labs/bibleit-server/actions/runs/38129282912).
@@ -69,8 +69,19 @@ Legacy app/data/volumes and Pages publication are preserved. Customer tags/asset
 remain held; no client protocol/runtime change is required. A subsequent native
 HTML form bug affects email signup, login, CLI approval and settings. Earlier
 fetch/explicit-Origin probes missed actual browser Origin:null serialization.
-The assessment owns the repair, full suite and coordinated rollout; final
-qualification freeze remains open until that repaired source is accepted.
+Repair 34d80f811b3ac9179d6afe0966185e2b3517181e is now deployed and technically
+qualified with native f6fed37, 403 source hashes and 20 image checks, from
+[run 38144206075](https://github.com/bibleit-labs/bibleit-server/actions/runs/38144206075).
+Image sha256:33b4ca3c13829c1c25f0745037212cc0c14e5e7768c2f78e58206c461ef8d35d
+passes 23 boundary/39 alias checks per address family and real native form CSRF
+admission. Full source suite passes 338 CT/63 EUnit/71 JS/native/10 bootstrap.
+The native probe blocks providers and creates no account or email; real
+Turnstile backend success/replay and actual email delivery/verification remain
+pending. Qualification freeze/customer release stays held for that manual gate.
+The separate catalog rollout uses server 6ba81e2/native d6e31dc in
+[workflow 38144732991](https://github.com/bibleit-labs/bibleit-server/actions/runs/38144732991).
+It is outside this point-in-time 34d80f8/f6fed37 qualification and requires its own
+deployment/catalog and changed-input acceptance before inclusion.
 
 ## Previous increment: fixed Fly endpoints and compatibility refresh
 

@@ -80,15 +80,20 @@ remains pending. Two missing/bogus-token backend denials pass; visible widget su
 alone does not close that gate. No client/native runtime change or customer
 release is required to record the technical acceptance.
 
-Subsequent browser-flow blocker: real Chromium requestSubmit reproduces
-Origin:null under global no-referrer, breaking native signup/login/CLI approval/
-settings forms. Prior fetch/explicit-Origin probes did not cover this. The
-assessment is validating ordinary-HTML same-origin policy, preserving sensitive
-URL no-referrer and strict Origin/CSRF rejection. The earlier technical report
-remains point-in-time evidence; final qualification freeze awaits repaired source,
-real-browser regression, full server suite and coordinated deployment acceptance.
-No client/native protocol/runtime change is needed; Turnstile backend success/
-replay remains pending separately.
+The subsequent native-form repair is technically qualified on source 34d80f8,
+native f6fed37 and image sha256:33b4ca3c13829c1c25f0745037212cc0c14e5e7768c2f78e58206c461ef8d35d
+in [deployment 38144206075](https://github.com/bibleit-labs/bibleit-server/actions/runs/38144206075).
+403 source hashes and 20 actual-image checks match. Real production requestSubmit
+carries canonical Origin/Referer, passes CSRF and reaches missing-token denial;
+ordinary HTML response policy is same-origin. Provider traffic is blocked and no
+account/email is created. Updated boundary23/alias39 checks pass on each address
+family; local source338 CT/63 EUnit/71 JS/native/10 bootstrap passes. The current
+contract provenance records each repaired report’s source/native/image and hash,
+while retaining earlier auth/SSH/rate results separately at their tested source.
+Real Turnstile backend fresh-token success/replay and actual email delivery/
+verification remain pending. The newer catalog rollout uses server 6ba81e2/native d6e31dc
+(workflow 38144732991) and needs independent deployment/catalog qualification.
+This 34d80f8/f6fed37 evidence is point-in-time and does not qualify the later image; no client runtime change is needed here.
 
 ## Prior Fly-hostname endpoint validation — 11 October 2026
 

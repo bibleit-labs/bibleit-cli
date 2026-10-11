@@ -8,15 +8,15 @@ local-only source instructions. Use Conventional Commits and no codex branch pre
 Every client targets the project-managed service, currently
 `https://bibleit.app`; ordinary SSH uses `bibleit.app:22`. Custom-domain
 technical qualification and human Google/GitHub sign-in pass; real Turnstile
-backend success/replay and the subsequent native HTML form repair remain pending. See
+backend success/replay and actual email delivery/verification remain pending. See
 [endpoint-policy.md](endpoint-policy.md) and [releases.md](releases.md).
 
 Revised 2026-10-11 after the assessment closed its scoped campaign at server
 ledger 8923d86. The custom-domain client refresh verifies assessment revision 5969f2f/native f6fed37, including the narrow boot fix;
 supplemental alias boot qualification passes at ef63e91, and actual public-domain
-technical acceptance passes on deployed c586107. Real Turnstile backend acceptance
-and the subsequent native HTML form repair/final packaging input freeze remain pending; human Google/GitHub sign-in
-passes. This revision supersedes the earlier sequence of extracting Go and immediately porting the
+technical acceptance passes on deployed 34d80f8 after the native HTML form repair.
+Real Turnstile backend success/replay, actual email delivery/verification and final
+packaging input freeze remain pending; human Google/GitHub sign-in passes. This revision supersedes the earlier sequence of extracting Go and immediately porting the
 same surface into Python, Ruby, and Rust.
 
 ## Decisions retained
@@ -301,8 +301,8 @@ and automated release uploading are outside the initial release requirement.
 | Order | Item | Current status / required input | Done when |
 | --- | --- | --- | --- |
 | 1 | Confirm version, scope and customer access | Project decision; propose Go/CLI v0.1.0 for the existing core command surface, Homebrew/Bash/PowerShell/manual archives | Version and supported transports/architectures recorded; choose public customer artifacts or implement authenticated delivery; choose whether Scoop bucket ships now or later |
-| 2 | Configure production service and safe test fixtures | Client implementation complete: custom-domain constants, trust-preserving SSH alias, verified fixtures and changed-key rejection pass; actual public DNS/TLS/HTTP/SSH/rate technical acceptance passes; human Google/GitHub sign-in confirmed; real Turnstile backend success/replay pending | Retain public technical/provider evidence; confirm real Turnstile backend success/replay before release |
-| 3 | Freeze and validate server compatibility | New-domain compatibility and boot validation pass at assessed 5969f2f/native f6fed37; committed Erlang inputs verified; supplemental direct alias boot qualification passes at ef63e91; preceding public technical probes pass on c586107; subsequent native HTML form repair/rollout and final packaging input freeze pending | Qualify the repaired native browser signup/login/CLI approval/settings flows and deployed artifact; retain earlier full integration and supplemental boot provenance; freeze all packaging/deployment inputs; retain the verified boot fix and compare recorded hashes or rerun changed checks; retain approved migration lineage/runtime inputs; public-edge evidence is assessment-owned, and customer login/access decisions remain gate 1 |
+| 2 | Configure production service and safe test fixtures | Client implementation complete: custom-domain constants, trust-preserving SSH alias, verified fixtures and changed-key rejection pass; actual public DNS/TLS/HTTP/SSH/rate technical acceptance passes; human Google/GitHub sign-in confirmed; repaired native form technical admission passes; Turnstile/email manual acceptance pending | Retain public technical/provider evidence; confirm real Turnstile backend success/replay and actual email delivery/verification before release |
+| 3 | Freeze and validate server compatibility | New-domain compatibility and boot validation pass at assessed 5969f2f/native f6fed37; committed Erlang inputs verified; supplemental direct alias boot qualification passes at ef63e91; preceding public probes pass on c586107; repaired native admission/rollout qualifies 34d80f8/native f6fed37; manual token/email acceptance and final packaging input freeze pending | Retain repaired native admission, boundary/alias and source/image evidence; qualify actual token/email flow; retain earlier full integration and supplemental boot provenance; freeze all packaging/deployment inputs; retain the verified boot fix and compare recorded hashes or rerun changed checks; retain approved migration lineage/runtime inputs; public-edge evidence is assessment-owned, and customer login/access decisions remain gate 1 |
 | 4 | Release Go client and pin standalone CLI dependency | After gates 1–3; go.mod still requires v0.0.0 | Review/promote the client source, publish approved semantic version, pin it in CLI and record sums; clean-cache GOWORK=off test/vet/build succeeds without sibling checkout or replace directives; private access uses appropriate Git credentials/GOPRIVATE |
 | 5 | Validate exact production CLI candidate | After gate 4; current candidate workflow uses --local and go work | Add a standalone production candidate validation path using the released client, GOWORK=off and no --local; clean Go 1.27.1 source produces six archives, installer scripts, formula, Scoop manifest, checksums and provenance; rerun relevant native/platform/installer checks on those exact inputs |
 | 6 | Finalize release sources, notes and delivery policy | Before publishing CLI; release/default branches still need review | Promote reviewed source through normal review; notes name client version/server baseline, protocol limits, old-config migration/revocation, OpenSSH dependency and supported architectures; choose signing policy and test downloaded macOS binaries with normal OS protections; record manual release procedure or implement upload automation |
@@ -604,17 +604,27 @@ real Turnstile backend success/replay acceptance from assessment/Fly; the operat
 has confirmed Google/GitHub sign-in. Freeze final packaging inputs and rerun
 checks affected by later changes; retain qualified deployment provenance.
 
-A subsequent real Chromium requestSubmit regression reproduces native form
-Origin:null under the global no-referrer policy; strict CSRF rejects the POST.
-This affects email signup, native login, CLI browser approval and settings. The
-assessment is validating same-origin Referrer-Policy for ordinary HTML, retaining
-no-referrer for one-time token/callback URLs, assets, redirects and non-HTML.
-Null/forged Origin and CSRF rejection remain strict. Earlier fetch/explicit-Origin
-probes missed this browser behavior: keep their point-in-time technical evidence,
-but require the repaired server source, real-browser regression, full server suite
-and coordinated rollout acceptance before final qualification freeze. No client
-protocol or endpoint change is needed. Real Turnstile backend acceptance remains
-pending separately.
+The subsequent native HTML form repair is now qualified on deployed source
+34d80f811b3ac9179d6afe0966185e2b3517181e/native f6fed37, immutable image
+sha256:33b4ca3c13829c1c25f0745037212cc0c14e5e7768c2f78e58206c461ef8d35d,
+[deployment 38144206075](https://github.com/bibleit-labs/bibleit-server/actions/runs/38144206075).
+403 source hashes and 20 actual-image checks match. Real production requestSubmit
+carries canonical Origin/Referer, passes CSRF and reaches missing-token denial;
+provider traffic is blocked and no account/email is created. Ordinary HTML uses
+same-origin referrer policy while token/callback/Live viewer/explicit private
+handler/assets/redirects/non-HTML retain no-referrer and strict CSRF/CSP.
+Updated 23 boundary/39 alias checks pass per address family; local source passes
+338 CT/63 EUnit/71 JS/native/10 bootstrap. Earlier HTTP/SSH/rate/provider evidence
+is retained at its tested source, with explicit report provenance. No unchanged
+client protocol checks are claimed as repeated at this later deployment.
+
+Keep final qualification freeze held for real Turnstile backend fresh-token
+success/replay and actual email delivery/verification. The separate native
+sparse-verse rollout uses server 6ba81e2/native d6e31dc in
+[workflow 38144732991](https://github.com/bibleit-labs/bibleit-server/actions/runs/38144732991).
+It is outside this point-in-time 34d80f8/f6fed37 qualification; require its own
+deployment/catalog evidence and checks affected by the changed native inputs
+before adding that source to any client release baseline.
 
 Confirm first-release version/customer access, release and pin the Go client,
 validate a standalone CLI candidate without sibling workspace/--local, promote
