@@ -43,8 +43,16 @@ Its overall progress remains 24/25. Native amd64 server-image execution and actu
 Fly boundary evidence remain open. This client runner does not exercise the
 production entrypoint/image, management WebSockets or a deployed edge.
 
-Fresh private CI is pinned to client 3bec5bc; native and candidate results are
-pending this push. Runtime code and the integration harness required no changes.
+Fresh private CI passed on the exact refreshed inputs:
+
+- Client 3bec5bc: [Windows/macOS/Ubuntu native matrix](https://github.com/bibleit-labs/bibleit-go/actions/runs/38099677783).
+- CLI 438c0ca with exact client 3bec5bc: [native matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38099709263) and [candidate matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38099709267), all three platforms.
+
+Candidate checks cover six-target packaging, native installers, macOS Homebrew,
+PowerShell 7/5.1 and Scoop installation/replacement/failure paths. These are draft
+workspace/development-endpoint builds, not standalone customer releases. Runtime
+code and the integration harness required no changes; later documentation-only
+commits do not change these tested runtime inputs.
 
 ## Package 24 compatibility refresh — 11 October 2026
 
