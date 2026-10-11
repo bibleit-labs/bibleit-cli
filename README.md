@@ -226,4 +226,7 @@ See [native validation](docs/native-validation.md), the [release plan](docs/plan
 and the [changelog](CHANGELOG.md).
 
 Contributions use Conventional Commits. See [contributing](CONTRIBUTING.md).
-Licensed under [MIT](LICENSE).
+Licensed under [MIT](LICENSE). Binary distributions also include
+[third-party notices](THIRD_PARTY_NOTICES); retain both files when redistributing
+the CLI. The software license does not grant rights to translations returned
+by the service.

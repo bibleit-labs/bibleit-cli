@@ -38,9 +38,21 @@ try {
     Set-Content -LiteralPath $checksumPath -Value ($checksums + $checksums)
     Expect-Failure $version 'Missing or duplicate'
     Set-Content -LiteralPath $checksumPath -Value $checksums
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    $zipPath = Join-Path $assets "bibleit_$($version.Substring(1))_windows_amd64.zip"
+    $zip = [IO.Compression.ZipFile]::Open($zipPath, [IO.Compression.ZipArchiveMode]::Update)
+    try { $zip.GetEntry('THIRD_PARTY_NOTICES').Delete() }
+    finally { $zip.Dispose() }
+    $name = [IO.Path]::GetFileName($zipPath)
+    $digest = (Get-FileHash -Algorithm SHA256 -LiteralPath $zipPath).Hash.ToLowerInvariant()
+    $modified = [regex]::Replace($checksums, '(?m)^[0-9a-f]{64}  ' + [regex]::Escape($name) + '$', "$digest  $name")
+    Set-Content -LiteralPath $checksumPath -Value $modified
+    Expect-Failure $version 'Archive contains no unique THIRD_PARTY_NOTICES'
+    Copy-Item -LiteralPath (Join-Path $AssetsDir $name) -Destination $zipPath -Force
+    Set-Content -LiteralPath $checksumPath -Value $checksums
     Get-ChildItem -LiteralPath $assets -Filter '*.zip' | ForEach-Object { [IO.File]::AppendAllText($_.FullName, 'corrupted') }
     Expect-Failure $version 'Checksum mismatch'
-    Write-Output 'PASS: PowerShell syntax and invalid-version/missing-checksum/duplicate-checksum/corrupt-archive rejection; existing installation preserved.'
+    Write-Output 'PASS: PowerShell syntax and invalid-version/missing-notices/missing-checksum/duplicate-checksum/corrupt-archive rejection; existing installation preserved.'
 } finally {
     $env:OS = $originalOS
     $env:PROCESSOR_ARCHITECTURE = $originalCPU
