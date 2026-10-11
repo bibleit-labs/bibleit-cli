@@ -296,3 +296,31 @@ Release/support documentation should describe this recovery path when the
 operational procedure is approved. Existing HTTP/SSH errors and command schemas
 are unchanged. No automatic credential clearing, retries, grant restoration or
 runtime recovery feature is introduced by this documentation update.
+
+
+## Server rollout compatibility checks
+
+Package 24's focused local security checks report stricter server startup,
+transport and packaging policies without changing the CLI protocol. Its final
+full retest is still pending; these findings do not refresh the client baseline.
+Before a production release, validate the approved deployed server snapshot and
+these operational requirements together:
+
+- Migration journals must carry verified SQL filename/SHA-256 identity. Startup
+  rejects missing/mismatched identity with schema_identity_mismatch. Establish
+  lineage and perform an audited canonical-schema migration; do not blindly
+  backfill hashes or reset an existing user/shared database. Any disposable
+  development rebuild needs explicit approval.
+- Provider/download HTTPS uses bounded CA/hostname verification. Reviewed imports
+  must use approved HTTPS eBible sources; fetch_failed remains a safe import
+  failure without a published partial installation. Keep real URL/authority
+  checks in integration even when using approved local delivery fixtures.
+- Use guarded server release/tar packaging and verify actual deployment assets
+  exclude development private keys and assessment records. The default server
+  runtime disables inbound distributed Erlang/EPMD and remote console/RPC; this
+  does not disable the Bibleit SSH command transport.
+
+These are server rollout prerequisites. The CLI does not repair database lineage,
+change server administration policy or retry an unsafe import automatically.
+Deployment-specific TLS, image contents and rollback checks remain package 25
+work. No production migration or new compatibility run is claimed here.
