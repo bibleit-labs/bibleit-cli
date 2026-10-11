@@ -9,7 +9,8 @@ gated on production readiness.
 The fixed canonical addresses are configured: `https://bibleit.app`
 and ordinary SSH at `bibleit.app:22`. Actual public custom-domain DNS/TLS/SSH
 technical acceptance and human Google/GitHub sign-in now pass; real Turnstile
-backend success/replay remains pending. A released, pinned Go-client
+backend success/replay and the subsequent native HTML form repair remain pending.
+A released, pinned Go-client
 dependency and standalone production candidate validation remain release gates.
 
 ## Public distribution versus private validation
@@ -141,7 +142,8 @@ The implementation here is written for Bibleit's Go release layout.
    Supplemental alias boot qualification passes at ef63e91. Actual public-DNS
    HTTPS/aliases/auth/SSH/rate acceptance passes on deployed c586107. The operator
    confirms Google/GitHub sign-in; real Turnstile backend success/replay remains
-   an assessment/Fly gate;
+   an assessment/Fly gate. The later native HTML form referrer-policy repair
+   also requires real-browser/server-suite and repaired-rollout acceptance;
    freeze final packaging inputs and revalidate changed inputs before release.
 2. Release the reviewed Go client when authorized, pin its version in go.mod,
    record dependency sums and verify builds with GOWORK=off. No replacement modules.

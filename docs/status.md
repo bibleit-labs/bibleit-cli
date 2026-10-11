@@ -54,10 +54,11 @@ suite passes 337 CT/63 EUnit/71 JavaScript/native 65536/10 bootstrap checks.
 | Public DNS/TLS/alias routing | Complete | Two authorities plus Cloudflare/Google resolve the new DNS-only routes; 23 boundary and 39 alias checks pass on each address family |
 | Authentication, SSH and paired rate behavior | Complete | 11 auth, 10 actual canonical-DNS SSH and 15 paired rate checks pass; retained public SSH fingerprint confirmed; scoped fixture cleanup counts are zero |
 | Real provider sign-in | Complete | Operator confirms Google and GitHub OAuth sign-in at bibleit.app |
+| Native HTML form/browser approval repair | Pending | Real Chromium requestSubmit reproduces Origin:null under global no-referrer; assessment is validating ordinary-HTML same-origin policy and repaired rollout while retaining strict Origin/CSRF checks |
 | Real Turnstile backend acceptance | Pending | Fresh-token backend success and replay rejection required; visible widget success and two missing/bogus-token backend denials are partial evidence |
 
-Progress: **3/4 public acceptance items complete**; the client increment remains
-4/4. The deployed source is c586107, runtime repair ef63e91/native f6fed37,
+Progress: **3/5 public acceptance items complete**; the client increment remains
+4/4. The preceding technical probes qualified source c586107, runtime repair ef63e91/native f6fed37,
 image sha256:1140436c3d9e7de1b1f80e88aa208a0a6c06cff4b7ba371e0f5ddcbb5b6ace22,
 from [deployment 38129282912](https://github.com/bibleit-labs/bibleit-server/actions/runs/38129282912).
 403 source hashes and 20 actual-image checks matched. Credential-free provenance
@@ -65,7 +66,11 @@ is in contract/canonical-deployment-validation.json, synchronized with the Go cl
 The operator confirms Google/GitHub sign-in. The old app’s live.bibleit.app
 certificate was removed; the new server retains all three Issued certificates.
 Legacy app/data/volumes and Pages publication are preserved. Customer tags/assets
-remain held; no client runtime change is required.
+remain held; no client protocol/runtime change is required. A subsequent native
+HTML form bug affects email signup, login, CLI approval and settings. Earlier
+fetch/explicit-Origin probes missed actual browser Origin:null serialization.
+The assessment owns the repair, full suite and coordinated rollout; final
+qualification freeze remains open until that repaired source is accepted.
 
 ## Previous increment: fixed Fly endpoints and compatibility refresh
 
