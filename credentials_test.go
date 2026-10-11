@@ -106,7 +106,7 @@ func TestNDJSONAndControlRendering(t *testing.T) {
 func TestInvalidCredentialDocumentsAndLocalHelp(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "config.json")
 	t.Setenv("BIBLEIT_CONFIG", path)
-	for _, data := range []string{`{"version":2,"endpoint":"https://bibleit-server.fly.dev","ssh_server":"foreign.example:22","identity":"key"}`, `{"version":2,"endpoint":"https://foreign.example","ssh_server":"bibleit-server.fly.dev:22","access_token":"old"}`, `{"version":2,"endpoint":"http://localhost:8080","ssh_server":"127.0.0.1:2222","access_token":"old","identity":"key"}`,
+	for _, data := range []string{
 		`null`, `{"unknown":true}`, `{"profiles":{}}`,
 		`{"version":2,"active_profile":"a","profiles":{}}`,
 		`{"version":1,"active_profile":"missing","profiles":{"a":{"transport":"http","endpoint":"https://a.example"}}}`,
@@ -256,7 +256,13 @@ func TestSingleCredentialRoutingAndPreservation(t *testing.T) {
 func TestCredentialBindingAndOldConfigIsNeverOverwritten(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "config.json")
 	t.Setenv("BIBLEIT_CONFIG", path)
-	for _, data := range []string{`{"version":1,"active_profile":"a","profiles":{"a":{"transport":"http","endpoint":"http://localhost:8080","access_token":"old"}}}`, `{"version":2,"endpoint":"https://foreign.example","ssh_server":"127.0.0.1:2222","access_token":"old"}`, `{"version":2,"endpoint":"http://localhost:8080","ssh_server":"foreign.example:22","identity":"key"}`} {
+	for _, data := range []string{
+		`{"version":2,"endpoint":"https://bibleit.app","ssh_server":"foreign.example:22","identity":"key"}`,
+		`{"version":2,"endpoint":"https://foreign.example","ssh_server":"bibleit.app:22","access_token":"old"}`,
+		`{"version":2,"endpoint":"http://localhost:8080","ssh_server":"127.0.0.1:2222","access_token":"old","identity":"key"}`,
+		`{"version":2,"endpoint":"https://bibleit-server.fly.dev","ssh_server":"bibleit-server.fly.dev:22","access_token":"old","identity":"key"}`,
+		`{"version":1,"active_profile":"a","profiles":{"a":{"transport":"http","endpoint":"http://localhost:8080","access_token":"old"}}}`,
+	} {
 		if err := os.WriteFile(path, []byte(data), 0600); err != nil {
 			t.Fatal(err)
 		}

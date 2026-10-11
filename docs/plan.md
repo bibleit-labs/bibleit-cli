@@ -6,12 +6,14 @@ changes remain gated on production readiness. The repositories are currently
 private: `bibleit-cli`, `bibleit-go` and `homebrew-tap`. This supersedes earlier
 local-only source instructions. Use Conventional Commits and no codex branch prefix.
 Every client targets the project-managed service, currently
-`https://bibleit-server.fly.dev`; ordinary SSH uses `bibleit-server.fly.dev:22`. See
+`https://bibleit.app`; ordinary SSH uses `bibleit.app:22`. Custom-domain
+qualification is pending assessment/Fly validation. See
 [endpoint-policy.md](endpoint-policy.md) and [releases.md](releases.md).
 
 Revised 2026-10-11 after the assessment closed its scoped campaign at server
-ledger 8923d86. Qualified deployed source is 7442010; fresh fixed-endpoint
-HTTP/SSH/import integration now verifies clean server 8923d86/native f6fed37. This revision
+ledger 8923d86. The custom-domain client refresh verifies server 0c0da9f plus
+canonical-host candidate changes/native f6fed37; committed source and actual
+new-domain qualification remain pending. This revision
 supersedes the earlier sequence of extracting Go and immediately porting the
 same surface into Python, Ruby, and Rust.
 
@@ -190,24 +192,23 @@ in authorized private CI. See `native-validation.md` for exact revisions/runs.
 
 ## Latest integration evidence
 
-Fresh 2026-10-11 fixed-production-endpoint integration passes against clean server
-8923d8675b2e129bdd868e307dd89c599235f25a (deployed code 7442010), using native
-f6fed37919c848b1aa0208900af992a5e8a507f2. Synchronized client/CLI baselines
-record 68 source, 70 test and 11 native build-input fingerprints. The fixture
-namespace has no egress; the fixed hostname resolves only to loopback, HTTPS
-certificate/name verification is enforced and SSH uses the fixed port 22.
-Native NIFs are rebuilt from frozen source. No server checkout or shared database
-is modified. Direct host integration is rejected; old localhost credential
-bindings are rejected without overwrite or forwarding.
+Fresh 2026-10-11 canonical-domain integration passes against server
+0c0da9ff5f759a0998ac151818db27c70065810c plus assessment working-tree changes,
+using native f6fed37919c848b1aa0208900af992a5e8a507f2. Synchronized baselines
+record 69 source, 71 test and 11 native input hashes, matched after the run.
+The fixture has no egress, the fixed bibleit.app hostname resolves to loopback,
+TLS name/trust verification is enforced and SSH uses port 22. Existing service
+trust is looked up through the historical Fly alias; a real foreign-key regression
+fails as required. Old localhost and Fly credential bindings reject without overwrite.
 
 Passing coverage: 34 decoder/18 encoder fixtures, seven security cases, 11 HTTP
-subtests, real OpenSSH subscription/pause/reconnect/delete closure, JSON parity,
+subtests, real OpenSSH lifecycle/JSON parity and changed-key rejection,
 18 auth/key/protocol tests, and 26 import cases (11 access, 15 publication).
-Three TLS boundary checks prove correct name/trust succeeds and wrong name or
-untrusted CA fails. The import adapter retains URL, authorization, validation
-and publication policy. Disposable PostgreSQL is removed after completion.
-Assessment-owned public-edge qualification remains separate: 25/25 scoped
-packages complete, 334 CT/56 Erlang/71 JavaScript/native/ten bootstrap tests.
+Three TLS checks pass. The approved import adapter retains URL/authorization/
+validation/publication policy. Unique disposable PostgreSQL is removed.
+This candidate is not a final committed/deployed release: canonical-host source
+freeze and actual new-domain DNS/TLS/SSH/authentication qualification remain open
+with assessment/Fly. Their earlier 25/25 result qualified the Fly hostname only.
 Browser/provider login and management WebSockets are outside this client runner.
 The date here is Europe/Berlin; baseline dates use UTC.
 
@@ -275,8 +276,8 @@ and automated release uploading are outside the initial release requirement.
 | Order | Item | Current status / required input | Done when |
 | --- | --- | --- | --- |
 | 1 | Confirm version, scope and customer access | Project decision; propose Go/CLI v0.1.0 for the existing core command surface, Homebrew/Bash/PowerShell/manual archives | Version and supported transports/architectures recorded; choose public customer artifacts or implement authenticated delivery; choose whether Scoop bucket ships now or later |
-| 2 | Configure production service and safe test fixtures | Complete: fixed Fly HTTPS/browser and SSH constants, verified TLS and egress-disabled fixtures, old credential rejection | Preserve certificate/host verification and fail-closed fixture isolation; requalify changes to the origin or routing |
-| 3 | Freeze and validate server compatibility | Client compatibility complete at clean 8923d86/native f6fed37; assessment 25/25 qualifies deployed source 7442010 | Freeze those exact release inputs or rerun changed checks; retain approved migration lineage/runtime inputs; public-edge evidence is assessment-owned, and customer login/access decisions remain gate 1 |
+| 2 | Configure production service and safe test fixtures | Client implementation complete: custom-domain constants, trust-preserving SSH alias, verified fixtures and changed-key rejection pass; actual route qualification pending | Verify new-domain TLS/SSH fixtures and changed-key rejection; assessment/Fly confirms DNS-only apex, certificate/origin, authentication and retained SSH fingerprint before release |
+| 3 | Freeze and validate server compatibility | New-domain compatibility passes at 0c0da9f plus canonical-host candidate/native f6fed37; stable committed source and actual route qualification pending | Freeze those exact release inputs or rerun changed checks; retain approved migration lineage/runtime inputs; public-edge evidence is assessment-owned, and customer login/access decisions remain gate 1 |
 | 4 | Release Go client and pin standalone CLI dependency | After gates 1–3; go.mod still requires v0.0.0 | Review/promote the client source, publish approved semantic version, pin it in CLI and record sums; clean-cache GOWORK=off test/vet/build succeeds without sibling checkout or replace directives; private access uses appropriate Git credentials/GOPRIVATE |
 | 5 | Validate exact production CLI candidate | After gate 4; current candidate workflow uses --local and go work | Add a standalone production candidate validation path using the released client, GOWORK=off and no --local; clean Go 1.27.1 source produces six archives, installer scripts, formula, Scoop manifest, checksums and provenance; rerun relevant native/platform/installer checks on those exact inputs |
 | 6 | Finalize release sources, notes and delivery policy | Before publishing CLI; release/default branches still need review | Promote reviewed source through normal review; notes name client version/server baseline, protocol limits, old-config migration/revocation, OpenSSH dependency and supported architectures; choose signing policy and test downloaded macOS binaries with normal OS protections; record manual release procedure or implement upload automation |
@@ -291,18 +292,20 @@ it on final changed release inputs rather than treating all tooling as unbuilt.
 
 ### Concrete evidence and limits
 
-- The fixed HTTPS/browser origin is https://bibleit-server.fly.dev; ordinary SSH
-  uses bibleit-server.fly.dev:22. Tests route only to verified loopback fixtures;
+- The fixed HTTPS/browser origin is https://bibleit.app; ordinary SSH
+  uses bibleit.app:22. The historical Fly name remains only a host-key lookup
+  alias. Custom-domain deployment qualification is pending. Tests route only
+  to verified loopback fixtures;
   the full integration namespace has no external route. Credential-only APIs,
   redirect blocking and certificate/host verification remain intact.
-- Both contract/server-baseline.json files are identical at clean server 8923d86
-  and native f6fed37. The 68 source, 70 test and 11 native input hashes matched
-  immediately after full HTTP/SSH/import integration. This independently tests
+- Both contract/server-baseline.json files are identical at server 0c0da9f plus
+  assessment candidate changes/native f6fed37. The 69 source, 71 test and 11 native
+  input hashes matched immediately after full HTTP/SSH/import integration. This independently tests
   client compatibility; actual Fly-edge qualification is assessment-owned.
 - CLI go.mod still requires bibleit-go v0.0.0. Draft CI pins an exact private
-  client revision in an ephemeral workspace and packages with --local. Fresh
-  native/candidate validation passes all nine jobs at client b081081/CLI 26bbfaa;
-  exact results are recorded in native-validation.md. Green draft CI does not
+  client revision in an ephemeral workspace and packages with --local. The prior
+  Fly-hostname increment passed nine jobs at client b081081/CLI 26bbfaa; new-domain
+  native/candidate results will be recorded in native-validation.md. Green draft CI does not
   certify standalone dependency retrieval or production release provenance.
 - All three repositories are private. Generated ordinary GitHub release URLs do
   not authenticate customers. The intended open source launch requires approved
@@ -556,18 +559,21 @@ These remain operator/product decisions; they do not reopen the 25 scoped packag
 
 ### Next actionable increment
 
-Completed in this increment: project-owned HTTPS/browser and SSH production
-constants, credential-only constructors, old-service config rejection, verified
-TLS fixtures with no external route, and fresh HTTP/SSH/import integration.
-Both baselines now record clean server 8923d86/native f6fed37. Ordinary SSH uses
-port 22 and injects no PROXY preamble. Native process fixtures use a test-only
-loopback transport; the shipped binary has no fixture dialer or public override.
+The canonical-domain migration supersedes the prior Fly-hostname endpoint choice.
+HTTPS/browser origin is https://bibleit.app and SSH is bibleit.app:22. Preserve the
+historical Fly host solely as a known_hosts alias, never a network destination;
+changed-key rejection passes. Isolated HTTP/SSH/import passes against the
+canonical-host candidate and both baselines are synchronized. Freeze the final
+committed assessment source and verify recorded hashes or rerun changed checks.
+Then rerun the exact Go/CLI native and candidate inputs. Actual DNS/certificate,
+canonical-origin authentication and SSH fingerprint proof remain assessment/Fly
+release gates; do not substitute local fixtures for public-edge qualification.
 
 Confirm first-release version/customer access, release and pin the Go client,
 validate a standalone CLI candidate without sibling workspace/--local, promote
 reviewed sources and publish approved assets. Then run the real Homebrew updater
-and customer install/upgrade checks (Scoop if selected). The ordered gates above
-remain authoritative. Source-only pushes do not publish a release or change visibility.
+and customer install/upgrade checks (Scoop if selected). Source-only pushes do not
+publish a release or change visibility.
 
 ## Sources reviewed
 

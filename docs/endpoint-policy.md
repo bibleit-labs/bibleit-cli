@@ -4,12 +4,24 @@ Updated 2026-10-11. All language clients target the single project-managed Bible
 service. The server repository is private; its eventual organizational move is
 separate from publishing public client repositories.
 
-The Go client declares `ServerEndpoint = "https://bibleit-server.fly.dev"` in
-`client.go`. The CLI derives its HTTP and browser authentication address from
-that constant. SSH uses `bibleit-server.fly.dev:22`, with standard OpenSSH host
-verification. These match the assessment-qualified deployment at server source
-7442010. Fly supplies the trusted PROXY envelope to the server; clients send
-ordinary SSH and never inject a PROXY preamble.
+The Go client declares `ServerEndpoint = "https://bibleit.app"` in `client.go`.
+The CLI derives its HTTP and browser authentication address from that constant.
+SSH connects to `bibleit.app:22`, with standard OpenSSH host verification. The
+user confirmed these canonical addresses for the custom-domain cutover; actual
+DNS/TLS/SSH qualification remains assessment/Fly-owned and pending. Earlier
+Fly-hostname qualification at source 7442010 is historical evidence only.
+Fly supplies the trusted PROXY envelope to the server; clients send ordinary
+SSH and never inject a PROXY preamble.
+
+SSH sets `HostKeyAlias=bibleit-server.fly.dev` solely for OpenSSH's `known_hosts`
+lookup. This preserves an existing verified service key while connecting to the
+new hostname. It does not resolve or connect to that historical name. A changed
+key still fails; the CLI never removes or rewrites the user's known_hosts entries.
+The pre-cutover verified production fingerprint is
+`SHA256:MUnCXVIEU/t8AZk0es6XgyeE9c9Ak6LmCZdEmy99ips`; the assessment must
+confirm it again through the new route. New users should verify that fingerprint
+through a trusted channel before first connection. The disposable integration
+uses separate temporary keys and known_hosts, including changed-key rejection.
 
 Create an authenticated client with `NewClient(apiToken)`. Use
 `NewClientWithHTTPClient(apiToken, httpClient)` for custom transport/timeouts.

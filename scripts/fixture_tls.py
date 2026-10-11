@@ -5,7 +5,7 @@ import socketserver
 import ssl
 import threading
 
-HOST = 'bibleit-server.fly.dev'
+HOST = 'bibleit.app'
 MATERIAL = Path(__file__).resolve().parents[1] / 'contract/fixtures/tls'
 
 

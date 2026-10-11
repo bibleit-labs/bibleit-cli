@@ -6,8 +6,9 @@ is created. Private validation branches and CI are authorized. The separate
 `bibleit-labs/homebrew-tap` exists; prepared source branches may be pushed
 to the private repositories as of 2026-10-11. Customer package publication remains
 gated on production readiness.
-The fixed production addresses are configured: `https://bibleit-server.fly.dev`
-and ordinary SSH at `bibleit-server.fly.dev:22`. A released, pinned Go-client
+The fixed canonical addresses are configured: `https://bibleit.app`
+and ordinary SSH at `bibleit.app:22`. Custom-domain DNS/TLS/SSH qualification
+remains pending; earlier Fly-hostname checks do not certify the new route. A released, pinned Go-client
 dependency and standalone production candidate validation remain release gates.
 
 ## Public distribution versus private validation
@@ -134,9 +135,10 @@ The implementation here is written for Bibleit's Go release layout.
 
 ## Release gates and future validation
 
-1. Production HTTPS/SSH constants and safe fixtures are configured. Fresh frozen
-   HTTP/SSH/import integration passes at server 8923d86 (deployed code 7442010),
-   native f6fed37. Revalidate relevant checks if those release inputs change.
+1. Canonical HTTPS/SSH constants and safe fixtures are configured. Frozen
+   HTTP/SSH/import passes at 0c0da9f plus canonical-host candidate/native f6fed37.
+   Final committed source and actual new-domain DNS/TLS/SSH qualification remain
+   assessment/Fly gates; revalidate changed inputs before release.
 2. Release the reviewed Go client when authorized, pin its version in go.mod,
    record dependency sums and verify builds with GOWORK=off. No replacement modules.
 3. Commit reviewed sources and use a semantic version. Running the packager without
@@ -402,3 +404,22 @@ compatibility evidence, not a new test of the public Fly routing or provider log
 Next: confirm release version and customer access, release/pin the Go dependency,
 validate a standalone production candidate with GOWORK=off and no --local, then
 review/publish approved assets and test the real tap updater/customer installations.
+
+## Canonical custom-domain migration — 11 October 2026
+
+The user confirmed bibleit.app as the main service and ordinary SSH host, with
+DNS-only apex routing being prepared by the Fly chat. The legacy
+live.bibleit.app/<live_id> mapping is server-owned and redirects to
+bibleit.app/lives/<live_id>; API clients use the canonical origin directly and
+continue to reject redirects. They expose no endpoint/profile overrides.
+
+SSH retains the historical Fly name solely as a HostKeyAlias trust lookup, so an
+existing verified key is reused and a changed key fails. The CLI does not edit
+known_hosts. Old service-bound HTTP/SSH credentials fail locally and remain intact.
+Back them up and sign in using a fresh config after the approved cutover.
+
+This prepared address change passes isolated HTTP/SSH/import, including changed
+saved-host-key rejection, at 0c0da9f plus assessment candidate changes. Actual
+DNS/TLS/SSH and authentication qualification is still required by the assessment/Fly chats before
+customer release. The prior nine green native/candidate jobs cover the Fly-origin
+increment, and must not be presented as new-domain validation.

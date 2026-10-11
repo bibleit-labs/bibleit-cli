@@ -3,7 +3,26 @@
 Updated 2026-10-11. Counts describe explicit acceptance items, not estimated
 percentages of the entire project. The full plan is in `plan.md`.
 
-## Current increment: fixed production endpoints and compatibility refresh
+## Current increment: canonical custom-domain migration
+
+The user confirmed https://bibleit.app and ordinary SSH bibleit.app:22 through
+the assessment chat during the fixed-endpoint work. The earlier Fly-hostname
+increment below is complete; the new route needs its own evidence.
+
+| Item | Status | Evidence / limits |
+| --- | --- | --- |
+| Configure canonical endpoints and trust migration | Complete | Go HTTP/browser origin and CLI SSH use bibleit.app; HostKeyAlias preserves the verified Fly-host known_hosts entry solely as a trust lookup; no user endpoint overrides |
+| Update isolated fixtures and credential tests | Complete | Verified TLS fixture names bibleit.app; old localhost and Fly configurations reject without overwrite; real changed-host-key regression added |
+| Refresh HTTP/SSH/import compatibility | Complete for candidate | HEAD 0c0da9f plus canonical-host changes; 69 source/71 test/11 native hashes; full prior coverage plus actual changed-host-key rejection passes; final committed source pending |
+| Publish source and record fresh private CI | In progress | Client 58505aa pushed; CLI CI pins that exact revision; new-domain matrices pending; earlier nine jobs below cover Fly-hostname inputs only |
+
+Progress: **3/4 custom-domain client items complete**. Local Go/CLI race tests and
+vet pass; Darwin TLS/PTY/Bash/Zsh checks pass. Actual DNS-only apex cutover,
+certificate/canonical-origin/authentication and retained production SSH fingerprint
+verification remain assessment/Fly-owned release gates. They are not certified by
+local fixtures. No customer release tag/assets or production data changes are made.
+
+## Previous increment: fixed Fly endpoints and compatibility refresh
 
 | Item | Status | Evidence / limits |
 | --- | --- | --- |

@@ -34,7 +34,7 @@ func TestRuntimeFixtureProcess(t *testing.T) {
 	cliHTTPClient = &http.Client{Timeout: 15 * time.Second, Transport: &http.Transport{
 		TLSClientConfig: &tls.Config{RootCAs: roots, MinVersion: tls.VersionTLS12},
 		DialContext: func(ctx context.Context, network, target string) (net.Conn, error) {
-			if target != "bibleit-server.fly.dev:443" {
+			if target != "bibleit.app:443" {
 				return nil, &net.AddrError{Err: "unexpected fixture destination", Addr: target}
 			}
 			return (&net.Dialer{}).DialContext(ctx, network, address)

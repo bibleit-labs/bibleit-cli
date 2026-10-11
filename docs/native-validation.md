@@ -21,7 +21,20 @@ At the publication pause, changes stayed local with a sibling workspace. Private
 CI is now authorized; see the latest validation section below. Each matrix targets runner-default architectures, not all six
 build targets. The original repository's remote main is unchanged.
 
-## Fixed production endpoint validation — 11 October 2026
+## Canonical custom-domain validation — 11 October 2026
+
+Prepared HTTPS/browser origin https://bibleit.app and ordinary SSH bibleit.app:22.
+OpenSSH uses the historical Fly hostname only as a known_hosts lookup alias to
+preserve verified trust; a foreign saved key must fail. Local race tests/vet in
+both repositories and native Darwin TLS/PTY/Bash/Zsh checks pass. Fresh isolated
+HTTP/SSH/import passes at 0c0da9f plus canonical-host working-tree changes:
+34 decoder/18 encoder, seven security, 11 HTTP, real OpenSSH lifecycle/JSON
+parity and changed-key rejection, 18 auth/key/protocol and 26 import cases.
+Three TLS checks pass; synchronized 69 source/71 test/11 native hashes match
+after the run. Exact new-domain private native/candidate results are pending.
+Actual DNS/TLS/SSH public-route qualification remains assessment/Fly-owned.
+
+## Prior Fly-hostname endpoint validation — 11 October 2026
 
 Client runtime 867dcbe and documentation follow-up b081081 use the fixed production
 HTTPS origin. CLI uses ordinary SSH at bibleit-server.fly.dev:22. Local race tests
