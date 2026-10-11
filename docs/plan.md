@@ -673,3 +673,19 @@ publish a release or change visibility.
 - `../bibleit-server/src/auth/bibleit_authorization.erl`
 - `../bibleit-server/src/http/bibleit_cli_auth.erl`
 - `../bibleit-server/src/ssh/bibleit_ssh_listener.erl`
+
+
+## Master and release automation next steps
+
+Promote CLI/Go integration-refresh and tap formula-preparation to `master` and
+make it the default branch. Validate the updated native/candidate matrices and
+tap CI. The CLI now pins a checksummed immutable client snapshot and its local
+standalone `GOWORK=off` tests pass; semantic client release/version selection is
+still a launch decision. `release.yml` generates a draft only after native tests,
+six-target packaging and installer checks succeed for a tag on master.
+
+Complete the remaining Turnstile and email acceptance gates, select the approved
+Go/CLI release versions and customer access, then create the approved tags and
+review/publish the draft. Dispatch the tap updater and run its released-package
+validation on the formula PR before merging. No tag or published release is
+created by merging the current source. See releases.md for workflow details.

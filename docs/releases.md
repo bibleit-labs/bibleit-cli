@@ -481,3 +481,37 @@ UTF-8 BOOK records and matching Gênesis. The five public report hashes are reco
 canonical-deployment-validation.json. Real Turnstile backend success/replay and actual
 email delivery/verification remain open.
 No customer tags/assets are published.
+
+## Master CI and draft release generation — 11 October 2026
+
+`master` is the integration/default branch for CLI, Go client and tap. Native CI
+runs build, race tests, vet and CLI runtime/shell checks on Linux, Windows and
+macOS. CLI go.mod/go.sum pin client snapshot
+`v0.0.0-20261011144051-464d86d7dd41`; CI and packaging use `GOWORK=off`, with
+scoped private module authentication. This is an immutable source dependency,
+not a first semantic Go-client release. Replace it with the approved client
+release version when that release is ready.
+
+The candidate workflow builds six archives once and validates those identical
+artifacts with native installers, PowerShell, Homebrew and Scoop. It is reusable
+by `release.yml`. Pushing a `v*` tag invokes native tests, verifies the tagged
+commit belongs to master, builds a clean standalone candidate and runs all native
+installer jobs before creating a **draft** GitHub release with archives,
+checksums, manifest, Bash/PowerShell installers, formula and Scoop manifest.
+Existing releases are not overwritten. No tag is created by branch pushes.
+Draft generation uses GitHub's [release-create command](https://cli.github.com/manual/gh_release_create);
+the workflow reuses the validation jobs through
+[workflow_call](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows).
+
+Before approving the first tag, complete the real Turnstile/mail acceptance gates
+and decide the release version and customer access. Review the generated draft
+before publishing it. Private release URLs require authentication; this setup
+changes neither visibility nor customer access. No customer tag/release is
+created by this implementation work.
+
+After publication, dispatch the tap's Update release formula workflow, review its
+PR, and dispatch Validate released Homebrew package on that PR branch with the
+same tag. It verifies the published archives and formula and performs isolated
+Homebrew install/test/completion/reinstall/uninstall checks on macOS and Linux.
+Merge the reviewed formula only after those checks pass. Cross-repository updater
+access remains Contents-read only; PR creation uses the tap's own GITHUB_TOKEN.

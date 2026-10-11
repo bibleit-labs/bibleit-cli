@@ -3,6 +3,18 @@
 Updated 2026-10-11. Counts describe explicit acceptance items, not estimated
 percentages of the entire project. The full plan is in `plan.md`.
 
+## Current increment: master and release CI
+
+| Item | Status | Evidence / limits |
+| --- | --- | --- |
+| Promote reviewed source to master | Prepared | CLI/Go integration-refresh and tap formula-preparation; source promotion creates no release |
+| Standalone CLI dependency | Complete locally | Exact Go snapshot and checksums; GOWORK=off tests pass |
+| Build/test/draft release workflows | Implemented; hosted checks pending | Three native platforms, six archives and tag-triggered draft generation after native installer checks |
+| Homebrew tap continuation | Implemented; hosted checks pending | Eight updater regressions pass; released package validation added on macOS/Linux; first actual release/install still pending |
+
+No tags, published releases or visibility changes are part of this increment.
+Turnstile success/replay and email delivery/verification remain release gates.
+
 ## Current increment: canonical custom-domain migration
 
 The user confirmed https://bibleit.app and ordinary SSH bibleit.app:22 through

@@ -4,6 +4,10 @@ on:
   push:
   pull_request:
   workflow_dispatch:
+  workflow_call:
+    secrets:
+      BIBLEIT_CLIENT_READ_TOKEN:
+        required: true
 
 permissions:
   contents: read
@@ -19,16 +23,10 @@ jobs:
     timeout-minutes: 20
     env:
       GOTOOLCHAIN: local
+      GOWORK: off
+      GOPRIVATE: github.com/bibleit-labs/bibleit-go
     steps:
       - uses: actions/checkout@v6
-      - name: Check out exact private Go client for draft validation
-        uses: actions/checkout@v6
-        with:
-          repository: bibleit-labs/bibleit-go
-          ref: 59dfaa45836002dc6c159a07407c08e382763b7c
-          path: .ci-client
-          token: ${{ secrets.BIBLEIT_CLIENT_READ_TOKEN }}
-          persist-credentials: false
       - uses: actions/setup-go@v6
         with:
           go-version: '1.27.1'
@@ -54,8 +52,14 @@ jobs:
         run: |
           go version
           go env GOOS GOARCH
-      - name: Prepare unpublished client workspace
-        run: go work init . ./.ci-client
+      - name: Download pinned private client
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.BIBLEIT_CLIENT_READ_TOKEN }}
+        run: |
+          gh auth setup-git
+          go mod download
+          go mod verify
       - name: Native race tests
         env:
           CGO_ENABLED: '1'
