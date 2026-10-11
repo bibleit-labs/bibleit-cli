@@ -10,7 +10,8 @@ The fixed canonical addresses are configured: `https://bibleit.app`
 and ordinary SSH at `bibleit.app:22`. Actual public custom-domain DNS/TLS/SSH
 technical acceptance and human Google/GitHub sign-in now pass; real Turnstile
 fresh-token acceptance and email delivery/verification are human-confirmed, but
-real replay rejection failed and requires assessment repair/retest.
+the repaired[private revision withheld]/image0bbb genuine fresh-token/replay retest now passes
+(ledger53239ad). Both provider follow-up gates are complete.
 Native HTML form technical admission is qualified on repaired deployment [private revision withheld].
 A checksummed client snapshot and standalone candidate validation now pass.
 An approved semantic Go-client version and final release-input qualification
@@ -505,8 +506,9 @@ Draft generation uses GitHub's [release-create command](https://cli.github.com/m
 the workflow reuses the validation jobs through
 [workflow_call](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows).
 
-Before approving the first tag, complete the real Turnstile/mail acceptance gates
-and decide the release version and customer access. Review the generated draft
+The real Turnstile/mail acceptance gates are complete (final evidence below).
+Before approving the first tag, decide the release version and customer access,
+release/pin the semantic Go client and validate the final standalone candidate. Review the generated draft
 before publishing it. Private release URLs require authentication; this setup
 changes neither visibility nor customer access. No customer tag/release is
 created by this implementation work.
@@ -553,3 +555,15 @@ replay still fails there. Final corrected-image qualification awaits the Fly
 owner's narrow security-release branch approval, excluding undeployed Reader
 changes on server main. Only after that rollout can real-provider retesting close
 the gate. Customer CLI release and tap formula publication remain held.
+
+
+Final provider closure: qualified[private revision withheld]/native [private revision withheld]/image0bbb/run38163282528
+passes408 hashes/eight stages/20 image checks/native amd64/cleanup[0,0]/digest
+parity and185 APK comparisons/zero fixed alerts; eight migration hashes match.
+Native form/boundary23/alias39 pass separately on IPv4 and IPv6. Real human
+fresh-token/replay output passes all three acceptance booleans, with distinct
+invalid-email vs human-denial feedback and stable CSRF/no rate limiting. Actual
+mail delivery/verification remains separately confirmed. Ledger53239ad closes
+both provider gates. Choose approved versions/access, semantic client release/pin
+and final candidate inputs before tag/draft publication and the actual tap PR;
+none of those publication actions are performed by this documentation update.

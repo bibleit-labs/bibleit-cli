@@ -14,8 +14,9 @@ The operator confirms Google/GitHub sign-in. The latest repaired deployment [pri
 [private revision withheld] (workflow 38147193441) passes native form CSRF admission and refreshed
 public boundary/alias checks on IPv4 and IPv6; real fresh-token acceptance and actual email delivery/verification are now
 human-confirmed in ledger a40d27d on font-only deployment[private revision withheld]/native [private revision withheld].
-The improved human helper confirms replay acceptance; assessment repair and
-real fresh-token/replay retesting are required before release. Earlier Fly-hostname qualification at source 7442010 is historical evidence only.
+The repaired production[private revision withheld]/native [private revision withheld]/image0bbb now passes genuine
+fresh-token/replay acceptance (ledger53239ad); both provider follow-up gates are
+complete. Earlier failures remain historical evidence. Earlier Fly-hostname qualification at source 7442010 is historical evidence only.
 Fly supplies the trusted PROXY envelope to the server; clients send ordinary
 SSH and never inject a PROXY preamble.
 
