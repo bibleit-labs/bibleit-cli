@@ -7,14 +7,13 @@ SSH commands connect to `bibleit.app:22`.
 
 ## Installation and current availability
 
-The CLI, Go client and Homebrew tap are **private**. Private CLI v0.0.1 exists,
-but its binary packages lack required third-party notices. Corrected **v0.0.2**
-packages and a matching tap formula are staged for review; they are not a
-published release. Native Windows installer/Scoop checks passed on the documentation candidate.
-See [release readiness](docs/release-v0.0.2-readiness.md) for the remaining gates.
+The CLI, Go client and Homebrew tap are **private**. Corrected release packages
+and a matching tap formula are being prepared for review. Public installation
+awaits approval; see [release readiness](docs/releases.md).
 
-Authorized contributors can build from source using Go 1.27.1 and authenticated
-Git access to the pinned private SDK; see [Development](#development).
+Authorized contributors can build from source using the Go toolchain specified
+in [go.mod](go.mod) and authenticated Git access to the pinned private SDK;
+see [Development](#development).
 Repository access and Bibleit service access are separate: using the CLI still
 requires the relevant account credentials, permissions and translation access.
 
@@ -33,14 +32,14 @@ brew install bibleit-labs/tap/bibleit-cli
 Bash (macOS/Linux):
 
 ```sh
-curl -fsSL https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.2/install.sh | bash -s -- v0.0.2
+curl -fsSL https://github.com/bibleit-labs/bibleit-cli/releases/latest/download/install.sh | bash
 ```
 
 PowerShell (Windows):
 
 ```powershell
-Invoke-WebRequest -UseBasicParsing -Uri https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.2/install.ps1 -OutFile install.ps1
-& .\install.ps1 -Version v0.0.2
+Invoke-WebRequest -UseBasicParsing -Uri https://github.com/bibleit-labs/bibleit-cli/releases/latest/download/install.ps1 -OutFile install.ps1
+& .\install.ps1
 ```
 
 Script installers default to `~/.local/bin` or `%LOCALAPPDATA%\Bibleit\bin`;
@@ -203,7 +202,8 @@ Homebrew installs the completion files with the executable.
 
 ## Development
 
-Use **Go 1.27.1**. The CLI pins the released Go client; a sibling checkout is optional.
+Use the Go toolchain specified in [go.mod](go.mod). The CLI pins the Go client;
+a sibling checkout is optional.
 While the Go repository is private, configure Git access and set
 `GOPRIVATE=github.com/bibleit-labs/*` when downloading private modules.
 
@@ -216,9 +216,9 @@ GOWORK=off go build -o build/bibleit .
 
 For joint client/CLI development, an uncommitted local workspace can include both
 checkouts: `go work init . ../bibleit-go`.
-Native code tests cover macOS/Linux/Windows. Windows installer and Scoop checks
-passed on the documentation candidate; final artifact checks are recorded in
-[release readiness](docs/release-v0.0.2-readiness.md). Fixtures do not prove public downloads.
+Native code tests cover macOS/Linux/Windows. Package installation evidence and
+remaining launch gates are recorded in [release readiness](docs/releases.md).
+Fixtures do not prove public downloads.
 See [native validation](docs/native-validation.md), [release maintenance](docs/releases.md),
 and the [changelog](CHANGELOG.md).
 
