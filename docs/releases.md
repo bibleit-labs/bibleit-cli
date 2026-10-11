@@ -7,8 +7,9 @@ is created. Private validation branches and CI are authorized. The separate
 to the private repositories as of 2026-10-11. Customer package publication remains
 gated on production readiness.
 The fixed canonical addresses are configured: `https://bibleit.app`
-and ordinary SSH at `bibleit.app:22`. Custom-domain DNS/TLS/SSH qualification
-remains pending; earlier Fly-hostname checks do not certify the new route. A released, pinned Go-client
+and ordinary SSH at `bibleit.app:22`. Actual public custom-domain DNS/TLS/SSH
+technical acceptance and human Google/GitHub sign-in now pass; real Turnstile
+backend success/replay remains pending. A released, pinned Go-client
 dependency and standalone production candidate validation remain release gates.
 
 ## Public distribution versus private validation
@@ -137,8 +138,11 @@ The implementation here is written for Bibleit's Go release layout.
 
 1. Canonical HTTPS/SSH constants and safe fixtures are configured. Frozen
    HTTP/SSH/import and boot validation pass at assessed 5969f2f/native f6fed37.
-   Final packaging-input freeze and actual new-domain DNS/TLS/SSH qualification remain
-   assessment/Fly gates; revalidate changed inputs before release.
+   Supplemental alias boot qualification passes at ef63e91. Actual public-DNS
+   HTTPS/aliases/auth/SSH/rate acceptance passes on deployed c586107. The operator
+   confirms Google/GitHub sign-in; real Turnstile backend success/replay remains
+   an assessment/Fly gate;
+   freeze final packaging inputs and revalidate changed inputs before release.
 2. Release the reviewed Go client when authorized, pin its version in go.mod,
    record dependency sums and verify builds with GOWORK=off. No replacement modules.
 3. Commit reviewed sources and use a semantic version. Running the packager without
@@ -424,10 +428,14 @@ canonical/provider unit and synthetic hostname configuration checks. A subsequen
 pre-cutover check found a missing redirect-host environment boot parser entry.
 Repair ef63e91 passes the independent direct boot regression, with committed
 source/native equivalence and separate supplemental evidence. The unchanged full
-client integration baseline remains 5969f2f; public-route acceptance is pending.
-Actual DNS/TLS/SSH and authentication qualification is still required by the
-assessment/Fly chats before customer release. New-domain client and CLI native matrices pass, as does the
+client integration baseline remains 5969f2f. Actual public-DNS technical acceptance
+passes on deployed c586107: 23 boundary/39 alias checks per address family, 11 auth,
+10 SSH and 15 paired rate cases. The public SSH fingerprint is unchanged and
+scoped synthetic fixture counts are zero. Credential-free deployment provenance
+is recorded in contract/canonical-deployment-validation.json. The operator confirms
+Google/GitHub sign-in; real Turnstile backend success/replay remains required
+before release. New-domain client and CLI native matrices pass, as does the
 revised candidate build/installer matrix at CLI bc94231. All native installer jobs
 validate one shared six-target archive set. See [native-validation.md](native-validation.md)
-for the exact private runs; this development evidence does not certify the public
-route or a standalone production release.
+for the exact private runs. Standalone production dependency/packaging validation
+remains a separate release gate.

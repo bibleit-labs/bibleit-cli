@@ -63,8 +63,22 @@ full 5969f2f integration baseline, with a hash linking the earlier evidence.
 The full future integration runner includes the new direct boot test; its unit
 count becomes 25 when run, rather than retroactively changing the earlier 24.
 Assessment-owned broad repaired-source evidence is 337 CT/63 EUnit/71 JavaScript/
-native 65536/10 bootstrap. Actual DNS/TLS/SSH/authentication and human-widget
-public-route qualification remains assessment/Fly-owned and pending.
+native 65536/10 bootstrap.
+
+Actual public canonical-DNS technical acceptance subsequently passes on deployed
+source c586107, runtime repair ef63e91/native f6fed37 and immutable image
+sha256:1140436c3d9e7de1b1f80e88aa208a0a6c06cff4b7ba371e0f5ddcbb5b6ace22.
+Assessment/Fly verified 403 source hashes and 20 actual-image checks. Both address
+families pass 23 HTTPS boundary and 39 alias checks each; 11 authentication,
+10 public canonical SSH and 15 paired rate checks pass. The public SSH fingerprint
+is unchanged; all scoped synthetic fixture counts are zero after cleanup.
+`contract/canonical-deployment-validation.json` records the redacted report hashes
+and links both independent client evidence files. This is actual public-DNS
+acceptance, separate from earlier address-override probes and local fixtures.
+The operator confirms Google/GitHub sign-in. Real Turnstile backend success/replay
+remains pending. Two missing/bogus-token backend denials pass; visible widget success
+alone does not close that gate. No client/native runtime change or customer
+release is required to record the technical acceptance.
 
 ## Prior Fly-hostname endpoint validation — 11 October 2026
 

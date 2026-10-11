@@ -7,13 +7,16 @@ private: `bibleit-cli`, `bibleit-go` and `homebrew-tap`. This supersedes earlier
 local-only source instructions. Use Conventional Commits and no codex branch prefix.
 Every client targets the project-managed service, currently
 `https://bibleit.app`; ordinary SSH uses `bibleit.app:22`. Custom-domain
-qualification is pending assessment/Fly validation. See
+technical qualification and human Google/GitHub sign-in pass; real Turnstile
+backend success/replay remains pending. See
 [endpoint-policy.md](endpoint-policy.md) and [releases.md](releases.md).
 
 Revised 2026-10-11 after the assessment closed its scoped campaign at server
 ledger 8923d86. The custom-domain client refresh verifies assessment revision 5969f2f/native f6fed37, including the narrow boot fix;
-actual new-domain qualification and final packaging input freeze remain pending. This revision
-supersedes the earlier sequence of extracting Go and immediately porting the
+supplemental alias boot qualification passes at ef63e91, and actual public-domain
+technical acceptance passes on deployed c586107. Real Turnstile backend acceptance
+and final packaging input freeze remain pending; human Google/GitHub sign-in
+passes. This revision supersedes the earlier sequence of extracting Go and immediately porting the
 same surface into Python, Ruby, and Rust.
 
 ## Decisions retained
@@ -221,8 +224,14 @@ Unchanged HTTP/SSH/import checks were not unnecessarily repeated. Future full
 integration includes the direct boot test. Assessment-owned repaired-source
 results pass 337 CT/63 EUnit/71 JavaScript/native 65536/10 bootstrap cases.
 Canonical client requests and alias method/upgrade denials passed pre-cutover checks.
-Actual new-domain DNS/TLS/SSH/authentication and real-widget qualification remain
-open with assessment/Fly. Their earlier 25/25 result qualified the Fly hostname.
+Actual public-DNS technical acceptance subsequently passes on deployed c586107,
+including 23 boundary/39 alias checks on each address family, 11 authentication,
+10 canonical SSH and 15 paired rate checks. The retained SSH fingerprint is
+confirmed and all scoped synthetic fixture counts are zero after cleanup.
+Credential-free deployed image/source/report provenance is synchronized in
+contract/canonical-deployment-validation.json. The operator confirms Google/GitHub
+sign-in; real Turnstile backend success/replay remains open with assessment/Fly. Their
+earlier 25/25 result qualified the Fly hostname.
 Final packaging/deployment inputs still need freezing. Browser/provider login and
 management WebSockets are outside this client runner; baseline dates use UTC.
 
@@ -292,8 +301,8 @@ and automated release uploading are outside the initial release requirement.
 | Order | Item | Current status / required input | Done when |
 | --- | --- | --- | --- |
 | 1 | Confirm version, scope and customer access | Project decision; propose Go/CLI v0.1.0 for the existing core command surface, Homebrew/Bash/PowerShell/manual archives | Version and supported transports/architectures recorded; choose public customer artifacts or implement authenticated delivery; choose whether Scoop bucket ships now or later |
-| 2 | Configure production service and safe test fixtures | Client implementation complete: custom-domain constants, trust-preserving SSH alias, verified fixtures and changed-key rejection pass; actual route qualification pending | Verify new-domain TLS/SSH fixtures and changed-key rejection; assessment/Fly confirms DNS-only apex, certificate/origin, authentication and retained SSH fingerprint before release |
-| 3 | Freeze and validate server compatibility | New-domain compatibility and boot validation pass at assessed 5969f2f/native f6fed37; committed Erlang inputs verified; supplemental direct alias boot qualification passes at ef63e91; actual route qualification and full packaging input freeze pending | Retain both full integration and supplemental boot provenance; freeze all packaging/deployment inputs; retain the verified boot fix and compare recorded hashes or rerun changed checks; retain approved migration lineage/runtime inputs; public-edge evidence is assessment-owned, and customer login/access decisions remain gate 1 |
+| 2 | Configure production service and safe test fixtures | Client implementation complete: custom-domain constants, trust-preserving SSH alias, verified fixtures and changed-key rejection pass; actual public DNS/TLS/HTTP/SSH/rate technical acceptance passes; human Google/GitHub sign-in confirmed; real Turnstile backend success/replay pending | Retain public technical/provider evidence; confirm real Turnstile backend success/replay before release |
+| 3 | Freeze and validate server compatibility | New-domain compatibility and boot validation pass at assessed 5969f2f/native f6fed37; committed Erlang inputs verified; supplemental direct alias boot qualification passes at ef63e91; public technical acceptance passes on deployed c586107; final packaging input freeze pending | Retain both full integration and supplemental boot provenance; freeze all packaging/deployment inputs; retain the verified boot fix and compare recorded hashes or rerun changed checks; retain approved migration lineage/runtime inputs; public-edge evidence is assessment-owned, and customer login/access decisions remain gate 1 |
 | 4 | Release Go client and pin standalone CLI dependency | After gates 1–3; go.mod still requires v0.0.0 | Review/promote the client source, publish approved semantic version, pin it in CLI and record sums; clean-cache GOWORK=off test/vet/build succeeds without sibling checkout or replace directives; private access uses appropriate Git credentials/GOPRIVATE |
 | 5 | Validate exact production CLI candidate | After gate 4; current candidate workflow uses --local and go work | Add a standalone production candidate validation path using the released client, GOWORK=off and no --local; clean Go 1.27.1 source produces six archives, installer scripts, formula, Scoop manifest, checksums and provenance; rerun relevant native/platform/installer checks on those exact inputs |
 | 6 | Finalize release sources, notes and delivery policy | Before publishing CLI; release/default branches still need review | Promote reviewed source through normal review; notes name client version/server baseline, protocol limits, old-config migration/revocation, OpenSSH dependency and supported architectures; choose signing policy and test downloaded macOS binaries with normal OS protections; record manual release procedure or implement upload automation |
@@ -310,7 +319,8 @@ it on final changed release inputs rather than treating all tooling as unbuilt.
 
 - The fixed HTTPS/browser origin is https://bibleit.app; ordinary SSH
   uses bibleit.app:22. The historical Fly name remains only a host-key lookup
-  alias. Custom-domain deployment qualification is pending. Tests route only
+  alias. Actual public custom-domain technical acceptance passes, while real
+  Turnstile backend success/replay remains pending; provider sign-in is confirmed. Local tests route only
   to verified loopback fixtures;
   the full integration namespace has no external route. Credential-only APIs,
   redirect blocking and certificate/host verification remain intact.
@@ -587,12 +597,12 @@ assessed revision 5969f2f and both baselines are synchronized; narrow boot and
 provider checks pass. All Erlang inputs match that commit, while unrelated frontend
 working-tree edits remain. The subsequent alias environment boot repair ef63e91
 passes the independent direct regression; its provenance is recorded separately
-and the unchanged client compatibility evidence is retained. Require the actual
-public-edge and human-widget acceptance evidence from assessment/Fly.
-Freeze all packaging inputs and rerun checks affected by later changes. Actual
-DNS/certificate,
-canonical-origin authentication and SSH fingerprint proof remain assessment/Fly
-release gates; do not substitute local fixtures for public-edge qualification.
+and the unchanged client compatibility evidence is retained. Actual public-DNS
+technical acceptance now passes on deployed c586107; its immutable image and
+redacted report hashes are recorded separately from the local fixtures. Require
+real Turnstile backend success/replay acceptance from assessment/Fly; the operator
+has confirmed Google/GitHub sign-in. Freeze final packaging inputs and rerun
+checks affected by later changes; retain qualified deployment provenance.
 
 Confirm first-release version/customer access, release and pin the Go client,
 validate a standalone CLI candidate without sibling workspace/--local, promote

@@ -18,15 +18,19 @@ increment below is complete; the new route needs its own evidence.
 
 Progress: **4/4 custom-domain client items complete**. Local Go/CLI race tests and
 vet pass; Darwin TLS/PTY/Bash/Zsh checks pass. The Turnstile/canonical-host boot
-change at 5969f2f is qualified; all Erlang inputs used in that run match the commit. The subsequent missing
+change at 5969f2f is qualified; all Erlang inputs used in that run match the commit.
+The subsequent missing
 BIBLEIT_HTTP_REDIRECT_HOSTS parser entry is repaired at ef63e91 and independently
-passes direct boot qualification. Public-route acceptance remains pending; the
-client uses the canonical origin directly and does not follow aliases. Dirty
-metadata preserves unrelated frontend working-tree edits; final packaging inputs still need freezing.
-Actual DNS-only apex cutover,
-certificate/canonical-origin/authentication and retained production SSH fingerprint
-verification remain assessment/Fly-owned release gates. They are not certified by
-local fixtures. No customer release tag/assets or production data changes are made.
+passes direct boot qualification. Actual public-route technical acceptance now
+passes, and the operator confirms Google/GitHub sign-in. Real Turnstile backend
+success/replay remains pending.
+The client uses the canonical origin directly and does not follow aliases. Dirty
+metadata preserves unrelated frontend working-tree edits; final packaging inputs
+still need freezing.
+Assessment-owned actual public checks confirm the DNS-only cutover, HTTPS/aliases
+on both address families, authentication, SSH fingerprint and paired rate behavior.
+This public evidence is separate from local fixtures. No customer release
+tag/assets are published; client work makes no production data changes.
 
 Fresh private CI passes all ten jobs: three [Go native jobs](https://github.com/bibleit-labs/bibleit-go/actions/runs/38126756591),
 three [CLI native jobs](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38128631673),
@@ -42,6 +46,26 @@ supplemental direct boot evidence is contract/server-boot-validation.json and
 build/validation/alias-boot-validation-2026-10-11.log. No broad client rerun was
 needed for the sole parser-registration change; the assessment’s repaired source
 suite passes 337 CT/63 EUnit/71 JavaScript/native 65536/10 bootstrap checks.
+
+### Actual canonical-domain technical acceptance
+
+| Item | Status | Evidence / limits |
+| --- | --- | --- |
+| Public DNS/TLS/alias routing | Complete | Two authorities plus Cloudflare/Google resolve the new DNS-only routes; 23 boundary and 39 alias checks pass on each address family |
+| Authentication, SSH and paired rate behavior | Complete | 11 auth, 10 actual canonical-DNS SSH and 15 paired rate checks pass; retained public SSH fingerprint confirmed; scoped fixture cleanup counts are zero |
+| Real provider sign-in | Complete | Operator confirms Google and GitHub OAuth sign-in at bibleit.app |
+| Real Turnstile backend acceptance | Pending | Fresh-token backend success and replay rejection required; visible widget success and two missing/bogus-token backend denials are partial evidence |
+
+Progress: **3/4 public acceptance items complete**; the client increment remains
+4/4. The deployed source is c586107, runtime repair ef63e91/native f6fed37,
+image sha256:1140436c3d9e7de1b1f80e88aa208a0a6c06cff4b7ba371e0f5ddcbb5b6ace22,
+from [deployment 38129282912](https://github.com/bibleit-labs/bibleit-server/actions/runs/38129282912).
+403 source hashes and 20 actual-image checks matched. Credential-free provenance
+is in contract/canonical-deployment-validation.json, synchronized with the Go client.
+The operator confirms Google/GitHub sign-in. The old app’s live.bibleit.app
+certificate was removed; the new server retains all three Issued certificates.
+Legacy app/data/volumes and Pages publication are preserved. Customer tags/assets
+remain held; no client runtime change is required.
 
 ## Previous increment: fixed Fly endpoints and compatibility refresh
 
