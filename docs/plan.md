@@ -202,8 +202,10 @@ Passing coverage: 34 decoder/18 encoder fixtures, seven targeted security cases,
 single-credential/output parity, 17 auth/key/protocol tests, 11 real-HTTP import
 access and 15 publication cases. The approved suite delivery adapter retains
 production URL/authorization/validation checks; authorized unreviewed-source
-rejection passes. All recorded source/test/native inputs match after the run and
-the disposable PostgreSQL container is removed. Full ignored log:
+rejection passes. All recorded source/test/native inputs matched on the immediate
+post-run check and the disposable PostgreSQL container was removed. Subsequent
+package-25 edits affect server boot/public-origin handling and two security test
+files; they are outside this verified snapshot. Full ignored log:
 build/validation/package-24-integration-2026-10-11.log.
 
 This is a frozen development snapshot, not deployed compatibility certification.
@@ -252,11 +254,11 @@ and automated release uploading are outside the initial release requirement.
 
 ### Completed preparation
 
-- Go client native matrix: Windows/Ubuntu/macOS passed at 8de21e9 in
-  [run 38096465359](https://github.com/bibleit-labs/bibleit-go/actions/runs/38096465359).
-- CLI native and development candidate matrices: passed at e737565 with exact
-  client 8de21e9 in [native run 38096515700](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38096515700)
-  and [candidate run 38096515593](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38096515593).
+- Go client native matrix: Windows/Ubuntu/macOS passed at 3c43133 in
+  [run 38098572121](https://github.com/bibleit-labs/bibleit-go/actions/runs/38098572121).
+- CLI native and development candidate matrices: passed at 990215d with exact
+  client 3c43133 in [native run 38098645524](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38098645524)
+  and [candidate run 38098645722](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38098645722).
   These cover single credential configuration, output/completion, native installers,
   PowerShell 7/5.1, Homebrew and Scoop against development fixtures. Six targets
   cross-build; Windows arm64 has not been validated on native arm64 hardware.
@@ -299,8 +301,11 @@ it on final changed release inputs rather than treating all tooling as unbuilt.
 - Both contract/server-baseline.json files are identical and now record server
   c2beef5334c249f65daedd0e279b8d9252f0d51b plus package-24 working-tree changes,
   with native f6fed37919c848b1aa0208900af992a5e8a507f2. The verified 67 source,
-  66 test and 11 native build-input fingerprints match after integration.
-  A committed/deployed release freeze and production smoke checks are still pending.
+  66 test and 11 native build-input fingerprints matched immediately after integration.
+  Package 25 subsequently changed src/bibleit_server_boot.erl,
+  src/http/bibleit_http_auth.erl, test/bibleit_security_review_SUITE.erl and
+  test/unit/bibleit_runtime_security_tests.erl; compatibility with those edits is
+  not claimed. Native inputs still match. A committed/deployed release freeze and production smoke checks are still pending.
 
 - CLI go.mod still requires bibleit-go v0.0.0. Draft CI now pins exact client 3c43133
   in an ephemeral workspace and packages with --local. Green draft CI does not
@@ -355,8 +360,8 @@ Final package 23 validation passed: 313 Common Test integration cases, 48 Erlang
 unit tests, 71 JavaScript tests and native C search/fuzz programs, without skips.
 The dedicated test container and volume were removed. The assessment chat confirms
 completion; its log /tmp/bibleit-combined-full-final.log records all
-313 integration cases passing. Campaign progress is 23/25, with packages 24–25
-remaining. This is assessment-owned evidence, not a new client integration run.
+313 integration cases passing. At package 23 closure, progress was 23/25; package
+24 has since completed as recorded below, leaving deployment verification. This is assessment-owned evidence, not a new client integration run.
 
 The three focused cases cover combined response loss/CPU/memory/write-permission
 faults, isolated backup restoration and transaction rollback of a truncated dump.

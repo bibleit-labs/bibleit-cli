@@ -9,11 +9,18 @@ percentages of the entire project. The full plan is in `plan.md`.
 | --- | --- | --- |
 | Verify final assessment result | Complete | 324 integration, 50 Erlang unit, 71 JavaScript and native tests pass, no skips; release/tar resource checks and Linux build stage pass; campaign 24/25, Fly verification pending |
 | Rerun HTTP/SSH/import integration | Complete | 34 decoder/18 encoder fixtures, seven security cases, 11 HTTP subtests, SSH lifecycle/output parity, 17 auth/key/protocol tests and 26 import cases pass; no client runtime change |
-| Synchronize baselines and update release plan | Prepared; hosted validation running | Server c2beef5 plus working-tree changes, native f6fed37; 67 source/66 test/11 native hashes; baseline bytes identical; draft CI pins client 3c43133 |
+| Synchronize baselines and update release plan | Complete | Server c2beef5 plus working-tree changes, native f6fed37; 67 source/66 test/11 native hashes; baseline bytes identical; draft CI pins client 3c43133 |
 
-Progress: **2/3 tracked items complete** pending final publication/hosted evidence.
-No recorded server/test/native drift was found after the isolated run; its database
-was removed. Full ignored log: build/validation/package-24-integration-2026-10-11.log.
+Progress: **3/3 requested items complete**. Fresh hosted evidence:
+
+- [Go client native matrix](https://github.com/bibleit-labs/bibleit-go/actions/runs/38098572121): Windows/macOS/Ubuntu passed at 3c43133.
+- [CLI native matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38098645524): all three platforms passed at 990215d with exact client 3c43133.
+- [CLI candidate matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38098645722): all three platforms passed at the same inputs; six-target packaging, PowerShell 7/5.1, Scoop and Homebrew checks passed.
+
+Documentation-only completion commits follow the tested CLI revision.
+Recorded inputs matched immediately after the isolated run; its database was
+removed. Package 25 subsequently edited server boot/public-origin handling and
+two security tests outside the verified snapshot; native inputs still match. Full ignored log: build/validation/package-24-integration-2026-10-11.log.
 This validates a development snapshot. Production endpoints, committed/deployed
 baseline, migration lineage, standalone released dependency and customer installs
 remain release gates. No shared database, server runtime source or release tag is
