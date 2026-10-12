@@ -4,7 +4,7 @@
 > public cutover. The SDK, CLI and tap are now public with protected main/release
 > tags. See [actual launch evidence](public-launch.md) for executed actions and
 > verified installation coverage. The preparation text below is a historical
-> snapshot. private-service remains private. Its CLI docs were separately approved,
+> snapshot. private service remains private. Its CLI docs were separately approved,
 > merged and deployed; see the completion checklist in [launch evidence](public-launch.md).
 
 
@@ -20,7 +20,7 @@ created, or old asset/artifact removed. Server deployment is excluded.
   version-free README, public CI preparation and dated audit/release evidence.
 - [Tap PR 2](https://github.com/bibleit-labs/homebrew-tap/pull/2): exact corrected
   formula, notice validation, native lifecycle checks and public access preparation.
-- [Server docs PR 1]([private service reference withheld]): implemented
+- Server docs PR 1 (private record retained locally): implemented
   CLI documentation in Markdown and all three rendered locales; source edbc361.
   Keep the server private; merge/deploy its docs separately after public installs.
 

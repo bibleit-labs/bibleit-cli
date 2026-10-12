@@ -4,7 +4,7 @@ import argparse, datetime, hashlib, json, os, pathlib, shutil, socket, subproces
 from urllib.parse import urlparse
 root = pathlib.Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
-parser.add_argument('--server', type=pathlib.Path, default=root.parent/'private-service')
+parser.add_argument('--server', type=pathlib.Path, required=True, help='authorized private service checkout')
 parser.add_argument('--go-client', type=pathlib.Path, default=root.parent/'bibleit-go', help='checkout of the independent Go client for integration tests')
 parser.add_argument('--integration', action='store_true', help='run server authentication/security tests with a unique disposable Docker database')
 parser.add_argument('--imports', action='store_true', help='also execute server import-access/publication suite cases against local fixtures')
@@ -148,7 +148,7 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
               ok=gen_server:stop(bibleit_http_listener),
               application:set_env(bibleit_server,http,#{port=>8080,host=>{127,0,0,1}}),
               application:set_env(bibleit_server,http_public_origin,<<"https://bibleit.app">>),
-              application:set_env(bibleit_server,http_redirect_hosts,[<<"legacy.bibleit.example">>,<<"live.bibleit.app">>]),
+              application:set_env(bibleit_server,http_redirect_hosts,[<<"live.bibleit.app">>]),
               {ok,FixedHTTP}=bibleit_http_listener:start_link(),unlink(FixedHTTP),
               8080=ranch:get_port(bibleit_http),
               io:format("Fixed service integration: https://bibleit.app (verified fixture TLS, no client endpoint override)~n"),
@@ -247,7 +247,7 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
             'request_decoder_cases': len(json.loads(fixture.read_text())),
             'fixed_http_endpoint': 'https://bibleit.app' if args.integration else None,
             'fixed_ssh_endpoint': 'bibleit.app:22' if args.integration else None,
-            'ssh_host_key_alias': 'legacy.bibleit.example' if args.integration else None,
+            'ssh_host_key_alias': None,
             'boot_configuration_cases': 1 if args.integration else 0,
             'eunit_cases': 25 if args.integration else 0,
             'direct_boot_eunit_cases': 1 if args.integration else 0,

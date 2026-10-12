@@ -31,7 +31,7 @@ The server is a separate private repository. Authorized maintainers with Docker
 and the sibling SDK/server checkouts can run the isolated container harness:
 
 ```sh
-python3 scripts/check_server_container.py --baseline contract/server-baseline.json
+python3 scripts/check_server_container.py --server /path/to/private-service --baseline contract/server-baseline.json
 ```
 
 Use `--imports` when import coverage is relevant. The harness copies the frozen

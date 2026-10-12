@@ -14,9 +14,11 @@ The CLI defaults to HTTP; `--transport ssh` selects OpenSSH explicitly.
 `BIBLEIT_TOKEN` supplies an HTTP token; it is not an SSH credential. SSH identity
 selection and host verification use OpenSSH, including the user's SSH config.
 The CLI exposes no endpoint/hostname overrides or named profiles.
-For host trust, the SSH adapter uses HostKeyAlias=legacy.bibleit.example to reuse
-the verified legacy known_hosts entry; the network destination remains
-bibleit.app:22. The alias is a trust lookup, not a destination override.
+OpenSSH verifies the service's host key directly under bibleit.app. The CLI
+does not override HostKeyAlias. Existing trust entries for an older hostname
+are not copied automatically; OpenSSH records a newly encountered service key
+and rejects changes to a key already recorded for bibleit.app. Users with a
+custom OpenSSH configuration should review any host aliases there as well.
 
 Configuration schema version 2 binds saved credentials to both service addresses.
 A mismatched address, legacy bearer-only config or older profile config fails

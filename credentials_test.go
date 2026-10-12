@@ -260,7 +260,7 @@ func TestCredentialBindingAndOldConfigIsNeverOverwritten(t *testing.T) {
 		`{"version":2,"endpoint":"https://bibleit.app","ssh_server":"foreign.example:22","identity":"key"}`,
 		`{"version":2,"endpoint":"https://foreign.example","ssh_server":"bibleit.app:22","access_token":"old"}`,
 		`{"version":2,"endpoint":"http://localhost:8080","ssh_server":"127.0.0.1:2222","access_token":"old","identity":"key"}`,
-		`{"version":2,"endpoint":"https://legacy.bibleit.example","ssh_server":"legacy.bibleit.example:22","access_token":"old","identity":"key"}`,
+		`{"version":2,"endpoint":"https://legacy.example","ssh_server":"legacy.example:22","access_token":"old","identity":"key"}`,
 		`{"version":1,"active_profile":"a","profiles":{"a":{"transport":"http","endpoint":"http://localhost:8080","access_token":"old"}}}`,
 	} {
 		if err := os.WriteFile(path, []byte(data), 0600); err != nil {

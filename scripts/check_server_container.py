@@ -42,7 +42,7 @@ def native_fingerprints(library):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--server', type=Path, default=ROOT.parent / 'private-service')
+    parser.add_argument('--server', type=Path, required=True, help='authorized private service checkout')
     parser.add_argument('--go-client', type=Path, default=ROOT.parent / 'bibleit-go')
     parser.add_argument('--baseline', type=Path)
     parser.add_argument('--imports', action='store_true', help='include server import-access/publication suite cases')

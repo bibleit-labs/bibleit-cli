@@ -166,7 +166,7 @@ func TestServerSSHSubscription(t *testing.T) {
 	if err != nil || !acknowledged {
 		t.Fatalf("closure after reconnect: %v", err)
 	}
-	t.Run("migration rejects changed host key", func(t *testing.T) {
+	t.Run("service rejects changed host key", func(t *testing.T) {
 		foreign := filepath.Join(t.TempDir(), "foreign_host")
 		if output, err := exec.Command("ssh-keygen", "-q", "-t", "rsa", "-b", "2048", "-N", "", "-f", foreign).CombinedOutput(); err != nil {
 			t.Fatalf("create foreign fixture host key: %v %s", err, output)
@@ -175,7 +175,7 @@ func TestServerSSHSubscription(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if err := os.WriteFile(knownHosts, []byte(sshHostKeyAlias+" "+strings.TrimSpace(string(public))+"\n"), 0600); err != nil {
+		if err := os.WriteFile(knownHosts, []byte("bibleit.app "+strings.TrimSpace(string(public))+"\n"), 0600); err != nil {
 			t.Fatal(err)
 		}
 		base, _, err := sshCommand(cfg, bibleit.PingCommand())

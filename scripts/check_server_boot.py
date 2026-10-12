@@ -20,7 +20,7 @@ def run(command, **kwargs):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--server', type=Path, default=ROOT.parent / 'private-service')
+    parser.add_argument('--server', type=Path, required=True, help='authorized private service checkout')
     parser.add_argument('--revision', required=True, help='assessed committed repair')
     parser.add_argument('--previous-baseline', type=Path,
                         default=ROOT / 'contract/server-baseline.json')

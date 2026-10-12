@@ -1,6 +1,16 @@
 # Changelog
 
-## v0.0.2 — prepared, unreleased
+## Unreleased
+
+- Show authentication help for bare `bibleit auth` before reading saved credentials.
+- Explain Homebrew completion initialization and recovery from legacy configuration.
+- Use Bibleit service descriptions and withhold private repository references from
+  current client documentation and historical public snapshots.
+- Verify SSH host keys directly for `bibleit.app`, without a legacy host-key alias.
+  Existing trust under an older hostname is not reused. Changed keys remain rejected.
+- Require an explicit `--server` checkout path for optional maintainer integration.
+
+## v0.0.2 — 2026-10-12
 
 - Include SDK, Go runtime/standard-library and embedded third-party notices in
   all six archives, and the project MIT notice in both downloadable installers.
@@ -9,8 +19,8 @@
   including v0.0.1 archives, before replacing an existing executable.
 - Verify notice contents through native installation/reinstallation checks.
 
-This version is staged privately for review; no v0.0.2 tag or release is created
-by candidate validation. Existing v0.0.1 assets remain unchanged pending approval.
+Published after owner approval. Its assets are immutable; new source and README
+changes belong to a future release. See [launch evidence](docs/public-launch.md).
 
 ## v0.0.1 — 2026-10-11
 
@@ -36,10 +46,9 @@ macOS and Windows, including PowerShell 7/5.1, Homebrew and Scoop installation.
 Binaries have SHA-256 integrity checks but are not platform-signed or notarized.
 Keep normal operating-system protections enabled.
 
-These initial releases remain private. Ordinary curl/PowerShell/Homebrew download
-URLs cannot authenticate to private release assets; authorized validation uses
-GitHub CLI downloads and local installer inputs. Public customer installation
-awaits a separate visibility or authenticated-delivery decision.
+Initial preparation was private. The notice-deficient v0.0.1 downloads were
+withdrawn after owner approval; its source/tag remain. Public installation uses
+the corrected release recorded in [launch evidence](docs/public-launch.md).
 
 Historical service deployment evidence is maintained privately. Public client
 compatibility fixtures remain in contract/.
