@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## v0.0.3 — 2026-10-12
 
 - Show authentication help for bare `bibleit auth` before reading saved credentials.
 - Explain Homebrew completion initialization and recovery from legacy configuration.

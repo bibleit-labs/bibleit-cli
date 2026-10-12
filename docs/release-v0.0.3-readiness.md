@@ -1,7 +1,7 @@
-# v0.0.3 release preparation
+# v0.0.3 release evidence
 
-Prepared 2026-10-12. Release title: **v0.0.3**. Publication requires owner approval.
-The current public release and tap remain v0.0.2. Existing releases are immutable.
+Published 2026-10-12 after owner approval of actions 1–6. Release title: **v0.0.3**.
+[The latest stable release](https://github.com/bibleit-labs/bibleit-cli/releases/tag/v0.0.3) and live tap formula are v0.0.3. Existing releases remain immutable.
 The private service repository is unchanged and remains private.
 
 ## Frozen inputs
@@ -41,8 +41,8 @@ both completed successfully. Tap validation used commit
 the reviewed archives; host/header checks verify the native Homebrew targets and
 reject Rosetta. The tap's production formula exactly matches the normalized
 CLI-generated formula. [Tap PR #11](https://github.com/bibleit-labs/homebrew-tap/pull/11)
-is held for release approval; its evidence-only follow-up preserves the validated
-formula and helper bytes. Intel macOS remains [Homebrew Tier 3](https://docs.brew.sh/Support-Tiers).
+was squash-merged through protection at `65bff4e45fa8075619ec7afc47b1f4f70c1eeb31`;
+its evidence-only follow-up preserved the validated formula and helper bytes. Intel macOS remains [Homebrew Tier 3](https://docs.brew.sh/Support-Tiers).
 
 Local standalone packaging, race tests/vet, auth help with an unchanged legacy
 config, workflow lint, and all 16 tap verifier tests passed. Documentation and
@@ -57,28 +57,44 @@ history after installation/test/reinstall succeeded. The fixture now seeds core
 metadata from the runner cache or a shallow public checkout before the lifecycle.
 Superseded runs are retained as diagnostic history, not release evidence.
 
-## Exact actions awaiting approval
+## Approved publication actions — completed
 
-1. Create and push immutable tag `v0.0.3` at source commit
-   `0e1fc6f0b1a1cb734f5b54827f7e0319bb9f3280`. Let the protected release workflow
-   rerun native validation and create its draft.
-2. Download all twelve draft assets and compare every SHA-256 to the approved
-   record, including the source manifest. Normalize its formula and compare it
-   byte-for-byte with the held tap PR. Stop on any difference.
-3. Set the draft title to exactly `v0.0.3`, replace its notes with the reviewed
-   release notes, and publish it as the latest stable release. The workflow
-   already uses the tag name as the draft title; verify it before publication.
-4. Verify anonymous retrieval of the twelve assets and their recorded hashes,
-   then squash-merge the verified head of tap PR #11 through branch protection
-   with `chore(formula): update bibleit-cli to v0.0.3`.
-5. Run the public installer workflow with `version=v0.0.3` on all six native
-   targets and the public Homebrew workflow on all four macOS/Linux targets.
-   Require empty caches, ordinary public URLs, no credentials, exact executable
-   and notice bytes, auth help with a preserved legacy config, and completion files.
-6. Record publication URLs, final verification results and the remaining limits.
-   Keep older releases unchanged and the private service repository private.
+1. Created immutable annotated tag `v0.0.3` at the approved frozen source.
+   [The tag workflow](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38247813670) passed native race/process/shell checks and all six
+   native installer targets, including Windows ARM64 PowerShell 7/5.1 and Scoop.
+2. Downloaded all twelve draft assets and compared every SHA-256 and GitHub digest
+   with the approved record. The provenance manifest and normalized production
+   formula matched exactly.
+3. Published [v0.0.3](https://github.com/bibleit-labs/bibleit-cli/releases/tag/v0.0.3) as latest stable, with title exactly `v0.0.3`
+   and the [reviewed release notes](release-v0.0.3-notes.md).
+4. Downloaded all twelve published assets anonymously and verified their hashes,
+   then merged [tap PR #11](https://github.com/bibleit-labs/homebrew-tap/pull/11)
+   at the approved head through required checks with a conventional commit.
+5. [Anonymous installers](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38249509803) passed on all six native targets,
+   using latest and explicit release URLs. Windows ran PowerShell 7 and 5.1.
+   [Anonymous Homebrew](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38248930792) passed install/test/reinstall/uninstall
+   on macOS ARM64/Intel and Linux AMD64/ARM64 at standard prefixes with empty
+   download caches. Reports verify native architectures, exact executable and
+   notice bytes, updated help, preserved legacy configuration and Homebrew completions.
+   The real local Homebrew upgrade from v0.0.2 to v0.0.3 also passed; user credential
+   configuration and shell startup files were unchanged.
+6. Recorded publication metadata, anonymous reports and the actual upgrade in
+   [the validation record](security/v0.0.3-release-validation.json). The previous
+   v0.0.2 release title/notes and all twelve asset IDs/sizes/digests remain unchanged.
+   The private service repository remains private.
 
-No tag, draft or published release is created during preparation. The staged tap
-formula is not merged. Anonymous v0.0.3 retrieval and a real `brew upgrade`
-remain post-publication checks. Signing/notarization, a public Scoop bucket,
-future language clients and server changes are separate work.
+The first public installer run passed macOS/Linux but Windows stopped before
+installation: the default PowerShell shell did not expand Bash-style `$VERSION`.
+[PR #16](https://github.com/bibleit-labs/bibleit-cli/pull/16) selected Bash for the
+workflow invocation. The final six-target run above passed from protected main;
+actual Windows installation still uses PowerShell 7 and 5.1. This harness-only
+change did not modify the published tag or assets. Two jobs in the final run
+initially encountered GitHub HTTP 504 downloads; those failed jobs were rerun
+without changing source or assets. The record includes the final run attempt.
+
+## Remaining limits
+
+No publication or native installation gate remains pending. Intel macOS remains
+[Homebrew Tier 3](https://docs.brew.sh/Support-Tiers). Signing/notarization,
+a public Scoop bucket, future language clients and private service changes are
+separate work. Shell initialization still requires the setup in the packaged README.
