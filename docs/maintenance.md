@@ -12,8 +12,8 @@ packaging uses the Go toolchain specified in go.mod and a clean committed checko
 [Release maintenance](releases.md) describes clean standalone packaging, pinned
 SDK/toolchain inputs, exact archive and notice checks, native Bash/PowerShell,
 Homebrew and Scoop validation, and approval before new tags or publication.
-[Native validation](native-validation.md) separates ordinary offline tests from
-optional isolated integration that requires access to the private service source.
+[Native validation](native-validation.md) describes offline tests and fixture
+isolation. Local service integration procedures are maintained privately.
 Fixture checks alone do not establish anonymous public installation.
 
 [Public launch evidence](public-launch.md) records verified installation coverage,
