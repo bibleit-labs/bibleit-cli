@@ -9,7 +9,9 @@ snapshots. Installation commands are in [the README](../README.md).
 
 The next candidate is v0.0.3. It includes authentication help, updated completion
 and recovery guidance, and direct SSH host trust for `bibleit.app`. Publication
-and the matching tap formula merge require owner approval.
+and the matching tap formula merge require owner approval. The
+[final readiness record](release-v0.0.3-readiness.md) includes native results and
+the exact approval actions.
 
 ## Prepare a candidate
 
@@ -102,10 +104,10 @@ Scoop retains the complete ZIP contents and manages its own uninstall lifecycle.
 1. Freeze and validate the final source, SDK, notices, packaged README and artifacts.
    Preserve all required notices; review compatibility and the output contract.
 2. Complete native installer/package-manager checks on the supported runner
-   architectures. Windows checks resumed and passed on the documentation candidate;
-   final artifact validation and anonymous retrieval remain separate gates.
-3. Review the old v0.0.1 asset/artifact withdrawal proposal. Keep private evidence
-   and preserve its tag/source history; perform cleanup only after approval.
+   architectures. The v0.0.3 candidate passed all six native installer targets and
+   all four tap Homebrew targets; anonymous retrieval requires publication.
+3. Keep the already-withdrawn v0.0.1 downloads withdrawn and preserve their private
+   backups, source and tag. No additional old-release cleanup is part of v0.0.3.
 4. Obtain approval before release tags/assets, the staged tap merge, or visibility
    changes. The tag workflow requires a source commit on main and creates a draft
    only after validation. Candidate validation does not publish.
