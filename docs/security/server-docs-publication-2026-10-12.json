@@ -36,7 +36,7 @@
     "http_websocket_guide": "HTTP 404"
   },
   "pending": [
-    "Optional private read-secret retirement and underlying token-use assessment."
+    "Underlying owner PAT revocation after GitHub account reauthentication; repository secret copies retired and owner confirmed no reuse."
   ],
   "separate_followups": [
     "Native Intel macOS and Linux ARM64 Homebrew coverage.",
