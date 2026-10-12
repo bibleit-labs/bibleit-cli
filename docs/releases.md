@@ -1,17 +1,16 @@
 # Release maintenance
 
-The SDK, CLI and tap are public. The corrected CLI v0.0.2 is published and its
+The SDK, CLI and tap are public. CLI v0.0.3 is the latest stable release and its
 matching tap formula is available. All original v0.0.1 download assets were
 withdrawn for missing redistribution notices; its source and tag are preserved.
 [Public launch evidence](public-launch.md) records source, checksums, native public
 installation results and protections. Historical preparation records remain dated
 snapshots. Installation commands are in [the README](../README.md).
 
-The next candidate is v0.0.3. It includes authentication help, updated completion
-and recovery guidance, and direct SSH host trust for `bibleit.app`. Publication
-and the matching tap formula merge require owner approval. The
-[final readiness record](release-v0.0.3-readiness.md) includes native results and
-the exact approval actions.
+Published v0.0.3 includes authentication help, updated completion and recovery
+guidance, and direct SSH host trust for `bibleit.app`. The
+[completed release checklist](release-v0.0.3-readiness.md) records owner approval,
+exact asset verification, the protected tap merge and anonymous native results.
 
 ## Prepare a candidate
 
@@ -42,7 +41,7 @@ those candidates are not eligible for publication.
 | manifest.json | Frozen input provenance and eligibility markers |
 
 Changes to README, notices, installers, completions or build inputs require fresh
-packages and updated formula hashes even if runtime code is unchanged. The published v0.0.2 packages retain their frozen preparation-era README.
+packages and updated formula hashes even if runtime code is unchanged. Published packages retain the README frozen at their release source.
 Changes to the main README apply to a future release; keep existing assets immutable. Re-audit component licenses for dependency/toolchain,
 crypto/build flag or target changes. Never replace binaries under an existing tag
 to conceal a notice/content change.
@@ -108,7 +107,7 @@ Scoop retains the complete ZIP contents and manages its own uninstall lifecycle.
    all four tap Homebrew targets; anonymous retrieval requires publication.
 3. Keep the already-withdrawn v0.0.1 downloads withdrawn and preserve their private
    backups, source and tag. No additional old-release cleanup is part of v0.0.3.
-4. Obtain approval before release tags/assets, the staged tap merge, or visibility
+4. Obtain approval before release tags/assets, tap formula merges, or visibility
    changes. The tag workflow requires a source commit on main and creates a draft
    only after validation. Candidate validation does not publish.
 5. At the separately approved public cutover, validate anonymous SDK/archive and

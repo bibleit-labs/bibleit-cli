@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "date": "2026-10-12",
-  "status": "prepared-awaiting-approval",
+  "status": "published-verified",
   "release_title": "v0.0.3",
   "manifest": {
     "version": "v0.0.3",
@@ -352,12 +352,589 @@
     "THIRD_PARTY_NOTICES": "8bbcd35609b752b5fa3f170420d76159e746e5093461cfa487e690c475ed1eae"
   },
   "publication": {
-    "tag_created": false,
-    "release_published": false,
-    "tap_formula_merged": false,
-    "anonymous_v0_0_3_checks": "pending publication approval",
-    "previous_v0_0_2_assets": "unchanged",
-    "private_service_repository": "private"
+    "approved_actions": "1\u20136, owner approval on 2026-10-12",
+    "tag_created": true,
+    "release_published": true,
+    "tap_formula_merged": true,
+    "anonymous_v0_0_3_checks": "passed: all 12 assets, six native installer targets, four native Homebrew targets",
+    "previous_v0_0_2_assets": "unchanged: release/title/notes and all 12 asset IDs/sizes/digests verified",
+    "private_service_repository": "private",
+    "release": {
+      "id": 410574127,
+      "url": "https://github.com/bibleit-labs/bibleit-cli/releases/tag/v0.0.3",
+      "title": "v0.0.3",
+      "tag": "v0.0.3",
+      "published_at": "2026-10-12T12:24:39Z",
+      "latest_stable": true,
+      "assets": [
+        {
+          "id": 633714655,
+          "name": "bibleit-cli.rb",
+          "size": 1480,
+          "digest": "sha256:4171f9643b6a36f091ae799f87d1af7b9b08954913554666bf6e9a581b2c0c97"
+        },
+        {
+          "id": 633714667,
+          "name": "bibleit.json",
+          "size": 646,
+          "digest": "sha256:64f9eab7edbb69c9fd753ca56eb2cdfff7c074472a5210462d192cb9557e1977"
+        },
+        {
+          "id": 633714673,
+          "name": "bibleit_0.0.3_darwin_amd64.tar.gz",
+          "size": 3175451,
+          "digest": "sha256:599c3fd0d4a75db12f411d6f7c26e69f2b4b875b5aeede153e231db6b10be171"
+        },
+        {
+          "id": 633714656,
+          "name": "bibleit_0.0.3_darwin_arm64.tar.gz",
+          "size": 2917673,
+          "digest": "sha256:57c3ea300a90824f10e516a520521aca6543cd4dd5a6971699b08916f5d91bb6"
+        },
+        {
+          "id": 633714657,
+          "name": "bibleit_0.0.3_linux_amd64.tar.gz",
+          "size": 3135255,
+          "digest": "sha256:26e1b3730ddabeb308e6996a6aa92734b4f41eb531dbf963309dcbab54541caa"
+        },
+        {
+          "id": 633714689,
+          "name": "bibleit_0.0.3_linux_arm64.tar.gz",
+          "size": 2821766,
+          "digest": "sha256:201cab58874af4195c5abaf0f4c16bbf6f26bfd7f0e48bd0a7a199a206ea62db"
+        },
+        {
+          "id": 633714690,
+          "name": "bibleit_0.0.3_windows_amd64.zip",
+          "size": 3238156,
+          "digest": "sha256:cdb5d1ea9d3b74ba5c8cec07a99fd47658368fc2c8778f970102e02ecd8a5bb4"
+        },
+        {
+          "id": 633714694,
+          "name": "bibleit_0.0.3_windows_arm64.zip",
+          "size": 2882934,
+          "digest": "sha256:3a9d72db13f82394a23888d215a20d0020cf6abf4daa0df166b7e09e910798c4"
+        },
+        {
+          "id": 633714700,
+          "name": "checksums.txt",
+          "size": 749,
+          "digest": "sha256:b0c57e52966ce6cd713fa34dbf5867da359d4bdf8b7d9c8c364662fce8307687"
+        },
+        {
+          "id": 633714718,
+          "name": "install.ps1",
+          "size": 5252,
+          "digest": "sha256:9d8d4fa8a0464e5edaccd561390b4f49c6254c203e5ef5eaa72021e77627b091"
+        },
+        {
+          "id": 633714720,
+          "name": "install.sh",
+          "size": 4307,
+          "digest": "sha256:0e01b88839185faa985fd578c16c0c57c71cdb17e4520f27d75bac8e7b184b61"
+        },
+        {
+          "id": 633714721,
+          "name": "manifest.json",
+          "size": 1189,
+          "digest": "sha256:db580d4c1eb2424e94041a09b4b5fff5d36a0db3d24d0157b6d68b5383c6f9e8"
+        }
+      ]
+    },
+    "tag_workflow": {
+      "run_id": 38247813670,
+      "url": "https://github.com/bibleit-labs/bibleit-cli/actions/runs/38247813670",
+      "source_commit": "0e1fc6f0b1a1cb734f5b54827f7e0319bb9f3280",
+      "event": "push",
+      "run_attempt": 1,
+      "conclusion": "success"
+    },
+    "tap_pull_request": {
+      "url": "https://github.com/bibleit-labs/homebrew-tap/pull/11",
+      "approved_head": "62ee68fd160c0cf930ef03f4c248eb5e5c2c3171",
+      "merge_commit": "65bff4e45fa8075619ec7afc47b1f4f70c1eeb31",
+      "merged_at": "2026-10-12T12:25:20Z"
+    },
+    "anonymous_assets": {
+      "version": "v0.0.3",
+      "credentials": false,
+      "source_commit": "0e1fc6f0b1a1cb734f5b54827f7e0319bb9f3280",
+      "all_12_approved_hashes_match": true,
+      "assets": {
+        "bibleit-cli.rb": {
+          "url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.3/bibleit-cli.rb",
+          "sha256": "4171f9643b6a36f091ae799f87d1af7b9b08954913554666bf6e9a581b2c0c97",
+          "size": 1480
+        },
+        "bibleit.json": {
+          "url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.3/bibleit.json",
+          "sha256": "64f9eab7edbb69c9fd753ca56eb2cdfff7c074472a5210462d192cb9557e1977",
+          "size": 646
+        },
+        "bibleit_0.0.3_darwin_amd64.tar.gz": {
+          "url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.3/bibleit_0.0.3_darwin_amd64.tar.gz",
+          "sha256": "599c3fd0d4a75db12f411d6f7c26e69f2b4b875b5aeede153e231db6b10be171",
+          "size": 3175451
+        },
+        "bibleit_0.0.3_darwin_arm64.tar.gz": {
+          "url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.3/bibleit_0.0.3_darwin_arm64.tar.gz",
+          "sha256": "57c3ea300a90824f10e516a520521aca6543cd4dd5a6971699b08916f5d91bb6",
+          "size": 2917673
+        },
+        "bibleit_0.0.3_linux_amd64.tar.gz": {
+          "url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.3/bibleit_0.0.3_linux_amd64.tar.gz",
+          "sha256": "26e1b3730ddabeb308e6996a6aa92734b4f41eb531dbf963309dcbab54541caa",
+          "size": 3135255
+        },
+        "bibleit_0.0.3_linux_arm64.tar.gz": {
+          "url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.3/bibleit_0.0.3_linux_arm64.tar.gz",
+          "sha256": "201cab58874af4195c5abaf0f4c16bbf6f26bfd7f0e48bd0a7a199a206ea62db",
+          "size": 2821766
+        },
+        "bibleit_0.0.3_windows_amd64.zip": {
+          "url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.3/bibleit_0.0.3_windows_amd64.zip",
+          "sha256": "cdb5d1ea9d3b74ba5c8cec07a99fd47658368fc2c8778f970102e02ecd8a5bb4",
+          "size": 3238156
+        },
+        "bibleit_0.0.3_windows_arm64.zip": {
+          "url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.3/bibleit_0.0.3_windows_arm64.zip",
+          "sha256": "3a9d72db13f82394a23888d215a20d0020cf6abf4daa0df166b7e09e910798c4",
+          "size": 2882934
+        },
+        "checksums.txt": {
+          "url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.3/checksums.txt",
+          "sha256": "b0c57e52966ce6cd713fa34dbf5867da359d4bdf8b7d9c8c364662fce8307687",
+          "size": 749
+        },
+        "install.ps1": {
+          "url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.3/install.ps1",
+          "sha256": "9d8d4fa8a0464e5edaccd561390b4f49c6254c203e5ef5eaa72021e77627b091",
+          "size": 5252
+        },
+        "install.sh": {
+          "url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.3/install.sh",
+          "sha256": "0e01b88839185faa985fd578c16c0c57c71cdb17e4520f27d75bac8e7b184b61",
+          "size": 4307
+        },
+        "manifest.json": {
+          "url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.3/manifest.json",
+          "sha256": "db580d4c1eb2424e94041a09b4b5fff5d36a0db3d24d0157b6d68b5383c6f9e8",
+          "size": 1189
+        }
+      }
+    },
+    "public_installers": {
+      "run_id": 38249509803,
+      "url": "https://github.com/bibleit-labs/bibleit-cli/actions/runs/38249509803",
+      "source_commit": "393161f8d4e297ecef4f179b5178b4b41a2f40dd",
+      "event": "workflow_dispatch",
+      "run_attempt": 3,
+      "conclusion": "success",
+      "targets": {
+        "ubuntu-24.04": {
+          "version": "v0.0.3",
+          "commit": "0e1fc6f0b1a1cb734f5b54827f7e0319bb9f3280",
+          "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+          "machine": "x86_64",
+          "expected_runner": "ubuntu-24.04",
+          "credentials": false,
+          "local_archive_fixture": false,
+          "checks": [
+            {
+              "engine": "bash",
+              "mode": "latest",
+              "installer_url": "https://github.com/bibleit-labs/bibleit-cli/releases/latest/download/install.sh",
+              "installer_sha256": "0e01b88839185faa985fd578c16c0c57c71cdb17e4520f27d75bac8e7b184b61",
+              "binary_sha256": "7c12654d941de2864603207d24411cb9b7e1ab4032c98d83bea437c6b8d10d1a",
+              "version_help_notices_auth_legacy_config": "passed"
+            },
+            {
+              "engine": "bash",
+              "mode": "explicit",
+              "installer_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.3/install.sh",
+              "installer_sha256": "0e01b88839185faa985fd578c16c0c57c71cdb17e4520f27d75bac8e7b184b61",
+              "binary_sha256": "7c12654d941de2864603207d24411cb9b7e1ab4032c98d83bea437c6b8d10d1a",
+              "version_help_notices_auth_legacy_config": "passed"
+            }
+          ]
+        },
+        "ubuntu-24.04-arm": {
+          "version": "v0.0.3",
+          "commit": "0e1fc6f0b1a1cb734f5b54827f7e0319bb9f3280",
+          "platform": "Linux-6.17.0-1022-azure-aarch64-with-glibc2.39",
+          "machine": "aarch64",
+          "expected_runner": "ubuntu-24.04-arm",
+          "credentials": false,
+          "local_archive_fixture": false,
+          "checks": [
+            {
+              "engine": "bash",
+              "mode": "latest",
+              "installer_url": "https://github.com/bibleit-labs/bibleit-cli/releases/latest/download/install.sh",
+              "installer_sha256": "0e01b88839185faa985fd578c16c0c57c71cdb17e4520f27d75bac8e7b184b61",
+              "binary_sha256": "6e9e9311e2ac87e8922fd519e563b1301da45cc37071873f59f45ecb9c3bd0a0",
+              "version_help_notices_auth_legacy_config": "passed"
+            },
+            {
+              "engine": "bash",
+              "mode": "explicit",
+              "installer_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.3/install.sh",
+              "installer_sha256": "0e01b88839185faa985fd578c16c0c57c71cdb17e4520f27d75bac8e7b184b61",
+              "binary_sha256": "6e9e9311e2ac87e8922fd519e563b1301da45cc37071873f59f45ecb9c3bd0a0",
+              "version_help_notices_auth_legacy_config": "passed"
+            }
+          ]
+        },
+        "macos-15": {
+          "version": "v0.0.3",
+          "commit": "0e1fc6f0b1a1cb734f5b54827f7e0319bb9f3280",
+          "platform": "macOS-15.7.9-arm64-arm-64bit-Mach-O",
+          "machine": "arm64",
+          "expected_runner": "macos-15",
+          "credentials": false,
+          "local_archive_fixture": false,
+          "checks": [
+            {
+              "engine": "bash",
+              "mode": "latest",
+              "installer_url": "https://github.com/bibleit-labs/bibleit-cli/releases/latest/download/install.sh",
+              "installer_sha256": "0e01b88839185faa985fd578c16c0c57c71cdb17e4520f27d75bac8e7b184b61",
+              "binary_sha256": "a8773a6847fe22b3c6b40b4455c48a38475286c45b9fd2f180eb63f846eed338",
+              "version_help_notices_auth_legacy_config": "passed"
+            },
+            {
+              "engine": "bash",
+              "mode": "explicit",
+              "installer_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.3/install.sh",
+              "installer_sha256": "0e01b88839185faa985fd578c16c0c57c71cdb17e4520f27d75bac8e7b184b61",
+              "binary_sha256": "a8773a6847fe22b3c6b40b4455c48a38475286c45b9fd2f180eb63f846eed338",
+              "version_help_notices_auth_legacy_config": "passed"
+            }
+          ]
+        },
+        "macos-15-intel": {
+          "version": "v0.0.3",
+          "commit": "0e1fc6f0b1a1cb734f5b54827f7e0319bb9f3280",
+          "platform": "macOS-15.7.9-x86_64-i386-64bit-Mach-O",
+          "machine": "x86_64",
+          "expected_runner": "macos-15-intel",
+          "credentials": false,
+          "local_archive_fixture": false,
+          "checks": [
+            {
+              "engine": "bash",
+              "mode": "latest",
+              "installer_url": "https://github.com/bibleit-labs/bibleit-cli/releases/latest/download/install.sh",
+              "installer_sha256": "0e01b88839185faa985fd578c16c0c57c71cdb17e4520f27d75bac8e7b184b61",
+              "binary_sha256": "fc37e8ebd87b5931a4e709e9be17e861de0366712b018fdd409a1cee72119ccc",
+              "version_help_notices_auth_legacy_config": "passed"
+            },
+            {
+              "engine": "bash",
+              "mode": "explicit",
+              "installer_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.3/install.sh",
+              "installer_sha256": "0e01b88839185faa985fd578c16c0c57c71cdb17e4520f27d75bac8e7b184b61",
+              "binary_sha256": "fc37e8ebd87b5931a4e709e9be17e861de0366712b018fdd409a1cee72119ccc",
+              "version_help_notices_auth_legacy_config": "passed"
+            }
+          ]
+        },
+        "windows-2025": {
+          "version": "v0.0.3",
+          "commit": "0e1fc6f0b1a1cb734f5b54827f7e0319bb9f3280",
+          "platform": "Windows-2025Server-10.0.26100-SP0",
+          "machine": "AMD64",
+          "expected_runner": "windows-2025",
+          "credentials": false,
+          "local_archive_fixture": false,
+          "checks": [
+            {
+              "engine": "pwsh",
+              "mode": "latest",
+              "installer_url": "https://github.com/bibleit-labs/bibleit-cli/releases/latest/download/install.ps1",
+              "installer_sha256": "9d8d4fa8a0464e5edaccd561390b4f49c6254c203e5ef5eaa72021e77627b091",
+              "binary_sha256": "19ab3ba5fa5434ff813833cdcbae03099940369e2999a7878d35ba8ad9739e09",
+              "version_help_notices_auth_legacy_config": "passed"
+            },
+            {
+              "engine": "pwsh",
+              "mode": "explicit",
+              "installer_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.3/install.ps1",
+              "installer_sha256": "9d8d4fa8a0464e5edaccd561390b4f49c6254c203e5ef5eaa72021e77627b091",
+              "binary_sha256": "19ab3ba5fa5434ff813833cdcbae03099940369e2999a7878d35ba8ad9739e09",
+              "version_help_notices_auth_legacy_config": "passed"
+            },
+            {
+              "engine": "powershell",
+              "mode": "latest",
+              "installer_url": "https://github.com/bibleit-labs/bibleit-cli/releases/latest/download/install.ps1",
+              "installer_sha256": "9d8d4fa8a0464e5edaccd561390b4f49c6254c203e5ef5eaa72021e77627b091",
+              "binary_sha256": "19ab3ba5fa5434ff813833cdcbae03099940369e2999a7878d35ba8ad9739e09",
+              "version_help_notices_auth_legacy_config": "passed"
+            },
+            {
+              "engine": "powershell",
+              "mode": "explicit",
+              "installer_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.3/install.ps1",
+              "installer_sha256": "9d8d4fa8a0464e5edaccd561390b4f49c6254c203e5ef5eaa72021e77627b091",
+              "binary_sha256": "19ab3ba5fa5434ff813833cdcbae03099940369e2999a7878d35ba8ad9739e09",
+              "version_help_notices_auth_legacy_config": "passed"
+            }
+          ]
+        },
+        "windows-11-arm": {
+          "version": "v0.0.3",
+          "commit": "0e1fc6f0b1a1cb734f5b54827f7e0319bb9f3280",
+          "platform": "Windows-11-10.0.26200-SP0",
+          "machine": "ARM64",
+          "expected_runner": "windows-11-arm",
+          "credentials": false,
+          "local_archive_fixture": false,
+          "checks": [
+            {
+              "engine": "pwsh",
+              "mode": "latest",
+              "installer_url": "https://github.com/bibleit-labs/bibleit-cli/releases/latest/download/install.ps1",
+              "installer_sha256": "9d8d4fa8a0464e5edaccd561390b4f49c6254c203e5ef5eaa72021e77627b091",
+              "binary_sha256": "e991935d7dd8661c77d79ad30870e96e37c0029733262cfb11b24dc10b50874d",
+              "version_help_notices_auth_legacy_config": "passed"
+            },
+            {
+              "engine": "pwsh",
+              "mode": "explicit",
+              "installer_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.3/install.ps1",
+              "installer_sha256": "9d8d4fa8a0464e5edaccd561390b4f49c6254c203e5ef5eaa72021e77627b091",
+              "binary_sha256": "e991935d7dd8661c77d79ad30870e96e37c0029733262cfb11b24dc10b50874d",
+              "version_help_notices_auth_legacy_config": "passed"
+            },
+            {
+              "engine": "powershell",
+              "mode": "latest",
+              "installer_url": "https://github.com/bibleit-labs/bibleit-cli/releases/latest/download/install.ps1",
+              "installer_sha256": "9d8d4fa8a0464e5edaccd561390b4f49c6254c203e5ef5eaa72021e77627b091",
+              "binary_sha256": "e991935d7dd8661c77d79ad30870e96e37c0029733262cfb11b24dc10b50874d",
+              "version_help_notices_auth_legacy_config": "passed"
+            },
+            {
+              "engine": "powershell",
+              "mode": "explicit",
+              "installer_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.3/install.ps1",
+              "installer_sha256": "9d8d4fa8a0464e5edaccd561390b4f49c6254c203e5ef5eaa72021e77627b091",
+              "binary_sha256": "e991935d7dd8661c77d79ad30870e96e37c0029733262cfb11b24dc10b50874d",
+              "version_help_notices_auth_legacy_config": "passed"
+            }
+          ]
+        }
+      }
+    },
+    "public_homebrew": {
+      "run_id": 38248930792,
+      "url": "https://github.com/bibleit-labs/homebrew-tap/actions/runs/38248930792",
+      "source_commit": "65bff4e45fa8075619ec7afc47b1f4f70c1eeb31",
+      "event": "workflow_dispatch",
+      "run_attempt": 1,
+      "conclusion": "success",
+      "targets": {
+        "macos-15": {
+          "native_host": {
+            "runner": "macos-15",
+            "system": "Darwin",
+            "machine": "arm64",
+            "architecture": "arm64",
+            "translated": false
+          },
+          "formula": "bibleit-labs/tap/bibleit-cli",
+          "version": "0.0.3",
+          "platform": "macOS-15.7.9-arm64-arm-64bit-Mach-O",
+          "machine": "arm64",
+          "prefix": "/opt/homebrew",
+          "credentials": false,
+          "local_archive_overrides": false,
+          "checks": [
+            {
+              "operation": "install",
+              "binary": {
+                "system": "Darwin",
+                "architecture": "arm64",
+                "matches_native_host": true
+              },
+              "binary_sha256": "a8773a6847fe22b3c6b40b4455c48a38475286c45b9fd2f180eb63f846eed338",
+              "initial_download_cache": "empty",
+              "brew_test_version_help_notices_completions": "passed"
+            },
+            {
+              "operation": "reinstall",
+              "binary": {
+                "system": "Darwin",
+                "architecture": "arm64",
+                "matches_native_host": true
+              },
+              "binary_sha256": "a8773a6847fe22b3c6b40b4455c48a38475286c45b9fd2f180eb63f846eed338",
+              "initial_download_cache": "empty",
+              "brew_test_version_help_notices_completions": "passed"
+            },
+            {
+              "operation": "uninstall",
+              "binary_removed": true
+            }
+          ]
+        },
+        "macos-15-intel": {
+          "native_host": {
+            "runner": "macos-15-intel",
+            "system": "Darwin",
+            "machine": "x86_64",
+            "architecture": "amd64",
+            "translated": false
+          },
+          "formula": "bibleit-labs/tap/bibleit-cli",
+          "version": "0.0.3",
+          "platform": "macOS-15.7.9-x86_64-i386-64bit-Mach-O",
+          "machine": "x86_64",
+          "prefix": "/usr/local",
+          "credentials": false,
+          "local_archive_overrides": false,
+          "checks": [
+            {
+              "operation": "install",
+              "binary": {
+                "system": "Darwin",
+                "architecture": "amd64",
+                "matches_native_host": true
+              },
+              "binary_sha256": "fc37e8ebd87b5931a4e709e9be17e861de0366712b018fdd409a1cee72119ccc",
+              "initial_download_cache": "empty",
+              "brew_test_version_help_notices_completions": "passed"
+            },
+            {
+              "operation": "reinstall",
+              "binary": {
+                "system": "Darwin",
+                "architecture": "amd64",
+                "matches_native_host": true
+              },
+              "binary_sha256": "fc37e8ebd87b5931a4e709e9be17e861de0366712b018fdd409a1cee72119ccc",
+              "initial_download_cache": "empty",
+              "brew_test_version_help_notices_completions": "passed"
+            },
+            {
+              "operation": "uninstall",
+              "binary_removed": true
+            }
+          ]
+        },
+        "ubuntu-24.04": {
+          "native_host": {
+            "runner": "ubuntu-24.04",
+            "system": "Linux",
+            "machine": "x86_64",
+            "architecture": "amd64",
+            "translated": false
+          },
+          "formula": "bibleit-labs/tap/bibleit-cli",
+          "version": "0.0.3",
+          "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+          "machine": "x86_64",
+          "prefix": "/home/linuxbrew/.linuxbrew",
+          "credentials": false,
+          "local_archive_overrides": false,
+          "checks": [
+            {
+              "operation": "install",
+              "binary": {
+                "system": "Linux",
+                "architecture": "amd64",
+                "matches_native_host": true
+              },
+              "binary_sha256": "7c12654d941de2864603207d24411cb9b7e1ab4032c98d83bea437c6b8d10d1a",
+              "initial_download_cache": "empty",
+              "brew_test_version_help_notices_completions": "passed"
+            },
+            {
+              "operation": "reinstall",
+              "binary": {
+                "system": "Linux",
+                "architecture": "amd64",
+                "matches_native_host": true
+              },
+              "binary_sha256": "7c12654d941de2864603207d24411cb9b7e1ab4032c98d83bea437c6b8d10d1a",
+              "initial_download_cache": "empty",
+              "brew_test_version_help_notices_completions": "passed"
+            },
+            {
+              "operation": "uninstall",
+              "binary_removed": true
+            }
+          ]
+        },
+        "ubuntu-24.04-arm": {
+          "native_host": {
+            "runner": "ubuntu-24.04-arm",
+            "system": "Linux",
+            "machine": "aarch64",
+            "architecture": "arm64",
+            "translated": false
+          },
+          "formula": "bibleit-labs/tap/bibleit-cli",
+          "version": "0.0.3",
+          "platform": "Linux-6.17.0-1022-azure-aarch64-with-glibc2.39",
+          "machine": "aarch64",
+          "prefix": "/home/linuxbrew/.linuxbrew",
+          "credentials": false,
+          "local_archive_overrides": false,
+          "checks": [
+            {
+              "operation": "install",
+              "binary": {
+                "system": "Linux",
+                "architecture": "arm64",
+                "matches_native_host": true
+              },
+              "binary_sha256": "6e9e9311e2ac87e8922fd519e563b1301da45cc37071873f59f45ecb9c3bd0a0",
+              "initial_download_cache": "empty",
+              "brew_test_version_help_notices_completions": "passed"
+            },
+            {
+              "operation": "reinstall",
+              "binary": {
+                "system": "Linux",
+                "architecture": "arm64",
+                "matches_native_host": true
+              },
+              "binary_sha256": "6e9e9311e2ac87e8922fd519e563b1301da45cc37071873f59f45ecb9c3bd0a0",
+              "initial_download_cache": "empty",
+              "brew_test_version_help_notices_completions": "passed"
+            },
+            {
+              "operation": "uninstall",
+              "binary_removed": true
+            }
+          ]
+        }
+      }
+    },
+    "local_homebrew_upgrade": {
+      "version": "v0.0.3",
+      "previous_version": "v0.0.2",
+      "platform": "Darwin",
+      "architecture": "arm64",
+      "operation": "brew upgrade",
+      "credentials": false,
+      "local_archive_overrides": false,
+      "initial_download_cache": "empty",
+      "binary_sha256": "a8773a6847fe22b3c6b40b4455c48a38475286c45b9fd2f180eb63f846eed338",
+      "version_help_auth_notices_completions_test": "passed",
+      "user_configuration_and_shell_files_preserved": true
+    },
+    "public_download_retry": {
+      "run_id": 38249509803,
+      "reason": "Initial attempts encountered GitHub HTTP 504 downloads on macOS ARM64 and Windows ARM64; only failed jobs were rerun without asset/source changes. Windows ARM64 attempt 2 passed PowerShell 7 latest/explicit and PowerShell 5.1 latest before the final explicit download returned 504."
+    },
+    "superseded_public_installer_run": {
+      "run_id": 38248933026,
+      "url": "https://github.com/bibleit-labs/bibleit-cli/actions/runs/38248933026",
+      "reason": "Windows default PowerShell did not expand Bash-style $VERSION; stopped before installation. PR #16 selects Bash for the invocation; actual Windows installation uses PowerShell 7 and 5.1."
+    }
   },
   "homebrew": {
     "run_id": 38245499054,
@@ -502,7 +1079,7 @@
     }
   },
   "limits": {
-    "anonymous_release_checks": "require approved publication",
+    "anonymous_release_checks": "completed",
     "homebrew_intel_macos_support": "Tier 3",
     "signing_and_notarization": "not included",
     "public_scoop_bucket": "not maintained",
