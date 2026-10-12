@@ -24,6 +24,20 @@ def main():
     assets = Path(args.assets).resolve()
     manifest = json.loads((assets / 'manifest.json').read_text())
     version = manifest['version']
+    machine = platform.machine().lower()
+    architecture = 'arm64' if machine in ('arm64', 'aarch64') else 'amd64' if machine in ('amd64', 'x86_64') else None
+    assert architecture, f'unsupported native architecture: {machine}'
+    expected_runner = os.environ.get('EXPECTED_INSTALLER_RUNNER')
+    if expected_runner:
+        expected = {
+            'ubuntu-24.04': ('Linux', 'amd64'),
+            'ubuntu-24.04-arm': ('Linux', 'arm64'),
+            'macos-15': ('Darwin', 'arm64'),
+            'macos-15-intel': ('Darwin', 'amd64'),
+            'windows-2025': ('Windows', 'amd64'),
+            'windows-11-arm': ('Windows', 'arm64'),
+        }
+        assert (platform.system(), architecture) == expected[expected_runner], 'native host does not match runner'
     hashes = {}
     for line in (assets / 'checksums.txt').read_text().splitlines():
         digest, name = line.split('  ')
@@ -54,6 +68,8 @@ def main():
         assert set(files) == {binary, 'LICENSE', 'THIRD_PARTY_NOTICES', 'README.md', 'completions/bibleit.bash', 'completions/_bibleit', 'completions/bibleit.fish'}
         assert files['LICENSE'] == (ROOT / 'LICENSE').read_bytes()
         assert files['THIRD_PARTY_NOTICES'] == (ROOT / 'THIRD_PARTY_NOTICES').read_bytes()
+        assert files['README.md'] == (ROOT / 'README.md').read_bytes()
+        assert b'bibleit' + b'-server' not in files[binary], 'private service name embedded in executable'
     for entry in json.loads((assets / 'bibleit.json').read_text())['architecture'].values():
         assert hashes[entry['url'].split('/')[-1]] == entry['hash']
     formula_path = assets / 'bibleit-cli.rb'
@@ -90,6 +106,20 @@ def main():
             assert (result.returncode == 0) == success, result.stdout + result.stderr
         install(version, True)
         assert subprocess.check_output([str(binary), 'version'], text=True).strip() == f'bibleit CLI version {version[1:]}'
+        # Exercise the shipped executable with disposable credentials, including
+        # the legacy configuration that prompted this release.
+        config = scratch / 'legacy-config.json'
+        config.write_text('{"version":0,"endpoint":"https://legacy.example"}\n')
+        original_config = config.read_bytes()
+        ux_env = dict(env, BIBLEIT_CONFIG=str(config))
+        help_result = subprocess.run([str(binary), '--help'], env=ux_env, text=True, capture_output=True, timeout=30)
+        assert help_result.returncode == 0 and not help_result.stderr
+        assert 'Bibleit CLI: read Scripture' in help_result.stdout
+        for format in ('table', 'json'):
+            result = subprocess.run([str(binary), 'auth', '--format', format], env=ux_env, text=True, capture_output=True, timeout=30)
+            assert result.returncode == 0 and not result.stderr, result.stdout + result.stderr
+            assert 'bibleit auth login' in result.stdout
+            assert config.read_bytes() == original_config, 'auth help modified saved credentials'
         for notice in ('LICENSE', 'THIRD_PARTY_NOTICES'):
             assert (destination / 'bibleit-licenses' / notice).read_bytes() == (ROOT / notice).read_bytes()
         previous = binary.read_bytes()
@@ -162,7 +192,20 @@ else:
                 out.write(b'corruption')
         install(version, False)
         assert binary.read_bytes() == previous
-    print('PASS: six archive layouts and license notices, eight checksums, package manifests, native installation/replacement, invalid versions, missing notices, missing/duplicate checksums and corrupt archives; Bash latest/download path verified with offline curl fixture where applicable.')
+    report = ROOT / 'build/validation' / ('installer-' + (args.powershell or 'default') + '.json')
+    report.parent.mkdir(parents=True, exist_ok=True)
+    report.write_text(json.dumps({
+        'version': version, 'commit': manifest['commit'],
+        'system': platform.system(), 'architecture': architecture,
+        'expected_runner': expected_runner, 'powershell': args.powershell,
+        'binary_sha256': hashlib.sha256(previous).hexdigest(),
+        'checks': ['archive_layouts', 'exact_readme_and_notices', 'checksums',
+                   'native_install_and_replace', 'root_help', 'bare_auth_table_and_json',
+                   'legacy_config_preserved', 'invalid_version', 'missing_notices',
+                   'missing_and_duplicate_checksums', 'corrupt_archives'],
+        'result': 'passed', 'local_archive_fixture': True,
+    }, indent=2) + '\n')
+    print('PASS: native installation/replacement, release contents/checksums, auth help with unchanged legacy config, notice and corrupt-archive rejection; report ' + str(report))
 
 
 if __name__ == '__main__':
