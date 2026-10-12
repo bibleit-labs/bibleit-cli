@@ -1,4 +1,26 @@
 #!/usr/bin/env bash
+# MIT License
+#
+# Copyright (c) 2022 Felipe Mamud
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 # Downloaded scripts execute only after the complete function has been read.
 main() (
   set -euo pipefail
@@ -38,12 +60,20 @@ main() (
     actual=$(shasum -a 256 "$temporary/$name" | awk '{print $1}')
   fi
   [[ "$actual" == "$expected" ]] || fail 'Checksum mismatch; existing installation unchanged'
-  # Extract only the expected binary, never arbitrary archive paths.
+  # Extract only expected files, never arbitrary archive paths.
+  for notice in LICENSE THIRD_PARTY_NOTICES; do
+    tar -xOzf "$temporary/$name" "$notice" > "$temporary/$notice"
+    [[ -s "$temporary/$notice" ]] || fail "Archive contains no $notice"
+  done
   tar -xOzf "$temporary/$name" bibleit > "$temporary/bibleit"
   [[ -s "$temporary/bibleit" ]] || fail 'Archive contains no binary'
   chmod 755 "$temporary/bibleit"
   [[ "$("$temporary/bibleit" version)" == "bibleit CLI version ${version#v}" ]] || fail 'Binary version mismatch'
   mkdir -p "$destination"
+  mkdir -p "$destination/bibleit-licenses"
+  for notice in LICENSE THIRD_PARTY_NOTICES; do
+    install -m 644 "$temporary/$notice" "$destination/bibleit-licenses/$notice"
+  done
   staged=$(mktemp "$destination/.bibleit.XXXXXX")
   trap 'rm -rf "$temporary"; rm -f "${staged:-}"' EXIT
   cp "$temporary/bibleit" "$staged"

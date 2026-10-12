@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "audit_date": "2026-10-11",
+  "scanner": {
+    "version": "8.30.1",
+    "archive_sha256": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5",
+    "config_sha256": "71386bce4bc60f9a54b3b9c6e8505aaa4e6b9762a896dc3de798ae1928ead227"
+  },
+  "repositories": [
+    {
+      "inventory": {
+        "repository": "bibleit-go",
+        "private": true,
+        "head": "11a2858adff4545d0f57d665f4145671fd0963c8",
+        "commits": 34,
+        "branches": 1,
+        "tags": 1,
+        "pulls": 0,
+        "issues_including_prs": 0,
+        "issue_comments": 0,
+        "review_comments": 0,
+        "releases": 1,
+        "runs": 13,
+        "artifacts": 0,
+        "caches": 0,
+        "environments": 0,
+        "unavailable_endpoints": [
+          "rulesets",
+          "secret-alerts",
+          "code-alerts",
+          "dependabot-alerts",
+          "branch-protection"
+        ]
+      },
+      "blobs": 137,
+      "reports": {
+        "hosted-metadata": 0,
+        "current-source": 50,
+        "all-objects": 203,
+        "logs-artifacts-assets": 0,
+        "git-history": 60
+      },
+      "refs": [
+        "refs/heads/main 11a2858adff4545d0f57d665f4145671fd0963c8",
+        "refs/tags/v0.0.1 5b01c030f9adc23f1ba4811c4cabc3f220072c80"
+      ],
+      "counts_classified": true
+    },
+    {
+      "inventory": {
+        "repository": "bibleit-cli",
+        "private": true,
+        "head": "f121fa87ecb232f7441d93bde24189061117ca63",
+        "commits": 64,
+        "branches": 1,
+        "tags": 1,
+        "pulls": 0,
+        "issues_including_prs": 0,
+        "issue_comments": 0,
+        "review_comments": 0,
+        "releases": 1,
+        "runs": 34,
+        "artifacts": 50,
+        "caches": 0,
+        "environments": 0,
+        "unavailable_endpoints": [
+          "rulesets",
+          "secret-alerts",
+          "code-alerts",
+          "dependabot-alerts",
+          "branch-protection"
+        ]
+      },
+      "blobs": 401,
+      "reports": {
+        "hosted-metadata": 0,
+        "current-source": 51,
+        "all-objects": 215,
+        "nested-assets": 0,
+        "logs-artifacts-assets": 0,
+        "git-history": 63,
+        "binary-strings": 0
+      },
+      "refs": [
+        "refs/heads/main f121fa87ecb232f7441d93bde24189061117ca63",
+        "refs/tags/v0.0.1 d89556409a107fb52b84818ca69a4dd6fab4fa81"
+      ],
+      "counts_classified": true
+    },
+    {
+      "inventory": {
+        "repository": "homebrew-tap",
+        "private": true,
+        "head": "b7bed330459f9c3797b4230363fe7f0cd2f71ec7",
+        "commits": 21,
+        "branches": 1,
+        "tags": 0,
+        "pulls": 1,
+        "issues_including_prs": 1,
+        "issue_comments": 0,
+        "review_comments": 0,
+        "releases": 0,
+        "runs": 30,
+        "artifacts": 4,
+        "caches": 0,
+        "environments": 0,
+        "unavailable_endpoints": [
+          "rulesets",
+          "secret-alerts",
+          "code-alerts",
+          "dependabot-alerts",
+          "branch-protection"
+        ]
+      },
+      "blobs": 41,
+      "reports": {
+        "hosted-metadata": 0,
+        "current-source": 0,
+        "all-objects": 0,
+        "logs-artifacts-assets": 0,
+        "git-history": 0
+      },
+      "refs": [
+        "refs/heads/main b7bed330459f9c3797b4230363fe7f0cd2f71ec7",
+        "refs/pull/1/head 61dcf0cea93c23bed03372817c6052a2ea4e9b00"
+      ],
+      "counts_classified": true
+    }
+  ],
+  "unresolved_scanner_findings": 0,
+  "release_asset_sha256": {
+    "bibleit_0.0.1_linux_amd64.tar.gz": "4c9ecc4dcca075d202ad502c49e916440fd1a92f9c5cb2e55a32f92a9944b601",
+    "install.sh": "1c4bcf75375c497e98704758d869e0c0c7e479b10cadca1749c7017fe026f67a",
+    "bibleit.json": "c748801bf317734634698eab234478fa427221ce690706918f4007e21ab9c33c",
+    "bibleit_0.0.1_darwin_amd64.tar.gz": "319a9c4d24b2911fc4963600d18b86d080019af3d76c99b7fabad3b7752add7e",
+    "bibleit-cli.rb": "dcbc3a5a01fc5c0decd2009aaaafa240ebf03e532d43bdcaa930b2788fadbacf",
+    "checksums.txt": "13c04372d74a39bb0f31f2ee0096ef2e1029e3fe1bbd4d086bbb4f51820f854f",
+    "bibleit_0.0.1_linux_arm64.tar.gz": "9a90adcc344bdd52e4868cbc78886b07cde0a0c05a161fb6ffeb2e5d5fce579a",
+    "bibleit_0.0.1_darwin_arm64.tar.gz": "8a25b1957ef1b358d7027ee3782122e53b7ebe1d685c756e7a609de7f865c942",
+    "install.ps1": "08a21c547b364da75471cd35947e64e9cde72531b45b402f4e927933a2b4a0eb",
+    "manifest.json": "b45ff3b5d3989bfc2cd1e770a406ff742983a49d98791866961254ba6df151dc",
+    "bibleit_0.0.1_windows_amd64.zip": "807d88ba9364f332cc2b2fab815db54f3a8a2ef688826a7dae5d874916cf2759",
+    "bibleit_0.0.1_windows_arm64.zip": "5e9e5ac75190ef5c7798bcf9e9e2f748f07228ea497c09803966b2b250d3cffd"
+  },
+  "binary_scan": [
+    {
+      "repo": "bibleit-cli",
+      "scope": "nested-assets",
+      "exit_code": 0,
+      "findings": 0,
+      "rules": []
+    },
+    {
+      "repo": "bibleit-cli",
+      "scope": "binary-strings",
+      "exit_code": 0,
+      "findings": 0,
+      "rules": []
+    }
+  ],
+  "package_inventory": {
+    "container": 0,
+    "npm": 0,
+    "rubygems": 0,
+    "maven": 0,
+    "docker": 0,
+    "nuget": 0
+  },
+  "local_cli_supplemental_classifications": {
+    "source SHA256 fingerprints": 72,
+    "disposable TLS fixture": 1,
+    "disposable test database": 5,
+    "synthetic validation URL": 7
+  },
+  "binary_instances": 108,
+  "unique_binaries": 72,
+  "scope_limits": [
+    "One tap validation run has no jobs and no downloadable log bundle (404).",
+    "Server source and production secret stores are outside audit scope.",
+    "Deleted remote objects/cached GitHub views not enumerable through normal repository APIs.",
+    "Encrypted GitHub Actions secret values and token scopes cannot be read through the secrets API.",
+    "Local-only older Python tree not included in hosted publication refs."
+  ],
+  "raw_evidence_location": "restricted temporary audit directory; never commit raw evidence",
+  "test_results": {
+    "bibleit-go": "GOWORK=off go test -race -count=1 ./... passed on darwin/arm64",
+    "bibleit-cli": "GOWORK=off go test -race -count=1 ./... passed on darwin/arm64 with authenticated isolated module cache"
+  },
+  "ready_to_change_visibility": false,
+  "unresolved_disclosure_decisions": [
+    "Operational validation/deployment narratives in source and history.",
+    "Personal commit-email metadata."
+  ]
+}

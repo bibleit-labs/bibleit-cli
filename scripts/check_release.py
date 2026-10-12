@@ -2,8 +2,10 @@
 """Validate archive contents/checksums and exercise the native installer offline."""
 import argparse
 import hashlib
+import io
 import json
 import os
+import platform
 from pathlib import Path
 import shutil
 import subprocess
@@ -49,8 +51,9 @@ def main():
                 assert files[binary].startswith(b'\x7fELF')
         else:
             continue
-        assert set(files) == {binary, 'LICENSE', 'README.md', 'completions/bibleit.bash', 'completions/_bibleit', 'completions/bibleit.fish'}
-        assert b'Permission is hereby granted' in files['LICENSE']
+        assert set(files) == {binary, 'LICENSE', 'THIRD_PARTY_NOTICES', 'README.md', 'completions/bibleit.bash', 'completions/_bibleit', 'completions/bibleit.fish'}
+        assert files['LICENSE'] == (ROOT / 'LICENSE').read_bytes()
+        assert files['THIRD_PARTY_NOTICES'] == (ROOT / 'THIRD_PARTY_NOTICES').read_bytes()
     for entry in json.loads((assets / 'bibleit.json').read_text())['architecture'].values():
         assert hashes[entry['url'].split('/')[-1]] == entry['hash']
     formula_path = assets / 'bibleit-cli.rb'
@@ -87,6 +90,8 @@ def main():
             assert (result.returncode == 0) == success, result.stdout + result.stderr
         install(version, True)
         assert subprocess.check_output([str(binary), 'version'], text=True).strip() == f'bibleit CLI version {version[1:]}'
+        for notice in ('LICENSE', 'THIRD_PARTY_NOTICES'):
+            assert (destination / 'bibleit-licenses' / notice).read_bytes() == (ROOT / notice).read_bytes()
         previous = binary.read_bytes()
         install(version, True)  # Upgrade/replacement path.
         assert binary.read_bytes() == previous
@@ -127,12 +132,37 @@ else:
         install(version, False)
         assert binary.read_bytes() == previous
         (copied / 'checksums.txt').write_text(checksums)
+        # A correctly checksummed binary without its redistribution notices
+        # must be rejected before replacing an existing installation.
+        system = platform.system().lower()
+        changed = {}
+        for path in copied.glob(f'*_{system}_*' + ('.zip' if os.name == 'nt' else '.tar.gz')):
+            if os.name == 'nt':
+                with zipfile.ZipFile(path) as source:
+                    entries = [(entry, source.read(entry)) for entry in source.infolist() if entry.filename != 'THIRD_PARTY_NOTICES']
+                with zipfile.ZipFile(path, 'w') as target:
+                    for entry, data in entries:
+                        target.writestr(entry, data)
+            else:
+                with tarfile.open(path) as source:
+                    entries = [(entry, source.extractfile(entry).read()) for entry in source.getmembers() if entry.name != 'THIRD_PARTY_NOTICES']
+                with tarfile.open(path, 'w:gz') as target:
+                    for entry, data in entries:
+                        target.addfile(entry, io.BytesIO(data))
+            changed[path.name] = hashlib.sha256(path.read_bytes()).hexdigest()
+        assert changed
+        (copied / 'checksums.txt').write_text(''.join(f'{changed.get(name, digest)}  {name}\n' for name, digest in hashes.items()))
+        install(version, False)
+        assert binary.read_bytes() == previous
+        for name in changed:
+            shutil.copyfile(assets / name, copied / name)
+        (copied / 'checksums.txt').write_text(checksums)
         for path in copied.glob('*.tar.gz' if os.name != 'nt' else '*.zip'):
             with path.open('ab') as out:
                 out.write(b'corruption')
         install(version, False)
         assert binary.read_bytes() == previous
-    print('PASS: six archive layouts, eight checksums, package manifests, native installation/replacement, invalid versions, missing/duplicate checksums and corrupt archives; Bash latest/download path verified with offline curl fixture where applicable.')
+    print('PASS: six archive layouts and license notices, eight checksums, package manifests, native installation/replacement, invalid versions, missing notices, missing/duplicate checksums and corrupt archives; Bash latest/download path verified with offline curl fixture where applicable.')
 
 
 if __name__ == '__main__':

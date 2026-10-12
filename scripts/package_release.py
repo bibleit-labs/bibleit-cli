@@ -47,7 +47,7 @@ def formula(version, hashes):
             name = f"bibleit_{version}_{system}_{arch}.tar.gz"
             lines.extend([f"    if {condition}", f'      url "https://github.com/bibleit-labs/bibleit-cli/releases/download/v{version}/{name}"', f'      sha256 "{hashes[name]}"', '    end'])
         lines.append('  end')
-    lines.extend(['  def install', '    bin.install "bibleit"', '    bash_completion.install "completions/bibleit.bash" => "bibleit"', '    zsh_completion.install "completions/_bibleit"', '    fish_completion.install "completions/bibleit.fish"', '  end', '  test do', '    assert_match version.to_s, shell_output("#{bin}/bibleit version")', '  end', 'end', ''])
+    lines.extend(['  def install', '    bin.install "bibleit"', '    pkgshare.install "LICENSE", "THIRD_PARTY_NOTICES"', '    bash_completion.install "completions/bibleit.bash" => "bibleit"', '    zsh_completion.install "completions/_bibleit"', '    fish_completion.install "completions/bibleit.fish"', '  end', '  test do', '    assert_match version.to_s, shell_output("#{bin}/bibleit version")', '  end', 'end', ''])
     return '\n'.join(lines)
 
 
@@ -98,7 +98,7 @@ def main():
         stage = Path(scratch)
         native = stage / ('native.exe' if os.name == 'nt' else 'native')
         run('go', 'build', '-trimpath', '-buildvcs=false', '-ldflags', f'-s -w -X main.cliVersion={version}', '-o', str(native), '.', env=env)
-        common = {name: ((ROOT / name).read_bytes(), 0o644) for name in ('LICENSE', 'README.md')}
+        common = {name: ((ROOT / name).read_bytes(), 0o644) for name in ('LICENSE', 'THIRD_PARTY_NOTICES', 'README.md')}
         for shell, name in (('bash', 'bibleit.bash'), ('zsh', '_bibleit'), ('fish', 'bibleit.fish')):
             common[f'completions/{name}'] = (run(str(native), 'completion', shell).encode() + b'\n', 0o644)
         for system, arch in TARGETS:

@@ -16,7 +16,7 @@ on:
         type: string
     secrets:
       BIBLEIT_CLIENT_READ_TOKEN:
-        required: true
+        required: false
 permissions:
   contents: read
 jobs:
@@ -27,28 +27,37 @@ jobs:
     env:
       GOTOOLCHAIN: local
       GOWORK: off
-      GOPRIVATE: github.com/bibleit-labs/bibleit-go
-      CANDIDATE_VERSION: ${{ inputs.version || 'v0.0.1-ci.1' }}
+      GOPRIVATE: ${{ github.event.repository.private && 'github.com/bibleit-labs/bibleit-go' || '' }}
+      CANDIDATE_VERSION: ${{ inputs.version || 'v0.0.2-ci.1' }}
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-go@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
         with:
           go-version: '1.27.1'
           cache: false
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: '3.13'
-      - name: Download pinned private client
+      - name: Download pinned private SDK
+        if: github.event.repository.private
         env:
           GH_TOKEN: ${{ secrets.BIBLEIT_CLIENT_READ_TOKEN }}
         run: |
+          test -n "$GH_TOKEN" || { echo 'Private SDK access requires BIBLEIT_CLIENT_READ_TOKEN' >&2; exit 1; }
           gh auth setup-git
+          go mod download
+          go mod verify
+      - name: Download and verify public SDK
+        if: ${{ !github.event.repository.private }}
+        run: |
           go mod download
           go mod verify
       - name: Package standalone candidate
         run: python scripts/package_release.py --version "$CANDIDATE_VERSION"
       - name: Save immutable candidate inputs
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: candidate-assets
           path: build/releases/
@@ -60,24 +69,34 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-24.04, macos-15, windows-2025]
+        os: [ubuntu-24.04, macos-15, windows-2025, windows-11-arm]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
       - name: Check out pinned Scoop engine
         if: runner.os == 'Windows'
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           repository: ScoopInstaller/Scoop
           ref: e6aa3b366bdee8ed138c1e0f7b85192ebdd35d0f
           path: .ci-scoop
           persist-credentials: false
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: '3.13'
+      - name: Require native Windows ARM64 execution
+        if: matrix.os == 'windows-11-arm'
+        shell: pwsh
+        run: |
+          if ([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString() -ne 'Arm64') {
+            throw 'Windows ARM64 validation requires an ARM64 operating system'
+          }
+          python -c "import platform; assert platform.machine().lower() in ('arm64', 'aarch64'), platform.machine()"
       - name: Download exact candidate inputs from this run
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
           name: candidate-assets
           path: build/releases
@@ -99,7 +118,7 @@ jobs:
         run: python scripts/check_homebrew.py --assets build/releases
       - name: Save native validation evidence
         if: always()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: validation-${{ matrix.os }}
           path: build/validation/

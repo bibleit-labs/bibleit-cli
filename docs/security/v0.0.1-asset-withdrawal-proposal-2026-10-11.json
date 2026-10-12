@@ -1,0 +1,81 @@
+{
+  "status": "proposal only; withdrawal requires approval",
+  "repository": "bibleit-labs/bibleit-cli",
+  "release_id": 409860171,
+  "tag": "v0.0.1",
+  "preserve_tag": true,
+  "assets": [
+    {
+      "id": 631548803,
+      "name": "bibleit-cli.rb",
+      "digest": "sha256:dcbc3a5a01fc5c0decd2009aaaafa240ebf03e532d43bdcaa930b2788fadbacf",
+      "size": 1426
+    },
+    {
+      "id": 631548801,
+      "name": "bibleit.json",
+      "digest": "sha256:c748801bf317734634698eab234478fa427221ce690706918f4007e21ab9c33c",
+      "size": 646
+    },
+    {
+      "id": 631548800,
+      "name": "bibleit_0.0.1_darwin_amd64.tar.gz",
+      "digest": "sha256:319a9c4d24b2911fc4963600d18b86d080019af3d76c99b7fabad3b7752add7e",
+      "size": 3175635
+    },
+    {
+      "id": 631548799,
+      "name": "bibleit_0.0.1_darwin_arm64.tar.gz",
+      "digest": "sha256:8a25b1957ef1b358d7027ee3782122e53b7ebe1d685c756e7a609de7f865c942",
+      "size": 2917202
+    },
+    {
+      "id": 631548802,
+      "name": "bibleit_0.0.1_linux_amd64.tar.gz",
+      "digest": "sha256:4c9ecc4dcca075d202ad502c49e916440fd1a92f9c5cb2e55a32f92a9944b601",
+      "size": 3134796
+    },
+    {
+      "id": 631548815,
+      "name": "bibleit_0.0.1_linux_arm64.tar.gz",
+      "digest": "sha256:9a90adcc344bdd52e4868cbc78886b07cde0a0c05a161fb6ffeb2e5d5fce579a",
+      "size": 2821529
+    },
+    {
+      "id": 631548814,
+      "name": "bibleit_0.0.1_windows_amd64.zip",
+      "digest": "sha256:807d88ba9364f332cc2b2fab815db54f3a8a2ef688826a7dae5d874916cf2759",
+      "size": 3237010
+    },
+    {
+      "id": 631548823,
+      "name": "bibleit_0.0.1_windows_arm64.zip",
+      "digest": "sha256:5e9e5ac75190ef5c7798bcf9e9e2f748f07228ea497c09803966b2b250d3cffd",
+      "size": 2881734
+    },
+    {
+      "id": 631548824,
+      "name": "checksums.txt",
+      "digest": "sha256:13c04372d74a39bb0f31f2ee0096ef2e1029e3fe1bbd4d086bbb4f51820f854f",
+      "size": 749
+    },
+    {
+      "id": 631548828,
+      "name": "install.ps1",
+      "digest": "sha256:08a21c547b364da75471cd35947e64e9cde72531b45b402f4e927933a2b4a0eb",
+      "size": 3455
+    },
+    {
+      "id": 631548846,
+      "name": "install.sh",
+      "digest": "sha256:1c4bcf75375c497e98704758d869e0c0c7e479b10cadca1749c7017fe026f67a",
+      "size": 2833
+    },
+    {
+      "id": 631548847,
+      "name": "manifest.json",
+      "digest": "sha256:b45ff3b5d3989bfc2cd1e770a406ff742983a49d98791866961254ba6df151dc",
+      "size": 1189
+    }
+  ]
+}

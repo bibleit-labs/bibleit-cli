@@ -1,3 +1,25 @@
+# MIT License
+#
+# Copyright (c) 2022 Felipe Mamud
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 param(
     [string]$Version = '',
     [string]$InstallDir = (Join-Path $env:LOCALAPPDATA 'Bibleit\bin'),
@@ -34,6 +56,11 @@ try {
     Add-Type -AssemblyName System.IO.Compression.FileSystem
     $zip = [IO.Compression.ZipFile]::OpenRead((Join-Path $temporary $name))
     try {
+        foreach ($notice in @('LICENSE', 'THIRD_PARTY_NOTICES')) {
+            $entries = @($zip.Entries | Where-Object { $_.FullName -ceq $notice })
+            if ($entries.Count -ne 1 -or $entries[0].Length -eq 0) { throw "Archive contains no unique $notice" }
+            [IO.Compression.ZipFileExtensions]::ExtractToFile($entries[0], (Join-Path $temporary $notice))
+        }
         $binaries = @($zip.Entries | Where-Object { $_.FullName -ceq 'bibleit.exe' })
         if ($binaries.Count -ne 1) { throw 'Archive contains no unique binary' }
         $binary = Join-Path $temporary 'bibleit.exe'
@@ -42,6 +69,11 @@ try {
     $reported = & $binary version
     if ($LASTEXITCODE -ne 0 -or $reported -cne "bibleit CLI version $($Version.Substring(1))") { throw 'Binary version mismatch' }
     New-Item -ItemType Directory -Force -Path $InstallDir | Out-Null
+    $noticeDir = Join-Path $InstallDir 'bibleit-licenses'
+    New-Item -ItemType Directory -Force -Path $noticeDir | Out-Null
+    foreach ($notice in @('LICENSE', 'THIRD_PARTY_NOTICES')) {
+        Copy-Item -LiteralPath (Join-Path $temporary $notice) -Destination (Join-Path $noticeDir $notice) -Force
+    }
     $staged = Join-Path $InstallDir ('.bibleit-' + [Guid]::NewGuid().ToString() + '.exe')
     Copy-Item -LiteralPath $binary -Destination $staged
     $target = Join-Path $InstallDir 'bibleit.exe'

@@ -67,7 +67,8 @@ def main():
                     assert shim.is_file(), 'Scoop executable shim missing'
                     reported = subprocess.check_output([str(shim), 'version'], env=env, text=True).strip()
                     assert reported == f'bibleit CLI version {version}', reported
-                    assert (root / 'apps/bibleit/current/LICENSE').is_file()
+                    for notice in ('LICENSE', 'THIRD_PARTY_NOTICES'):
+                        assert (root / 'apps/bibleit/current' / notice).read_bytes() == (Path(__file__).resolve().parents[1] / notice).read_bytes(), notice
                 run('install', '--no-update-scoop', '--independent', str(fixture))
                 verify_binary()
                 run('reset', 'bibleit')
@@ -95,7 +96,7 @@ def main():
             thread.join()
     report = Path(args.report)
     report.parent.mkdir(parents=True, exist_ok=True)
-    report.write_text(json.dumps({'platform': 'Windows', 'architecture': os.environ.get('PROCESSOR_ARCHITECTURE'), 'version': version, 'isolated_root': True, 'loopback_assets': True, 'checks': evidence}, indent=2) + '\n')
+    report.write_text(json.dumps({'platform': 'Windows', 'architecture': os.environ.get('PROCESSOR_ARCHITECTURE'), 'version': version, 'isolated_root': True, 'loopback_assets': True, 'redistribution_notices_verified': True, 'checks': evidence}, indent=2) + '\n')
     print(f'PASS: native Scoop installation/shim/reset/reinstall/uninstall/checksum rejection; report {report}')
 
 

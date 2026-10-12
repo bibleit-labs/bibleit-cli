@@ -1,0 +1,132 @@
+{
+  "reviewed": "2026-10-11",
+  "version": "v0.0.2",
+  "source_commit": "9fb7bfc4565ffc3adacbcecf8343042e056ffc8c",
+  "manifest": {
+    "version": "v0.0.2",
+    "commit": "9fb7bfc4565ffc3adacbcecf8343042e056ffc8c",
+    "dirty": false,
+    "local_only": false,
+    "go": "1.27.1",
+    "client": {
+      "Path": "github.com/bibleit-labs/bibleit-go",
+      "Version": "v0.0.1",
+      "GoVersion": "1.27.1",
+      "Sum": "h1:cOH6TJ2iLncj7xpbBUG7kkDFwXLZi1cF6l+DQy5w27o=",
+      "workspace": false
+    },
+    "artifacts": {
+      "bibleit_0.0.2_darwin_amd64.tar.gz": "0b07e16f6c26033ab7839e3c71205e68dcb330f598e0457222c979f6f81e482b",
+      "bibleit_0.0.2_darwin_arm64.tar.gz": "e9d4518ab9733873cc80db725759b30c7368d79470f99e8e6372deef462d9ba6",
+      "bibleit_0.0.2_linux_amd64.tar.gz": "2ad8dcc960494a78af1d9bbf11c7f19338d32e2fc1c26dfa886ac00f02691d76",
+      "bibleit_0.0.2_linux_arm64.tar.gz": "43a160113d756371cac42775a49261bedbb093de6b762930c9a7bb4853224bab",
+      "bibleit_0.0.2_windows_amd64.zip": "bbcd80087a72450a79a7f27072ef6f3cc3ac6b59ee9efc9186f3fb447704b1ab",
+      "bibleit_0.0.2_windows_arm64.zip": "52d6d634cb83c8d80d837c010c549e6c5ba1ae63afc353359f759020294111cc",
+      "install.sh": "0e01b88839185faa985fd578c16c0c57c71cdb17e4520f27d75bac8e7b184b61",
+      "install.ps1": "9d8d4fa8a0464e5edaccd561390b4f49c6254c203e5ef5eaa72021e77627b091"
+    }
+  },
+  "candidate_artifacts": [
+    {
+      "digest": "sha256:f9bdb41c878378b3c5a18301ffe5e1b3080aed1d7a99ff74ed5bc00733878574",
+      "expired": false,
+      "id": 11714824703,
+      "name": "candidate-assets",
+      "size_in_bytes": 18140935
+    }
+  ],
+  "native_code_tests": {
+    "run_id": 38174449692,
+    "conclusion": "success",
+    "platforms": [
+      "ubuntu-24.04",
+      "macos-15",
+      "windows-2025"
+    ]
+  },
+  "candidate_run": {
+    "run_id": 38174450362,
+    "build_conclusion": "success",
+    "overall_conclusion": "failure",
+    "reason": "Native jobs never started: GitHub billing/spending-limit restriction"
+  },
+  "local_checks": {
+    "macos_arm64_archive_installer": "passed",
+    "linux_arm64_container_archive_installer": "passed (native architecture; no network)",
+    "powershell_7_4_linux_syntax_failure_paths": "passed; does not substitute for native Windows",
+    "tap_homebrew": {
+      "platform": "Darwin",
+      "architecture": "arm64",
+      "version": "0.0.2",
+      "redistribution_notices_verified": true,
+      "published_formula_sha256": "7278c1bee98c1ae553b44583db417fd40312ac0ebeb85af954860ed5bc7e2bbf",
+      "validation_helper_sha256": "b39414a0fd34f559a6339d773b3b767dacf3807923739481c63d64e18d320675"
+    },
+    "tap_homebrew_commands": [
+      {
+        "command": [
+          "brew",
+          "--prefix"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "brew",
+          "install",
+          "--formula",
+          "--build-from-source",
+          "bibleit-labs/local-validation/bibleit-cli"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "brew",
+          "test",
+          "bibleit-labs/local-validation/bibleit-cli"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "brew",
+          "reinstall",
+          "--formula",
+          "--build-from-source",
+          "bibleit-labs/local-validation/bibleit-cli"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "brew",
+          "test",
+          "bibleit-labs/local-validation/bibleit-cli"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "brew",
+          "uninstall",
+          "--formula",
+          "--ignore-dependencies",
+          "bibleit-labs/local-validation/bibleit-cli"
+        ],
+        "exit_code": 0
+      }
+    ]
+  },
+  "tap_review_commit": "cb7d7ea",
+  "tap_syntax_run": {
+    "run_id": 38174382048,
+    "conclusion": "success"
+  },
+  "remaining": [
+    "Native Windows PowerShell 7 and 5.1 installation/replacement and Scoop lifecycle",
+    "Tap-owned native Linux Homebrew check",
+    "Successful overall candidate run before tap CI can accept its artifacts"
+  ],
+  "visibility": "all three repos private; v0.0.1 assets unchanged; no v0.0.2 tag/release created"
+}
