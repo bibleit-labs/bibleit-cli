@@ -35,9 +35,7 @@
     "server_markdown_urls": "HTTP 404",
     "http_websocket_guide": "HTTP 404"
   },
-  "pending": [
-    "Underlying owner PAT revocation after GitHub account reauthentication; repository secret copies retired and owner confirmed no reuse."
-  ],
+  "pending": [],
   "separate_followups": [
     "Native Intel macOS and Linux ARM64 Homebrew coverage.",
     "Signing/notarization and public Scoop distribution.",

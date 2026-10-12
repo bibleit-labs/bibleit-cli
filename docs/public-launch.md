@@ -96,7 +96,7 @@ only the public-site results and remaining follow-ups.
 - [x] Server CLI docs merged, deployed and verified in all three languages.
 - [x] Client-focused Developer page and restricted server docs deployed and verified.
 - [x] Optional private Actions read-secret copies retired; owner confirmed no token reuse.
-- [ ] Underlying owner PATs revoked after GitHub account reauthentication.
+- [x] Underlying owner PAT identities/permissions verified and both tokens revoked.
 
 ## Coverage limits and separate follow-ups
 
@@ -116,9 +116,11 @@ workflow token. Private-only historical preparation workflows, including the
 CLI v0.0.1 workflows, are no longer supported for reruns after retirement; existing
 tags and release assets are unchanged.
 
-GitHub secret lists verified both copies absent. Removing a stored copy does not
-revoke its underlying PAT. The two account tokens still await GitHub's interactive
-reauthentication before permissions/identity can be verified and revocation completed.
+GitHub secret lists verified both copies absent. After owner account verification,
+the two underlying PAT identities and selected repository permissions were checked
+in GitHub settings: SDK code/metadata read and CLI Actions/code/metadata read,
+with no organization permissions. Both tokens were revoked; GitHub confirmed each
+deletion and their absence from the account's fine-grained token list.
 See the [cleanup assessment](security/private-read-secret-cleanup-2026-10-12.json).
 
 The approved language-client roadmap is JavaScript, Lua, Python, Ruby, Rust,
