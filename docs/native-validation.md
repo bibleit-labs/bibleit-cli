@@ -2,7 +2,8 @@
 
 Use Go 1.27.1. Normal CLI and SDK unit tests run without the private server or a
 production account. See [CONTRIBUTING.md](../CONTRIBUTING.md) for standalone and
-optional workspace setup. Go modules must be authenticated while the SDK is private.
+optional workspace setup. Download the public SDK through normal Go module proxy
+and checksum verification.
 
 ## Offline checks
 
@@ -50,12 +51,11 @@ client's supported operations and limits.
 ## Package installation validation
 
 [Release maintenance](releases.md) owns archive/checksum, Bash/PowerShell,
-Homebrew and Scoop checks. Corrected v0.0.2 is staged privately. Windows
-PowerShell 7/5.1 and Scoop checks passed on final package candidate f0c080c;
-validate the final approved artifacts before release. A build or Linux PowerShell
-parser test alone does not close those gates. Native code tests passed
-on the three hosted platforms at the recorded candidate source; current artifact
-and final native results are in [release readiness](release-v0.0.2-readiness.md).
+Homebrew and Scoop checks. Validate the exact committed inputs and approved
+artifacts before publication; a build or Linux PowerShell parser test alone does
+not establish native installation behavior. [Public launch evidence](public-launch.md)
+and [the latest release record](release-v0.0.3-readiness.md) contain completed
+native installation results and their source/artifact hashes.
 
 Dated implementation and deployment records remain in [historical status](status.md).
 They establish only their recorded revision/scope, not a new validation claim.
