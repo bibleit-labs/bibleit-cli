@@ -1,5 +1,12 @@
 # Public CI and repository settings preparation
 
+> Launch update, 2026-10-12: the owner approved actions 1–6 and protection at
+> public cutover. The SDK, CLI and tap are now public with protected main/release
+> tags. See [actual launch evidence](public-launch.md) for executed actions and
+> verified installation coverage. The preparation text below is a historical
+> snapshot. private-service remains private; its docs PR is not merged/deployed.
+
+
 Prepared 2026-10-11. All repositories remain private. Workflow changes are on
 private review branches. On 2026-10-12 SDK/CLI Actions PR creation/approval
 capability was disabled, with read-only defaults retained. Tap permissions remain

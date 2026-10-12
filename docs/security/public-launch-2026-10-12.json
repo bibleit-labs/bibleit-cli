@@ -1,0 +1,1310 @@
+{
+  "reviewed": "2026-10-12",
+  "owner_authorized_actions": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "launch_order": [
+    "bibleit-go",
+    "bibleit-cli",
+    "homebrew-tap"
+  ],
+  "release": {
+    "source_commit": "a5f1e605202f16446078e513e8ddce2e885efece",
+    "workflow_run": 38219332962,
+    "release_id": 410337461,
+    "release_assets": [
+      {
+        "url": "https://api.github.com/repos/bibleit-labs/bibleit-cli/releases/assets/633079997",
+        "id": 633079997,
+        "node_id": "RA_kwDOVELVfM4lvAi9",
+        "name": "bibleit-cli.rb",
+        "label": "",
+        "uploader": {
+          "login": "github-actions[bot]",
+          "id": 41898282,
+          "node_id": "MDM6Qm90NDE4OTgyODI=",
+          "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+          "html_url": "https://github.com/apps/github-actions",
+          "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+          "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+          "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+          "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+          "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+          "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+          "type": "Bot",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "content_type": "application/x-ruby",
+        "state": "uploaded",
+        "size": 1480,
+        "digest": "sha256:0d547e1d6ae6b2b4175a6c31c5f11f841675a857eaa785f60c00d9e121ec837e",
+        "download_count": 0,
+        "created_at": "2026-10-12T07:52:52Z",
+        "updated_at": "2026-10-12T07:52:52Z",
+        "browser_download_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/untagged-d3a77b1fafd459150cc7/bibleit-cli.rb"
+      },
+      {
+        "url": "https://api.github.com/repos/bibleit-labs/bibleit-cli/releases/assets/633079995",
+        "id": 633079995,
+        "node_id": "RA_kwDOVELVfM4lvAi7",
+        "name": "bibleit.json",
+        "label": "",
+        "uploader": {
+          "login": "github-actions[bot]",
+          "id": 41898282,
+          "node_id": "MDM6Qm90NDE4OTgyODI=",
+          "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+          "html_url": "https://github.com/apps/github-actions",
+          "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+          "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+          "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+          "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+          "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+          "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+          "type": "Bot",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "content_type": "application/json",
+        "state": "uploaded",
+        "size": 646,
+        "digest": "sha256:fb99125535123b05e7cd3241561f95b9e8c02696c068fc1eaad2d8765c37d65d",
+        "download_count": 0,
+        "created_at": "2026-10-12T07:52:52Z",
+        "updated_at": "2026-10-12T07:52:52Z",
+        "browser_download_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/untagged-d3a77b1fafd459150cc7/bibleit.json"
+      },
+      {
+        "url": "https://api.github.com/repos/bibleit-labs/bibleit-cli/releases/assets/633079992",
+        "id": 633079992,
+        "node_id": "RA_kwDOVELVfM4lvAi4",
+        "name": "bibleit_0.0.2_darwin_amd64.tar.gz",
+        "label": "",
+        "uploader": {
+          "login": "github-actions[bot]",
+          "id": 41898282,
+          "node_id": "MDM6Qm90NDE4OTgyODI=",
+          "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+          "html_url": "https://github.com/apps/github-actions",
+          "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+          "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+          "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+          "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+          "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+          "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+          "type": "Bot",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "content_type": "application/x-gtar",
+        "state": "uploaded",
+        "size": 3175298,
+        "digest": "sha256:bb7f30afb207c4eb67b95235507b16589d5aeb9eb245808733fcdde87b657a71",
+        "download_count": 0,
+        "created_at": "2026-10-12T07:52:52Z",
+        "updated_at": "2026-10-12T07:52:53Z",
+        "browser_download_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/untagged-d3a77b1fafd459150cc7/bibleit_0.0.2_darwin_amd64.tar.gz"
+      },
+      {
+        "url": "https://api.github.com/repos/bibleit-labs/bibleit-cli/releases/assets/633079989",
+        "id": 633079989,
+        "node_id": "RA_kwDOVELVfM4lvAi1",
+        "name": "bibleit_0.0.2_darwin_arm64.tar.gz",
+        "label": "",
+        "uploader": {
+          "login": "github-actions[bot]",
+          "id": 41898282,
+          "node_id": "MDM6Qm90NDE4OTgyODI=",
+          "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+          "html_url": "https://github.com/apps/github-actions",
+          "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+          "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+          "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+          "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+          "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+          "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+          "type": "Bot",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "content_type": "application/x-gtar",
+        "state": "uploaded",
+        "size": 2916609,
+        "digest": "sha256:59658e724ad2e0df4600dbfb7253faeb265772d25af620702bb0b8762864b33d",
+        "download_count": 0,
+        "created_at": "2026-10-12T07:52:52Z",
+        "updated_at": "2026-10-12T07:52:53Z",
+        "browser_download_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/untagged-d3a77b1fafd459150cc7/bibleit_0.0.2_darwin_arm64.tar.gz"
+      },
+      {
+        "url": "https://api.github.com/repos/bibleit-labs/bibleit-cli/releases/assets/633079996",
+        "id": 633079996,
+        "node_id": "RA_kwDOVELVfM4lvAi8",
+        "name": "bibleit_0.0.2_linux_amd64.tar.gz",
+        "label": "",
+        "uploader": {
+          "login": "github-actions[bot]",
+          "id": 41898282,
+          "node_id": "MDM6Qm90NDE4OTgyODI=",
+          "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+          "html_url": "https://github.com/apps/github-actions",
+          "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+          "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+          "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+          "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+          "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+          "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+          "type": "Bot",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "content_type": "application/x-gtar",
+        "state": "uploaded",
+        "size": 3134191,
+        "digest": "sha256:8545f5f41c5b3964b6e66376d2573e2c33a2abf5ef881f84ca1d754f6a39282e",
+        "download_count": 0,
+        "created_at": "2026-10-12T07:52:52Z",
+        "updated_at": "2026-10-12T07:52:53Z",
+        "browser_download_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/untagged-d3a77b1fafd459150cc7/bibleit_0.0.2_linux_amd64.tar.gz"
+      },
+      {
+        "url": "https://api.github.com/repos/bibleit-labs/bibleit-cli/releases/assets/633080009",
+        "id": 633080009,
+        "node_id": "RA_kwDOVELVfM4lvAjJ",
+        "name": "bibleit_0.0.2_linux_arm64.tar.gz",
+        "label": "",
+        "uploader": {
+          "login": "github-actions[bot]",
+          "id": 41898282,
+          "node_id": "MDM6Qm90NDE4OTgyODI=",
+          "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+          "html_url": "https://github.com/apps/github-actions",
+          "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+          "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+          "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+          "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+          "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+          "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+          "type": "Bot",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "content_type": "application/x-gtar",
+        "state": "uploaded",
+        "size": 2821027,
+        "digest": "sha256:dc699c2d95515aa6f754ebe645b7d28dff0a3978186ac9f04bbbcdfd58640d74",
+        "download_count": 0,
+        "created_at": "2026-10-12T07:52:53Z",
+        "updated_at": "2026-10-12T07:52:53Z",
+        "browser_download_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/untagged-d3a77b1fafd459150cc7/bibleit_0.0.2_linux_arm64.tar.gz"
+      },
+      {
+        "url": "https://api.github.com/repos/bibleit-labs/bibleit-cli/releases/assets/633080008",
+        "id": 633080008,
+        "node_id": "RA_kwDOVELVfM4lvAjI",
+        "name": "bibleit_0.0.2_windows_amd64.zip",
+        "label": "",
+        "uploader": {
+          "login": "github-actions[bot]",
+          "id": 41898282,
+          "node_id": "MDM6Qm90NDE4OTgyODI=",
+          "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+          "html_url": "https://github.com/apps/github-actions",
+          "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+          "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+          "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+          "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+          "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+          "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+          "type": "Bot",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "content_type": "application/zip",
+        "state": "uploaded",
+        "size": 3237306,
+        "digest": "sha256:9fb400e2fb3d47856e836689f78983970f6c0a54d0a4ee8ea506f2731cc4c39e",
+        "download_count": 0,
+        "created_at": "2026-10-12T07:52:53Z",
+        "updated_at": "2026-10-12T07:52:53Z",
+        "browser_download_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/untagged-d3a77b1fafd459150cc7/bibleit_0.0.2_windows_amd64.zip"
+      },
+      {
+        "url": "https://api.github.com/repos/bibleit-labs/bibleit-cli/releases/assets/633080014",
+        "id": 633080014,
+        "node_id": "RA_kwDOVELVfM4lvAjO",
+        "name": "bibleit_0.0.2_windows_arm64.zip",
+        "label": "",
+        "uploader": {
+          "login": "github-actions[bot]",
+          "id": 41898282,
+          "node_id": "MDM6Qm90NDE4OTgyODI=",
+          "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+          "html_url": "https://github.com/apps/github-actions",
+          "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+          "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+          "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+          "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+          "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+          "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+          "type": "Bot",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "content_type": "application/zip",
+        "state": "uploaded",
+        "size": 2882031,
+        "digest": "sha256:0edc7b07b167d6a2f5411ffae641769826250d7297c0ada2e81612309c16d2a6",
+        "download_count": 0,
+        "created_at": "2026-10-12T07:52:53Z",
+        "updated_at": "2026-10-12T07:52:53Z",
+        "browser_download_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/untagged-d3a77b1fafd459150cc7/bibleit_0.0.2_windows_arm64.zip"
+      },
+      {
+        "url": "https://api.github.com/repos/bibleit-labs/bibleit-cli/releases/assets/633080017",
+        "id": 633080017,
+        "node_id": "RA_kwDOVELVfM4lvAjR",
+        "name": "checksums.txt",
+        "label": "",
+        "uploader": {
+          "login": "github-actions[bot]",
+          "id": 41898282,
+          "node_id": "MDM6Qm90NDE4OTgyODI=",
+          "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+          "html_url": "https://github.com/apps/github-actions",
+          "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+          "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+          "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+          "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+          "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+          "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+          "type": "Bot",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "content_type": "text/plain; charset=utf-8",
+        "state": "uploaded",
+        "size": 749,
+        "digest": "sha256:84a6b9244c93619d433eaa01a670f18269863b5b7fcb28e4a9af7594dfb48ef6",
+        "download_count": 0,
+        "created_at": "2026-10-12T07:52:53Z",
+        "updated_at": "2026-10-12T07:52:53Z",
+        "browser_download_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/untagged-d3a77b1fafd459150cc7/checksums.txt"
+      },
+      {
+        "url": "https://api.github.com/repos/bibleit-labs/bibleit-cli/releases/assets/633080019",
+        "id": 633080019,
+        "node_id": "RA_kwDOVELVfM4lvAjT",
+        "name": "install.ps1",
+        "label": "",
+        "uploader": {
+          "login": "github-actions[bot]",
+          "id": 41898282,
+          "node_id": "MDM6Qm90NDE4OTgyODI=",
+          "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+          "html_url": "https://github.com/apps/github-actions",
+          "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+          "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+          "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+          "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+          "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+          "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+          "type": "Bot",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "content_type": "application/x-powershell",
+        "state": "uploaded",
+        "size": 5252,
+        "digest": "sha256:9d8d4fa8a0464e5edaccd561390b4f49c6254c203e5ef5eaa72021e77627b091",
+        "download_count": 0,
+        "created_at": "2026-10-12T07:52:53Z",
+        "updated_at": "2026-10-12T07:52:53Z",
+        "browser_download_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/untagged-d3a77b1fafd459150cc7/install.ps1"
+      },
+      {
+        "url": "https://api.github.com/repos/bibleit-labs/bibleit-cli/releases/assets/633080029",
+        "id": 633080029,
+        "node_id": "RA_kwDOVELVfM4lvAjd",
+        "name": "install.sh",
+        "label": "",
+        "uploader": {
+          "login": "github-actions[bot]",
+          "id": 41898282,
+          "node_id": "MDM6Qm90NDE4OTgyODI=",
+          "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+          "html_url": "https://github.com/apps/github-actions",
+          "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+          "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+          "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+          "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+          "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+          "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+          "type": "Bot",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "content_type": "application/x-shellscript",
+        "state": "uploaded",
+        "size": 4307,
+        "digest": "sha256:0e01b88839185faa985fd578c16c0c57c71cdb17e4520f27d75bac8e7b184b61",
+        "download_count": 0,
+        "created_at": "2026-10-12T07:52:53Z",
+        "updated_at": "2026-10-12T07:52:54Z",
+        "browser_download_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/untagged-d3a77b1fafd459150cc7/install.sh"
+      },
+      {
+        "url": "https://api.github.com/repos/bibleit-labs/bibleit-cli/releases/assets/633080031",
+        "id": 633080031,
+        "node_id": "RA_kwDOVELVfM4lvAjf",
+        "name": "manifest.json",
+        "label": "",
+        "uploader": {
+          "login": "github-actions[bot]",
+          "id": 41898282,
+          "node_id": "MDM6Qm90NDE4OTgyODI=",
+          "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+          "html_url": "https://github.com/apps/github-actions",
+          "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+          "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+          "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+          "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+          "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+          "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+          "type": "Bot",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "content_type": "application/json",
+        "state": "uploaded",
+        "size": 1189,
+        "digest": "sha256:7cc1e62b26fd74e5e8cb6eb6f085f4295fc31bfa721f3e8b9f0fed127f906557",
+        "download_count": 0,
+        "created_at": "2026-10-12T07:52:53Z",
+        "updated_at": "2026-10-12T07:52:54Z",
+        "browser_download_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/untagged-d3a77b1fafd459150cc7/manifest.json"
+      }
+    ],
+    "package_comparison": {
+      "manifest": {
+        "version": "v0.0.2",
+        "commit": "a5f1e605202f16446078e513e8ddce2e885efece",
+        "dirty": false,
+        "local_only": false,
+        "go": "1.27.1",
+        "client": {
+          "Path": "github.com/bibleit-labs/bibleit-go",
+          "Version": "v0.0.1",
+          "GoVersion": "1.27.1",
+          "Sum": "h1:cOH6TJ2iLncj7xpbBUG7kkDFwXLZi1cF6l+DQy5w27o=",
+          "workspace": false
+        },
+        "artifacts": {
+          "bibleit_0.0.2_darwin_amd64.tar.gz": "bb7f30afb207c4eb67b95235507b16589d5aeb9eb245808733fcdde87b657a71",
+          "bibleit_0.0.2_darwin_arm64.tar.gz": "59658e724ad2e0df4600dbfb7253faeb265772d25af620702bb0b8762864b33d",
+          "bibleit_0.0.2_linux_amd64.tar.gz": "8545f5f41c5b3964b6e66376d2573e2c33a2abf5ef881f84ca1d754f6a39282e",
+          "bibleit_0.0.2_linux_arm64.tar.gz": "dc699c2d95515aa6f754ebe645b7d28dff0a3978186ac9f04bbbcdfd58640d74",
+          "bibleit_0.0.2_windows_amd64.zip": "9fb400e2fb3d47856e836689f78983970f6c0a54d0a4ee8ea506f2731cc4c39e",
+          "bibleit_0.0.2_windows_arm64.zip": "0edc7b07b167d6a2f5411ffae641769826250d7297c0ada2e81612309c16d2a6",
+          "install.sh": "0e01b88839185faa985fd578c16c0c57c71cdb17e4520f27d75bac8e7b184b61",
+          "install.ps1": "9d8d4fa8a0464e5edaccd561390b4f49c6254c203e5ef5eaa72021e77627b091"
+        }
+      },
+      "eight_hashes_match": true,
+      "normalized_tap_formula_sha256": "4bc0c10b2c36daf838240a2d11685bfcccbf240eeb039497124f289e9364fc1a"
+    },
+    "jobs": [
+      {
+        "name": "source",
+        "conclusion": "success",
+        "url": "https://github.com/bibleit-labs/bibleit-cli/actions/runs/38219332962/job/114711512347"
+      },
+      {
+        "name": "test / Native ubuntu-24.04",
+        "conclusion": "success",
+        "url": "https://github.com/bibleit-labs/bibleit-cli/actions/runs/38219332962/job/114711549830"
+      },
+      {
+        "name": "test / Native macos-15",
+        "conclusion": "success",
+        "url": "https://github.com/bibleit-labs/bibleit-cli/actions/runs/38219332962/job/114711549948"
+      },
+      {
+        "name": "test / Native windows-2025",
+        "conclusion": "success",
+        "url": "https://github.com/bibleit-labs/bibleit-cli/actions/runs/38219332962/job/114711549956"
+      },
+      {
+        "name": "assets / Build six-target candidate",
+        "conclusion": "success",
+        "url": "https://github.com/bibleit-labs/bibleit-cli/actions/runs/38219332962/job/114712470223"
+      },
+      {
+        "name": "assets / Native installers macos-15",
+        "conclusion": "success",
+        "url": "https://github.com/bibleit-labs/bibleit-cli/actions/runs/38219332962/job/114713219120"
+      },
+      {
+        "name": "assets / Native installers windows-11-arm",
+        "conclusion": "success",
+        "url": "https://github.com/bibleit-labs/bibleit-cli/actions/runs/38219332962/job/114713219126"
+      },
+      {
+        "name": "assets / Native installers ubuntu-24.04",
+        "conclusion": "success",
+        "url": "https://github.com/bibleit-labs/bibleit-cli/actions/runs/38219332962/job/114713219148"
+      },
+      {
+        "name": "assets / Native installers windows-2025",
+        "conclusion": "success",
+        "url": "https://github.com/bibleit-labs/bibleit-cli/actions/runs/38219332962/job/114713219190"
+      },
+      {
+        "name": "draft",
+        "conclusion": "success",
+        "url": "https://github.com/bibleit-labs/bibleit-cli/actions/runs/38219332962/job/114714381933"
+      }
+    ]
+  },
+  "published_release": {
+    "id": 410337461,
+    "url": "https://github.com/bibleit-labs/bibleit-cli/releases/tag/v0.0.2",
+    "tag_name": "v0.0.2",
+    "draft": false,
+    "published_at": "2026-10-12T07:55:28Z",
+    "assets": [
+      {
+        "url": "https://api.github.com/repos/bibleit-labs/bibleit-cli/releases/assets/633079997",
+        "id": 633079997,
+        "node_id": "RA_kwDOVELVfM4lvAi9",
+        "name": "bibleit-cli.rb",
+        "label": "",
+        "uploader": {
+          "login": "github-actions[bot]",
+          "id": 41898282,
+          "node_id": "MDM6Qm90NDE4OTgyODI=",
+          "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+          "html_url": "https://github.com/apps/github-actions",
+          "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+          "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+          "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+          "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+          "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+          "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+          "type": "Bot",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "content_type": "application/x-ruby",
+        "state": "uploaded",
+        "size": 1480,
+        "digest": "sha256:0d547e1d6ae6b2b4175a6c31c5f11f841675a857eaa785f60c00d9e121ec837e",
+        "download_count": 0,
+        "created_at": "2026-10-12T07:52:52Z",
+        "updated_at": "2026-10-12T07:52:52Z",
+        "browser_download_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.2/bibleit-cli.rb"
+      },
+      {
+        "url": "https://api.github.com/repos/bibleit-labs/bibleit-cli/releases/assets/633079995",
+        "id": 633079995,
+        "node_id": "RA_kwDOVELVfM4lvAi7",
+        "name": "bibleit.json",
+        "label": "",
+        "uploader": {
+          "login": "github-actions[bot]",
+          "id": 41898282,
+          "node_id": "MDM6Qm90NDE4OTgyODI=",
+          "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+          "html_url": "https://github.com/apps/github-actions",
+          "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+          "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+          "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+          "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+          "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+          "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+          "type": "Bot",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "content_type": "application/json",
+        "state": "uploaded",
+        "size": 646,
+        "digest": "sha256:fb99125535123b05e7cd3241561f95b9e8c02696c068fc1eaad2d8765c37d65d",
+        "download_count": 0,
+        "created_at": "2026-10-12T07:52:52Z",
+        "updated_at": "2026-10-12T07:52:52Z",
+        "browser_download_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.2/bibleit.json"
+      },
+      {
+        "url": "https://api.github.com/repos/bibleit-labs/bibleit-cli/releases/assets/633079992",
+        "id": 633079992,
+        "node_id": "RA_kwDOVELVfM4lvAi4",
+        "name": "bibleit_0.0.2_darwin_amd64.tar.gz",
+        "label": "",
+        "uploader": {
+          "login": "github-actions[bot]",
+          "id": 41898282,
+          "node_id": "MDM6Qm90NDE4OTgyODI=",
+          "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+          "html_url": "https://github.com/apps/github-actions",
+          "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+          "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+          "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+          "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+          "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+          "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+          "type": "Bot",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "content_type": "application/x-gtar",
+        "state": "uploaded",
+        "size": 3175298,
+        "digest": "sha256:bb7f30afb207c4eb67b95235507b16589d5aeb9eb245808733fcdde87b657a71",
+        "download_count": 0,
+        "created_at": "2026-10-12T07:52:52Z",
+        "updated_at": "2026-10-12T07:52:53Z",
+        "browser_download_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.2/bibleit_0.0.2_darwin_amd64.tar.gz"
+      },
+      {
+        "url": "https://api.github.com/repos/bibleit-labs/bibleit-cli/releases/assets/633079989",
+        "id": 633079989,
+        "node_id": "RA_kwDOVELVfM4lvAi1",
+        "name": "bibleit_0.0.2_darwin_arm64.tar.gz",
+        "label": "",
+        "uploader": {
+          "login": "github-actions[bot]",
+          "id": 41898282,
+          "node_id": "MDM6Qm90NDE4OTgyODI=",
+          "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+          "html_url": "https://github.com/apps/github-actions",
+          "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+          "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+          "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+          "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+          "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+          "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+          "type": "Bot",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "content_type": "application/x-gtar",
+        "state": "uploaded",
+        "size": 2916609,
+        "digest": "sha256:59658e724ad2e0df4600dbfb7253faeb265772d25af620702bb0b8762864b33d",
+        "download_count": 0,
+        "created_at": "2026-10-12T07:52:52Z",
+        "updated_at": "2026-10-12T07:52:53Z",
+        "browser_download_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.2/bibleit_0.0.2_darwin_arm64.tar.gz"
+      },
+      {
+        "url": "https://api.github.com/repos/bibleit-labs/bibleit-cli/releases/assets/633079996",
+        "id": 633079996,
+        "node_id": "RA_kwDOVELVfM4lvAi8",
+        "name": "bibleit_0.0.2_linux_amd64.tar.gz",
+        "label": "",
+        "uploader": {
+          "login": "github-actions[bot]",
+          "id": 41898282,
+          "node_id": "MDM6Qm90NDE4OTgyODI=",
+          "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+          "html_url": "https://github.com/apps/github-actions",
+          "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+          "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+          "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+          "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+          "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+          "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+          "type": "Bot",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "content_type": "application/x-gtar",
+        "state": "uploaded",
+        "size": 3134191,
+        "digest": "sha256:8545f5f41c5b3964b6e66376d2573e2c33a2abf5ef881f84ca1d754f6a39282e",
+        "download_count": 0,
+        "created_at": "2026-10-12T07:52:52Z",
+        "updated_at": "2026-10-12T07:52:53Z",
+        "browser_download_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.2/bibleit_0.0.2_linux_amd64.tar.gz"
+      },
+      {
+        "url": "https://api.github.com/repos/bibleit-labs/bibleit-cli/releases/assets/633080009",
+        "id": 633080009,
+        "node_id": "RA_kwDOVELVfM4lvAjJ",
+        "name": "bibleit_0.0.2_linux_arm64.tar.gz",
+        "label": "",
+        "uploader": {
+          "login": "github-actions[bot]",
+          "id": 41898282,
+          "node_id": "MDM6Qm90NDE4OTgyODI=",
+          "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+          "html_url": "https://github.com/apps/github-actions",
+          "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+          "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+          "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+          "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+          "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+          "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+          "type": "Bot",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "content_type": "application/x-gtar",
+        "state": "uploaded",
+        "size": 2821027,
+        "digest": "sha256:dc699c2d95515aa6f754ebe645b7d28dff0a3978186ac9f04bbbcdfd58640d74",
+        "download_count": 0,
+        "created_at": "2026-10-12T07:52:53Z",
+        "updated_at": "2026-10-12T07:52:53Z",
+        "browser_download_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.2/bibleit_0.0.2_linux_arm64.tar.gz"
+      },
+      {
+        "url": "https://api.github.com/repos/bibleit-labs/bibleit-cli/releases/assets/633080008",
+        "id": 633080008,
+        "node_id": "RA_kwDOVELVfM4lvAjI",
+        "name": "bibleit_0.0.2_windows_amd64.zip",
+        "label": "",
+        "uploader": {
+          "login": "github-actions[bot]",
+          "id": 41898282,
+          "node_id": "MDM6Qm90NDE4OTgyODI=",
+          "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+          "html_url": "https://github.com/apps/github-actions",
+          "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+          "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+          "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+          "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+          "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+          "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+          "type": "Bot",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "content_type": "application/zip",
+        "state": "uploaded",
+        "size": 3237306,
+        "digest": "sha256:9fb400e2fb3d47856e836689f78983970f6c0a54d0a4ee8ea506f2731cc4c39e",
+        "download_count": 0,
+        "created_at": "2026-10-12T07:52:53Z",
+        "updated_at": "2026-10-12T07:52:53Z",
+        "browser_download_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.2/bibleit_0.0.2_windows_amd64.zip"
+      },
+      {
+        "url": "https://api.github.com/repos/bibleit-labs/bibleit-cli/releases/assets/633080014",
+        "id": 633080014,
+        "node_id": "RA_kwDOVELVfM4lvAjO",
+        "name": "bibleit_0.0.2_windows_arm64.zip",
+        "label": "",
+        "uploader": {
+          "login": "github-actions[bot]",
+          "id": 41898282,
+          "node_id": "MDM6Qm90NDE4OTgyODI=",
+          "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+          "html_url": "https://github.com/apps/github-actions",
+          "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+          "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+          "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+          "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+          "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+          "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+          "type": "Bot",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "content_type": "application/zip",
+        "state": "uploaded",
+        "size": 2882031,
+        "digest": "sha256:0edc7b07b167d6a2f5411ffae641769826250d7297c0ada2e81612309c16d2a6",
+        "download_count": 0,
+        "created_at": "2026-10-12T07:52:53Z",
+        "updated_at": "2026-10-12T07:52:53Z",
+        "browser_download_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.2/bibleit_0.0.2_windows_arm64.zip"
+      },
+      {
+        "url": "https://api.github.com/repos/bibleit-labs/bibleit-cli/releases/assets/633080017",
+        "id": 633080017,
+        "node_id": "RA_kwDOVELVfM4lvAjR",
+        "name": "checksums.txt",
+        "label": "",
+        "uploader": {
+          "login": "github-actions[bot]",
+          "id": 41898282,
+          "node_id": "MDM6Qm90NDE4OTgyODI=",
+          "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+          "html_url": "https://github.com/apps/github-actions",
+          "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+          "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+          "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+          "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+          "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+          "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+          "type": "Bot",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "content_type": "text/plain; charset=utf-8",
+        "state": "uploaded",
+        "size": 749,
+        "digest": "sha256:84a6b9244c93619d433eaa01a670f18269863b5b7fcb28e4a9af7594dfb48ef6",
+        "download_count": 0,
+        "created_at": "2026-10-12T07:52:53Z",
+        "updated_at": "2026-10-12T07:52:53Z",
+        "browser_download_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.2/checksums.txt"
+      },
+      {
+        "url": "https://api.github.com/repos/bibleit-labs/bibleit-cli/releases/assets/633080019",
+        "id": 633080019,
+        "node_id": "RA_kwDOVELVfM4lvAjT",
+        "name": "install.ps1",
+        "label": "",
+        "uploader": {
+          "login": "github-actions[bot]",
+          "id": 41898282,
+          "node_id": "MDM6Qm90NDE4OTgyODI=",
+          "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+          "html_url": "https://github.com/apps/github-actions",
+          "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+          "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+          "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+          "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+          "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+          "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+          "type": "Bot",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "content_type": "application/x-powershell",
+        "state": "uploaded",
+        "size": 5252,
+        "digest": "sha256:9d8d4fa8a0464e5edaccd561390b4f49c6254c203e5ef5eaa72021e77627b091",
+        "download_count": 0,
+        "created_at": "2026-10-12T07:52:53Z",
+        "updated_at": "2026-10-12T07:52:53Z",
+        "browser_download_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.2/install.ps1"
+      },
+      {
+        "url": "https://api.github.com/repos/bibleit-labs/bibleit-cli/releases/assets/633080029",
+        "id": 633080029,
+        "node_id": "RA_kwDOVELVfM4lvAjd",
+        "name": "install.sh",
+        "label": "",
+        "uploader": {
+          "login": "github-actions[bot]",
+          "id": 41898282,
+          "node_id": "MDM6Qm90NDE4OTgyODI=",
+          "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+          "html_url": "https://github.com/apps/github-actions",
+          "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+          "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+          "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+          "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+          "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+          "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+          "type": "Bot",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "content_type": "application/x-shellscript",
+        "state": "uploaded",
+        "size": 4307,
+        "digest": "sha256:0e01b88839185faa985fd578c16c0c57c71cdb17e4520f27d75bac8e7b184b61",
+        "download_count": 0,
+        "created_at": "2026-10-12T07:52:53Z",
+        "updated_at": "2026-10-12T07:52:54Z",
+        "browser_download_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.2/install.sh"
+      },
+      {
+        "url": "https://api.github.com/repos/bibleit-labs/bibleit-cli/releases/assets/633080031",
+        "id": 633080031,
+        "node_id": "RA_kwDOVELVfM4lvAjf",
+        "name": "manifest.json",
+        "label": "",
+        "uploader": {
+          "login": "github-actions[bot]",
+          "id": 41898282,
+          "node_id": "MDM6Qm90NDE4OTgyODI=",
+          "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+          "html_url": "https://github.com/apps/github-actions",
+          "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+          "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+          "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+          "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+          "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+          "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+          "type": "Bot",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "content_type": "application/json",
+        "state": "uploaded",
+        "size": 1189,
+        "digest": "sha256:7cc1e62b26fd74e5e8cb6eb6f085f4295fc31bfa721f3e8b9f0fed127f906557",
+        "download_count": 0,
+        "created_at": "2026-10-12T07:52:53Z",
+        "updated_at": "2026-10-12T07:52:54Z",
+        "browser_download_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.2/manifest.json"
+      }
+    ]
+  },
+  "cleanup": {
+    "assets_removed": 12,
+    "deficient_artifacts_removed": 38,
+    "private_backups_verified": true,
+    "old_source_tag_retained": "v0.0.1"
+  },
+  "sdk_anonymous": {
+    "module": "github.com/bibleit-labs/bibleit-go",
+    "version": "v0.0.1",
+    "sum": "h1:cOH6TJ2iLncj7xpbBUG7kkDFwXLZi1cF6l+DQy5w27o=",
+    "proxy": "https://proxy.golang.org,direct",
+    "sumdb": "sum.golang.org",
+    "initial_module_cache": "empty",
+    "credentials": false,
+    "quickstart_compilation": "passed",
+    "standalone_test_race_vet_build": "passed",
+    "main_source": "86ee286d5f0ac306de4dcfe901aa7b3e11c2d699"
+  },
+  "cli_anonymous": {
+    "release_id": 410337461,
+    "latest": "v0.0.2",
+    "anonymous_assets": [
+      {
+        "name": "bibleit-cli.rb",
+        "digest": "sha256:0d547e1d6ae6b2b4175a6c31c5f11f841675a857eaa785f60c00d9e121ec837e"
+      },
+      {
+        "name": "bibleit.json",
+        "digest": "sha256:fb99125535123b05e7cd3241561f95b9e8c02696c068fc1eaad2d8765c37d65d"
+      },
+      {
+        "name": "bibleit_0.0.2_darwin_amd64.tar.gz",
+        "digest": "sha256:bb7f30afb207c4eb67b95235507b16589d5aeb9eb245808733fcdde87b657a71"
+      },
+      {
+        "name": "bibleit_0.0.2_darwin_arm64.tar.gz",
+        "digest": "sha256:59658e724ad2e0df4600dbfb7253faeb265772d25af620702bb0b8762864b33d"
+      },
+      {
+        "name": "bibleit_0.0.2_linux_amd64.tar.gz",
+        "digest": "sha256:8545f5f41c5b3964b6e66376d2573e2c33a2abf5ef881f84ca1d754f6a39282e"
+      },
+      {
+        "name": "bibleit_0.0.2_linux_arm64.tar.gz",
+        "digest": "sha256:dc699c2d95515aa6f754ebe645b7d28dff0a3978186ac9f04bbbcdfd58640d74"
+      },
+      {
+        "name": "bibleit_0.0.2_windows_amd64.zip",
+        "digest": "sha256:9fb400e2fb3d47856e836689f78983970f6c0a54d0a4ee8ea506f2731cc4c39e"
+      },
+      {
+        "name": "bibleit_0.0.2_windows_arm64.zip",
+        "digest": "sha256:0edc7b07b167d6a2f5411ffae641769826250d7297c0ada2e81612309c16d2a6"
+      },
+      {
+        "name": "checksums.txt",
+        "digest": "sha256:84a6b9244c93619d433eaa01a670f18269863b5b7fcb28e4a9af7594dfb48ef6"
+      },
+      {
+        "name": "install.ps1",
+        "digest": "sha256:9d8d4fa8a0464e5edaccd561390b4f49c6254c203e5ef5eaa72021e77627b091"
+      },
+      {
+        "name": "install.sh",
+        "digest": "sha256:0e01b88839185faa985fd578c16c0c57c71cdb17e4520f27d75bac8e7b184b61"
+      },
+      {
+        "name": "manifest.json",
+        "digest": "sha256:7cc1e62b26fd74e5e8cb6eb6f085f4295fc31bfa721f3e8b9f0fed127f906557"
+      }
+    ],
+    "old_release_assets": 0,
+    "credentials": false,
+    "standalone_test_race_vet_build": "passed",
+    "local_public_installers": {
+      "version": "v0.0.2",
+      "platform": "macOS-26.7.1-arm64-arm-64bit",
+      "machine": "arm64",
+      "checks": [
+        {
+          "engine": "bash",
+          "mode": "latest",
+          "installer_url": "https://github.com/bibleit-labs/bibleit-cli/releases/latest/download/install.sh",
+          "resolved_url": "https://release-assets.githubusercontent.com/github-production-release-asset/1413666172/83c75cc4-f84c-438f-b773-5f6b436da763",
+          "installer_sha256": "0e01b88839185faa985fd578c16c0c57c71cdb17e4520f27d75bac8e7b184b61",
+          "version_help_notices": "passed"
+        },
+        {
+          "engine": "bash",
+          "mode": "explicit",
+          "installer_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.2/install.sh",
+          "resolved_url": "https://release-assets.githubusercontent.com/github-production-release-asset/1413666172/83c75cc4-f84c-438f-b773-5f6b436da763",
+          "installer_sha256": "0e01b88839185faa985fd578c16c0c57c71cdb17e4520f27d75bac8e7b184b61",
+          "version_help_notices": "passed"
+        }
+      ]
+    },
+    "source_commit": "217b79f03dd715896e4900ad5c38180c64056a0e"
+  },
+  "public_installer_run": {
+    "id": 38221644415,
+    "source_commit": "b740c6a1de59147e4fde2a4f785ac696ee902bad",
+    "conclusion": "success",
+    "url": "https://github.com/bibleit-labs/bibleit-cli/actions/runs/38221644415"
+  },
+  "public_installer_reports": {
+    "public-installers-windows-2025": {
+      "version": "v0.0.2",
+      "platform": "Windows-2025Server-10.0.26100-SP0",
+      "machine": "AMD64",
+      "checks": [
+        {
+          "engine": "pwsh",
+          "mode": "latest",
+          "installer_url": "https://github.com/bibleit-labs/bibleit-cli/releases/latest/download/install.ps1",
+          "resolved_url": "https://release-assets.githubusercontent.com/github-production-release-asset/1413666172/59ca48bb-424d-4f84-a588-773c307fa59d",
+          "installer_sha256": "9d8d4fa8a0464e5edaccd561390b4f49c6254c203e5ef5eaa72021e77627b091",
+          "version_help_notices": "passed"
+        },
+        {
+          "engine": "pwsh",
+          "mode": "explicit",
+          "installer_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.2/install.ps1",
+          "resolved_url": "https://release-assets.githubusercontent.com/github-production-release-asset/1413666172/59ca48bb-424d-4f84-a588-773c307fa59d",
+          "installer_sha256": "9d8d4fa8a0464e5edaccd561390b4f49c6254c203e5ef5eaa72021e77627b091",
+          "version_help_notices": "passed"
+        },
+        {
+          "engine": "powershell",
+          "mode": "latest",
+          "installer_url": "https://github.com/bibleit-labs/bibleit-cli/releases/latest/download/install.ps1",
+          "resolved_url": "https://release-assets.githubusercontent.com/github-production-release-asset/1413666172/59ca48bb-424d-4f84-a588-773c307fa59d",
+          "installer_sha256": "9d8d4fa8a0464e5edaccd561390b4f49c6254c203e5ef5eaa72021e77627b091",
+          "version_help_notices": "passed"
+        },
+        {
+          "engine": "powershell",
+          "mode": "explicit",
+          "installer_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.2/install.ps1",
+          "resolved_url": "https://release-assets.githubusercontent.com/github-production-release-asset/1413666172/59ca48bb-424d-4f84-a588-773c307fa59d",
+          "installer_sha256": "9d8d4fa8a0464e5edaccd561390b4f49c6254c203e5ef5eaa72021e77627b091",
+          "version_help_notices": "passed"
+        }
+      ]
+    },
+    "public-installers-macos-15": {
+      "version": "v0.0.2",
+      "platform": "macOS-15.7.9-arm64-arm-64bit-Mach-O",
+      "machine": "arm64",
+      "checks": [
+        {
+          "engine": "bash",
+          "mode": "latest",
+          "installer_url": "https://github.com/bibleit-labs/bibleit-cli/releases/latest/download/install.sh",
+          "resolved_url": "https://release-assets.githubusercontent.com/github-production-release-asset/1413666172/83c75cc4-f84c-438f-b773-5f6b436da763",
+          "installer_sha256": "0e01b88839185faa985fd578c16c0c57c71cdb17e4520f27d75bac8e7b184b61",
+          "version_help_notices": "passed"
+        },
+        {
+          "engine": "bash",
+          "mode": "explicit",
+          "installer_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.2/install.sh",
+          "resolved_url": "https://release-assets.githubusercontent.com/github-production-release-asset/1413666172/83c75cc4-f84c-438f-b773-5f6b436da763",
+          "installer_sha256": "0e01b88839185faa985fd578c16c0c57c71cdb17e4520f27d75bac8e7b184b61",
+          "version_help_notices": "passed"
+        }
+      ]
+    },
+    "public-installers-ubuntu-24.04": {
+      "version": "v0.0.2",
+      "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+      "machine": "x86_64",
+      "checks": [
+        {
+          "engine": "bash",
+          "mode": "latest",
+          "installer_url": "https://github.com/bibleit-labs/bibleit-cli/releases/latest/download/install.sh",
+          "resolved_url": "https://release-assets.githubusercontent.com/github-production-release-asset/1413666172/83c75cc4-f84c-438f-b773-5f6b436da763",
+          "installer_sha256": "0e01b88839185faa985fd578c16c0c57c71cdb17e4520f27d75bac8e7b184b61",
+          "version_help_notices": "passed"
+        },
+        {
+          "engine": "bash",
+          "mode": "explicit",
+          "installer_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.2/install.sh",
+          "resolved_url": "https://release-assets.githubusercontent.com/github-production-release-asset/1413666172/83c75cc4-f84c-438f-b773-5f6b436da763",
+          "installer_sha256": "0e01b88839185faa985fd578c16c0c57c71cdb17e4520f27d75bac8e7b184b61",
+          "version_help_notices": "passed"
+        }
+      ]
+    },
+    "public-installers-windows-11-arm": {
+      "version": "v0.0.2",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "machine": "ARM64",
+      "checks": [
+        {
+          "engine": "pwsh",
+          "mode": "latest",
+          "installer_url": "https://github.com/bibleit-labs/bibleit-cli/releases/latest/download/install.ps1",
+          "resolved_url": "https://release-assets.githubusercontent.com/github-production-release-asset/1413666172/59ca48bb-424d-4f84-a588-773c307fa59d",
+          "installer_sha256": "9d8d4fa8a0464e5edaccd561390b4f49c6254c203e5ef5eaa72021e77627b091",
+          "version_help_notices": "passed"
+        },
+        {
+          "engine": "pwsh",
+          "mode": "explicit",
+          "installer_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.2/install.ps1",
+          "resolved_url": "https://release-assets.githubusercontent.com/github-production-release-asset/1413666172/59ca48bb-424d-4f84-a588-773c307fa59d",
+          "installer_sha256": "9d8d4fa8a0464e5edaccd561390b4f49c6254c203e5ef5eaa72021e77627b091",
+          "version_help_notices": "passed"
+        },
+        {
+          "engine": "powershell",
+          "mode": "latest",
+          "installer_url": "https://github.com/bibleit-labs/bibleit-cli/releases/latest/download/install.ps1",
+          "resolved_url": "https://release-assets.githubusercontent.com/github-production-release-asset/1413666172/59ca48bb-424d-4f84-a588-773c307fa59d",
+          "installer_sha256": "9d8d4fa8a0464e5edaccd561390b4f49c6254c203e5ef5eaa72021e77627b091",
+          "version_help_notices": "passed"
+        },
+        {
+          "engine": "powershell",
+          "mode": "explicit",
+          "installer_url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.2/install.ps1",
+          "resolved_url": "https://release-assets.githubusercontent.com/github-production-release-asset/1413666172/59ca48bb-424d-4f84-a588-773c307fa59d",
+          "installer_sha256": "9d8d4fa8a0464e5edaccd561390b4f49c6254c203e5ef5eaa72021e77627b091",
+          "version_help_notices": "passed"
+        }
+      ]
+    }
+  },
+  "public_homebrew_run": {
+    "id": 38221961063,
+    "source_commit": "5d469da06ddc965b5d7962339a8e92fc9b14ee42",
+    "conclusion": "success",
+    "url": "https://github.com/bibleit-labs/homebrew-tap/actions/runs/38221961063"
+  },
+  "public_homebrew_reports": {
+    "public-homebrew-macos-15": {
+      "formula": "bibleit-labs/tap/bibleit-cli",
+      "version": "0.0.2",
+      "platform": "macOS-15.7.9-arm64-arm-64bit-Mach-O",
+      "machine": "arm64",
+      "prefix": "/opt/homebrew",
+      "credentials": false,
+      "local_archive_overrides": false,
+      "checks": [
+        {
+          "operation": "install",
+          "initial_download_cache": "empty",
+          "brew_test_version_help_notices_completions": "passed"
+        },
+        {
+          "operation": "reinstall",
+          "initial_download_cache": "empty",
+          "brew_test_version_help_notices_completions": "passed"
+        },
+        {
+          "operation": "uninstall",
+          "binary_removed": true
+        }
+      ]
+    },
+    "public-homebrew-ubuntu-24.04": {
+      "formula": "bibleit-labs/tap/bibleit-cli",
+      "version": "0.0.2",
+      "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+      "machine": "x86_64",
+      "prefix": "/home/linuxbrew/.linuxbrew",
+      "credentials": false,
+      "local_archive_overrides": false,
+      "checks": [
+        {
+          "operation": "install",
+          "initial_download_cache": "empty",
+          "brew_test_version_help_notices_completions": "passed"
+        },
+        {
+          "operation": "reinstall",
+          "initial_download_cache": "empty",
+          "brew_test_version_help_notices_completions": "passed"
+        },
+        {
+          "operation": "uninstall",
+          "binary_removed": true
+        }
+      ]
+    }
+  },
+  "public_native_ci": {
+    "bibleit-go": {
+      "run": 38220912904,
+      "conclusion": "success"
+    },
+    "bibleit-cli": {
+      "run": 38221156747,
+      "conclusion": "success"
+    }
+  },
+  "launch_log_scan": {
+    "tool": "gitleaks 8.30.1",
+    "new_findings": 0,
+    "logs": [
+      {
+        "name": "bibleit-cli-38221156747.log",
+        "sha256": "bcb0c8e04505b6167e4b4094d0424ba11dac9391e38aaa369d48f34b3d2df7c7"
+      },
+      {
+        "name": "bibleit-cli-38219332962.log",
+        "sha256": "6c44be39429da61bbbef89822b5271f85a67a652a830789f2412afe531037a08"
+      },
+      {
+        "name": "bibleit-go-38220912904.log",
+        "sha256": "a633a55d848c43ff9ed69b2e3813ca11626438212acb5d7c0acc315e52bcefe4"
+      },
+      {
+        "name": "homebrew-tap-38221961063.log",
+        "sha256": "f46786b4ebeffc6fa057046bbec96ca05ff843b25d9960eba31b145b5e614b79"
+      },
+      {
+        "name": "bibleit-cli-38221644415.log",
+        "sha256": "fb0e09a031e36fa9d866c3e5a47ccd35007c02a671783e9af99041ae59ac5a65"
+      }
+    ]
+  },
+  "limitations": [
+    "Native Darwin amd64 execution not claimed",
+    "Native Linux arm64 Homebrew execution not claimed",
+    "Packages are unsigned/not notarized",
+    "No public Scoop bucket",
+    "v0.0.2 package README remains the frozen preparation snapshot",
+    "Server docs merge/deployment excluded",
+    "Private repository read secrets retained; underlying PAT revocation requires owner assessment"
+  ]
+}

@@ -1,19 +1,17 @@
 # Contributing to bibleit-cli
 
-Bibleit CLI is MIT licensed. The repositories currently remain private;
-public contributions and anonymous package installation await approved launch.
-Authorized contributors can use issues and focused pull requests now. Discuss
+Bibleit CLI is MIT licensed and public. Use issues and focused pull requests for
+contributions. Discuss
 larger behavior changes before implementation. Report security problems through
 [SECURITY.md](SECURITY.md); redact credentials and private account/server data.
 
 ## Standalone development
 
 Use Go **1.27.1**. The CLI pins `github.com/bibleit-labs/bibleit-go v0.0.1` in
-go.mod/go.sum. A sibling checkout or workspace is optional. While that module is
-private, authenticate Git with an authorized account and mark the module private:
+go.mod/go.sum. A sibling checkout or workspace is optional. Download the public
+module using normal Go proxy/checksum verification:
 
 ```sh
-export GOPRIVATE='github.com/bibleit-labs/*'
 GOWORK=off go mod download
 GOWORK=off go mod verify
 GOWORK=off go test -race -count=1 ./...
@@ -22,7 +20,6 @@ GOWORK=off go build -o build/bibleit .
 python3 scripts/check_cli_runtime.py --binary build/bibleit
 ```
 
-GOPRIVATE controls proxy/checksum lookup; it does not supply Git credentials.
 These unit/runtime checks do not need the private server or a production account.
 Linux contributors can add `--shells bash zsh fish` to the runtime check.
 Native code CI covers Linux, macOS and Windows. Windows race tests need a supported
