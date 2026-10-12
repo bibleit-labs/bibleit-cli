@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.0.4 — 2026-10-12
+
+- Stop browser sign-in promptly when authorization is denied, with a clear
+  blocked-account message and no token exchange or credential changes.
+- Require the original authentication state for denial callbacks; ignore
+  unrelated or invalid-state requests while the legitimate login continues.
+- Add source-build instructions and keep maintainer validation commands in
+  maintainer documentation rather than the README.
+
 ## v0.0.3 — 2026-10-12
 
 - Show authentication help for bare `bibleit auth` before reading saved credentials.
