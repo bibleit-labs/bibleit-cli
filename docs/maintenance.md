@@ -40,9 +40,9 @@ README. [Implementation status](status.md) and [the original plan](plan.md) are
 historical records; use current release evidence for completed publication gates.
 
 
-## Next release candidate
+## Current release evidence
 
-[v0.0.4 is ready for approval](release-v0.0.4-readiness.md), with all six native
-installer targets, all four native Homebrew targets and a real Chrome blocked-login
-fixture passed. Its exact inputs and publication actions are recorded there.
-It remains unpublished; the live tap update is staged separately.
+[v0.0.4 publication evidence](release-v0.0.4-readiness.md) records the completed
+approved launch: exact asset hashes, published latest stable release, merged tap,
+all six anonymous native CLI targets and all four anonymous native Homebrew targets.
+The private real Chrome blocked-login fixture also passed before publication.
