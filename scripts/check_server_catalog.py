@@ -21,6 +21,7 @@ def run(command, **kwargs):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--server', type=Path, required=True)
     parser.add_argument('--source-metadata', type=Path, required=True)
     parser.add_argument('--report', type=Path, required=True)
     args = parser.parse_args()
@@ -31,7 +32,7 @@ def main():
             or any(line.split()[1] == '00000000' for line in Path('/proc/net/route').read_text().splitlines()[1:])
             or {item[4][0] for item in socket.getaddrinfo('bibleit.app', 443)} != {'127.0.0.1'}):
         raise SystemExit('focused catalogue check requires the egress-disabled disposable fixture')
-    server = ROOT.parent / 'private-service'
+    server = args.server.resolve()
     metadata = json.loads(args.source_metadata.read_text())
     with tempfile.TemporaryDirectory(prefix='bibleit-catalog-contract-') as directory:
         temporary = Path(directory)

@@ -353,5 +353,6 @@
         "merged": false
       }
     }
-  }
+  },
+  "private_reference_notice": "Private repository names, implementation locations and historical host/image/workflow references are withheld from this current public snapshot; originals retained privately."
 }

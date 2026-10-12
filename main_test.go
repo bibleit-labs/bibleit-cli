@@ -119,6 +119,39 @@ func TestVersionDoesNotRequireConfiguration(t *testing.T) {
 	}
 }
 
+func TestBareAuthHelpWithUnreadableConfiguration(t *testing.T) {
+	for _, data := range []string{"not json", `{"access_token":"legacy-secret"}`, `{"version":999}`} {
+		t.Run(data, func(t *testing.T) {
+			path := filepath.Join(t.TempDir(), "config.json")
+			t.Setenv("BIBLEIT_CONFIG", path)
+			if err := os.WriteFile(path, []byte(data), 0600); err != nil {
+				t.Fatal(err)
+			}
+			for _, format := range []string{"table", "json"} {
+				_, expected, _ := captureCLI(t, func() int { return run([]string{"auth", "--help", "--format", format}) })
+				code, stdout, stderr := captureCLI(t, func() int { return run([]string{"auth", "--format", format}) })
+				if code != exitOK || stderr != "" || stdout != expected || !strings.Contains(stdout, "bibleit auth login") {
+					t.Fatalf("bare auth did not show local help: %d %q %q", code, stdout, stderr)
+				}
+			}
+			if after, err := os.ReadFile(path); err != nil || string(after) != data {
+				t.Fatal("auth help changed saved credentials")
+			}
+		})
+	}
+}
+
+func TestSSHUsesServiceHostnameForHostTrust(t *testing.T) {
+	command, _, err := sshCommand(config{}, bibleit.PingCommand())
+	if err != nil {
+		t.Fatal(err)
+	}
+	args := strings.Join(command.Args, " ")
+	if strings.Contains(args, "HostKeyAlias=") || !strings.Contains(args, "bibleit-cli@bibleit.app") || !strings.Contains(args, "StrictHostKeyChecking=accept-new") {
+		t.Fatalf("SSH must verify the service hostname and reject changed host keys: %s", args)
+	}
+}
+
 func TestAuthRequiresTheLoginSubcommand(t *testing.T) {
 	t.Setenv("BIBLEIT_CONFIG", filepath.Join(t.TempDir(), "config.json"))
 	if code := run([]string{"auth"}); code != exitOK {

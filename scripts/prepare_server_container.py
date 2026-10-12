@@ -68,11 +68,11 @@ def main():
         run(['make', 'nif'], cwd=server)
         cli = workspace / 'bibleit-cli'
         if args.catalog_only:
-            run(['python3', 'scripts/check_server_catalog.py',
+            run(['python3', 'scripts/check_server_catalog.py', '--server', str(server),
                  '--source-metadata', str(workspace / 'server-metadata.json'),
                  '--report', '/results/server-baseline.json'], cwd=cli)
             return
-        run(['python3', 'scripts/check_server.py', '--integration', '--external-disposable-database',
+        run(['python3', 'scripts/check_server.py', '--server', str(server), '--integration', '--external-disposable-database',
              '--source-metadata', str(workspace / 'server-metadata.json'),
              '--baseline', '/results/server-baseline.json',
              *(['--imports'] if args.imports else [])], cwd=cli)
