@@ -1,0 +1,520 @@
+{
+  "reviewed": "2026-10-12",
+  "server_visibility": "private",
+  "release": "v0.0.2",
+  "formula_sha256": "4bc0c10b2c36daf838240a2d11685bfcccbf240eeb039497124f289e9364fc1a",
+  "public_run": {
+    "databaseId": 38234257265,
+    "url": "https://github.com/bibleit-labs/homebrew-tap/actions/runs/38234257265",
+    "headSha": "8716ce1f20e478ac01ec5c7bcc3cf4863e3964b9",
+    "conclusion": "success"
+  },
+  "public_reports": [
+    {
+      "native_host": {
+        "runner": "macos-15",
+        "system": "Darwin",
+        "machine": "arm64",
+        "architecture": "arm64",
+        "translated": false
+      },
+      "platform": "macOS-15.7.9-arm64-arm-64bit-Mach-O",
+      "prefix": "/opt/homebrew",
+      "credentials": false,
+      "local_archive_overrides": false,
+      "checks": [
+        {
+          "operation": "install",
+          "binary": {
+            "system": "Darwin",
+            "architecture": "arm64",
+            "matches_native_host": true
+          },
+          "binary_sha256": "edbaf29158a9299a5498ce2927e962847e66760b90377f1fb91dbc48bec69f09",
+          "initial_download_cache": "empty",
+          "brew_test_version_help_notices_completions": "passed"
+        },
+        {
+          "operation": "reinstall",
+          "binary": {
+            "system": "Darwin",
+            "architecture": "arm64",
+            "matches_native_host": true
+          },
+          "binary_sha256": "edbaf29158a9299a5498ce2927e962847e66760b90377f1fb91dbc48bec69f09",
+          "initial_download_cache": "empty",
+          "brew_test_version_help_notices_completions": "passed"
+        },
+        {
+          "operation": "uninstall",
+          "binary_removed": true
+        }
+      ],
+      "report_sha256": "02431c697cc5269540641ea01b189a01f82d957020c7d48783be4bcbd2d0e9f7"
+    },
+    {
+      "native_host": {
+        "runner": "macos-15-intel",
+        "system": "Darwin",
+        "machine": "x86_64",
+        "architecture": "amd64",
+        "translated": false
+      },
+      "platform": "macOS-15.7.9-x86_64-i386-64bit-Mach-O",
+      "prefix": "/usr/local",
+      "credentials": false,
+      "local_archive_overrides": false,
+      "checks": [
+        {
+          "operation": "install",
+          "binary": {
+            "system": "Darwin",
+            "architecture": "amd64",
+            "matches_native_host": true
+          },
+          "binary_sha256": "4180459d809471a8112def12ce662bec2dc5edc23a0937fb47f5239c0f6f215f",
+          "initial_download_cache": "empty",
+          "brew_test_version_help_notices_completions": "passed"
+        },
+        {
+          "operation": "reinstall",
+          "binary": {
+            "system": "Darwin",
+            "architecture": "amd64",
+            "matches_native_host": true
+          },
+          "binary_sha256": "4180459d809471a8112def12ce662bec2dc5edc23a0937fb47f5239c0f6f215f",
+          "initial_download_cache": "empty",
+          "brew_test_version_help_notices_completions": "passed"
+        },
+        {
+          "operation": "uninstall",
+          "binary_removed": true
+        }
+      ],
+      "report_sha256": "b115a6fc8aa2f25117e5ae2573053d54dd472b9c4633e0a7a5510f7c31ee8102"
+    },
+    {
+      "native_host": {
+        "runner": "ubuntu-24.04",
+        "system": "Linux",
+        "machine": "x86_64",
+        "architecture": "amd64",
+        "translated": false
+      },
+      "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+      "prefix": "/home/linuxbrew/.linuxbrew",
+      "credentials": false,
+      "local_archive_overrides": false,
+      "checks": [
+        {
+          "operation": "install",
+          "binary": {
+            "system": "Linux",
+            "architecture": "amd64",
+            "matches_native_host": true
+          },
+          "binary_sha256": "9d7719836818b7b35e49a6266a399fbcf8defc62ea67b139da44ef2a12977c25",
+          "initial_download_cache": "empty",
+          "brew_test_version_help_notices_completions": "passed"
+        },
+        {
+          "operation": "reinstall",
+          "binary": {
+            "system": "Linux",
+            "architecture": "amd64",
+            "matches_native_host": true
+          },
+          "binary_sha256": "9d7719836818b7b35e49a6266a399fbcf8defc62ea67b139da44ef2a12977c25",
+          "initial_download_cache": "empty",
+          "brew_test_version_help_notices_completions": "passed"
+        },
+        {
+          "operation": "uninstall",
+          "binary_removed": true
+        }
+      ],
+      "report_sha256": "a4dc803c5da97b61e8f1d35d60fe8a1b442937fa3d7c93f58571dc09fee5d048"
+    },
+    {
+      "native_host": {
+        "runner": "ubuntu-24.04-arm",
+        "system": "Linux",
+        "machine": "aarch64",
+        "architecture": "arm64",
+        "translated": false
+      },
+      "platform": "Linux-6.17.0-1022-azure-aarch64-with-glibc2.39",
+      "prefix": "/home/linuxbrew/.linuxbrew",
+      "credentials": false,
+      "local_archive_overrides": false,
+      "checks": [
+        {
+          "operation": "install",
+          "binary": {
+            "system": "Linux",
+            "architecture": "arm64",
+            "matches_native_host": true
+          },
+          "binary_sha256": "89754a94f66ce0e8fa90dceec297547ceb9408c53f1e8403cdfb1ee097579ad1",
+          "initial_download_cache": "empty",
+          "brew_test_version_help_notices_completions": "passed"
+        },
+        {
+          "operation": "reinstall",
+          "binary": {
+            "system": "Linux",
+            "architecture": "arm64",
+            "matches_native_host": true
+          },
+          "binary_sha256": "89754a94f66ce0e8fa90dceec297547ceb9408c53f1e8403cdfb1ee097579ad1",
+          "initial_download_cache": "empty",
+          "brew_test_version_help_notices_completions": "passed"
+        },
+        {
+          "operation": "uninstall",
+          "binary_removed": true
+        }
+      ],
+      "report_sha256": "cea207f2804603ef91dbb35a468c7c0789699b79acd88000542827559dbedbf0"
+    }
+  ],
+  "coverage_note": "Native package lifecycle coverage on these CI hosts; Homebrew currently classifies Intel macOS as Tier 3 (https://docs.brew.sh/Support-Tiers).",
+  "private_evidence": "Original reports and logs retained in ignored local storage.",
+  "package_run": {
+    "databaseId": 38234262821,
+    "url": "https://github.com/bibleit-labs/homebrew-tap/actions/runs/38234262821",
+    "headSha": "8716ce1f20e478ac01ec5c7bcc3cf4863e3964b9",
+    "conclusion": "success"
+  },
+  "package_reports": [
+    {
+      "native_host": {
+        "runner": "macos-15",
+        "system": "Darwin",
+        "machine": "arm64",
+        "architecture": "arm64",
+        "translated": false
+      },
+      "binary": {
+        "system": "Darwin",
+        "architecture": "arm64",
+        "matches_native_host": true
+      },
+      "binary_sha256": "edbaf29158a9299a5498ce2927e962847e66760b90377f1fb91dbc48bec69f09",
+      "local_cli_archives": true,
+      "isolated_prefix": true,
+      "redistribution_notices_verified": true,
+      "published_formula_sha256": "4bc0c10b2c36daf838240a2d11685bfcccbf240eeb039497124f289e9364fc1a",
+      "git_configuration_isolated": true,
+      "checks": [
+        {
+          "command": [
+            "brew",
+            "--prefix"
+          ],
+          "exit_code": 0
+        },
+        {
+          "command": [
+            "brew",
+            "install",
+            "--formula",
+            "--build-from-source",
+            "bibleit-labs/local-validation/bibleit-cli"
+          ],
+          "exit_code": 0
+        },
+        {
+          "command": [
+            "brew",
+            "test",
+            "bibleit-labs/local-validation/bibleit-cli"
+          ],
+          "exit_code": 0
+        },
+        {
+          "command": [
+            "brew",
+            "reinstall",
+            "--formula",
+            "--build-from-source",
+            "bibleit-labs/local-validation/bibleit-cli"
+          ],
+          "exit_code": 0
+        },
+        {
+          "command": [
+            "brew",
+            "test",
+            "bibleit-labs/local-validation/bibleit-cli"
+          ],
+          "exit_code": 0
+        },
+        {
+          "command": [
+            "brew",
+            "uninstall",
+            "--formula",
+            "--ignore-dependencies",
+            "bibleit-labs/local-validation/bibleit-cli"
+          ],
+          "exit_code": 0
+        }
+      ],
+      "report_sha256": "e6cfdd6d08f9c46a003bda53aae99f24ec32214087c4b93e057965ed88254f4a"
+    },
+    {
+      "native_host": {
+        "runner": "macos-15-intel",
+        "system": "Darwin",
+        "machine": "x86_64",
+        "architecture": "amd64",
+        "translated": false
+      },
+      "binary": {
+        "system": "Darwin",
+        "architecture": "amd64",
+        "matches_native_host": true
+      },
+      "binary_sha256": "4180459d809471a8112def12ce662bec2dc5edc23a0937fb47f5239c0f6f215f",
+      "local_cli_archives": true,
+      "isolated_prefix": true,
+      "redistribution_notices_verified": true,
+      "published_formula_sha256": "4bc0c10b2c36daf838240a2d11685bfcccbf240eeb039497124f289e9364fc1a",
+      "git_configuration_isolated": true,
+      "checks": [
+        {
+          "command": [
+            "brew",
+            "--prefix"
+          ],
+          "exit_code": 0
+        },
+        {
+          "command": [
+            "brew",
+            "install",
+            "--formula",
+            "--build-from-source",
+            "bibleit-labs/local-validation/bibleit-cli"
+          ],
+          "exit_code": 0
+        },
+        {
+          "command": [
+            "brew",
+            "test",
+            "bibleit-labs/local-validation/bibleit-cli"
+          ],
+          "exit_code": 0
+        },
+        {
+          "command": [
+            "brew",
+            "reinstall",
+            "--formula",
+            "--build-from-source",
+            "bibleit-labs/local-validation/bibleit-cli"
+          ],
+          "exit_code": 0
+        },
+        {
+          "command": [
+            "brew",
+            "test",
+            "bibleit-labs/local-validation/bibleit-cli"
+          ],
+          "exit_code": 0
+        },
+        {
+          "command": [
+            "brew",
+            "uninstall",
+            "--formula",
+            "--ignore-dependencies",
+            "bibleit-labs/local-validation/bibleit-cli"
+          ],
+          "exit_code": 0
+        }
+      ],
+      "report_sha256": "72feaad9031fc0988ea1555d76d00474b710fcce3b82751f487616dbbd670d9c"
+    },
+    {
+      "native_host": {
+        "runner": "ubuntu-24.04",
+        "system": "Linux",
+        "machine": "x86_64",
+        "architecture": "amd64",
+        "translated": false
+      },
+      "binary": {
+        "system": "Linux",
+        "architecture": "amd64",
+        "matches_native_host": true
+      },
+      "binary_sha256": "9d7719836818b7b35e49a6266a399fbcf8defc62ea67b139da44ef2a12977c25",
+      "local_cli_archives": true,
+      "isolated_prefix": true,
+      "redistribution_notices_verified": true,
+      "published_formula_sha256": "4bc0c10b2c36daf838240a2d11685bfcccbf240eeb039497124f289e9364fc1a",
+      "git_configuration_isolated": true,
+      "checks": [
+        {
+          "command": [
+            "brew",
+            "--prefix"
+          ],
+          "exit_code": 0
+        },
+        {
+          "command": [
+            "brew",
+            "tap",
+            "homebrew/core"
+          ],
+          "exit_code": 0
+        },
+        {
+          "command": [
+            "brew",
+            "install",
+            "--formula",
+            "--build-from-source",
+            "bibleit-labs/local-validation/bibleit-cli"
+          ],
+          "exit_code": 0
+        },
+        {
+          "command": [
+            "brew",
+            "test",
+            "bibleit-labs/local-validation/bibleit-cli"
+          ],
+          "exit_code": 0
+        },
+        {
+          "command": [
+            "brew",
+            "reinstall",
+            "--formula",
+            "--build-from-source",
+            "bibleit-labs/local-validation/bibleit-cli"
+          ],
+          "exit_code": 0
+        },
+        {
+          "command": [
+            "brew",
+            "test",
+            "bibleit-labs/local-validation/bibleit-cli"
+          ],
+          "exit_code": 0
+        },
+        {
+          "command": [
+            "brew",
+            "uninstall",
+            "--formula",
+            "--ignore-dependencies",
+            "bibleit-labs/local-validation/bibleit-cli"
+          ],
+          "exit_code": 0
+        }
+      ],
+      "report_sha256": "5599f550939e764c64f7ab4587e0457d0951f3ca9ae0c07f43f2195e40371d7c"
+    },
+    {
+      "native_host": {
+        "runner": "ubuntu-24.04-arm",
+        "system": "Linux",
+        "machine": "aarch64",
+        "architecture": "arm64",
+        "translated": false
+      },
+      "binary": {
+        "system": "Linux",
+        "architecture": "arm64",
+        "matches_native_host": true
+      },
+      "binary_sha256": "89754a94f66ce0e8fa90dceec297547ceb9408c53f1e8403cdfb1ee097579ad1",
+      "local_cli_archives": true,
+      "isolated_prefix": true,
+      "redistribution_notices_verified": true,
+      "published_formula_sha256": "4bc0c10b2c36daf838240a2d11685bfcccbf240eeb039497124f289e9364fc1a",
+      "git_configuration_isolated": true,
+      "checks": [
+        {
+          "command": [
+            "brew",
+            "--prefix"
+          ],
+          "exit_code": 0
+        },
+        {
+          "command": [
+            "brew",
+            "tap",
+            "homebrew/core"
+          ],
+          "exit_code": 0
+        },
+        {
+          "command": [
+            "brew",
+            "install",
+            "--formula",
+            "--build-from-source",
+            "bibleit-labs/local-validation/bibleit-cli"
+          ],
+          "exit_code": 0
+        },
+        {
+          "command": [
+            "brew",
+            "test",
+            "bibleit-labs/local-validation/bibleit-cli"
+          ],
+          "exit_code": 0
+        },
+        {
+          "command": [
+            "brew",
+            "reinstall",
+            "--formula",
+            "--build-from-source",
+            "bibleit-labs/local-validation/bibleit-cli"
+          ],
+          "exit_code": 0
+        },
+        {
+          "command": [
+            "brew",
+            "test",
+            "bibleit-labs/local-validation/bibleit-cli"
+          ],
+          "exit_code": 0
+        },
+        {
+          "command": [
+            "brew",
+            "uninstall",
+            "--formula",
+            "--ignore-dependencies",
+            "bibleit-labs/local-validation/bibleit-cli"
+          ],
+          "exit_code": 0
+        }
+      ],
+      "report_sha256": "316aa1602162fc840afcd19f78c48e3fc5c3ca9448c006d789b85bf5826b526a"
+    }
+  ],
+  "validation": {
+    "python_tests_passed": 16,
+    "actionlint": "passed",
+    "diff_check": "passed",
+    "gitleaks": "8.30.1",
+    "new_log_findings": 0
+  },
+  "release_assets_unchanged": true
+}
