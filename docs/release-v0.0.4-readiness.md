@@ -1,20 +1,60 @@
-# v0.0.4 preparation
+# v0.0.4 ready for approval
 
-This is a candidate, not a published release. Publication and the live tap update
-require owner approval. The planned release title is exactly **v0.0.4**.
+Prepared 2026-10-12. **Not published.** The live CLI and tap remain on v0.0.3.
+Release publication and the tap merge require owner approval. The planned release
+title is exactly **v0.0.4**; older tags and assets will not be replaced.
 
-The blocked-login fix is merged through PR #21 at
-`a3f6f0037c52426567eac7e7538f9709e255dd4c`. Native Linux, macOS and Windows race,
-process, build and vet checks passed. Private service validation covers legacy
-HTTP requests and token exchange, browser denial, SSH revocation and login races;
-its implementation and operational evidence stay in private maintainer docs.
+## Frozen inputs
 
-Before approval, freeze a clean source commit, run the v0.0.4 six-target candidate,
-record the artifact identity and all twelve asset hashes, verify the generated tap
-formula, and complete native installation checks on all supported architectures.
-Keep the staged tap formula unmerged until the published assets match it.
+- CLI source: `df1904650266cac7d15fad254589f0e729f9ef22`, merged through protected main.
+- Go 1.27.1; pinned, checksummed public SDK `github.com/bibleit-labs/bibleit-go v0.0.1`.
+- Twelve clean standalone assets; all six executable headers match their targets.
+- GitHub and local packages match byte-for-byte. Every archive includes the exact
+  README, completions, LICENSE and THIRD_PARTY_NOTICES.
+- Tap PR #15 formula matches the verified candidate after stable-version normalization.
+  Native tap validation used `faa603f4c3e7ffecbc7c7ea0d4f8f3a30ae8f720`; evidence-only
+  updates preserve the formula, workflow and helper bytes.
 
-After approval: tag the frozen source, validate the draft assets against the
-approved candidate, publish with the reviewed notes, verify anonymous downloads,
-merge the exact tap update, and run anonymous installation checks. Do not replace
-older tags or assets. See [release notes](release-v0.0.4-notes.md).
+[Candidate 38275552347](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38275552347)
+and [tap validation 38276244465](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38276244465)
+completed successfully. [Tap PR #15](https://github.com/bibleit-labs/homebrew-tap/pull/15)
+remains unmerged. [The validation record](security/v0.0.4-release-validation.json)
+contains all twelve asset hashes, executable hashes/headers, artifact identity,
+formula/helper hashes and native reports.
+
+## Completed gates
+
+| Gate | Targets | Result |
+| --- | --- | --- |
+| Native race, build, process and vet CI | Linux, macOS, Windows | Passed |
+| Script installers, replacement and failure paths | Linux/macOS/Windows AMD64 and ARM64 | Passed |
+| PowerShell 7 and 5.1; Scoop lifecycle and wrong-hash rejection | Windows AMD64/ARM64 | Passed |
+| Homebrew install/test/reinstall/uninstall, notices, completions and legacy config preservation | macOS ARM64/Intel; Linux AMD64/ARM64 | Passed |
+| Real-browser blocked-login notification | Headless Chrome, fresh profile and disposable accounts | Passed |
+
+The browser fixture tested both an existing blocked session and blocked email
+login during a pending CLI flow. The browser received HTTP 403 and followed the
+denial callback; the CLI exited without requesting a token or creating a config.
+Private service enforcement was separately verified using legacy wire requests,
+SSH revocation and login-race tests. Implementation and operational evidence
+remain private. No production accounts were changed, and no existing local server
+was restarted. Chrome evidence does not establish Firefox/Safari compatibility.
+
+## Actions awaiting approval
+
+1. Create the annotated protected tag `v0.0.4` at
+   `df1904650266cac7d15fad254589f0e729f9ef22`, triggering the draft workflow.
+2. Download the draft's twelve assets and compare every hash and provenance field
+   with the approved candidate record. Stop if any input differs.
+3. Publish as latest stable with title exactly `v0.0.4` and the
+   [reviewed release notes](release-v0.0.4-notes.md).
+4. Verify anonymous release downloads and their hashes, then merge tap PR #15
+   only if its formula/helper bytes still match this record and required CI passes.
+5. Run anonymous script installers on all six native targets and anonymous
+   Homebrew lifecycle checks on all four targets.
+6. Record publication metadata and final anonymous results. Keep the private
+   service repository private and preserve previous releases.
+
+The remaining gates are owner approval and checks that require published URLs.
+Candidate fixtures establish package behavior, not anonymous release availability.
+Signing/notarization and a public Scoop bucket remain outside this release.
