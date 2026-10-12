@@ -1,5 +1,12 @@
 # Corrected CLI v0.0.2 release preparation
 
+> Launch update, 2026-10-12: the owner approved actions 1–6 and protection at
+> public cutover. The SDK, CLI and tap are now public with protected main/release
+> tags. See [actual launch evidence](public-launch.md) for executed actions and
+> verified installation coverage. The preparation text below is a historical
+> snapshot. bibleit-server remains private; its docs PR is not merged/deployed.
+
+
 Prepared 2026-10-11. Repositories remain private. No release/tag was created;
 v0.0.1 assets and both default branches remain unchanged.
 
