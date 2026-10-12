@@ -22,15 +22,11 @@ jobs:
   test:
     needs: source
     uses: ./.github/workflows/native.yml
-    secrets:
-      BIBLEIT_CLIENT_READ_TOKEN: ${{ secrets.BIBLEIT_CLIENT_READ_TOKEN }}
   assets:
     needs: [source, test]
     uses: ./.github/workflows/release-candidate.yml
     with:
       version: ${{ github.ref_name }}
-    secrets:
-      BIBLEIT_CLIENT_READ_TOKEN: ${{ secrets.BIBLEIT_CLIENT_READ_TOKEN }}
   draft:
     needs: [test, assets]
     runs-on: ubuntu-24.04
