@@ -1,6 +1,6 @@
 {
   "version": "v0.0.4",
-  "status": "ready_for_owner_approval",
+  "status": "published_anonymous_checks_in_progress",
   "source_commit": "df1904650266cac7d15fad254589f0e729f9ef22",
   "manifest": {
     "version": "v0.0.4",
@@ -126,7 +126,7 @@
     "production_accounts_changed": false,
     "other_browsers_verified": false
   },
-  "publication_requires_approval": true,
+  "publication_requires_approval": false,
   "release_title": "v0.0.4",
   "candidate_conclusion": "success",
   "native_reports": {
@@ -1147,7 +1147,28 @@
     }
   ],
   "remaining_gates": [
-    "owner approval of publication actions 1\u20136",
-    "post-publication anonymous download/installation checks"
-  ]
+    "Anonymous installation checks and final evidence"
+  ],
+  "binary_sha256": {
+    "linux_amd64": "85c7978c1c36fe2cbc04b87fbaf72a41b95892cec5151a9faddc58e15c054afb",
+    "darwin_amd64": "45a63792015ed071d59e382f9e6d6b0094cf6bbe8c4fe6a86dae75a03f956468",
+    "darwin_arm64": "e1e76d27ffc4a6a79fddf15e17dc6184810ebfc89f0d09fa3a456036f1bee9e8",
+    "windows_amd64": "411624ef694c0e10f16a163bbc724735059ceacf15370e307c2e47454a5fedc3",
+    "linux_arm64": "fe623ab99a134aa4539d15fefe5216b04a35db13334179df07b07d3e415d12f4",
+    "windows_arm64": "d5f95dbc80c48e02d4677059309be60601f2ab656078d8319a4416ce4daf3b27"
+  },
+  "publication": {
+    "id": 410830814,
+    "tag_name": "v0.0.4",
+    "name": "v0.0.4",
+    "html_url": "https://github.com/bibleit-labs/bibleit-cli/releases/tag/v0.0.4",
+    "published_at": "2026-10-12T17:01:35Z",
+    "draft": false,
+    "prerelease": false,
+    "release_workflow_run": 38280448836,
+    "draft_assets_identical": true,
+    "anonymous_assets_identical": true,
+    "anonymous_latest_verified": true,
+    "previous_release_assets_unchanged": true
+  }
 }
