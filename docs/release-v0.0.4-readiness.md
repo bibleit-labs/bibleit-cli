@@ -1,8 +1,8 @@
-# v0.0.4 ready for approval
+# v0.0.4 publication evidence
 
-Prepared 2026-10-12. **Not published.** The live CLI and tap remain on v0.0.3.
-Release publication and the tap merge require owner approval. The planned release
-title is exactly **v0.0.4**; older tags and assets will not be replaced.
+Published 2026-10-12 after owner approval of actions 1–6. The live CLI and tap
+now use **v0.0.4**. The release title is exactly **v0.0.4**. Earlier tags and
+asset identities, sizes and digests were verified unchanged.
 
 ## Frozen inputs
 
@@ -18,7 +18,7 @@ title is exactly **v0.0.4**; older tags and assets will not be replaced.
 [Candidate 38275552347](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38275552347)
 and [tap validation 38276244465](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38276244465)
 completed successfully. [Tap PR #15](https://github.com/bibleit-labs/homebrew-tap/pull/15)
-remains unmerged. [The validation record](security/v0.0.4-release-validation.json)
+was merged as `370620ac2728cdd4c9d2eabdae3f0058d2d723e9`. [The validation record](security/v0.0.4-release-validation.json)
 contains all twelve asset hashes, executable hashes/headers, artifact identity,
 formula/helper hashes and native reports.
 
@@ -40,21 +40,34 @@ SSH revocation and login-race tests. Implementation and operational evidence
 remain private. No production accounts were changed, and no existing local server
 was restarted. Chrome evidence does not establish Firefox/Safari compatibility.
 
-## Actions awaiting approval
+## Completed launch actions
 
-1. Create the annotated protected tag `v0.0.4` at
-   `df1904650266cac7d15fad254589f0e729f9ef22`, triggering the draft workflow.
-2. Download the draft's twelve assets and compare every hash and provenance field
-   with the approved candidate record. Stop if any input differs.
-3. Publish as latest stable with title exactly `v0.0.4` and the
-   [reviewed release notes](release-v0.0.4-notes.md).
-4. Verify anonymous release downloads and their hashes, then merge tap PR #15
-   only if its formula/helper bytes still match this record and required CI passes.
-5. Run anonymous script installers on all six native targets and anonymous
-   Homebrew lifecycle checks on all four targets.
-6. Record publication metadata and final anonymous results. Keep the private
-   service repository private and preserve previous releases.
+1. Created the annotated protected tag `v0.0.4` at the frozen source above.
+   [Release workflow 38280448836](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38280448836)
+   passed native tests and all six candidate installer targets before creating the draft.
+2. Downloaded all twelve draft assets. Every hash and the exact provenance manifest
+   matched the approved candidate, including GitHub's asset digests.
+3. Published [v0.0.4](https://github.com/bibleit-labs/bibleit-cli/releases/tag/v0.0.4)
+   as latest stable with the reviewed title and notes.
+4. Downloaded all twelve assets anonymously, verified their hashes and anonymous
+   latest-release resolution, then merged tap PR #15 with required CI passing and
+   the approved formula/helper bytes intact.
+5. [Anonymous CLI run 38281676238](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38281676238)
+   passed Linux/macOS/Windows AMD64 and ARM64, using latest and explicit release URLs,
+   with both PowerShell 7 and 5.1 on Windows.
+   [Anonymous Homebrew run 38281509948](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38281509948)
+   passed macOS ARM64/Intel and Linux AMD64/ARM64 at standard prefixes with empty
+   download caches, covering install/test/reinstall/uninstall, notices and completions.
+6. Downloaded all ten reports, independently compared installed binary hashes with
+   the approved executable evidence, and recorded release/validation artifact identities.
+   The private service repository remains private; no production accounts were changed
+   and no existing local server was restarted.
 
-The remaining gates are owner approval and checks that require published URLs.
-Candidate fixtures establish package behavior, not anonymous release availability.
-Signing/notarization and a public Scoop bucket remain outside this release.
+The first anonymous CLI run, 38281506837, failed on all six targets after installation
+because the evidence record lacked the checker's `binary_sha256` lookup field.
+The existing approved executable hashes were supplied in that field and independently
+verified against extracted anonymous archives. All six subsequent checks passed;
+release assets and validation helpers were unchanged.
+
+All six approved launch actions are complete. Signing/notarization, a public Scoop
+bucket and Firefox/Safari browser compatibility remain outside this release's scope.
