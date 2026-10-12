@@ -8,7 +8,7 @@ SSH commands connect to `bibleit.app:22`.
 ## Installation
 
 Install with Homebrew or a script installer below, or build from source using
-the Go toolchain specified in [go.mod](go.mod); see [Development](#development).
+the Go toolchain specified in [go.mod](go.mod); see [Build from source](#build-from-source).
 
 Repository access and Bibleit service access are separate: using the CLI still
 requires the relevant account credentials, permissions and translation access.
@@ -49,6 +49,28 @@ Uninstall a script installation by removing the executable and its adjacent
 `bibleit-licenses` directory; use `brew uninstall bibleit-cli` for Homebrew.
 Saved credentials remain. Use `bibleit auth logout` before removal when you want
 to revoke the saved HTTP credential.
+
+### Build from source
+
+Use the Go toolchain specified in [go.mod](go.mod). From the repository directory,
+build and run the executable on macOS/Linux:
+
+```sh
+GOWORK=off go build -o build/bibleit .
+./build/bibleit --help
+```
+
+On Windows PowerShell:
+
+```powershell
+$env:GOWORK = 'off'
+go build -o build/bibleit.exe .
+.\build\bibleit.exe --help
+```
+
+Go downloads the pinned client dependency automatically; a sibling SDK checkout
+is optional. The executable is written to `build/` and reports `dev` as its
+version. See [Shell completion](#shell-completion) to enable completion in your shell.
 
 ## Quickstart
 
@@ -272,9 +294,9 @@ Use ordinary public Go module proxy and checksum verification to download it.
 GOWORK=off go mod download
 GOWORK=off go test -race ./...
 GOWORK=off go vet ./...
-GOWORK=off go build -o build/bibleit .
 ```
 
+See [Build from source](#build-from-source) to compile and run the executable.
 For joint client/CLI development, an uncommitted local workspace can include both
 checkouts: `go work init . ../bibleit-go`.
 Native code tests cover macOS, Linux and Windows. See
