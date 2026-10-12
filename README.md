@@ -5,12 +5,10 @@ The `bibleit` executable uses the [Bibleit Go client](https://github.com/bibleit
 and connects to the project-managed service at `https://bibleit.app`.
 SSH commands connect to `bibleit.app:22`.
 
-## Installation and current availability
+## Installation
 
-The CLI, Go client and Homebrew tap are public. Install a release package below,
-or build from source using the Go toolchain specified in [go.mod](go.mod);
-see [Development](#development). [Launch evidence](docs/public-launch.md) records
-verified installation coverage and repository protections.
+Install with Homebrew or a script installer below, or build from source using
+the Go toolchain specified in [go.mod](go.mod); see [Development](#development).
 
 Repository access and Bibleit service access are separate: using the CLI still
 requires the relevant account credentials, permissions and translation access.
@@ -44,8 +42,13 @@ SSH commands need a separate OpenSSH client. Normal OS security protections rema
 enabled; these packages are not platform-signed or notarized.
 
 Release packages include a Scoop manifest, but no public Scoop bucket exists.
-See [distribution and maintenance](docs/releases.md) for offline candidate checks,
-updates, uninstalling and package-manager validation.
+To update a script installation, rerun the installer. For Homebrew, run
+`brew update` followed by `brew upgrade bibleit-labs/tap/bibleit-cli`.
+
+Uninstall a script installation by removing the executable and its adjacent
+`bibleit-licenses` directory; use `brew uninstall bibleit-cli` for Homebrew.
+Saved credentials remain. Use `bibleit auth logout` before removal when you want
+to revoke the saved HTTP credential.
 
 ## Quickstart
 
@@ -274,11 +277,9 @@ GOWORK=off go build -o build/bibleit .
 
 For joint client/CLI development, an uncommitted local workspace can include both
 checkouts: `go work init . ../bibleit-go`.
-Native code tests cover macOS/Linux/Windows. Package installation evidence and
-remaining launch gates are recorded in [release readiness](docs/releases.md).
-Fixtures do not prove public downloads.
-See [native validation](docs/native-validation.md), [release maintenance](docs/releases.md),
-and the [changelog](CHANGELOG.md).
+Native code tests cover macOS, Linux and Windows. See
+[CONTRIBUTING.md](CONTRIBUTING.md) for development checks and the
+[changelog](CHANGELOG.md) for changes.
 
 Contributions use Conventional Commits. See [contributing](CONTRIBUTING.md).
 Licensed under [MIT](LICENSE). Binary distributions also include
