@@ -26,27 +26,9 @@ routes it to isolated loopback TLS with a fixture-only CA. Fixture trust is abse
 from production executables and is never installed in the host trust store.
 Passing these tests does not prove production availability or provider behavior.
 
-## Optional private-server integration
-
-The server is a separate private repository. Authorized maintainers with Docker
-and the sibling SDK/server checkouts can run the isolated container harness:
-
-```sh
-python3 scripts/check_server_container.py --server /path/to/private-service --baseline contract/server-baseline.json
-```
-
-Use `--imports` when import coverage is relevant. The harness copies the frozen
-server snapshot, rebuilds native dependencies and uses a disposable database and
-network namespace. It records source/native fingerprints and checks that inputs stay stable during
-the run. The --baseline argument writes the successful run's provenance to the
-selected file; review that diff before committing it. Read its options before
-running against changed server inputs. Ordinary contributors do not need this harness for unit tests.
-
-Integration targets the fixed service name inside the isolated namespace; it does
-not add a customer endpoint override. Record the exact tested baseline and scoped
-operations. Fixture, private integration and genuine provider/public-DNS checks
-are separate evidence. [Contract coverage](../contract/features.md) records the
-client's supported operations and limits.
+[Contract coverage](../contract/features.md) records supported client operations
+and limits. Maintainers keep local service integration procedures in private
+operations documentation; they are not part of public contributor setup.
 
 ## Package installation validation
 

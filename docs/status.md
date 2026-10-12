@@ -525,11 +525,7 @@ setup/teardown callbacks; this is focused execution, not a full Common Test camp
 No client/server regression or runtime fix was needed. Later assessment edits
 require a new snapshot; the matching fingerprints are a completion-time observation.
 
-Reproduce:
-
-```sh
-python3 scripts/check_server_container.py --imports --baseline contract/server-baseline.json
-```
+Local service reproduction commands are maintained privately.
 
 Output: `build/validation/assessment-integration-2026-10-10.log` (ignored local
 evidence). This closes the previous translation/registry snapshot gap; it does
@@ -562,11 +558,7 @@ The SSH algorithm-negative tests intentionally log rejected handshakes; all eigh
 EUnit tests pass. This is the full existing client/CLI integration harness, not the
 entire server security assessment or coverage of browser-only organization APIs.
 
-Reproduce:
-
-```sh
-python3 scripts/check_server_container.py --baseline contract/server-baseline.json
-```
+Local service reproduction commands are maintained privately.
 
 ## Previous increment: package-manager and native Windows validation
 
@@ -653,11 +645,7 @@ ports. The developer's existing HTTP process remained running with the same PID.
 Native Windows was not rerun for this increment, and these checks are not a full
 server security assessment or a production-endpoint release certification.
 
-Run locally:
-
-```sh
-python3 scripts/check_server_container.py --baseline contract/server-baseline.json
-```
+Local service reproduction commands are maintained privately.
 
 The container runner requires Docker and build-image/package downloads on its
 first use. It uses a cached Go 1.27.1 image, Erlang 29, and rebuilds fixture NIFs
@@ -721,9 +709,9 @@ assessment or future workspace/event APIs.
 ```sh
 go test -race ./...
 go vet ./...
-python3 scripts/check_server.py
-python3 scripts/check_server.py --integration --baseline contract/server-baseline.json
 ```
+
+Local service reproduction commands are maintained privately.
 
 The source check needs Erlang/OTP with its JSON module. Integration additionally
 needs Go 1.27.1, Docker with the local `postgres:17-alpine` image, built server
