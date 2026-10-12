@@ -138,17 +138,29 @@ The approved language-client roadmap is JavaScript, Lua, Python, Ruby, Rust,
 Erlang/Elixir, and PHP. The Go SDK is available; the CLI is a separate command-line
 tool. Future language-client implementation and releases are separate work.
 
-## Next CLI release: prepared, awaiting approval
+## CLI v0.0.3 publication — complete
 
-The v0.0.3 UX release is prepared from source
-`0e1fc6f0b1a1cb734f5b54827f7e0319bb9f3280`. All six native installer targets and
-all four native tap Homebrew targets passed, including Windows ARM64 PowerShell
-7/5.1 and Scoop, Intel macOS and Linux ARM64. The [readiness checklist](release-v0.0.3-readiness.md)
-records the frozen inputs, exact publication actions and the [validation evidence](security/v0.0.3-release-validation.json).
-Release title will be `v0.0.3`.
+Owner-approved actions 1–6 completed on 2026-10-12. [v0.0.3](https://github.com/bibleit-labs/bibleit-cli/releases/tag/v0.0.3) is latest
+stable with the version-only title and the reviewed UX fixes. Its immutable tag
+points to source `0e1fc6f0b1a1cb734f5b54827f7e0319bb9f3280`.
+[Tag validation](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38247813670) passed. All twelve draft and anonymous public asset hashes,
+GitHub digests, provenance and the normalized tap formula matched the approval record.
+[Tap PR #11](https://github.com/bibleit-labs/homebrew-tap/pull/11) merged through
+protection at `65bff4e45fa8075619ec7afc47b1f4f70c1eeb31`.
 
-No new tag or release has been created. [Tap PR #11](https://github.com/bibleit-labs/homebrew-tap/pull/11)
-remains held; its live formula is v0.0.2. The existing release title and all twelve
-asset IDs/digests are unchanged. Anonymous v0.0.3 downloads and public package
-installation remain approval-dependent post-publication gates. The private service
-repository remains private and is unchanged by this release preparation.
+[Anonymous installers](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38249509803) passed all six native targets, including
+Windows AMD64/ARM64 PowerShell 7 and 5.1, with latest and explicit release URLs.
+[Anonymous Homebrew](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38248930792) passed all four native macOS/Linux targets,
+using normal prefixes, empty caches and public downloads. The real local upgrade
+from v0.0.2 to v0.0.3 passed with user configuration and shell files preserved.
+See the [completed checklist](release-v0.0.3-readiness.md) and
+[publication record](security/v0.0.3-release-validation.json) for exact hashes and reports.
+
+The initial Windows public-check invocation was corrected through protected
+[PR #16](https://github.com/bibleit-labs/bibleit-cli/pull/16), then all six targets
+were rerun successfully. Two transient GitHub HTTP 504 download failures were
+retried on the same workflow source. Published bytes were unchanged. Previous v0.0.2 release
+metadata and all twelve asset identities/digests remain unchanged. The private
+service repository remains private. No publication or installation gate is pending;
+Intel macOS support policy, signing/notarization and a public Scoop bucket remain
+the separate limits described above.
