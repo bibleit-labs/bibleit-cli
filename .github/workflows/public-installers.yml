@@ -39,6 +39,7 @@ jobs:
           if ([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString() -ne 'Arm64') { throw 'ARM64 operating system required' }
           python -c "import platform; assert platform.machine().lower() in ('arm64', 'aarch64')"
       - name: Anonymous latest and explicit release installation
+        shell: bash
         run: python scripts/check_public_installers.py --version "$VERSION"
       - name: Save public validation evidence
         if: always()
