@@ -615,34 +615,9 @@ func browserAuthenticate(cfg *config) (string, error) {
 	query.Set("code_challenge", challenge)
 	authorizeURL.RawQuery = query.Encode()
 
-	type callback struct{ code, err string }
-	result := make(chan callback, 1)
+	result := make(chan browserAuthorizationResult, 1)
 	mux := http.NewServeMux()
-	mux.HandleFunc("/callback", func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Query().Get("state") != clientState {
-			http.Error(w, "Invalid authentication state.", http.StatusBadRequest)
-			select {
-			case result <- callback{err: "invalid authentication state"}:
-			default:
-			}
-			return
-		}
-		code := r.URL.Query().Get("code")
-		if code == "" {
-			http.Error(w, "Authorization code is missing.", http.StatusBadRequest)
-			select {
-			case result <- callback{err: "authorization code is missing"}:
-			default:
-			}
-			return
-		}
-		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-		_, _ = io.WriteString(w, `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CLI connected · Bibleit</title><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#090f1a;color:#f8f3e8;font:16px system-ui,sans-serif}.card{max-width:34rem;margin:2rem;padding:3rem;border:1px solid #344154;border-radius:20px;background:#111a29;box-shadow:0 24px 80px #0008}.mark{color:#f4b942;font-size:2rem}h1{font-size:2.2rem;margin:.8rem 0}p{color:#bac5d5;line-height:1.6}</style></head><body><main class="card"><div class="mark">✦</div><h1>Your CLI is connected now.</h1><p>Authentication completed successfully. Feel free to close this tab and return to your terminal.</p></main></body></html>`)
-		select {
-		case result <- callback{code: code}:
-		default:
-		}
-	})
+	mux.HandleFunc("/callback", browserAuthorizationCallback(clientState, result))
 	server := &http.Server{Handler: mux, ReadHeaderTimeout: 5 * time.Second}
 	go func() { _ = server.Serve(listener) }()
 
@@ -650,7 +625,7 @@ func browserAuthenticate(cfg *config) (string, error) {
 	if err := openBrowser(authorizeURL.String()); err != nil {
 		fmt.Fprintf(os.Stderr, "Could not open a browser automatically. Open this URL:\n%s\n", authorizeURL.String())
 	}
-	var received callback
+	var received browserAuthorizationResult
 	select {
 	case received = <-result:
 	case <-time.After(30 * time.Minute):
@@ -658,8 +633,8 @@ func browserAuthenticate(cfg *config) (string, error) {
 		return "", errors.New("web authentication timed out")
 	}
 	_ = server.Shutdown(context.Background())
-	if received.err != "" {
-		return "", errors.New(received.err)
+	if received.err != nil {
+		return "", received.err
 	}
 	displayName, token, err := exchangeBrowserCode(received.code, verifier)
 	if err != nil {
