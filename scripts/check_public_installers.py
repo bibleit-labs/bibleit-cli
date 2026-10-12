@@ -17,6 +17,9 @@ REPO = "https://github.com/bibleit-labs/bibleit-cli"
 
 def main():
     env = {k: v for k, v in os.environ.items() if "TOKEN" not in k.upper() and "SECRET" not in k.upper() and not k.startswith(("GIT_", "BIBLEIT_"))}
+    # A Python process launched by PowerShell 7 inherits its module search path.
+    # Let each child PowerShell engine initialize its own standard modules.
+    env = {k: v for k, v in env.items() if k.upper() not in ("PSMODULEPATH", "PSHOME")}
     env.update(GIT_CONFIG_GLOBAL=os.devnull, GIT_CONFIG_SYSTEM=os.devnull, GIT_TERMINAL_PROMPT="0")
     windows = platform.system() == "Windows"
     engines = ["pwsh", "powershell"] if windows else ["bash"]
