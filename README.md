@@ -86,13 +86,46 @@ bibleit --transport ssh live list
 ```
 
 An explicitly selected identity requires its corresponding `.pub` file. OpenSSH
-verifies the server host key. HTTP and SSH credentials may belong to different
-accounts; `auth info` reports the identity for the selected transport.
+verifies the host key directly for bibleit.app. Older hostname trust entries
+are not reused; OpenSSH records a newly encountered key and rejects changed keys.
+HTTP and SSH credentials may belong to different accounts; `auth info` reports the identity for the selected transport.
 `BIBLEIT_TOKEN` applies only to HTTP. There is no automatic transport fallback.
 
 The CLI stores one credential configuration at `~/.bibleit/config.json`.
 `BIBLEIT_CONFIG` selects another configuration file. Unix permissions and Windows
 ACLs restrict saved credentials to the current user. SSH private keys stay in their original files.
+
+`bibleit auth` shows authentication help locally, even if saved configuration
+cannot be read. Use `bibleit auth login` to start browser sign-in.
+
+### Recover an older configuration
+
+An older configuration can cause `unsupported configuration` or `unsupported
+configuration version` errors. The CLI requires a fresh sign-in rather than
+silently reusing credentials from an older format or a different service address.
+
+For the default configuration on macOS/Linux, keep a protected backup and sign in:
+
+```sh
+mv -n ~/.bibleit/config.json \
+  ~/.bibleit/config.json.backup.$(date +%Y%m%d-%H%M%S)
+bibleit auth login
+```
+
+On Windows PowerShell:
+
+```powershell
+$config = Join-Path $HOME '.bibleit/config.json'
+Move-Item -LiteralPath $config -Destination "$config.backup.$(Get-Date -Format yyyyMMdd-HHmmss)"
+bibleit auth login
+```
+
+If `BIBLEIT_CONFIG` is set, back up that selected file instead. Keep the backup
+private: it may contain credentials. SSH users can sign in with
+`bibleit auth login ssh` and their registered key. Moving the local file does not
+revoke an old token; manage obsolete credentials through your account.
+
+### Sign out
 
 ```sh
 bibleit auth logout
@@ -192,7 +225,39 @@ mkdir -p ~/.config/fish/completions
 bibleit completion fish > ~/.config/fish/completions/bibleit.fish
 ```
 
-Homebrew installs the completion files with the executable.
+### Homebrew shell setup
+
+Homebrew installs and links Bash, Zsh, and Fish completion files with the
+executable. Your shell must load them; installing the formula does not edit
+your shell startup files.
+
+For Zsh, evaluate Homebrew's environment before initializing completion in
+`~/.zshrc` (or earlier in `~/.zprofile`):
+
+```zsh
+eval "$(brew shellenv)"
+autoload -Uz compinit
+compinit
+```
+
+Oh My Zsh initializes completion itself. Place the `brew shellenv` line before
+`source "$ZSH/oh-my-zsh.sh"`; a second `compinit` call is unnecessary. Open a new
+terminal after changing the order. To enable Bibleit immediately in an already
+initialized Zsh session, run `source <(bibleit completion zsh)`.
+
+For Bash, add the following to your shell startup file (`~/.bashrc`, or
+`~/.bash_profile` for a macOS login shell):
+
+```bash
+source "$(brew --prefix)/etc/bash_completion.d/bibleit"
+```
+
+Homebrew's Fish discovers installed completions automatically. Other Fish
+installations can use the per-user Fish setup above. Press Tab after `bibleit `
+or `bibleit auth ` to complete commands. Completion lists static commands and
+flags; it does not retrieve account data or suggest credentials.
+See [Homebrew's shell completion guide](https://docs.brew.sh/Shell-Completion)
+for general shell setup and completion-directory troubleshooting.
 
 ## Development
 

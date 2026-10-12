@@ -40,7 +40,7 @@ def main():
     with tempfile.TemporaryDirectory(prefix='bibleit-linux-snapshot-') as directory:
         workspace = Path(directory) / 'workspace'
         shutil.copytree('/sources', workspace)
-        server = workspace / 'bibleit-server'
+        server = workspace / 'private-service'
         erl_root = run(['erl', '-noshell', '-eval', 'io:format("~s",[code:root_dir()]),halt().'], capture_output=True).stdout
         erl_include = str(Path(erl_root) / 'usr/include')
         dependencies = server / '_build/default/lib'
@@ -68,11 +68,11 @@ def main():
         run(['make', 'nif'], cwd=server)
         cli = workspace / 'bibleit-cli'
         if args.catalog_only:
-            run(['python3', 'scripts/check_server_catalog.py',
+            run(['python3', 'scripts/check_server_catalog.py', '--server', str(server),
                  '--source-metadata', str(workspace / 'server-metadata.json'),
                  '--report', '/results/server-baseline.json'], cwd=cli)
             return
-        run(['python3', 'scripts/check_server.py', '--integration', '--external-disposable-database',
+        run(['python3', 'scripts/check_server.py', '--server', str(server), '--integration', '--external-disposable-database',
              '--source-metadata', str(workspace / 'server-metadata.json'),
              '--baseline', '/results/server-baseline.json',
              *(['--imports'] if args.imports else [])], cwd=cli)

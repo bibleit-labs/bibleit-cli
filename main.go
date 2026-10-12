@@ -1,4 +1,4 @@
-// bibleit is a deliberately small, typed client for bibleit-server protocol v1.
+// bibleit is a deliberately small, typed client for the Bibleit command protocol.
 package main
 
 import (
@@ -44,10 +44,6 @@ type outputRecord struct {
 }
 
 const sshUser = "bibleit-cli"
-
-// Preserve the verified service identity through the custom-domain migration.
-// This is a known_hosts lookup alias, never the network destination.
-const sshHostKeyAlias = "bibleit-server.fly.dev"
 
 const defaultWebURL = bibleit.ServerEndpoint
 
@@ -96,7 +92,7 @@ func run(args []string) int {
 	if oneOf(args[len(args)-1], "--help", "-h") || (args[len(args)-1] == "help" && args[0] != "server") {
 		return help([]string{args[0]})
 	}
-	if len(args) == 1 && oneOf(args[0], "live", "read", "search", "translation", "server", "account", "completion") {
+	if len(args) == 1 && oneOf(args[0], "auth", "live", "read", "search", "translation", "server", "account", "completion") {
 		return help(args)
 	}
 	if args[0] == "completion" {
@@ -457,8 +453,7 @@ func sshCommand(cfg config, command bibleit.Command) (*exec.Cmd, string, error) 
 	args = append(args,
 		"-o", "PreferredAuthentications=publickey",
 		"-o", "PasswordAuthentication=no", "-o", "KbdInteractiveAuthentication=no",
-		"-o", "StrictHostKeyChecking=accept-new", "-o", "ConnectTimeout=5",
-		"-o", "HostKeyAlias="+sshHostKeyAlias)
+		"-o", "StrictHostKeyChecking=accept-new", "-o", "ConnectTimeout=5")
 	args = append(args, "--", sshUser+"@"+targetHost, command.String())
 	ssh := exec.Command("ssh", args...)
 	ssh.Stdin = os.Stdin
@@ -992,12 +987,12 @@ func help(topic []string) int {
 	switch key {
 	case "", "root":
 		lines = []string{
-			"This is bibleit, the command line interface for bibleit-server.", "",
+			"Bibleit CLI: read Scripture, search translations, and manage Live sessions.", "",
 			"Usage:", "  bibleit [flags]", "  bibleit [command]", "",
 			"Reading Scripture", "  read         Read a verse, chapter, or book.", "  search       Search an enabled translation.", "  translation  Manage your account translation library.", "",
 			"Live sessions", "  live         Create, inspect, and control Lives you are allowed to manage.", "",
-			"Access control", "  auth         Verify SSH access and inspect the current actor.", "  account      Inspect your account and effective quotas.", "",
-			"Server", "  server       Inspect the connected bibleit-server.", "",
+			"Access control", "  auth         Authenticate and inspect your Bibleit account.", "  account      Inspect your account and effective quotas.", "",
+			"Service", "  server       Inspect the Bibleit service.", "",
 			"Additional Commands:", "  help         Help about any command.", "  version      Print the CLI version.", "  completion   Generate Bash, Zsh, or Fish completion.", "",
 			"Flags:", "      --transport http|ssh       Select transport (default http)", "      --identity path            Select a supported SSH private key", "      --format table|raw|json|ndjson  Output format (default \"table\")", "      --yes                      Confirm destructive commands without a prompt", "  -h, --help                      Help for bibleit.", "  -v, --version                   Print the CLI version.", "",
 			"Use \"bibleit [command] --help\" for more information about a command.",
@@ -1027,7 +1022,7 @@ func help(topic []string) int {
 	case "account":
 		lines = []string{"Inspect your personal account, effective quotas and token metadata.", "", "Usage:", "  bibleit account info", "  bibleit account quotas", "  bibleit account tokens"}
 	case "server":
-		lines = []string{"Inspect the connected bibleit-server. This reports the remote server and protocol versions, not the CLI version.", "", "Usage:", "  bibleit server info", "  bibleit server help [server|account|auth|translation|live]"}
+		lines = []string{"Inspect the Bibleit service. This reports the service and protocol versions, not the CLI version.", "", "Usage:", "  bibleit server info", "  bibleit server help [server|account|auth|translation|live]"}
 	default:
 		return fail(exitUsage, "unknown help topic %q", key)
 	}

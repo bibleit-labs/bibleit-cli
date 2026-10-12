@@ -1,5 +1,7 @@
 # Historical implementation and validation status
 
+> Public-copy update, 2026-10-12: private implementation references in these historical records are withheld; originals remain in private local storage. Current SSH verifies bibleit.app directly without a legacy host-key alias.
+
 This is a dated implementation/operations record, not the current release guide.
 Use [release maintenance](releases.md), [release readiness](release-v0.0.2-readiness.md)
 and [the publication plan](publication-plan.md) for current gates. Repositories
@@ -112,7 +114,7 @@ suite passes 337 CT/63 EUnit/71 JavaScript/native 65536/10 bootstrap checks.
 Progress: **7/7 public acceptance items complete**; the client increment remains
 4/4. The preceding technical probes qualified source c586107, runtime repair ef63e91/native f6fed37,
 image sha256:1140436c3d9e7de1b1f80e88aa208a0a6c06cff4b7ba371e0f5ddcbb5b6ace22,
-from [deployment 38129282912](https://github.com/bibleit-labs/bibleit-server/actions/runs/38129282912).
+from deployment 38129282912 (private record retained locally).
 403 source hashes and 20 actual-image checks matched. Credential-free provenance
 is in contract/canonical-deployment-validation.json, synchronized with the Go client.
 The operator confirms Google/GitHub sign-in. The old app’s live.bibleit.app
@@ -123,7 +125,7 @@ HTML form bug affects email signup, login, CLI approval and settings. Earlier
 fetch/explicit-Origin probes missed actual browser Origin:null serialization.
 Repair 34d80f811b3ac9179d6afe0966185e2b3517181e is now deployed and technically
 qualified with native f6fed37, 403 source hashes and 20 image checks, from
-[run 38144206075](https://github.com/bibleit-labs/bibleit-server/actions/runs/38144206075).
+run 38144206075 (private record retained locally).
 Image sha256:33b4ca3c13829c1c25f0745037212cc0c14e5e7768c2f78e58206c461ef8d35d
 passes 23 boundary/39 alias checks per address family and real native form CSRF
 admission. Full source suite passes 338 CT/63 EUnit/71 JS/native/10 bootstrap.
@@ -131,7 +133,7 @@ The native probe blocks providers and creates no account or email; real
 Turnstile backend success/replay and actual email delivery/verification remain
 pending. Qualification freeze/customer release stays held for that manual gate.
 The separate catalog rollout uses server 6ba81e2/native d6e31dc in
-[workflow 38144732991](https://github.com/bibleit-labs/bibleit-server/actions/runs/38144732991).
+workflow 38144732991 (private record retained locally).
 It is outside this point-in-time 34d80f8/f6fed37 qualification and requires its own
 deployment/catalog and changed-input acceptance before inclusion.
 
@@ -141,7 +143,7 @@ The separately approved catalog release is operationally qualified at server
 6ba81e2d2ec7d4bfbe5bbf819e77438a0f205665/native
 d6e31dc8eb7c478e2f915e7bd156b047a2cb279e, image
 sha256:7456bfec37b1d2285041387ef6135685dc707748ea82adbff60417e96c5fec47,
-[run 38144732991](https://github.com/bibleit-labs/bibleit-server/actions/runs/38144732991).
+run 38144732991 (private record retained locally).
 405 source hashes, eight successful build stages, 20 actual-image checks,
 native amd64, zero cleanup counts, matching published/running digest and 185 APK
 comparisons with zero fixed-advisory alerts were independently verified. Refreshed
@@ -178,7 +180,7 @@ release; real Turnstile/email acceptance remains open separately.
 
 | Item | Status | Evidence / limits |
 | --- | --- | --- |
-| Configure service addresses | Complete | Go/client browser origin https://bibleit-server.fly.dev; ordinary CLI SSH bibleit-server.fly.dev:22; credential-only constructors, redirects blocked, TLS/host verification retained |
+| Configure service addresses | Complete | Go/client browser origin [historical HTTPS origin withheld]; ordinary CLI SSH [historical SSH address withheld]; credential-only constructors, redirects blocked, TLS/host verification retained |
 | Isolate tests and preserve credentials | Complete | Egress-disabled namespace and verified TLS/hostname fixtures; direct host integration rejected; native test-only loopback dialer; old HTTP/SSH bindings rejected without overwrite |
 | Rerun HTTP/SSH/import checks | Complete | Clean server 8923d86/native f6fed37; 34 decoder/18 encoder, seven security, 11 HTTP, real OpenSSH lifecycle/JSON parity, 18 auth/key/protocol and 26 import cases; synchronized 68 source/70 test/11 native hashes |
 | Update release plan and private CI | Complete | Plan marks endpoint/client compatibility work complete; exact client b081081/CLI 26bbfaa native and candidate matrices pass on Windows/Ubuntu/macOS |
@@ -204,7 +206,7 @@ assets followed by real tap/installation checks. No release tags/assets are publ
 | Item | Status | Evidence / limits |
 | --- | --- | --- |
 | Verify assessment closure | Complete | Ledger 8923d86 records 25/25 scoped packages complete; source 7442010 deployed, native f6fed37 unchanged; 334 CT/56 Erlang/71 JavaScript/native/ten bootstrap tests pass |
-| Record production qualification | Complete | HTTPS bibleit-server.fly.dev, ordinary SSH port 22; 23 HTTPS/11 authenticated HTTP-WSS/4 SSH/13 paired checks pass; native/deployed image campaigns pass 20 checks |
+| Record production qualification | Complete | HTTPS [historical service hostname withheld], ordinary SSH port 22; 23 HTTPS/11 authenticated HTTP-WSS/4 SSH/13 paired checks pass; native/deployed image campaigns pass 20 checks |
 | Reconcile release plan | Complete | Removes obsolete deployment/unknown-address blockers; records fresh client integration, fixed-address configuration, version/access and standalone packaging/install gates |
 
 Progress: **3/3 closure-review items complete; assessment 25/25**. The current
@@ -214,7 +216,7 @@ production mutation is performed in this documentation follow-up. Final deployed
 admission code needs a fresh independent client integration refresh before release.
 SSH clients continue normal SSH and must not inject a PROXY preamble.
 
-Evidence: [native source 7442010 run](https://github.com/bibleit-labs/bibleit-server/actions/runs/38106224843),
+Evidence: native source 7442010 run (private record retained locally),
 assessment ledger 8923d86 and final qualification section. See plan.md for the exact
 production image digest, scoped results and operational limits. The qualified
 Fly hostname does not qualify a future custom domain or establish capacity/failover.
@@ -227,7 +229,7 @@ Fly hostname does not qualify a future custom domain or establish capacity/failo
 | Review native amd64 server results | Complete | Run 38101109368 at f5f1736 passes on Linux x86_64/native amd64 Docker; native corpus, ten SSH-bootstrap and 17 final-image checks pass; downloaded hashes/image/cleanup verified |
 | Update and publish release plan | Complete | Exact native evidence recorded; local architecture gate closed for this snapshot; approved deployed Fly and release-freeze gates remain |
 
-Progress: **3/3 tracked items complete**. [Native server run](https://github.com/bibleit-labs/bibleit-server/actions/runs/38101109368)
+Progress: **3/3 tracked items complete**. Native server run (private record retained locally)
 uses clean native f6fed37. Validation image:
 sha256:ab28d63404454a94ac1d891e3d0ae1e042a8ab559c314403c0de37f6adf42706.
 All eight stages exit zero; both owned image-tag cleanup codes are zero.
@@ -492,7 +494,7 @@ record uses the local date. Evidence is ignored locally under:
 The assessment subsequently confirmed a green full `make test` on 2026-10-11:
 248 Common Test cases, 48 Erlang unit tests, 71 JavaScript tests and the native
 C test, with no skips. This is server-owned evidence recorded in
-`../bibleit-server/docs/developers/security-test-results.md`, separate from our
+`[private implementation reference withheld]`, separate from our
 client integration run; its protocol contract matches the client safeguards.
 Production HTTPS/SSH addresses, a published/pinned Go client, standalone GOWORK=off
 validation and publication authorization remain release gates. Browser-only
@@ -1082,7 +1084,7 @@ initial default branch. No branch uses the codex prefix.
 All CLI and language-client repositories are public open source projects under
 `bibleit-labs`. Use Conventional Commits for subsequent changes and maintain
 contribution documentation, the existing MIT license, and independent release
-notes. `bibleit-server` remains separate and is not moved or made public here.
+notes. `private service` remains separate and is not moved or made public here.
 
 
 ## Real-provider follow-up — 11 October 2026
