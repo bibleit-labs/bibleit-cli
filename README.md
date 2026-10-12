@@ -7,21 +7,15 @@ SSH commands connect to `bibleit.app:22`.
 
 ## Installation and current availability
 
-The CLI, Go client and Homebrew tap are **private**. Corrected release packages
-and a matching tap formula are being prepared for review. Public installation
-awaits approval; see [release readiness](docs/releases.md).
+The CLI, Go client and Homebrew tap are public. Install a release package below,
+or build from source using the Go toolchain specified in [go.mod](go.mod);
+see [Development](#development). [Launch evidence](docs/public-launch.md) records
+verified installation coverage and repository protections.
 
-Authorized contributors can build from source using the Go toolchain specified
-in [go.mod](go.mod) and authenticated Git access to the pinned private SDK;
-see [Development](#development).
 Repository access and Bibleit service access are separate: using the CLI still
 requires the relevant account credentials, permissions and translation access.
-
-### Planned public installation
-
-The following commands apply **after the corrected release and public access are
-approved**. They are not available to unauthenticated users today. Packages cover
-macOS, Linux and Windows on amd64/arm64; binaries require no Go or Python runtime.
+Packages cover macOS, Linux and Windows on amd64/arm64; binaries require no Go or
+Python runtime.
 
 Homebrew (macOS/Linux):
 
@@ -204,8 +198,7 @@ Homebrew installs the completion files with the executable.
 
 Use the Go toolchain specified in [go.mod](go.mod). The CLI pins the Go client;
 a sibling checkout is optional.
-While the Go repository is private, configure Git access and set
-`GOPRIVATE=github.com/bibleit-labs/*` when downloading private modules.
+Use ordinary public Go module proxy and checksum verification to download it.
 
 ```sh
 GOWORK=off go mod download
