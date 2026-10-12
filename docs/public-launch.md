@@ -137,3 +137,18 @@ See the [cleanup assessment](security/private-read-secret-cleanup-2026-10-12.jso
 The approved language-client roadmap is JavaScript, Lua, Python, Ruby, Rust,
 Erlang/Elixir, and PHP. The Go SDK is available; the CLI is a separate command-line
 tool. Future language-client implementation and releases are separate work.
+
+## Next CLI release: prepared, awaiting approval
+
+The v0.0.3 UX release is prepared from source
+`0e1fc6f0b1a1cb734f5b54827f7e0319bb9f3280`. All six native installer targets and
+all four native tap Homebrew targets passed, including Windows ARM64 PowerShell
+7/5.1 and Scoop, Intel macOS and Linux ARM64. The [readiness checklist](release-v0.0.3-readiness.md)
+records the frozen inputs, exact publication actions and the [validation evidence](security/v0.0.3-release-validation.json).
+Release title will be `v0.0.3`.
+
+No new tag or release has been created. [Tap PR #11](https://github.com/bibleit-labs/homebrew-tap/pull/11)
+remains held; its live formula is v0.0.2. The existing release title and all twelve
+asset IDs/digests are unchanged. Anonymous v0.0.3 downloads and public package
+installation remain approval-dependent post-publication gates. The private service
+repository remains private and is unchanged by this release preparation.
