@@ -7,6 +7,10 @@ withdrawn for missing redistribution notices; its source and tag are preserved.
 installation results and protections. Historical preparation records remain dated
 snapshots. Installation commands are in [the README](../README.md).
 
+The next candidate is v0.0.3. It includes authentication help, updated completion
+and recovery guidance, and direct SSH host trust for `bibleit.app`. Publication
+and the matching tap formula merge require owner approval.
+
 ## Prepare a candidate
 
 Use Go 1.27.1, a clean committed checkout, the pinned SDK and no local replacements.
@@ -16,8 +20,8 @@ Choose a fresh output directory; packaging refuses to overwrite an existing one.
 ```sh
 GOWORK=off go mod download
 GOWORK=off go mod verify
-GOWORK=off python3 scripts/package_release.py --version v0.0.2 --output build/releases/v0.0.2
-python3 scripts/check_release.py --assets build/releases/v0.0.2
+GOWORK=off python3 scripts/package_release.py --version v0.0.3 --output build/releases/v0.0.3
+python3 scripts/check_release.py --assets build/releases/v0.0.3
 ```
 
 The packager builds one native executable to generate completions, then six
@@ -46,18 +50,18 @@ to conceal a notice/content change.
 macOS/Linux:
 
 ```sh
-BIBLEIT_INSTALL_ASSETS="$PWD/build/releases/v0.0.2" \
-  BIBLEIT_INSTALL_DIR="$PWD/build/install-test" bash install.sh v0.0.2
+BIBLEIT_INSTALL_ASSETS="$PWD/build/releases/v0.0.3" \
+  BIBLEIT_INSTALL_DIR="$PWD/build/install-test" bash install.sh v0.0.3
 build/install-test/bibleit version
 ```
 
 Windows:
 
 ```powershell
-python scripts/check_release.py --assets build/releases/v0.0.2
-python scripts/check_release.py --assets build/releases/v0.0.2 --powershell powershell
-./scripts/check_powershell_installer.ps1 -AssetsDir ./build/releases/v0.0.2
-python scripts/check_scoop.py --assets build/releases/v0.0.2 --scoop-source ./scoop-source
+python scripts/check_release.py --assets build/releases/v0.0.3
+python scripts/check_release.py --assets build/releases/v0.0.3 --powershell powershell
+./scripts/check_powershell_installer.ps1 -AssetsDir ./build/releases/v0.0.3
+python scripts/check_scoop.py --assets build/releases/v0.0.3 --scoop-source ./scoop-source
 ```
 
 PowerShell 7 and 5.1 require native Windows installation/replacement checks.
@@ -68,7 +72,7 @@ It leaves persistent PATH and the user's real Scoop installation untouched.
 Homebrew:
 
 ```sh
-python3 scripts/check_homebrew.py --assets build/releases/v0.0.2
+python3 scripts/check_homebrew.py --assets build/releases/v0.0.3
 ```
 
 The fixture uses a disposable prefix, local archive URLs and normal Homebrew
