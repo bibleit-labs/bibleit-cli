@@ -38,3 +38,11 @@ Report vulnerabilities through [SECURITY.md](../SECURITY.md).
 prior integration, deployment and release narratives moved out of the contract
 README. [Implementation status](status.md) and [the original plan](plan.md) are
 historical records; use current release evidence for completed publication gates.
+
+
+## Next release candidate
+
+[v0.0.4 is ready for approval](release-v0.0.4-readiness.md), with all six native
+installer targets, all four native Homebrew targets and a real Chrome blocked-login
+fixture passed. Its exact inputs and publication actions are recorded there.
+It remains unpublished; the live tap update is staged separately.
