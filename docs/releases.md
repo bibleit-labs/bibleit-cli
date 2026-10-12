@@ -1,16 +1,16 @@
 # Release maintenance
 
-The repositories remain private. CLI v0.0.1 exists privately, but its binary
-packages lack required notices. Corrected v0.0.2 and a matching tap formula are
-staged for review. Windows installer/Scoop checks passed on the documentation
-candidate; current evidence and remaining gates are in [release readiness](release-v0.0.2-readiness.md).
-Dated operational evidence is in [historical status](status.md), rather than this
-current procedure. Public installation commands are in [the README](../README.md).
+The SDK, CLI and tap are public. The corrected CLI v0.0.2 is published and its
+matching tap formula is available. All original v0.0.1 download assets were
+withdrawn for missing redistribution notices; its source and tag are preserved.
+[Public launch evidence](public-launch.md) records source, checksums, native public
+installation results and protections. Historical preparation records remain dated
+snapshots. Installation commands are in [the README](../README.md).
 
 ## Prepare a candidate
 
 Use Go 1.27.1, a clean committed checkout, the pinned SDK and no local replacements.
-While the SDK is private, configure authorized Git access and GOPRIVATE first.
+Use ordinary public Go module proxy and checksum verification.
 Choose a fresh output directory; packaging refuses to overwrite an existing one.
 
 ```sh
@@ -36,9 +36,8 @@ those candidates are not eligible for publication.
 | manifest.json | Frozen input provenance and eligibility markers |
 
 Changes to README, notices, installers, completions or build inputs require fresh
-packages and updated formula hashes even if runtime code is unchanged. The
-public-docs update changes the packaged README; regenerate the final candidate
-before release approval. Re-audit component licenses for dependency/toolchain,
+packages and updated formula hashes even if runtime code is unchanged. The published v0.0.2 packages retain their frozen preparation-era README.
+Changes to the main README apply to a future release; keep existing assets immutable. Re-audit component licenses for dependency/toolchain,
 crypto/build flag or target changes. Never replace binaries under an existing tag
 to conceal a notice/content change.
 

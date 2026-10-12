@@ -1,5 +1,12 @@
 # Public repository launch plan
 
+> Launch update, 2026-10-12: the owner approved actions 1–6 and protection at
+> public cutover. The SDK, CLI and tap are now public with protected main/release
+> tags. See [actual launch evidence](public-launch.md) for executed actions and
+> verified installation coverage. The preparation text below is a historical
+> snapshot. bibleit-server remains private; its docs PR is not merged/deployed.
+
+
 Prepared on 2026-10-11 for `bibleit-labs/bibleit-go`, `bibleit-labs/bibleit-cli`,
 and `bibleit-labs/homebrew-tap`. This is a preparation and approval plan;
 repository visibility has not changed. `bibleit-server` remains private.
