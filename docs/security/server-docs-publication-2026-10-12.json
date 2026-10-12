@@ -37,9 +37,12 @@
   },
   "pending": [],
   "separate_followups": [
-    "Native Intel macOS and Linux ARM64 Homebrew coverage.",
     "Signing/notarization and public Scoop distribution.",
     "Implementation and releases of planned language clients."
   ],
-  "private_evidence": "Detailed deployment records, private workflow links, source/image fingerprints and raw logs retained locally; omitted from this public summary."
+  "private_evidence": "Detailed deployment records, private workflow links, source/image fingerprints and raw logs retained locally; omitted from this public summary.",
+  "native_homebrew_followup": {
+    "status": "completed",
+    "evidence": "native-homebrew-2026-10-12.json"
+  }
 }

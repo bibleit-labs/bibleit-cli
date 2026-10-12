@@ -32,10 +32,10 @@ changes belong to a future package release.
 | CLI source and assets | Anonymous clone, normal pinned module download/verify, race tests/vet/build; all 12 asset digests and latest release verified |
 | Bash installers | Latest and explicit release installation/replacement, version/help and exact notices; native Linux x86_64 and macOS ARM64, plus local macOS ARM64 |
 | PowerShell installers | PowerShell 7 and 5.1, latest and explicit release installation/replacement, version/help and exact notices; native Windows AMD64 and ARM64 |
-| Homebrew | Public tap/release URLs; install/test/reinstall/uninstall, exact notices and three completions; empty caches at /opt/homebrew and /home/linuxbrew/.linuxbrew; no tokens, Git helpers, local archive URLs or custom prefixes |
+| Homebrew | Public tap/release URLs; install/test/reinstall/uninstall, exact notices and three completions; native macOS ARM64/amd64 and Linux amd64/ARM64; empty caches at /opt/homebrew, /usr/local and /home/linuxbrew/.linuxbrew; no tokens, Git helpers, local archive URLs or custom prefixes |
 
 The [public installer matrix](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38221644415)
-and [normal public Homebrew lifecycle](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38221961063)
+and [normal public Homebrew lifecycle](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38234257265)
 passed. Public native contributor CI also passed for
 [SDK](https://github.com/bibleit-labs/bibleit-go/actions/runs/38220912904) and
 [CLI](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38221156747).
@@ -92,16 +92,27 @@ only the public-site results and remaining follow-ups.
 - [x] Corrected immutable release published; approved deficient assets withdrawn.
 - [x] Main/release protections and available security settings applied and verified.
 - [x] Anonymous SDK, installers, native contributor CI and Homebrew checks passed.
+- [x] Native Intel macOS and Linux ARM64 Homebrew coverage completed.
 - [x] Windows AMD64 and ARM64 PowerShell 7/5.1 checks completed.
 - [x] Server CLI docs merged, deployed and verified in all three languages.
 - [x] Client-focused Developer page and restricted server docs deployed and verified.
 - [x] Optional private Actions read-secret copies retired; owner confirmed no token reuse.
 - [x] Underlying owner PAT identities/permissions verified and both tokens revoked.
 
+The separate [published-package fixture checks](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38234262821)
+also passed on all four native targets, with installed binary hashes matching
+the anonymous installations. The tap formula and release assets are unchanged.
+
 ## Coverage limits and separate follow-ups
 
-Native Intel macOS and Linux ARM64 Homebrew execution are not claimed. All six
-archive targets passed content/hash checks. Signing/notarization and a public
+All four native macOS/Linux Homebrew targets passed anonymous lifecycle checks,
+including Intel macOS and Linux ARM64. Host and installed binary architecture
+checks reject mismatches and Rosetta execution. The
+[native Homebrew evidence](security/native-homebrew-2026-10-12.json) records
+runner identities, standard prefixes and installed binary hashes. Intel macOS
+remains [Homebrew Tier 3](https://docs.brew.sh/Support-Tiers); these passing package
+checks do not change Homebrew’s support policy. All six archive targets passed
+content/hash checks. Signing/notarization and a public
 Scoop bucket are outside this release; native Windows Scoop candidate checks
 passed independently. Service account/translation access remains separate from
 repository access. The separately authorized server CLI docs deployment is complete.
