@@ -4,7 +4,7 @@ Completed 2026-10-12 after owner approval of actions 1–6, in SDK → CLI → t
 [bibleit-go](https://github.com/bibleit-labs/bibleit-go),
 [bibleit-cli](https://github.com/bibleit-labs/bibleit-cli), and
 [homebrew-tap](https://github.com/bibleit-labs/homebrew-tap) are public.
-bibleit-server remains private. Its CLI documentation was separately approved,
+private service remains private. Its CLI documentation was separately approved,
 merged, deployed, and verified in English, German, and Portuguese.
 
 ## Release and cleanup

@@ -4,12 +4,12 @@
 > public cutover. The SDK, CLI and tap are now public with protected main/release
 > tags. See [actual launch evidence](public-launch.md) for executed actions and
 > verified installation coverage. The preparation text below is a historical
-> snapshot. bibleit-server remains private; its docs PR is not merged/deployed.
+> snapshot. private service remains private; its docs PR is not merged/deployed.
 
 
 Prepared on 2026-10-11 for `bibleit-labs/bibleit-go`, `bibleit-labs/bibleit-cli`,
 and `bibleit-labs/homebrew-tap`. This is a preparation and approval plan;
-repository visibility has not changed. `bibleit-server` remains private.
+repository visibility has not changed. `private service` remains private.
 
 Security/history audit completed on 2026-10-11 within the scope recorded in
 [security-audit.md](security-audit.md). No production credential leak was
@@ -193,7 +193,7 @@ Exit: reviewed public-ready changes and settings, normal CI independent of
 private server access, and explicit release/security ownership.
 [GitHub Actions secure-use reference](https://docs.github.com/en/actions/reference/security/secure-use).
 
-## 5. Prepare bibleit-server documentation updates
+## 5. Prepare private service documentation updates
 
 Prepared locally on 2026-10-11: current CLI reference, existing Markdown mentions,
 all three locale catalogs, the rendered CLI/developer links and the public-doc
@@ -213,7 +213,7 @@ The rendered docs are owned by `src/http/bibleit_http_docs.erl`,
 `priv/templates/docs-page.html` and `priv/i18n/docs-{en,pt,de}.json`.
 Editing only files under `docs/` will leave the live CLI page stale.
 
-| Location in bibleit-server | Prepared change |
+| Location in private service | Prepared change |
 | --- | --- |
 | priv/i18n/docs-en.json, docs-pt.json, docs-de.json | Replace docs_cli_preview/intro/body coming-soon text in every locale; describe implemented capabilities and private availability |
 | priv/templates/docs-page.html | Remove the CLI planned badge; show auth, translation and Live examples; link the detailed CLI reference and Go/CLI/tap repositories |

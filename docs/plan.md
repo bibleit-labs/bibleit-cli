@@ -1,5 +1,7 @@
 # Historical client implementation plan
 
+> Public-copy update, 2026-10-12: private implementation references in these historical records are withheld; originals remain in private local storage. Current SSH verifies bibleit.app directly without a legacy host-key alias.
+
 This is a dated implementation/operations record, not the current release guide.
 Use [release maintenance](releases.md), [release readiness](release-v0.0.2-readiness.md)
 and [the publication plan](publication-plan.md) for current gates. Repositories
@@ -511,7 +513,7 @@ agreed committed release and the approved actual target, not only local image te
 Coordinated with the assessment chat on 11 October 2026. It owns server source,
 CI and ledger changes and prepared an isolated snapshot on the private server
 branch security-native-validation/package-25, preserving shared main. Final
-[native run 38101109368](https://github.com/bibleit-labs/bibleit-server/actions/runs/38101109368)
+native run 38101109368 (private record retained locally)
 passed at server f5f1736b723096e0e3bd80f817ea6701e7856cc1 with native submodule
 f6fed37919c848b1aa0208900af992a5e8a507f2. The server repository remains private.
 
@@ -562,15 +564,15 @@ deployment or shared database change is made by this documentation update.
 ### Final assessment closure and remaining CLI release work
 
 The assessment ledger at 8923d86 records **25/25 scoped packages complete**.
-Qualified production service: HTTPS origin https://bibleit-server.fly.dev and
-ordinary SSH at bibleit-server.fly.dev:22. Deployed source is
+Qualified production service: HTTPS origin [historical HTTPS origin withheld] and
+ordinary SSH at [historical SSH address withheld]. Deployed source is
 7442010eebcfb1a2a9105db312ebaeae5f789003, native remains
 f6fed37919c848b1aa0208900af992a5e8a507f2, and deployed registry digest is
 sha256:44f2278362bd73f26a2f1c4abb78bf4d72eb02a99c177629656b72391c79fc11.
 
 Assessment-owned final evidence:
 
-- Native [run 38106224843](https://github.com/bibleit-labs/bibleit-server/actions/runs/38106224843)
+- Native run 38106224843 (private record retained locally)
   passes all eight stages, 398 tracked-file checks and cleanup. Native and rebuilt
   deployment image campaigns each pass 20 checks. Full suite passes 334 CT,
   56 Erlang unit, 71 JavaScript, native and ten SSH-bootstrap tests.
@@ -619,7 +621,7 @@ checks affected by later changes; retain qualified deployment provenance.
 The subsequent native HTML form repair is now qualified on deployed source
 34d80f811b3ac9179d6afe0966185e2b3517181e/native f6fed37, immutable image
 sha256:33b4ca3c13829c1c25f0745037212cc0c14e5e7768c2f78e58206c461ef8d35d,
-[deployment 38144206075](https://github.com/bibleit-labs/bibleit-server/actions/runs/38144206075).
+deployment 38144206075 (private record retained locally).
 403 source hashes and 20 actual-image checks match. Real production requestSubmit
 carries canonical Origin/Referer, passes CSRF and reaches missing-token denial;
 provider traffic is blocked and no account/email is created. Ordinary HTML uses
@@ -634,7 +636,7 @@ The earlier freeze required fresh-token/replay and email verification. Human
 fresh-token/email evidence is now recorded, but confirmed replay failure still
 requires assessment repair and real provider retesting before the freeze closes. The separate native
 sparse-verse rollout uses server 6ba81e2/native d6e31dc in
-[workflow 38144732991](https://github.com/bibleit-labs/bibleit-server/actions/runs/38144732991).
+workflow 38144732991 (private record retained locally).
 It is independently operationally qualified: 405 source hashes/eight stages/20
 actual-image checks, native amd64, matching published/running digest and clean
 fixture cleanup. Refreshed public boundary23/alias39 checks pass per family;
@@ -674,17 +676,7 @@ publish a release or change visibility.
 
 ## Sources reviewed
 
-- `../bibleit-server/docs/reference/protocol.md`
-- `../bibleit-server/docs/reference/http.md`
-- `../bibleit-server/docs/domain-model.md`
-- `../bibleit-server/docs/live-design.md`
-- `../bibleit-server/src/protocol/bibleit_protocol.erl`
-- `../bibleit-server/src/http/bibleit_http_view.erl`
-- `../bibleit-server/src/http/bibleit_http_listener.erl`
-- `../bibleit-server/src/http/bibleit_http_management_ws.erl`
-- `../bibleit-server/src/auth/bibleit_authorization.erl`
-- `../bibleit-server/src/http/bibleit_cli_auth.erl`
-- `../bibleit-server/src/ssh/bibleit_ssh_listener.erl`
+- Private implementation references retained in the private original.
 
 
 ## Master and release automation next steps

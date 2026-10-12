@@ -42,7 +42,7 @@ def native_fingerprints(library):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--server', type=Path, default=ROOT.parent / 'bibleit-server')
+    parser.add_argument('--server', type=Path, required=True, help='authorized private service checkout')
     parser.add_argument('--go-client', type=Path, default=ROOT.parent / 'bibleit-go')
     parser.add_argument('--baseline', type=Path)
     parser.add_argument('--imports', action='store_true', help='include server import-access/publication suite cases')
@@ -63,7 +63,7 @@ def main():
         native = server / 'libbibleit'
         native_before = native_fingerprints(native)
         native_head = run(['git', '-C', str(native), 'rev-parse', 'HEAD'], capture_output=True).stdout.strip()
-        snapshot = sources / 'bibleit-server'
+        snapshot = sources / 'private-service'
         # No .env, .git, databases, keys, uploaded data, or host-native binaries.
         for relative in ('src', 'test', 'c_src', 'libbibleit/src', 'libbibleit/include',
                          'libbibleit/config', 'priv/config', 'priv/sql', 'priv/i18n',
