@@ -50,4 +50,4 @@ jobs:
         shell: bash
         run: |
           gh release create "$VERSION" assets/* --verify-tag --draft \
-            --title "Bibleit CLI $VERSION" --notes-file CHANGELOG.md
+            --title "$VERSION" --notes-file CHANGELOG.md
