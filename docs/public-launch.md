@@ -95,7 +95,8 @@ only the public-site results and remaining follow-ups.
 - [x] Windows AMD64 and ARM64 PowerShell 7/5.1 checks completed.
 - [x] Server CLI docs merged, deployed and verified in all three languages.
 - [x] Client-focused Developer page and restricted server docs deployed and verified.
-- [ ] Optional private read secrets retired; underlying token uses assessed before revocation.
+- [x] Optional private Actions read-secret copies retired; owner confirmed no token reuse.
+- [x] Underlying owner PAT identities/permissions verified and both tokens revoked.
 
 ## Coverage limits and separate follow-ups
 
@@ -105,9 +106,22 @@ Scoop bucket are outside this release; native Windows Scoop candidate checks
 passed independently. Service account/translation access remains separate from
 repository access. The separately authorized server CLI docs deployment is complete.
 
-Optional private repository read secrets remain stored; successful public paths
-do not use them. Secret removal and underlying PAT revocation were not included
-in approved actions 1–6. Assess owner control and other token uses before revocation.
+The separately authorized cleanup removed `BIBLEIT_CLIENT_READ_TOKEN` from the
+CLI and `BIBLEIT_CLI_READ_TOKEN` from the tap after checking all hosted branches
+and tags across the five Bibleit repositories, accessible secret metadata and
+local named references. The owner confirmed both tokens were created only for
+these copies and were not reused elsewhere. Current CLI workflows retrieve the
+public SDK without authentication; tap release/candidate reads use its generated
+workflow token. Private-only historical preparation workflows, including the
+CLI v0.0.1 workflows, are no longer supported for reruns after retirement; existing
+tags and release assets are unchanged.
+
+GitHub secret lists verified both copies absent. After owner account verification,
+the two underlying PAT identities and selected repository permissions were checked
+in GitHub settings: SDK code/metadata read and CLI Actions/code/metadata read,
+with no organization permissions. Both tokens were revoked; GitHub confirmed each
+deletion and their absence from the account's fine-grained token list.
+See the [cleanup assessment](security/private-read-secret-cleanup-2026-10-12.json).
 
 The approved language-client roadmap is JavaScript, Lua, Python, Ruby, Rust,
 Erlang/Elixir, and PHP. The Go SDK is available; the CLI is a separate command-line
