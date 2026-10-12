@@ -33,6 +33,16 @@ def main():
         scratch = Path(scratch)
         prefix = scratch / 'brew'
         subprocess.run(['git', 'clone', '--local', '--no-hardlinks', '--quiet', str(repository), str(prefix)], check=True)
+        # Uninstall can request core metadata even for a dependency-free tap.
+        # Seed it outside the sandbox without fetching core's full Git history.
+        core = prefix / 'Library/Taps/homebrew/homebrew-core'
+        core.parent.mkdir(parents=True, exist_ok=True)
+        cached_core = repository / 'Library/Taps/homebrew/homebrew-core'
+        source = str(cached_core) if (cached_core / '.git').exists() else 'https://github.com/Homebrew/homebrew-core'
+        clone_options = ['--local', '--no-hardlinks'] if source == str(cached_core) else ['--depth=1']
+        git_env = dict(base_env, GIT_CONFIG_GLOBAL=os.devnull, GIT_CONFIG_SYSTEM=os.devnull, GIT_TERMINAL_PROMPT='0')
+        subprocess.run(['git', 'clone', *clone_options, '--quiet', source, str(core)], env=git_env, check=True, timeout=300)
+        core_commit = subprocess.check_output(['git', '-C', str(core), 'rev-parse', 'HEAD'], env=git_env, text=True).strip()
         # Reuse the installed interpreter read-only. Homebrew may still fetch
         # developer gems or core metadata into the disposable prefix.
         ruby = repository / 'Library/Homebrew/vendor/portable-ruby/current'
@@ -99,7 +109,7 @@ def main():
         assert not (prefix / 'Cellar' / formula_name).exists()
     report = Path(args.report)
     report.parent.mkdir(parents=True, exist_ok=True)
-    report.write_text(json.dumps({'platform': os.uname().sysname, 'architecture': os.uname().machine, 'version': version, 'local_cli_archives': True, 'isolated_prefix': True, 'redistribution_notices_verified': True, 'checks': evidence}, indent=2) + '\n')
+    report.write_text(json.dumps({'platform': os.uname().sysname, 'architecture': os.uname().machine, 'version': version, 'local_cli_archives': True, 'isolated_prefix': True, 'redistribution_notices_verified': True, 'core_metadata_commit': core_commit, 'core_metadata_source': 'runner cache' if source == str(cached_core) else 'public shallow clone', 'checks': evidence}, indent=2) + '\n')
     print(f'PASS: Homebrew install/test/reinstall/completions/uninstall; report {report}')
 
 

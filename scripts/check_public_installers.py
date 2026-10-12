@@ -55,13 +55,9 @@ def main():
                 with urllib.request.urlopen(url, timeout=120) as response:
                     data = response.read()
                     resolved_url = response.geturl()
-                # Git may convert text to CRLF in a Windows worktree. Validate
-                # immutable downloads against canonical Git bytes and the audit.
+                # Compare with the frozen source, regardless of Windows CRLF
+                # checkout conversion or later changes to the default branch.
                 canonical = subprocess.check_output(["git", "show", manifest['commit'] + ":" + name], cwd=ROOT, env=env)
-                checkout = (ROOT / name).read_bytes()
-                if checkout != canonical:
-                    assert windows and checkout.replace(b"\r\n", b"\n") == canonical
-                    print(name + ": Windows checkout CRLF differs from canonical release LF", flush=True)
                 assert hashlib.sha256(data).hexdigest() == manifest['artifacts'][name]
                 assert data == canonical
                 script = work / name
