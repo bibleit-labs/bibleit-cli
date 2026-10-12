@@ -1,0 +1,151 @@
+{
+  "reviewed": "2026-10-12",
+  "previous_evidence": "v0.0.2-final-validation-2026-10-11.json",
+  "version": "v0.0.2",
+  "source_commit": "cbe588d81aa300d59f5f5fc76f705e5e4476b73b",
+  "candidate_run": {
+    "id": 38179740828,
+    "url": "https://github.com/bibleit-labs/bibleit-cli/actions/runs/38179740828",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "name": "Build six-target candidate",
+        "conclusion": "success"
+      },
+      {
+        "name": "Native installers ubuntu-24.04",
+        "conclusion": "success"
+      },
+      {
+        "name": "Native installers windows-11-arm",
+        "conclusion": "success"
+      },
+      {
+        "name": "Native installers macos-15",
+        "conclusion": "success"
+      },
+      {
+        "name": "Native installers windows-2025",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "manifest": {
+    "version": "v0.0.2",
+    "commit": "cbe588d81aa300d59f5f5fc76f705e5e4476b73b",
+    "dirty": false,
+    "local_only": false,
+    "go": "1.27.1",
+    "client": {
+      "Path": "github.com/bibleit-labs/bibleit-go",
+      "Version": "v0.0.1",
+      "GoVersion": "1.27.1",
+      "Sum": "h1:cOH6TJ2iLncj7xpbBUG7kkDFwXLZi1cF6l+DQy5w27o=",
+      "workspace": false
+    },
+    "artifacts": {
+      "bibleit_0.0.2_darwin_amd64.tar.gz": "bb7f30afb207c4eb67b95235507b16589d5aeb9eb245808733fcdde87b657a71",
+      "bibleit_0.0.2_darwin_arm64.tar.gz": "59658e724ad2e0df4600dbfb7253faeb265772d25af620702bb0b8762864b33d",
+      "bibleit_0.0.2_linux_amd64.tar.gz": "8545f5f41c5b3964b6e66376d2573e2c33a2abf5ef881f84ca1d754f6a39282e",
+      "bibleit_0.0.2_linux_arm64.tar.gz": "dc699c2d95515aa6f754ebe645b7d28dff0a3978186ac9f04bbbcdfd58640d74",
+      "bibleit_0.0.2_windows_amd64.zip": "9fb400e2fb3d47856e836689f78983970f6c0a54d0a4ee8ea506f2731cc4c39e",
+      "bibleit_0.0.2_windows_arm64.zip": "0edc7b07b167d6a2f5411ffae641769826250d7297c0ada2e81612309c16d2a6",
+      "install.sh": "0e01b88839185faa985fd578c16c0c57c71cdb17e4520f27d75bac8e7b184b61",
+      "install.ps1": "9d8d4fa8a0464e5edaccd561390b4f49c6254c203e5ef5eaa72021e77627b091"
+    }
+  },
+  "candidate_artifact": [
+    {
+      "id": 11716869627,
+      "name": "candidate-assets",
+      "digest": "sha256:fa4c4867acf59926c17fd70c51f0d46eeb5d4e26a9b00aae47b7282022b86388",
+      "size_in_bytes": 18142279,
+      "expired": false
+    }
+  ],
+  "windows_arm64": {
+    "platform": "Windows",
+    "architecture": "ARM64",
+    "native_os_and_python_architecture_assertions": "passed",
+    "steps": [
+      {
+        "name": "Require native Windows ARM64 execution",
+        "conclusion": "success"
+      },
+      {
+        "name": "Offline native installer checks",
+        "conclusion": "success"
+      },
+      {
+        "name": "Windows PowerShell 5.1 installation and replacement",
+        "conclusion": "success"
+      },
+      {
+        "name": "PowerShell parser and failure paths",
+        "conclusion": "success"
+      },
+      {
+        "name": "Native Scoop installation lifecycle",
+        "conclusion": "success"
+      }
+    ],
+    "scoop_report": {
+      "platform": "Windows",
+      "architecture": "ARM64",
+      "version": "0.0.2",
+      "isolated_root": true,
+      "loopback_assets": true,
+      "redistribution_notices_verified": true
+    },
+    "scoop_exit_codes": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "evidence_artifact": [
+      {
+        "id": 11717009668,
+        "name": "validation-windows-11-arm",
+        "digest": "sha256:43d89a47e5cfd4e1e866ff5beb69d25483b09a82cefee759b6ea8ef3b9adc04e",
+        "size_in_bytes": 1029
+      }
+    ]
+  },
+  "package_comparison": {
+    "eight_hashes": "identical to frozen f0c080c candidate",
+    "sdk_manifest": "identical pinned module/version/sum; no workspace",
+    "tap_formula": "tap verifier generates exact reviewed formula; no formula changes needed"
+  },
+  "tap_native_evidence": {
+    "run_id": 38178224204,
+    "conclusion": "success",
+    "platforms": [
+      "Darwin arm64",
+      "Linux x86_64"
+    ],
+    "scope": "Same eight package hashes; reviewed formula unchanged"
+  },
+  "merge_check_runs": {
+    "bibleit-go": 38179085340,
+    "homebrew-tap": 38179087153,
+    "bibleit-cli": 38179742827,
+    "conclusions": "success; later evidence-only commit requires a final CLI head check"
+  },
+  "security_followup": {
+    "new_history_findings": 0,
+    "new_validation_output_findings": 0,
+    "disclosure_approved": "2026-10-12",
+    "old_release_assets_rechecked_unchanged": 12,
+    "deficient_ci_artifacts_rechecked_unchanged": 38,
+    "private_backup": "All 12 old release assets and 38 deficient CI artifacts preserved privately in ignored .local-backups/private-release-evidence"
+  },
+  "remaining_limits": [
+    "Anonymous module/release/install access requires approved publication.",
+    "Darwin amd64 archive/hash checks passed; native Intel macOS execution is not claimed.",
+    "No platform signing/notarization added.",
+    "No merge, tag/release creation, visibility change or old-asset/artifact deletion."
+  ]
+}

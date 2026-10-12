@@ -5,59 +5,53 @@ The `bibleit` executable uses the [Bibleit Go client](https://github.com/bibleit
 and connects to the project-managed service at `https://bibleit.app`.
 SSH commands connect to `bibleit.app:22`.
 
-## Installation
+## Installation and current availability
 
-Version **v0.0.1** is available in [GitHub Releases](https://github.com/bibleit-labs/bibleit-cli/releases/tag/v0.0.1).
-The repositories and release assets are currently private, so installation requires
-an authorized GitHub account. Archives support macOS, Linux, and Windows on amd64 and arm64.
+The CLI, Go client and Homebrew tap are **private**. Corrected release packages
+and a matching tap formula are being prepared for review. Public installation
+awaits approval; see [release readiness](docs/releases.md).
 
-### While the repository is private
+Authorized contributors can build from source using the Go toolchain specified
+in [go.mod](go.mod) and authenticated Git access to the pinned private SDK;
+see [Development](#development).
+Repository access and Bibleit service access are separate: using the CLI still
+requires the relevant account credentials, permissions and translation access.
 
-Authenticate GitHub CLI with an account that has repository access, then download the release:
+### Planned public installation
 
-```sh
-gh release download v0.0.1 --repo bibleit-labs/bibleit-cli --dir assets
-BIBLEIT_INSTALL_ASSETS="$PWD/assets" bash assets/install.sh v0.0.1
-```
+The following commands apply **after the corrected release and public access are
+approved**. They are not available to unauthenticated users today. Packages cover
+macOS, Linux and Windows on amd64/arm64; binaries require no Go or Python runtime.
 
-On Windows, use Windows PowerShell 5.1 or PowerShell 7:
-
-```powershell
-gh release download v0.0.1 --repo bibleit-labs/bibleit-cli --dir assets
-& .\assets\install.ps1 -Version v0.0.1 -AssetsDir .\assets
-```
-
-The default installation directory is `~/.local/bin` on macOS/Linux and
-`%LOCALAPPDATA%\Bibleit\bin` on Windows. Add it to your `PATH` if needed.
-Both installers check SHA-256 checksums and the binary version before replacing an existing executable.
-They do not require administrator access or edit your shell profile.
-
-### After public release access is enabled
-
-These commands are intended for the public launch. Unauthenticated installation
-is unavailable while the repositories remain private; fresh public installation checks are pending.
-
-Homebrew:
+Homebrew (macOS/Linux):
 
 ```sh
 brew install bibleit-labs/tap/bibleit-cli
 ```
 
-Bash:
+Bash (macOS/Linux):
 
 ```sh
-curl -fsSL https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.1/install.sh | bash -s -- v0.0.1
+curl -fsSL https://github.com/bibleit-labs/bibleit-cli/releases/latest/download/install.sh | bash
 ```
 
-PowerShell:
+PowerShell (Windows):
 
 ```powershell
-Invoke-WebRequest -UseBasicParsing -Uri https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.1/install.ps1 -OutFile install.ps1
-& .\install.ps1 -Version v0.0.1
+Invoke-WebRequest -UseBasicParsing -Uri https://github.com/bibleit-labs/bibleit-cli/releases/latest/download/install.ps1 -OutFile install.ps1
+& .\install.ps1
 ```
 
-Release assets also include a Scoop manifest and archives for manual installation.
-See [distribution and release checks](docs/releases.md) for packaging and validation details.
+Script installers default to `~/.local/bin` or `%LOCALAPPDATA%\Bibleit\bin`;
+add that directory to PATH if needed. They verify checksums, version and required
+notices before replacing an executable and retain notices in `bibleit-licenses`.
+They require no administrator access and do not edit shell profiles.
+SSH commands need a separate OpenSSH client. Normal OS security protections remain
+enabled; these packages are not platform-signed or notarized.
+
+Release packages include a Scoop manifest, but no public Scoop bucket exists.
+See [distribution and maintenance](docs/releases.md) for offline candidate checks,
+updates, uninstalling and package-manager validation.
 
 ## Quickstart
 
@@ -208,7 +202,8 @@ Homebrew installs the completion files with the executable.
 
 ## Development
 
-Use **Go 1.27.1**. The CLI pins the released Go client; a sibling checkout is optional.
+Use the Go toolchain specified in [go.mod](go.mod). The CLI pins the Go client;
+a sibling checkout is optional.
 While the Go repository is private, configure Git access and set
 `GOPRIVATE=github.com/bibleit-labs/*` when downloading private modules.
 
@@ -221,9 +216,17 @@ GOWORK=off go build -o build/bibleit .
 
 For joint client/CLI development, an uncommitted local workspace can include both
 checkouts: `go work init . ../bibleit-go`.
-CI validates native macOS/Linux/Windows builds and release installers.
-See [native validation](docs/native-validation.md), the [release plan](docs/plan.md),
+Native code tests cover macOS/Linux/Windows. Package installation evidence and
+remaining launch gates are recorded in [release readiness](docs/releases.md).
+Fixtures do not prove public downloads.
+See [native validation](docs/native-validation.md), [release maintenance](docs/releases.md),
 and the [changelog](CHANGELOG.md).
 
 Contributions use Conventional Commits. See [contributing](CONTRIBUTING.md).
-Licensed under [MIT](LICENSE).
+Licensed under [MIT](LICENSE). Binary distributions also include
+[third-party notices](THIRD_PARTY_NOTICES); retain both files when redistributing
+the CLI. The software license does not grant rights to translations returned
+by the service.
+
+For contributions and bug reports, see [CONTRIBUTING.md](CONTRIBUTING.md).
+Report vulnerabilities privately as described in [SECURITY.md](SECURITY.md).

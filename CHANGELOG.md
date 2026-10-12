@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.0.2 — prepared, unreleased
+
+- Include SDK, Go runtime/standard-library and embedded third-party notices in
+  all six archives, and the project MIT notice in both downloadable installers.
+- Preserve LICENSE and THIRD_PARTY_NOTICES during Bash/PowerShell, Homebrew and
+  Scoop installation. New script installers reject packages missing notices,
+  including v0.0.1 archives, before replacing an existing executable.
+- Verify notice contents through native installation/reinstallation checks.
+
+This version is staged privately for review; no v0.0.2 tag or release is created
+by candidate validation. Existing v0.0.1 assets remain unchanged pending approval.
+
 ## v0.0.1 — 2026-10-11
 
 Initial Bibleit CLI release, using bibleit-go v0.0.1 and Go 1.27.1.
