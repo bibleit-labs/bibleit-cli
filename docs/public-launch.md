@@ -4,7 +4,8 @@ Completed 2026-10-12 after owner approval of actions 1–6, in SDK → CLI → t
 [bibleit-go](https://github.com/bibleit-labs/bibleit-go),
 [bibleit-cli](https://github.com/bibleit-labs/bibleit-cli), and
 [homebrew-tap](https://github.com/bibleit-labs/homebrew-tap) are public.
-bibleit-server remains private. Its docs PR remains draft, unmerged and undeployed.
+bibleit-server remains private. Its CLI documentation was separately approved,
+merged, deployed, and verified in English, German, and Portuguese.
 
 ## Release and cleanup
 
@@ -64,14 +65,50 @@ retention of audited operational records and commit email metadata.
 and [release/install evidence](security/public-launch-2026-10-12.json) record the
 actual state. Earlier readiness/audit documents are dated preparation snapshots.
 
+## Server documentation publication
+
+The separately approved CLI docs deployment is complete. Its initial validation
+passed 20 live checks across English, German, and Portuguese. The owner then
+requested that public docs expose clients and the open command protocol while
+keeping server implementation and HTTP/WebSocket references private.
+
+The revised [Developer page](https://bibleit.app/docs/developers) is deployed.
+All 45 post-deployment checks passed. Server Markdown URLs and the HTTP/WebSocket
+guide return 404, while the rendered [command protocol](https://bibleit.app/docs/protocol),
+[CLI guide](https://bibleit.app/docs/cli), Shell, product pages and public assets
+remain available. English/German/Portuguese docs contain no server Markdown links
+or implementation guides. The Developer page shows the available Go SDK and
+seven planned language clients with icons; the CLI has a separate Command line
+section. Health/readiness return 200 and the server repository remains private.
+
+Detailed deployment records, private workflow links, source/image fingerprints,
+and raw logs remain in ignored private storage. The public
+[publication summary](security/server-docs-publication-2026-10-12.json) records
+only the public-site results and remaining follow-ups.
+
+## Completion checklist
+
+- [x] SDK, CLI and tap launched in the approved order.
+- [x] Corrected immutable release published; approved deficient assets withdrawn.
+- [x] Main/release protections and available security settings applied and verified.
+- [x] Anonymous SDK, installers, native contributor CI and Homebrew checks passed.
+- [x] Windows AMD64 and ARM64 PowerShell 7/5.1 checks completed.
+- [x] Server CLI docs merged, deployed and verified in all three languages.
+- [x] Client-focused Developer page and restricted server docs deployed and verified.
+- [ ] Optional private read secrets retired; underlying token uses assessed before revocation.
+
 ## Coverage limits and separate follow-ups
 
 Native Intel macOS and Linux ARM64 Homebrew execution are not claimed. All six
 archive targets passed content/hash checks. Signing/notarization and a public
 Scoop bucket are outside this release; native Windows Scoop candidate checks
 passed independently. Service account/translation access remains separate from
-repository access. Server docs merge/deployment requires separate approval.
+repository access. The separately authorized server CLI docs deployment is complete.
 
 Optional private repository read secrets remain stored; successful public paths
 do not use them. Secret removal and underlying PAT revocation were not included
 in approved actions 1–6. Assess owner control and other token uses before revocation.
+
+The approved language-client roadmap is JavaScript, Lua, Python, Ruby, Rust,
+Erlang/Elixir, and PHP. The Go SDK is available; the CLI is a separate command-line
+tool. Future language-client implementation and releases are separate work.
