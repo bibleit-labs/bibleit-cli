@@ -40,9 +40,8 @@ Verify release inputs with GOWORK=off and no replacement modules.
 ## Compatibility and validation
 
 [Native validation](docs/native-validation.md) describes offline checks and
-optional isolated server integration. Contributors without server access can run
-the normal unit/runtime tests. Protocol fixtures are versioned snapshots; update
-them deliberately with the SDK and record the tested server baseline. Passing
+fixture isolation. Protocol fixtures are versioned snapshots; update them
+deliberately with the SDK and record compatibility evidence. Passing
 fixtures do not establish live-service behavior or anonymous distribution access.
 The [output contract](docs/output.md) defines JSON/NDJSON and exit codes.
 
