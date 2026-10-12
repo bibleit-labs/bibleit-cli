@@ -1,0 +1,47 @@
+{
+  "reviewed": "2026-10-12",
+  "server_visibility": "private",
+  "cli_docs_deployment": {
+    "live_checks_passed": 20,
+    "locales": [
+      "en",
+      "de",
+      "pt"
+    ],
+    "status": "deployed_and_verified"
+  },
+  "public_docs_revision": {
+    "status": "deployed_and_verified",
+    "publication_boundary": "Rendered public command protocol and client guides; server Markdown and HTTP/WebSocket references excluded.",
+    "available_language_clients": [
+      "Go"
+    ],
+    "planned_language_clients": [
+      "JavaScript",
+      "Lua",
+      "Python",
+      "Ruby",
+      "Rust",
+      "Erlang/Elixir",
+      "PHP"
+    ],
+    "command_line_tool": "Bibleit CLI, shown separately from language clients",
+    "live_checks_passed": 45,
+    "locales": [
+      "en",
+      "de",
+      "pt"
+    ],
+    "server_markdown_urls": "HTTP 404",
+    "http_websocket_guide": "HTTP 404"
+  },
+  "pending": [
+    "Optional private read-secret retirement and underlying token-use assessment."
+  ],
+  "separate_followups": [
+    "Native Intel macOS and Linux ARM64 Homebrew coverage.",
+    "Signing/notarization and public Scoop distribution.",
+    "Implementation and releases of planned language clients."
+  ],
+  "private_evidence": "Detailed deployment records, private workflow links, source/image fingerprints and raw logs retained locally; omitted from this public summary."
+}

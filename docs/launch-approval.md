@@ -4,7 +4,8 @@
 > public cutover. The SDK, CLI and tap are now public with protected main/release
 > tags. See [actual launch evidence](public-launch.md) for executed actions and
 > verified installation coverage. The preparation text below is a historical
-> snapshot. private-service remains private; its docs PR is not merged/deployed.
+> snapshot. private-service remains private. Its CLI docs were separately approved,
+> merged and deployed; see the completion checklist in [launch evidence](public-launch.md).
 
 
 Prepared 2026-10-12. This document specifies requested actions; it does not grant
