@@ -58,17 +58,10 @@ revocation` or `docs: clarify source builds`. Use `!` or a BREAKING CHANGE foote
 for incompatible changes. Branches must not use a codex prefix. Explain changed
 behavior and relevant validation; avoid unrelated work in a pull request.
 
-## Releases
+## Maintainer documentation
 
-SDK and CLI versions are independent. Update go.mod/go.sum together when changing
-the pinned SDK. Source builds report dev unless a version is injected. Release
-packaging requires a clean committed standalone checkout and Go 1.27.1.
-See [release maintenance](docs/releases.md) for candidate commands and gates.
-
-The corrected v0.0.2 is public; the notice-deficient v0.0.1 downloads were
-withdrawn while its source/tag remain. Prepare v0.0.3 from the final committed
-inputs and complete native installer checks. Do not publish new tags/assets or
-merge the staged tap formula without owner approval.
-The separate tap owns formula review and package-manager validation. Keep LICENSE
-and THIRD_PARTY_NOTICES with redistributed binaries. Software MIT does not grant
+See the [maintainer guide](docs/maintenance.md) for releases, installation checks,
+security/licensing audits and historical compatibility records. The separate tap
+owns formula review and package-manager validation. Keep LICENSE and
+THIRD_PARTY_NOTICES with redistributed binaries. Software MIT does not grant
 translation redistribution rights or service/account access.
