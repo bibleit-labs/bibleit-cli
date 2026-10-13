@@ -1,0 +1,106 @@
+{
+  "version": "v0.0.5",
+  "status": "candidate_verified",
+  "source_commit": "562798043308e3f1f6f2eafc4ebdad52ed6758d3",
+  "manifest": {
+    "version": "v0.0.5",
+    "commit": "562798043308e3f1f6f2eafc4ebdad52ed6758d3",
+    "dirty": false,
+    "local_only": false,
+    "go": "1.27.1",
+    "client": {
+      "Path": "github.com/bibleit-labs/bibleit-go",
+      "Version": "v0.0.2",
+      "GoVersion": "1.27.1",
+      "Sum": "h1:4/Oru8Ug6C7QdT5b/J4413pgyBk1HhpRvqNhmkpD1gg=",
+      "workspace": false
+    },
+    "artifacts": {
+      "bibleit_0.0.5_darwin_amd64.tar.gz": "571d8620e729badbc3a7cd2474f5ec426e04f2fa6ddbdac1784d092d3e1c824e",
+      "bibleit_0.0.5_darwin_arm64.tar.gz": "d33de0aab2205a47899aa10765dcffe98f7e0a306deb773f787496fdf11ec52b",
+      "bibleit_0.0.5_linux_amd64.tar.gz": "493c3f9c225bbb4f8c26829ca5a3214d851b714f330acd943cdf5824d07837f6",
+      "bibleit_0.0.5_linux_arm64.tar.gz": "4bdbcb18022dda75cdb16e9fea816badb185a32e4e7123b3cc8cca3e24f6d7ca",
+      "bibleit_0.0.5_windows_amd64.zip": "8ec9b0bc3e5bef65d175d830b547b3a75804cff48aee3dcea9e59c80f01b4a2f",
+      "bibleit_0.0.5_windows_arm64.zip": "296c62919d3049227726ad9afb59924b514d7091c897a5e7f076bf072ee7b107",
+      "install.sh": "0e01b88839185faa985fd578c16c0c57c71cdb17e4520f27d75bac8e7b184b61",
+      "install.ps1": "9d8d4fa8a0464e5edaccd561390b4f49c6254c203e5ef5eaa72021e77627b091"
+    }
+  },
+  "asset_sha256": {
+    "bibleit_0.0.5_linux_arm64.tar.gz": "4bdbcb18022dda75cdb16e9fea816badb185a32e4e7123b3cc8cca3e24f6d7ca",
+    "install.sh": "0e01b88839185faa985fd578c16c0c57c71cdb17e4520f27d75bac8e7b184b61",
+    "bibleit.json": "b7f220c503ca84f3eea61d855e795d7802e13089879bcd7a8a129a1e588219ba",
+    "bibleit_0.0.5_darwin_amd64.tar.gz": "571d8620e729badbc3a7cd2474f5ec426e04f2fa6ddbdac1784d092d3e1c824e",
+    "bibleit-cli.rb": "0aed2e80d5d3d85471c4c5f65d88677e279d82c3eb343a066f84da3d0220cfc3",
+    "checksums.txt": "6f569b899c6e0fe26e3f4fc57428551350085c0aa3e86b28964c95068d14a52b",
+    "bibleit_0.0.5_windows_amd64.zip": "8ec9b0bc3e5bef65d175d830b547b3a75804cff48aee3dcea9e59c80f01b4a2f",
+    "install.ps1": "9d8d4fa8a0464e5edaccd561390b4f49c6254c203e5ef5eaa72021e77627b091",
+    "bibleit_0.0.5_darwin_arm64.tar.gz": "d33de0aab2205a47899aa10765dcffe98f7e0a306deb773f787496fdf11ec52b",
+    "manifest.json": "49103e43437d495718992769c2b4b4ac4e78cd132f6e743b23b788294168cc78",
+    "bibleit_0.0.5_windows_arm64.zip": "296c62919d3049227726ad9afb59924b514d7091c897a5e7f076bf072ee7b107",
+    "bibleit_0.0.5_linux_amd64.tar.gz": "493c3f9c225bbb4f8c26829ca5a3214d851b714f330acd943cdf5824d07837f6"
+  },
+  "binary_sha256": {
+    "darwin_amd64": "c56f1424a57f04e877d532449ac1615efc2b78669a9137a032c4b38724b758b6",
+    "darwin_arm64": "fb92ca696cd693e44b6f11219ef30c22c2a4a0bd0ac41c98a367c4673223597b",
+    "linux_amd64": "0c1442abde8380fd590634bee57dee349ccb1943f6835c03f96b6e8eb6cede69",
+    "linux_arm64": "c594fd6e9ba3f84937957ab1126846e4f8a4f236b64c67b2261aee9087ef50a6",
+    "windows_amd64": "0b68bfc4eedd271ff88b63000d0c3218c56b4f7cc0d8869073d6e68fc653b989",
+    "windows_arm64": "5822ef5518c23039873d173235a392af1b52ec126a1f78fcc7d195df642b2e47"
+  },
+  "executable_headers": {
+    "bibleit_0.0.5_darwin_amd64.tar.gz": {
+      "system": "darwin",
+      "architecture": "amd64",
+      "format": "Mach-O64",
+      "sha256": "c56f1424a57f04e877d532449ac1615efc2b78669a9137a032c4b38724b758b6",
+      "matches_archive_target": true
+    },
+    "bibleit_0.0.5_darwin_arm64.tar.gz": {
+      "system": "darwin",
+      "architecture": "arm64",
+      "format": "Mach-O64",
+      "sha256": "fb92ca696cd693e44b6f11219ef30c22c2a4a0bd0ac41c98a367c4673223597b",
+      "matches_archive_target": true
+    },
+    "bibleit_0.0.5_linux_amd64.tar.gz": {
+      "system": "linux",
+      "architecture": "amd64",
+      "format": "ELF64",
+      "sha256": "0c1442abde8380fd590634bee57dee349ccb1943f6835c03f96b6e8eb6cede69",
+      "matches_archive_target": true
+    },
+    "bibleit_0.0.5_linux_arm64.tar.gz": {
+      "system": "linux",
+      "architecture": "arm64",
+      "format": "ELF64",
+      "sha256": "c594fd6e9ba3f84937957ab1126846e4f8a4f236b64c67b2261aee9087ef50a6",
+      "matches_archive_target": true
+    },
+    "bibleit_0.0.5_windows_amd64.zip": {
+      "system": "windows",
+      "architecture": "amd64",
+      "format": "PE",
+      "sha256": "0b68bfc4eedd271ff88b63000d0c3218c56b4f7cc0d8869073d6e68fc653b989",
+      "matches_archive_target": true
+    },
+    "bibleit_0.0.5_windows_arm64.zip": {
+      "system": "windows",
+      "architecture": "arm64",
+      "format": "PE",
+      "sha256": "5822ef5518c23039873d173235a392af1b52ec126a1f78fcc7d195df642b2e47",
+      "matches_archive_target": true
+    }
+  },
+  "publication_requires_approval": false,
+  "release_title": "v0.0.5",
+  "release_workflow": "https://github.com/bibleit-labs/bibleit-cli/actions/runs/38328017189",
+  "sdk_release": "https://github.com/bibleit-labs/bibleit-go/releases/tag/v0.0.2",
+  "publication": {
+    "status": "pending_draft_verification",
+    "public_installers": "pending",
+    "homebrew": "pending"
+  },
+  "guarded_assets_match_local_main": true,
+  "native_candidate_run": "https://github.com/bibleit-labs/bibleit-cli/actions/runs/38327785229"
+}
