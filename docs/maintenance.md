@@ -18,7 +18,7 @@ Fixture checks alone do not establish anonymous public installation.
 
 [Public launch evidence](public-launch.md) records verified installation coverage,
 repository protections and the completed launch checklist. The
-[latest release record](release-v0.0.5-readiness.md) binds the published inputs and
+[latest release record](release-v0.0.6-readiness.md) binds the published inputs and
 native installation results. Dated evidence applies only to its recorded revision.
 
 README, notice, installer, completion or build-input changes require new packages
