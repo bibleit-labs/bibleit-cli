@@ -174,6 +174,7 @@ Use `bibleit help` or `bibleit <command> --help` for usage.
 | `auth login`, `auth info`, `auth whoami`, `auth logout` | Manage and inspect authentication |
 | `ping`, `server info`, `server help [topic]` | Inspect service availability and capabilities |
 | `account info`, `account quotas`, `account tokens` | Inspect account details and active token metadata |
+| `organization list [cursor]`, `organization application <id> status` | Inspect memberships and private verification applications; requires organization_status capability |
 | `translation list` | List account translations |
 | `translation add\|remove\|info\|catalog <translation>` | Manage translations and inspect metadata/references |
 | `read <translation> <book> [chapter] [verse]` | Read a reference |
