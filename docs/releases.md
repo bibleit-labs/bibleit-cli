@@ -1,14 +1,14 @@
 # Release maintenance
 
-The SDK, CLI and tap are public. CLI v0.0.5 is the latest stable release and its
+The SDK, CLI and tap are public. CLI v0.0.6 is the latest stable release and its
 matching tap formula is available. All original v0.0.1 download assets were
 withdrawn for missing redistribution notices; its source and tag are preserved.
 [Public launch evidence](public-launch.md) records source, checksums, native public
 installation results and protections. Historical preparation records remain dated
 snapshots. Installation commands are in [the README](../README.md).
 
-Published v0.0.5 includes organization directory and application status reads. The
-[completed release checklist](release-v0.0.5-readiness.md) records owner approval,
+Published v0.0.6 pins SDK v0.0.3 and retains organization directory and application status reads. The
+[completed release checklist](release-v0.0.6-readiness.md) records owner approval,
 exact asset verification, the protected tap merge and anonymous native results.
 
 ## Prepare a candidate
