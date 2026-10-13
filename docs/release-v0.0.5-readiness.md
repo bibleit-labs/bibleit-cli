@@ -11,5 +11,11 @@ asset hashes are recorded in [the validation record](security/v0.0.5-release-val
 
 Native Linux, macOS and Windows race tests, vet, builds and process checks passed.
 The [guarded release workflow](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38328017189)
-is checking packaging and all six native installer targets. Draft asset verification,
-publication, anonymous installation and Homebrew validation remain pending.
+passed packaging and all six native installer targets. All twelve draft assets
+matched the frozen main packages exactly before publication. [v0.0.5](https://github.com/bibleit-labs/bibleit-cli/releases/tag/v0.0.5)
+is latest stable; anonymous downloads of all twelve assets and the latest manifest
+match their frozen hashes.
+
+[Anonymous installer validation](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38328674718)
+and [Homebrew PR #17](https://github.com/bibleit-labs/homebrew-tap/pull/17) native
+validation are in progress.
