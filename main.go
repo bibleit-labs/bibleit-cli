@@ -92,7 +92,7 @@ func run(args []string) int {
 	if oneOf(args[len(args)-1], "--help", "-h") || (args[len(args)-1] == "help" && args[0] != "server") {
 		return help([]string{args[0]})
 	}
-	if len(args) == 1 && oneOf(args[0], "auth", "live", "read", "search", "translation", "server", "account", "completion") {
+	if len(args) == 1 && oneOf(args[0], "auth", "live", "read", "search", "translation", "server", "account", "organization", "completion") {
 		return help(args)
 	}
 	if args[0] == "completion" {
@@ -146,6 +146,23 @@ func run(args []string) int {
 	command, err := commandFor(args)
 	if err != nil {
 		return fail(exitUsage, "%v", err)
+	}
+	if args[0] == "organization" || len(args) == 3 && args[0] == "server" && args[1] == "help" && args[2] == "organization" {
+		lines, err := request(cfg, bibleit.ServerInfoCommand())
+		if err != nil {
+			return protocolFailure(err)
+		}
+		supported := false
+		for _, record := range parseRecords(lines) {
+			for _, capability := range strings.Split(record.Fields["capabilities"], ",") {
+				if capability == "organization_status" {
+					supported = true
+				}
+			}
+		}
+		if !supported {
+			return fail(exitUsage, "this server does not support organization_status; upgrade the server or use the organization page in your browser")
+		}
 	}
 	if action := destructiveAction(args); action != "" && options["--yes"] != "true" {
 		if err := confirmAction(cfg, action, format, os.Stdin, os.Stderr, terminalInput(os.Stdin) && terminalInput(os.Stderr)); err != nil {
@@ -277,6 +294,16 @@ func commandFor(a []string) (bibleit.Command, error) {
 		}
 		if len(a) == 2 && a[1] == "quotas" {
 			return bibleit.AccountQuotasCommand(), nil
+		}
+	case "organization":
+		if len(a) == 2 && a[1] == "list" {
+			return bibleit.OrganizationListCommand("")
+		}
+		if len(a) == 3 && a[1] == "list" {
+			return bibleit.OrganizationListCommand(a[2])
+		}
+		if len(a) == 4 && a[1] == "application" && a[3] == "status" {
+			return bibleit.OrganizationApplicationStatusCommand(a[2])
 		}
 	case "translation":
 		if len(a) == 2 && a[1] == "list" {
@@ -919,7 +946,7 @@ func protocolFailure(err error) int {
 	switch serverCode {
 	case "unauthorized", "invalid_token", "revoked":
 		code = exitUnauthenticated
-	case "forbidden":
+	case "forbidden", "organization_pending_verification", "organization_suspended":
 		code = exitForbidden
 	case "not_found", "actor_not_found":
 		code = exitNotFound
@@ -966,7 +993,7 @@ func help(topic []string) int {
 			"Usage:", "  bibleit [flags]", "  bibleit [command]", "",
 			"Reading Scripture", "  read         Read a verse, chapter, or book.", "  search       Search an enabled translation.", "  translation  Manage your account translation library.", "",
 			"Live sessions", "  live         Create, inspect, and control Lives you are allowed to manage.", "",
-			"Access control", "  auth         Authenticate and inspect your Bibleit account.", "  account      Inspect your account and effective quotas.", "",
+			"Access control", "  auth         Authenticate and inspect your Bibleit account.", "  account      Inspect your account and effective quotas.", "  organization Inspect organization memberships and verification applications.", "",
 			"Service", "  server       Inspect the Bibleit service.", "",
 			"Additional Commands:", "  help         Help about any command.", "  version      Print the CLI version.", "  completion   Generate Bash, Zsh, or Fish completion.", "",
 			"Flags:", "      --transport http|ssh       Select transport (default http)", "      --identity path            Select a supported SSH private key", "      --format table|raw|json|ndjson  Output format (default \"table\")", "      --yes                      Confirm destructive commands without a prompt", "  -h, --help                      Help for bibleit.", "  -v, --version                   Print the CLI version.", "",
@@ -994,10 +1021,12 @@ func help(topic []string) int {
 		lines = []string{"Search an installed translation.", "", "Usage:", "  bibleit search <translation> <query>", "", "Example:", "  bibleit search KJV \"love one another\""}
 	case "translation":
 		lines = []string{"Inspect translation metadata and references, and manage your account library.", "", "Usage:", "  bibleit translation list", "  bibleit translation add <translation>", "  bibleit translation remove <translation>", "  bibleit translation info <translation>", "  bibleit translation catalog <translation>", "", "Physical translation installation and deletion are server operator tasks and are not exposed by this CLI."}
+	case "organization":
+		lines = []string{"Inspect organization memberships and your verification applications.", "", "Usage:", "  bibleit organization list [cursor]", "  bibleit organization application <id> status", "", "List returns one page of at most 50 records. Pass the returned next cursor unchanged.", "Pending applications grant no operating rights. Organization approval is completed in Bibleit admin.", "Applications are read-only; corrections require cancellation and a new request in the browser.", "Organization membership is invitation-only. No request or join mutation commands are exposed."}
 	case "account":
 		lines = []string{"Inspect your personal account, effective quotas and token metadata.", "", "Usage:", "  bibleit account info", "  bibleit account quotas", "  bibleit account tokens"}
 	case "server":
-		lines = []string{"Inspect the Bibleit service. This reports the service and protocol versions, not the CLI version.", "", "Usage:", "  bibleit server info", "  bibleit server help [server|account|auth|translation|live]"}
+		lines = []string{"Inspect the Bibleit service. This reports the service and protocol versions, not the CLI version.", "", "Usage:", "  bibleit server info", "  bibleit server help [server|account|auth|translation|live|organization]"}
 	default:
 		return fail(exitUsage, "unknown help topic %q", key)
 	}

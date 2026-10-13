@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.0.5 — 2026-10-13
+
+- Add organization list/application status commands, capability discovery, help and shell completion. Preserve pending/deleted application state and map pending/suspended organization denials to forbidden exit 4.
+- Organization membership is invitation-only; verification requests remain browser-managed and approval remains in Bibleit admin.
+
 ## v0.0.4 — 2026-10-12
 
 - Stop browser sign-in promptly when authorization is denied, with a clear
