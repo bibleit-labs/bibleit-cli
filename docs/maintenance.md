@@ -18,7 +18,7 @@ Fixture checks alone do not establish anonymous public installation.
 
 [Public launch evidence](public-launch.md) records verified installation coverage,
 repository protections and the completed launch checklist. The
-[latest release record](release-v0.0.3-readiness.md) binds the published inputs and
+[latest release record](release-v0.0.5-readiness.md) binds the published inputs and
 native installation results. Dated evidence applies only to its recorded revision.
 
 README, notice, installer, completion or build-input changes require new packages
@@ -46,3 +46,5 @@ historical records; use current release evidence for completed publication gates
 approved launch: exact asset hashes, published latest stable release, merged tap,
 all six anonymous native CLI targets and all four anonymous native Homebrew targets.
 The private real Chrome blocked-login fixture also passed before publication.
+
+[v0.0.5 evidence](release-v0.0.5-readiness.md) records the organization read-command release and its current installation validation results.
