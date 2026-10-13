@@ -17,5 +17,13 @@ is latest stable; anonymous downloads of all twelve assets and the latest manife
 match their frozen hashes.
 
 [Anonymous installer validation](https://github.com/bibleit-labs/bibleit-cli/actions/runs/38328674718)
-and [Homebrew PR #17](https://github.com/bibleit-labs/homebrew-tap/pull/17) native
-validation are in progress.
+passed all six native targets, including latest and explicit URLs and PowerShell
+7/5.1. Every downloaded report matches the frozen executable hashes.
+
+[Homebrew PR #17](https://github.com/bibleit-labs/homebrew-tap/pull/17) merged as
+`6efab864e576b3c0bc0793b09991a2547deb4e6a` after required checks and
+[four-platform native lifecycle validation](https://github.com/bibleit-labs/homebrew-tap/actions/runs/38328719478) passed.
+All four downloaded reports match the frozen binary hashes. Anonymous public main
+serves the exact tested formula, including v0.0.5 URLs and all four archive hashes.
+The lifecycle checks were not repeated after merge because formula and artifact
+bytes were unchanged; this release has no separate anonymous Homebrew lifecycle run.
