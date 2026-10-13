@@ -1,15 +1,14 @@
 # Release maintenance
 
-The SDK, CLI and tap are public. CLI v0.0.3 is the latest stable release and its
+The SDK, CLI and tap are public. CLI v0.0.5 is the latest stable release and its
 matching tap formula is available. All original v0.0.1 download assets were
 withdrawn for missing redistribution notices; its source and tag are preserved.
 [Public launch evidence](public-launch.md) records source, checksums, native public
 installation results and protections. Historical preparation records remain dated
 snapshots. Installation commands are in [the README](../README.md).
 
-Published v0.0.3 includes authentication help, updated completion and recovery
-guidance, and direct SSH host trust for `bibleit.app`. The
-[completed release checklist](release-v0.0.3-readiness.md) records owner approval,
+Published v0.0.5 includes organization directory and application status reads. The
+[completed release checklist](release-v0.0.5-readiness.md) records owner approval,
 exact asset verification, the protected tap merge and anonymous native results.
 
 ## Prepare a candidate
@@ -21,8 +20,8 @@ Choose a fresh output directory; packaging refuses to overwrite an existing one.
 ```sh
 GOWORK=off go mod download
 GOWORK=off go mod verify
-GOWORK=off python3 scripts/package_release.py --version v0.0.3 --output build/releases/v0.0.3
-python3 scripts/check_release.py --assets build/releases/v0.0.3
+GOWORK=off python3 scripts/package_release.py --version v0.0.6 --output build/releases/v0.0.6
+python3 scripts/check_release.py --assets build/releases/v0.0.6
 ```
 
 The packager builds one native executable to generate completions, then six
@@ -51,18 +50,18 @@ to conceal a notice/content change.
 macOS/Linux:
 
 ```sh
-BIBLEIT_INSTALL_ASSETS="$PWD/build/releases/v0.0.3" \
-  BIBLEIT_INSTALL_DIR="$PWD/build/install-test" bash install.sh v0.0.3
+BIBLEIT_INSTALL_ASSETS="$PWD/build/releases/v0.0.6" \
+  BIBLEIT_INSTALL_DIR="$PWD/build/install-test" bash install.sh v0.0.6
 build/install-test/bibleit version
 ```
 
 Windows:
 
 ```powershell
-python scripts/check_release.py --assets build/releases/v0.0.3
-python scripts/check_release.py --assets build/releases/v0.0.3 --powershell powershell
-./scripts/check_powershell_installer.ps1 -AssetsDir ./build/releases/v0.0.3
-python scripts/check_scoop.py --assets build/releases/v0.0.3 --scoop-source ./scoop-source
+python scripts/check_release.py --assets build/releases/v0.0.6
+python scripts/check_release.py --assets build/releases/v0.0.6 --powershell powershell
+./scripts/check_powershell_installer.ps1 -AssetsDir ./build/releases/v0.0.6
+python scripts/check_scoop.py --assets build/releases/v0.0.6 --scoop-source ./scoop-source
 ```
 
 PowerShell 7 and 5.1 require native Windows installation/replacement checks.
@@ -73,7 +72,7 @@ It leaves persistent PATH and the user's real Scoop installation untouched.
 Homebrew:
 
 ```sh
-python3 scripts/check_homebrew.py --assets build/releases/v0.0.3
+python3 scripts/check_homebrew.py --assets build/releases/v0.0.6
 ```
 
 The fixture uses a disposable prefix, local archive URLs and normal Homebrew
