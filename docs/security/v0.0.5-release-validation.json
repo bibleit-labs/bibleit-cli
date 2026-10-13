@@ -1,6 +1,6 @@
 {
   "version": "v0.0.5",
-  "status": "published_public_installers_pending",
+  "status": "published_and_installation_checks_passed",
   "source_commit": "562798043308e3f1f6f2eafc4ebdad52ed6758d3",
   "manifest": {
     "version": "v0.0.5",
@@ -103,7 +103,8 @@
     "anonymous_assets": 12,
     "anonymous_latest_manifest_matches": true,
     "public_installers_run": 38328674718,
-    "homebrew_pull_request": "https://github.com/bibleit-labs/homebrew-tap/pull/17"
+    "homebrew_pull_request": "https://github.com/bibleit-labs/homebrew-tap/pull/17",
+    "public_installers": "passed_six_native_targets"
   },
   "guarded_assets_match_local_main": true,
   "native_candidate_run": "https://github.com/bibleit-labs/bibleit-cli/actions/runs/38327785229",
@@ -264,5 +265,310 @@
       "updatedAt": "2026-10-13T00:42:54Z",
       "url": "https://github.com/bibleit-labs/bibleit-cli/releases/download/v0.0.5/manifest.json"
     }
-  ]
+  ],
+  "public_installer_reports": [
+    {
+      "runner": "windows-2025",
+      "verified_checks": 4,
+      "binary_sha256": "0b68bfc4eedd271ff88b63000d0c3218c56b4f7cc0d8869073d6e68fc653b989"
+    },
+    {
+      "runner": "ubuntu-24.04-arm",
+      "verified_checks": 2,
+      "binary_sha256": "c594fd6e9ba3f84937957ab1126846e4f8a4f236b64c67b2261aee9087ef50a6"
+    },
+    {
+      "runner": "macos-15-intel",
+      "verified_checks": 2,
+      "binary_sha256": "c56f1424a57f04e877d532449ac1615efc2b78669a9137a032c4b38724b758b6"
+    },
+    {
+      "runner": "macos-15",
+      "verified_checks": 2,
+      "binary_sha256": "fb92ca696cd693e44b6f11219ef30c22c2a4a0bd0ac41c98a367c4673223597b"
+    },
+    {
+      "runner": "ubuntu-24.04",
+      "verified_checks": 2,
+      "binary_sha256": "0c1442abde8380fd590634bee57dee349ccb1943f6835c03f96b6e8eb6cede69"
+    },
+    {
+      "runner": "windows-11-arm",
+      "verified_checks": 4,
+      "binary_sha256": "5822ef5518c23039873d173235a392af1b52ec126a1f78fcc7d195df642b2e47"
+    }
+  ],
+  "tap": {
+    "pull_request": "https://github.com/bibleit-labs/homebrew-tap/pull/17",
+    "merge_commit": "6efab864e576b3c0bc0793b09991a2547deb4e6a",
+    "native_validation_run": 38328719478,
+    "status": "four_native_targets_passed_public_main_formula_matches",
+    "public_lifecycle_rerun": false,
+    "reports": [
+      {
+        "runner": "ubuntu-24.04",
+        "binary_sha256": "0c1442abde8380fd590634bee57dee349ccb1943f6835c03f96b6e8eb6cede69",
+        "notices_verified": true,
+        "checks": [
+          {
+            "command": [
+              "brew",
+              "--prefix"
+            ],
+            "exit_code": 0,
+            "output": "/home/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-4gcbc2e9/brew\n"
+          },
+          {
+            "command": [
+              "brew",
+              "install",
+              "--formula",
+              "--build-from-source",
+              "bibleit-labs/local-validation/bibleit-cli"
+            ],
+            "exit_code": 0,
+            "output": "\u001b[34m==>\u001b[0m \u001b[1mTrusted formula bibleit-labs/local-validation/bibleit-cli\u001b[0m\n::warning::Your Homebrew's prefix is not /home/linuxbrew/.linuxbrew.%0A%0ASome of Homebrew's bottles (binary packages) cannot be used with this prefix.%0A%0AConsider uninstalling Homebrew and reinstalling into the default prefix.\n\u001b[32m==>\u001b[0m \u001b[1mFetching downloads for: \u001b[32mbibleit-cli\u001b[39m\u001b[0m\n\u2714\ufe0e Formula bibleit-cli (0.0.5)\n\u001b[34m==>\u001b[0m \u001b[1mInstalling bibleit-cli from bibleit-labs/local-validation\u001b[0m\n::warning::Landlock ABI 10 or later is required to deny all network access; found ABI 7. Applying the network restrictions supported by this kernel.\n\ud83c\udf7a  /home/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-4gcbc2e9/brew/Cellar/bibleit-cli/0.0.5: 10 files, 7.6MB, built in 1 second\n\u001b[32m==>\u001b[0m \u001b[1mCaveats\u001b[0m\nBash completion has been installed to:\n  /home/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-4gcbc2e9/brew/etc/bash_completion.d\n\nThis is a Tier 3 configuration:\n  \u001b[4mhttps://docs.brew.sh/Support-Tiers#tier-3\u001b[24m\n\u001b[1mYou can report issues with Tier 3 configurations to Homebrew/* repositories!\u001b[0m\n  \u001b[4mhttps://docs.brew.sh/Troubleshooting\u001b[24m\nRead the above document before opening any issues or PRs.\n"
+          },
+          {
+            "command": [
+              "brew",
+              "test",
+              "bibleit-labs/local-validation/bibleit-cli"
+            ],
+            "exit_code": 0,
+            "output": "\u001b[33mWarning:\u001b[0m \u001b[1mtest\u001b[0m is a developer command, so Homebrew's\ndeveloper mode has been automatically turned on.\nTo turn developer mode off, run:\n  brew developer off\n\nFetching gem metadata from https://rubygems.org/.........\nFetching bindata 3.0.1\nFetching drb 2.2.3\nFetching concurrent-ruby 1.3.8\nFetching elftools 2.2.0\nFetching logger 1.7.0\nFetching minitest 6.0.6\nFetching prism 1.9.0\nFetching patchelf 1.7.0\nFetching plist 3.7.2\nFetching ruby-macho 7.0.0\nFetching sorbet-runtime 0.6.13524\nInstalling drb 2.2.3\nInstalling bindata 3.0.1\nInstalling elftools 2.2.0\nInstalling logger 1.7.0\nInstalling patchelf 1.7.0\nInstalling minitest 6.0.6\nInstalling concurrent-ruby 1.3.8\nInstalling plist 3.7.2\nInstalling ruby-macho 7.0.0\nInstalling sorbet-runtime 0.6.13524\nInstalling prism 1.9.0 with native extensions\nBundle complete! 38 Gemfile dependencies, 11 gems now installed.\nBundled gems are installed into `./build/validation/bibleit-brew-4gcbc2e9/brew/Library/Homebrew/vendor/bundle`\n2 installed gems you directly depend on are looking for funding.\n  Run `bundle fund` for details\n\u001b[32m==>\u001b[0m \u001b[1mTesting bibleit-labs/local-validation/bibleit-cli\u001b[0m\n\u001b[34m==>\u001b[0m \u001b[1m/home/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-4g\u001b[0m\n"
+          },
+          {
+            "command": [
+              "brew",
+              "reinstall",
+              "--formula",
+              "--build-from-source",
+              "bibleit-labs/local-validation/bibleit-cli"
+            ],
+            "exit_code": 0,
+            "output": "::warning::building from source is not supported!\nYou're on your own. Failures are expected so don't create any issues, please!\n::warning::Your Homebrew's prefix is not /home/linuxbrew/.linuxbrew.%0A%0ASome of Homebrew's bottles (binary packages) cannot be used with this prefix.%0A%0AConsider uninstalling Homebrew and reinstalling into the default prefix.\n\u001b[32m==>\u001b[0m \u001b[1mFetching downloads for: \u001b[32mbibleit-cli\u001b[39m\u001b[0m\n\u2714\ufe0e Formula bibleit-cli (0.0.5)\n\u001b[32m==>\u001b[0m \u001b[1mReinstalling \u001b[32mbibleit-labs/local-validation/bibleit-cli\u001b[39m \u001b[0m\n::warning::Landlock ABI 10 or later is required to deny all network access; found ABI 7. Applying the network restrictions supported by this kernel.\n\ud83c\udf7a  /home/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-4gcbc2e9/brew/Cellar/bibleit-cli/0.0.5: 10 files, 7.6MB, built in 1 second\n\u001b[32m==>\u001b[0m \u001b[1mCaveats\u001b[0m\nBash completion has been installed to:\n  /home/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-4gcbc2e9/brew/etc/bash_completion.d\n\nThis is a Tier 3 configuration:\n  \u001b[4mhttps://docs.brew.sh/Support-Tiers#tier-3\u001b[24m\n\u001b[1mYou can report issues with Tier 3 configurations to Homebrew/* repositories!\u001b[0m\n  \u001b[4mhttps://docs.brew.sh/Troubleshooting\u001b[24m\nRead the above document before opening any issues or PRs.\n"
+          },
+          {
+            "command": [
+              "brew",
+              "test",
+              "bibleit-labs/local-validation/bibleit-cli"
+            ],
+            "exit_code": 0,
+            "output": "\u001b[32m==>\u001b[0m \u001b[1mTesting bibleit-labs/local-validation/bibleit-cli\u001b[0m\n\u001b[34m==>\u001b[0m \u001b[1m/home/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-4g\u001b[0m\n"
+          },
+          {
+            "command": [
+              "brew",
+              "uninstall",
+              "--formula",
+              "--ignore-dependencies",
+              "bibleit-labs/local-validation/bibleit-cli"
+            ],
+            "exit_code": 0,
+            "output": "Uninstalling /home/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-4gcbc2e9/brew/Cellar/bibleit-cli/0.0.5... (10 files, 7.6MB)\n"
+          }
+        ]
+      },
+      {
+        "runner": "macos-15-intel",
+        "binary_sha256": "c56f1424a57f04e877d532449ac1615efc2b78669a9137a032c4b38724b758b6",
+        "notices_verified": true,
+        "checks": [
+          {
+            "command": [
+              "brew",
+              "--prefix"
+            ],
+            "exit_code": 0,
+            "output": "/Users/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-smsbq49s/brew\n"
+          },
+          {
+            "command": [
+              "brew",
+              "install",
+              "--formula",
+              "--build-from-source",
+              "bibleit-labs/local-validation/bibleit-cli"
+            ],
+            "exit_code": 0,
+            "output": "\u001b[34m==>\u001b[0m \u001b[1mTrusted formula bibleit-labs/local-validation/bibleit-cli\u001b[0m\n::warning::Your Homebrew's prefix is not /usr/local.%0A%0ASome of Homebrew's bottles (binary packages) cannot be used with this prefix.%0A%0AConsider uninstalling Homebrew and reinstalling into the default prefix.\n::warning::You are using macOS on Intel x86_64.%0AWe do not provide support for this platform (as-of September 2026, announced August 2025).%0A%0AApple have dropped Intel x86_64 support in macOS Golden Gate (27).%0AGitHub Actions are dropping macOS Intel x86_64 runners in 2027.%0AHomebrew is a non-profit project run entirely by volunteers, not employees.%0AIf the biggest companies in the world cannot support macOS Intel x86_64%0Aany longer, sadly neither can we.%0A%0AHomebrew no longer builds bottles for this configuration.%0AConsider MacPorts, which provides binary packages for this macOS version:%0A  https://www.macports.org\n\u001b[32m==>\u001b[0m \u001b[1mFetching downloads for: \u001b[32mbibleit-cli\u001b[39m\u001b[0m\n\u2714\ufe0e Formula bibleit-cli (0.0.5)\n\u001b[34m==>\u001b[0m \u001b[1mInstalling bibleit-cli from bibleit-labs/local-validation\u001b[0m\n\ud83c\udf7a  /Users/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-smsbq49s/brew/Cellar/bibleit-cli/0.0.5: 10 files, 7.7MB, built in 8 seconds\n\u001b[32m==>\u001b[0m \u001b[1mCaveats\u001b[0m\nBash completion has been installed to:\n  /Users/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-smsbq49s/brew/etc/bash_completion.d\n\nThis is a Tier 3 configuration:\n  \u001b[4mhttps://docs.brew.sh/Support-Tiers#tier-3\u001b[24m\n\u001b[1mYou can report issues with Tier 3 configurations to Homebrew/* repositories!\u001b[0m\n  \nRead the above document before opening any issues or PRs.\n"
+          },
+          {
+            "command": [
+              "brew",
+              "test",
+              "bibleit-labs/local-validation/bibleit-cli"
+            ],
+            "exit_code": 0,
+            "output": "\u001b[33mWarning:\u001b[0m \u001b[1mtest\u001b[0m is a developer command, so Homebrew's\ndeveloper mode has been automatically turned on.\nTo turn developer mode off, run:\n  brew developer off\n\nFetching gem metadata from https://rubygems.org/.........\nFetching concurrent-ruby 1.3.8\nFetching bindata 3.0.1\nFetching drb 2.2.3\nFetching elftools 2.2.0\nFetching logger 1.7.0\nFetching prism 1.9.0\nFetching minitest 6.0.6\nFetching patchelf 1.7.0\nFetching plist 3.7.2\nFetching ruby-macho 7.0.0\nFetching sorbet-runtime 0.6.13524\nInstalling drb 2.2.3\nInstalling elftools 2.2.0\nInstalling bindata 3.0.1\nInstalling logger 1.7.0\nInstalling concurrent-ruby 1.3.8\nInstalling plist 3.7.2\nInstalling prism 1.9.0 with native extensions\nInstalling patchelf 1.7.0\nInstalling minitest 6.0.6\nInstalling sorbet-runtime 0.6.13524\nInstalling ruby-macho 7.0.0\nBundle complete! 38 Gemfile dependencies, 11 gems now installed.\nBundled gems are installed into `./build/validation/bibleit-brew-smsbq49s/brew/Library/Homebrew/vendor/bundle`\n2 installed gems you directly depend on are looking for funding.\n  Run `bundle fund` for details\n\u001b[32m==>\u001b[0m \u001b[1mTesting bibleit-labs/local-validation/bibleit-cli\u001b[0m\n\u001b[34m==>\u001b[0m \u001b[1m/Users/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-s\u001b[0m\n"
+          },
+          {
+            "command": [
+              "brew",
+              "reinstall",
+              "--formula",
+              "--build-from-source",
+              "bibleit-labs/local-validation/bibleit-cli"
+            ],
+            "exit_code": 0,
+            "output": "::warning::building from source is not supported!\nYou're on your own. Failures are expected so don't create any issues, please!\n::warning::Your Homebrew's prefix is not /usr/local.%0A%0ASome of Homebrew's bottles (binary packages) cannot be used with this prefix.%0A%0AConsider uninstalling Homebrew and reinstalling into the default prefix.\n::warning::You are using macOS on Intel x86_64.%0AWe do not provide support for this platform (as-of September 2026, announced August 2025).%0A%0AApple have dropped Intel x86_64 support in macOS Golden Gate (27).%0AGitHub Actions are dropping macOS Intel x86_64 runners in 2027.%0AHomebrew is a non-profit project run entirely by volunteers, not employees.%0AIf the biggest companies in the world cannot support macOS Intel x86_64%0Aany longer, sadly neither can we.%0A%0AHomebrew no longer builds bottles for this configuration.%0AConsider MacPorts, which provides binary packages for this macOS version:%0A  https://www.macports.org\n\u001b[32m==>\u001b[0m \u001b[1mFetching downloads for: \u001b[32mbibleit-cli\u001b[39m\u001b[0m\n\u2714\ufe0e Formula bibleit-cli (0.0.5)\n\u001b[32m==>\u001b[0m \u001b[1mReinstalling \u001b[32mbibleit-labs/local-validation/bibleit-cli\u001b[39m \u001b[0m\n\ud83c\udf7a  /Users/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-smsbq49s/brew/Cellar/bibleit-cli/0.0.5: 10 files, 7.7MB, built in 5 seconds\n\u001b[32m==>\u001b[0m \u001b[1mCaveats\u001b[0m\nBash completion has been installed to:\n  /Users/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-smsbq49s/brew/etc/bash_completion.d\n\nThis is a Tier 3 configuration:\n  \u001b[4mhttps://docs.brew.sh/Support-Tiers#tier-3\u001b[24m\n\u001b[1mYou can report issues with Tier 3 configurations to Homebrew/* repositories!\u001b[0m\n  \nRead the above document before opening any issues or PRs.\n"
+          },
+          {
+            "command": [
+              "brew",
+              "test",
+              "bibleit-labs/local-validation/bibleit-cli"
+            ],
+            "exit_code": 0,
+            "output": "\u001b[32m==>\u001b[0m \u001b[1mTesting bibleit-labs/local-validation/bibleit-cli\u001b[0m\n\u001b[34m==>\u001b[0m \u001b[1m/Users/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-s\u001b[0m\n"
+          },
+          {
+            "command": [
+              "brew",
+              "uninstall",
+              "--formula",
+              "--ignore-dependencies",
+              "bibleit-labs/local-validation/bibleit-cli"
+            ],
+            "exit_code": 0,
+            "output": "Uninstalling /Users/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-smsbq49s/brew/Cellar/bibleit-cli/0.0.5... (10 files, 7.7MB)\n"
+          }
+        ]
+      },
+      {
+        "runner": "macos-15",
+        "binary_sha256": "fb92ca696cd693e44b6f11219ef30c22c2a4a0bd0ac41c98a367c4673223597b",
+        "notices_verified": true,
+        "checks": [
+          {
+            "command": [
+              "brew",
+              "--prefix"
+            ],
+            "exit_code": 0,
+            "output": "/Users/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-6rlym1_g/brew\n"
+          },
+          {
+            "command": [
+              "brew",
+              "install",
+              "--formula",
+              "--build-from-source",
+              "bibleit-labs/local-validation/bibleit-cli"
+            ],
+            "exit_code": 0,
+            "output": "\u001b[34m==>\u001b[0m \u001b[1mTrusted formula bibleit-labs/local-validation/bibleit-cli\u001b[0m\n::warning::Your Homebrew's prefix is not /opt/homebrew.%0A%0ASome of Homebrew's bottles (binary packages) cannot be used with this prefix.%0A%0AConsider uninstalling Homebrew and reinstalling into the default prefix.\n\u001b[32m==>\u001b[0m \u001b[1mFetching downloads for: \u001b[32mbibleit-cli\u001b[39m\u001b[0m\n\u2714\ufe0e Formula bibleit-cli (0.0.5)\n\u001b[34m==>\u001b[0m \u001b[1mInstalling bibleit-cli from bibleit-labs/local-validation\u001b[0m\n\ud83c\udf7a  /Users/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-6rlym1_g/brew/Cellar/bibleit-cli/0.0.5: 10 files, 7.1MB, built in 6 seconds\n\u001b[32m==>\u001b[0m \u001b[1mCaveats\u001b[0m\nBash completion has been installed to:\n  /Users/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-6rlym1_g/brew/etc/bash_completion.d\n\nThis is a Tier 3 configuration:\n  \u001b[4mhttps://docs.brew.sh/Support-Tiers#tier-3\u001b[24m\n\u001b[1mYou can report issues with Tier 3 configurations to Homebrew/* repositories!\u001b[0m\n  \nRead the above document before opening any issues or PRs.\n"
+          },
+          {
+            "command": [
+              "brew",
+              "test",
+              "bibleit-labs/local-validation/bibleit-cli"
+            ],
+            "exit_code": 0,
+            "output": "\u001b[33mWarning:\u001b[0m \u001b[1mtest\u001b[0m is a developer command, so Homebrew's\ndeveloper mode has been automatically turned on.\nTo turn developer mode off, run:\n  brew developer off\n\nFetching gem metadata from https://rubygems.org/.........\nFetching elftools 2.2.0\nFetching bindata 3.0.1\nFetching concurrent-ruby 1.3.8\nFetching drb 2.2.3\nFetching logger 1.7.0\nFetching prism 1.9.0\nFetching minitest 6.0.6\nFetching patchelf 1.7.0\nFetching plist 3.7.2\nFetching ruby-macho 7.0.0\nFetching sorbet-runtime 0.6.13524\nInstalling drb 2.2.3\nInstalling elftools 2.2.0\nInstalling bindata 3.0.1\nInstalling logger 1.7.0\nInstalling concurrent-ruby 1.3.8\nInstalling patchelf 1.7.0\nInstalling prism 1.9.0 with native extensions\nInstalling minitest 6.0.6\nInstalling plist 3.7.2\nInstalling ruby-macho 7.0.0\nInstalling sorbet-runtime 0.6.13524\nBundle complete! 38 Gemfile dependencies, 11 gems now installed.\nBundled gems are installed into `./build/validation/bibleit-brew-6rlym1_g/brew/Library/Homebrew/vendor/bundle`\n2 installed gems you directly depend on are looking for funding.\n  Run `bundle fund` for details\n\u001b[32m==>\u001b[0m \u001b[1mTesting bibleit-labs/local-validation/bibleit-cli\u001b[0m\n\u001b[34m==>\u001b[0m \u001b[1m/Users/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-6\u001b[0m\n"
+          },
+          {
+            "command": [
+              "brew",
+              "reinstall",
+              "--formula",
+              "--build-from-source",
+              "bibleit-labs/local-validation/bibleit-cli"
+            ],
+            "exit_code": 0,
+            "output": "::warning::building from source is not supported!\nYou're on your own. Failures are expected so don't create any issues, please!\n::warning::Your Homebrew's prefix is not /opt/homebrew.%0A%0ASome of Homebrew's bottles (binary packages) cannot be used with this prefix.%0A%0AConsider uninstalling Homebrew and reinstalling into the default prefix.\n\u001b[32m==>\u001b[0m \u001b[1mFetching downloads for: \u001b[32mbibleit-cli\u001b[39m\u001b[0m\n\u2714\ufe0e Formula bibleit-cli (0.0.5)\n\u001b[32m==>\u001b[0m \u001b[1mReinstalling \u001b[32mbibleit-labs/local-validation/bibleit-cli\u001b[39m \u001b[0m\n\ud83c\udf7a  /Users/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-6rlym1_g/brew/Cellar/bibleit-cli/0.0.5: 10 files, 7.1MB, built in 2 seconds\n\u001b[32m==>\u001b[0m \u001b[1mCaveats\u001b[0m\nBash completion has been installed to:\n  /Users/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-6rlym1_g/brew/etc/bash_completion.d\n\nThis is a Tier 3 configuration:\n  \u001b[4mhttps://docs.brew.sh/Support-Tiers#tier-3\u001b[24m\n\u001b[1mYou can report issues with Tier 3 configurations to Homebrew/* repositories!\u001b[0m\n  \nRead the above document before opening any issues or PRs.\n"
+          },
+          {
+            "command": [
+              "brew",
+              "test",
+              "bibleit-labs/local-validation/bibleit-cli"
+            ],
+            "exit_code": 0,
+            "output": "\u001b[32m==>\u001b[0m \u001b[1mTesting bibleit-labs/local-validation/bibleit-cli\u001b[0m\n\u001b[34m==>\u001b[0m \u001b[1m/Users/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-6\u001b[0m\n"
+          },
+          {
+            "command": [
+              "brew",
+              "uninstall",
+              "--formula",
+              "--ignore-dependencies",
+              "bibleit-labs/local-validation/bibleit-cli"
+            ],
+            "exit_code": 0,
+            "output": "Uninstalling /Users/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-6rlym1_g/brew/Cellar/bibleit-cli/0.0.5... (10 files, 7.1MB)\n"
+          }
+        ]
+      },
+      {
+        "runner": "ubuntu-24.04-arm",
+        "binary_sha256": "c594fd6e9ba3f84937957ab1126846e4f8a4f236b64c67b2261aee9087ef50a6",
+        "notices_verified": true,
+        "checks": [
+          {
+            "command": [
+              "brew",
+              "--prefix"
+            ],
+            "exit_code": 0,
+            "output": "/home/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-xufzkswh/brew\n"
+          },
+          {
+            "command": [
+              "brew",
+              "install",
+              "--formula",
+              "--build-from-source",
+              "bibleit-labs/local-validation/bibleit-cli"
+            ],
+            "exit_code": 0,
+            "output": "\u001b[34m==>\u001b[0m \u001b[1mTrusted formula bibleit-labs/local-validation/bibleit-cli\u001b[0m\n::warning::Your Homebrew's prefix is not /home/linuxbrew/.linuxbrew.%0A%0ASome of Homebrew's bottles (binary packages) cannot be used with this prefix.%0A%0AConsider uninstalling Homebrew and reinstalling into the default prefix.\n\u001b[32m==>\u001b[0m \u001b[1mFetching downloads for: \u001b[32mbibleit-cli\u001b[39m\u001b[0m\n\u2714\ufe0e Formula bibleit-cli (0.0.5)\n\u001b[34m==>\u001b[0m \u001b[1mInstalling bibleit-cli from bibleit-labs/local-validation\u001b[0m\n::warning::Landlock ABI 10 or later is required to deny all network access; found ABI 7. Applying the network restrictions supported by this kernel.\n\ud83c\udf7a  /home/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-xufzkswh/brew/Cellar/bibleit-cli/0.0.5: 10 files, 7MB, built in 1 second\n\u001b[32m==>\u001b[0m \u001b[1mCaveats\u001b[0m\nBash completion has been installed to:\n  /home/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-xufzkswh/brew/etc/bash_completion.d\n\nThis is a Tier 3 configuration:\n  \u001b[4mhttps://docs.brew.sh/Support-Tiers#tier-3\u001b[24m\n\u001b[1mYou can report issues with Tier 3 configurations to Homebrew/* repositories!\u001b[0m\n  \u001b[4mhttps://docs.brew.sh/Troubleshooting\u001b[24m\nRead the above document before opening any issues or PRs.\n"
+          },
+          {
+            "command": [
+              "brew",
+              "test",
+              "bibleit-labs/local-validation/bibleit-cli"
+            ],
+            "exit_code": 0,
+            "output": "\u001b[33mWarning:\u001b[0m \u001b[1mtest\u001b[0m is a developer command, so Homebrew's\ndeveloper mode has been automatically turned on.\nTo turn developer mode off, run:\n  brew developer off\n\nFetching gem metadata from https://rubygems.org/.........\nFetching bindata 3.0.1\nFetching concurrent-ruby 1.3.8\nFetching drb 2.2.3\nFetching elftools 2.2.0\nFetching logger 1.7.0\nFetching prism 1.9.0\nFetching minitest 6.0.6\nFetching patchelf 1.7.0\nFetching plist 3.7.2\nFetching ruby-macho 7.0.0\nFetching sorbet-runtime 0.6.13524\nInstalling drb 2.2.3\nInstalling bindata 3.0.1\nInstalling elftools 2.2.0\nInstalling logger 1.7.0\nInstalling concurrent-ruby 1.3.8\nInstalling minitest 6.0.6\nInstalling patchelf 1.7.0\nInstalling plist 3.7.2\nInstalling ruby-macho 7.0.0\nInstalling sorbet-runtime 0.6.13524\nInstalling prism 1.9.0 with native extensions\nBundle complete! 38 Gemfile dependencies, 11 gems now installed.\nBundled gems are installed into `./build/validation/bibleit-brew-xufzkswh/brew/Library/Homebrew/vendor/bundle`\n2 installed gems you directly depend on are looking for funding.\n  Run `bundle fund` for details\n\u001b[32m==>\u001b[0m \u001b[1mTesting bibleit-labs/local-validation/bibleit-cli\u001b[0m\n\u001b[34m==>\u001b[0m \u001b[1m/home/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-xu\u001b[0m\n"
+          },
+          {
+            "command": [
+              "brew",
+              "reinstall",
+              "--formula",
+              "--build-from-source",
+              "bibleit-labs/local-validation/bibleit-cli"
+            ],
+            "exit_code": 0,
+            "output": "::warning::building from source is not supported!\nYou're on your own. Failures are expected so don't create any issues, please!\n::warning::Your Homebrew's prefix is not /home/linuxbrew/.linuxbrew.%0A%0ASome of Homebrew's bottles (binary packages) cannot be used with this prefix.%0A%0AConsider uninstalling Homebrew and reinstalling into the default prefix.\n\u001b[32m==>\u001b[0m \u001b[1mFetching downloads for: \u001b[32mbibleit-cli\u001b[39m\u001b[0m\n\u2714\ufe0e Formula bibleit-cli (0.0.5)\n\u001b[32m==>\u001b[0m \u001b[1mReinstalling \u001b[32mbibleit-labs/local-validation/bibleit-cli\u001b[39m \u001b[0m\n::warning::Landlock ABI 10 or later is required to deny all network access; found ABI 7. Applying the network restrictions supported by this kernel.\n\ud83c\udf7a  /home/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-xufzkswh/brew/Cellar/bibleit-cli/0.0.5: 10 files, 7MB, built in 1 second\n\u001b[32m==>\u001b[0m \u001b[1mCaveats\u001b[0m\nBash completion has been installed to:\n  /home/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-xufzkswh/brew/etc/bash_completion.d\n\nThis is a Tier 3 configuration:\n  \u001b[4mhttps://docs.brew.sh/Support-Tiers#tier-3\u001b[24m\n\u001b[1mYou can report issues with Tier 3 configurations to Homebrew/* repositories!\u001b[0m\n  \u001b[4mhttps://docs.brew.sh/Troubleshooting\u001b[24m\nRead the above document before opening any issues or PRs.\n"
+          },
+          {
+            "command": [
+              "brew",
+              "test",
+              "bibleit-labs/local-validation/bibleit-cli"
+            ],
+            "exit_code": 0,
+            "output": "\u001b[32m==>\u001b[0m \u001b[1mTesting bibleit-labs/local-validation/bibleit-cli\u001b[0m\n\u001b[34m==>\u001b[0m \u001b[1m/home/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-xu\u001b[0m\n"
+          },
+          {
+            "command": [
+              "brew",
+              "uninstall",
+              "--formula",
+              "--ignore-dependencies",
+              "bibleit-labs/local-validation/bibleit-cli"
+            ],
+            "exit_code": 0,
+            "output": "Uninstalling /home/runner/work/homebrew-tap/homebrew-tap/build/validation/bibleit-brew-xufzkswh/brew/Cellar/bibleit-cli/0.0.5... (10 files, 7MB)\n"
+          }
+        ]
+      }
+    ]
+  }
 }
