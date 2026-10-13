@@ -130,12 +130,19 @@ func completionCandidates(words []string) []string {
 	}
 	candidates := []string{}
 	if len(args) == 0 {
-		candidates = []string{"ping", "server", "account", "auth", "translation", "read", "search", "live", "completion", "help", "version"}
+		candidates = []string{"ping", "server", "account", "auth", "translation", "read", "search", "live", "organization", "completion", "help", "version"}
 	} else {
 		switch args[0] {
 		case "help":
 			if len(args) == 1 {
-				candidates = []string{"server", "account", "auth", "translation", "read", "search", "live", "completion"}
+				candidates = []string{"server", "account", "auth", "translation", "read", "search", "live", "organization", "completion"}
+			}
+		case "organization":
+			if len(args) == 1 {
+				candidates = []string{"list", "application"}
+			}
+			if len(args) == 3 && args[1] == "application" {
+				candidates = []string{"status"}
 			}
 		case "completion":
 			if len(args) == 1 {
@@ -153,7 +160,7 @@ func completionCandidates(words []string) []string {
 				candidates = []string{"info", "help"}
 			}
 			if len(args) == 2 && args[1] == "help" {
-				candidates = []string{"server", "account", "auth", "translation", "live"}
+				candidates = []string{"server", "account", "auth", "translation", "live", "organization"}
 			}
 		case "account":
 			if len(args) == 1 {
