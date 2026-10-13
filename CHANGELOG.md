@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.0.6 — 2026-10-13
+
+- Update the pinned Go SDK to v0.0.3 and refresh its redistribution notice.
+- Retain the v0.0.5 command surface, output schema and runtime behavior.
+
 ## v0.0.5 — 2026-10-13
 
 - Add organization list/application status commands, capability discovery, help and shell completion. Preserve pending/deleted application state and map pending/suspended organization denials to forbidden exit 4.

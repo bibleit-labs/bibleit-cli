@@ -7,7 +7,7 @@ larger behavior changes before implementation. Report security problems through
 
 ## Standalone development
 
-Use Go **1.27.1**. The CLI pins `github.com/bibleit-labs/bibleit-go v0.0.2` in
+Use Go **1.27.1**. The CLI pins `github.com/bibleit-labs/bibleit-go v0.0.3` in
 go.mod/go.sum. A sibling checkout or workspace is optional. Download the public
 module using normal Go proxy/checksum verification:
 
