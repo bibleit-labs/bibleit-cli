@@ -7,12 +7,19 @@ import (
 	"fmt"
 	bibleit "github.com/bibleit-labs/bibleit-go"
 	"os"
+	"regexp"
 	"sort"
 	"strconv"
 	"strings"
 )
 
 var activeFormat string
+
+var (
+	presentationName  = regexp.MustCompile(`<<"name">>\s*=>\s*<<"((?:\\.|[^"\\])*)">>`)
+	presentationIndex = regexp.MustCompile(`<<"index">>\s*=>\s*(\d+)`)
+	presentationCount = regexp.MustCompile(`<<"count">>\s*=>\s*(\d+)`)
+)
 
 type stableRecord struct {
 	Type    string          `json:"type"`
@@ -196,6 +203,36 @@ func humanValue(value string) string {
 	}
 	return out.String()
 }
+
+// The protocol exposes the active slide as an opaque Erlang term. Keep that
+// complete value in raw/JSON output, but never print slide elements in a table.
+func tableValue(record outputRecord, key string) string {
+	value := record.Fields[key]
+	if key != "presentation" {
+		return humanValue(value)
+	}
+	if value == "" || value == "null" {
+		return "—"
+	}
+	name := "Presentation"
+	if match := presentationName.FindStringSubmatch(value); len(match) == 2 {
+		if decoded, err := strconv.Unquote(`"` + match[1] + `"`); err == nil && decoded != "" {
+			name = decoded
+		}
+	}
+	if runes := []rune(name); len(runes) > 48 {
+		name = string(runes[:47]) + "…"
+	}
+	index, count := presentationIndex.FindStringSubmatch(value), presentationCount.FindStringSubmatch(value)
+	if len(index) == 2 && len(count) == 2 {
+		position, positionErr := strconv.Atoi(index[1])
+		total, totalErr := strconv.Atoi(count[1])
+		if positionErr == nil && totalErr == nil && position >= 0 && position < total {
+			return humanValue(fmt.Sprintf("%s (%d/%d)", name, position+1, total))
+		}
+	}
+	return humanValue(name)
+}
 func writeSubscriptionLine(line, format string) error {
 	if format != "ndjson" {
 		value := line
@@ -240,4 +277,126 @@ func subscriptionRecord(line string) (stableRecord, error) {
 		}
 	}
 	return record, nil
+}
+
+type subscriptionTableDisplay struct {
+	lastState string
+	paused    bool
+}
+
+func (display *subscriptionTableDisplay) line(line string, initial bool) (string, error) {
+	record, err := subscriptionRecord(line)
+	if err != nil {
+		return "", err
+	}
+	if initial || record.Event == "live" {
+		fields := record.Fields
+		field := func(key string) string {
+			value, _ := fields[key].(string)
+			return value
+		}
+		name, id, status, mode := field("name"), field("id"), field("status"), field("mode")
+		if id == "" {
+			id = field("live")
+		}
+		if name == "" {
+			name = id
+		}
+		if status == "" {
+			status = "running"
+		}
+		if mode == "" {
+			mode = "reader"
+		}
+		display.paused, _ = fields["paused"].(bool)
+		state := status + " · " + mode
+		if display.paused {
+			state += " · paused"
+		}
+		if mode == "presentation" {
+			presentation := tableValue(outputRecord{Fields: map[string]string{"presentation": field("presentation")}}, "presentation")
+			if presentation != "—" {
+				state += " · " + presentation
+			}
+		}
+		if translations, ok := fields["translations"].([]string); ok && len(translations) > 0 {
+			state += " · translations: " + strings.Join(translations, ", ")
+		}
+		if reference := field("reference"); reference != "" {
+			state += " · reference: " + reference
+		}
+		signature := name + "|" + id + "|" + state
+		if !initial && signature == display.lastState {
+			return "", nil
+		}
+		display.lastState = signature
+		if id != "" && name != id {
+			return fmt.Sprintf("Live %s (%s): %s", humanValue(name), humanValue(id), humanValue(state)), nil
+		}
+		return fmt.Sprintf("Live %s: %s", humanValue(name), humanValue(state)), nil
+	}
+	switch record.Event {
+	case "verse":
+		return readableVersePayload(record.Payload), nil
+	case "paused":
+		if display.paused {
+			return "", nil
+		}
+		display.paused = true
+		return "Live paused", nil
+	case "clear":
+		return "Live cleared", nil
+	case "closed":
+		return "Live closed", nil
+	case "revoked":
+		return "Live access revoked", nil
+	default:
+		return "Live updated", nil
+	}
+}
+
+func readableVersePayload(raw json.RawMessage) string {
+	var payload any
+	if json.Unmarshal(raw, &payload) != nil {
+		return "Verse update unavailable"
+	}
+	var verses []any
+	switch value := payload.(type) {
+	case []any:
+		verses = value
+	case map[string]any:
+		if translations, ok := value["translations"].([]any); ok && len(translations) > 0 {
+			verses = translations
+		} else {
+			verses = []any{value}
+		}
+	}
+	var output []string
+	for _, value := range verses {
+		verse, ok := value.(map[string]any)
+		if !ok {
+			continue
+		}
+		stringField := func(key string) string {
+			text, _ := verse[key].(string)
+			return text
+		}
+		reference, translation, passage := stringField("reference"), stringField("translation"), stringField("text")
+		if reference == "" {
+			reference = "Verse"
+		}
+		header := humanValue(reference)
+		if translation != "" {
+			header += " · " + humanValue(translation)
+		}
+		if passage != "" {
+			output = append(output, header+"\n"+humanValue(passage))
+		} else {
+			output = append(output, header)
+		}
+	}
+	if len(output) == 0 {
+		return "Verse update unavailable"
+	}
+	return strings.Join(output, "\n\n")
 }

@@ -524,18 +524,29 @@ func subscribeSSH(cfg config, command bibleit.Command, format string) error {
 	// Always reap the OpenSSH child, including protocol errors and Ctrl-C.
 	defer func() { _ = ssh.Process.Kill(); _ = ssh.Wait() }()
 	var streamOutputErr error
+	display := subscriptionTableDisplay{}
 	streamErr := consumeSubscription(stdout, func(line string, initial bool) {
 		if streamOutputErr != nil {
 			return
 		}
-		if format == "ndjson" || !initial || format == "raw" {
+		if format != "table" {
 			streamOutputErr = writeSubscriptionLine(line, format)
 			if streamOutputErr != nil {
 				stop()
 			}
 		} else {
-			printResponse([]string{line}, format)
-			fmt.Print("\nWatching Live changes. Press Ctrl-C to stop.\n\n")
+			var message string
+			message, streamOutputErr = display.line(line, initial)
+			if streamOutputErr != nil {
+				stop()
+				return
+			}
+			if message != "" {
+				fmt.Println(message)
+			}
+			if initial {
+				fmt.Print("Watching Live changes. Press Ctrl-C to stop.\n\n")
+			}
 		}
 	})
 	if streamOutputErr != nil {
@@ -562,12 +573,24 @@ func consumeSubscription(reader io.Reader, emit func(string, bool)) error {
 		return bufio.ScanLines(data, atEOF)
 	})
 	initial := true
+	var pending string
 	for scanner.Scan() {
 		line := scanner.Text()
+		if pending != "" {
+			line = pending + "\n" + line
+		}
+		if len(line) > 2*1024*1024 {
+			return errors.New("Live subscription record exceeds 2 MiB")
+		}
 		record, err := bibleit.ParseRecord(line)
+		if errors.Is(err, bibleit.ErrIncompleteTerm) {
+			pending = line
+			continue
+		}
 		if err != nil {
 			return fmt.Errorf("read Live subscription: %w", err)
 		}
+		pending = ""
 		if record.Type == "err" {
 			_, err := bibleit.DecodeResponse(strings.NewReader(line + "\n"))
 			return err
@@ -590,6 +613,9 @@ func consumeSubscription(reader io.Reader, emit func(string, bool)) error {
 	}
 	if err := scanner.Err(); err != nil {
 		return fmt.Errorf("read Live subscription: %w", err)
+	}
+	if pending != "" {
+		return fmt.Errorf("read Live subscription: %w", io.ErrUnexpectedEOF)
 	}
 	return io.ErrUnexpectedEOF // Disconnect is not a successful subscription completion.
 }
@@ -871,14 +897,14 @@ func printTable(records []outputRecord) {
 	}
 	for _, row := range rows {
 		for index, header := range headers {
-			widths[index] = max(widths[index], len(humanValue(row.Fields[header])))
+			widths[index] = max(widths[index], len(tableValue(row, header)))
 		}
 	}
 	printTableRow(headers, widths, true)
 	for _, row := range rows {
 		values := make([]string, len(headers))
 		for index, header := range headers {
-			values[index] = humanValue(row.Fields[header])
+			values[index] = tableValue(row, header)
 		}
 		printTableRow(values, widths, false)
 	}
@@ -901,7 +927,7 @@ func printKeyValue(record outputRecord) {
 		width = max(width, len(strings.ToUpper(key)))
 	}
 	for _, key := range record.order {
-		fmt.Printf("%-*s  %s\n", width, strings.ToUpper(key), humanValue(record.Fields[key]))
+		fmt.Printf("%-*s  %s\n", width, strings.ToUpper(key), tableValue(record, key))
 	}
 }
 func printTableRow(values []string, widths []int, header bool) {

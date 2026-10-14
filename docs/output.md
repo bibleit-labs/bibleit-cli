@@ -75,7 +75,9 @@ A stream can emit records before a later error. Local help/version bypass config
 loading, so they still work when configuration is unreadable.
 
 `raw` preserves wire records and framing; local auth/version/help actions
-use human output. Default tables retain server column order, escape control
+use human output. Default Live subscriptions summarize state changes and show
+decoded verse references, translations and text. Sequence-only state updates are
+quiet. Default finite tables retain server column order, escape control
 characters, and keep verse text readable. Malformed output after a mutation does
 not imply rollback; the CLI never retries mutations. Existing prerelease JSON
 string fields are replaced by this documented, versioned typed contract.
