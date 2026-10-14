@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.0.7 — 2026-10-14
+
+- Buffer multiline Live presentation fields during SSH subscriptions instead of
+  failing with an unterminated protocol term.
+- Keep large slide payloads out of human-readable Live tables and show concise
+  deck/slide summaries. Render subscription verse events as readable passages;
+  raw and JSON output retain the complete protocol data.
+- Pin bibleit-go v0.0.4, which exposes the incomplete-term parse result to
+  streaming clients. No Browsh runtime or terminal-browser prototype is shipped.
+
 ## v0.0.6 — 2026-10-13
 
 - Update the pinned Go SDK to v0.0.3 and refresh its redistribution notice.
