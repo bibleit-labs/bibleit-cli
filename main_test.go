@@ -365,6 +365,27 @@ func TestSubscriptionLifecycle(t *testing.T) {
 	}
 }
 
+func TestSubscriptionAcceptsMultilinePresentationSnapshotAndEvent(t *testing.T) {
+	field := "#{<<\"blank\">> => false,<<\"count\">> => 2,\n  <<\"index\">> => 0,<<\"slide\">> => #{<<\"elements\">> => []}}"
+	wire := "OK id=live mode=presentation presentation=" + field + "\n" +
+		"EVENT live=live mode=presentation presentation=" + field + "\nEVENT closed\n"
+	var lines []string
+	err := consumeSubscription(strings.NewReader(wire), func(line string, initial bool) {
+		lines = append(lines, line)
+		if _, parseErr := bibleit.ParseRecord(line); parseErr != nil {
+			t.Errorf("emitted incomplete record: %v", parseErr)
+		}
+	})
+	if err != nil || len(lines) != 3 || !strings.Contains(lines[0], field) || !strings.Contains(lines[1], field) || lines[2] != "EVENT closed" {
+		t.Fatalf("multiline subscription: lines=%q error=%v", lines, err)
+	}
+	if err := consumeSubscription(strings.NewReader("OK id=live presentation=#{<<\"count\">> => 2,\n"), func(string, bool) {
+		t.Error("emitted incomplete snapshot")
+	}); !errors.Is(err, io.ErrUnexpectedEOF) {
+		t.Fatalf("truncated presentation snapshot: %v", err)
+	}
+}
+
 func TestDiscoveryCommands(t *testing.T) {
 	for input, wire := range map[string]string{
 		"account info": "ACCOUNT INFO", "account quotas": "ACCOUNT QUOTA LIST", "account tokens": "ACCOUNT TOKEN LIST",

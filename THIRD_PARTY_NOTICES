@@ -5,7 +5,7 @@ components compiled into the six CGO_ENABLED=0 Go 1.27.1 release targets.
 Retain this file and LICENSE when redistributing binaries. Re-audit notices
 when changing dependencies, toolchain, build flags, or supported targets.
 
-bibleit-go v0.0.3 (MIT)
+bibleit-go v0.0.4 (MIT)
 https://github.com/bibleit-labs/bibleit-go
 
 MIT License
