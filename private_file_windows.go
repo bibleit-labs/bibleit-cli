@@ -53,3 +53,17 @@ func restrictConfigFile(file *os.File) error {
 	}
 	return nil
 }
+
+func validateCredentialFile(path string) error {
+	info, e := os.Lstat(path)
+	if os.IsNotExist(e) {
+		return nil
+	}
+	if e != nil {
+		return fmt.Errorf("cannot inspect credential file")
+	}
+	if !info.Mode().IsRegular() {
+		return fmt.Errorf("credential file must be a regular file; do not use symlinks")
+	}
+	return nil
+}

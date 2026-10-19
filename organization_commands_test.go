@@ -34,19 +34,21 @@ func TestOrganizationHelpCompletion(t *testing.T) {
 	}
 }
 
-func TestOrganizationApplicationHasNoHTTPFallback(t *testing.T) {
+func TestOrganizationApplicationUsesPersonalREST(t *testing.T) {
 	t.Setenv("BIBLEIT_CONFIG", filepath.Join(t.TempDir(), "config.json"))
 	t.Setenv("BIBLEIT_TOKEN", "bt_fixture")
 	old := cliHTTPClient
 	defer func() { cliHTTPClient = old }()
 	cliHTTPClient = &http.Client{Transport: roundTripFunc(func(r *http.Request) (*http.Response, error) {
-		t.Fatal("unsupported command contacted server", r.URL)
-		return nil, nil
+		if r.URL.Host != "api.bibleit.app" || r.URL.Path != "/v1/me/organization-applications/fixture" {
+			t.Fatal("wrong resource or legacy API", r.URL)
+		}
+		return httpReply(200, `{"application_id":"fixture","state":"pending_review","next_action":"wait"}`), nil
 	})}
 	code, out, stderr := captureCLI(t, func() int {
 		return run([]string{"--format", "json", "organization", "application", "fixture", "status"})
 	})
-	if code != exitUsage || out != "" || !strings.Contains(stderr, "no supported REST operation") {
+	if code != exitOK || !strings.Contains(out, "pending_review") || stderr != "" {
 		t.Fatal(code, out, stderr)
 	}
 }

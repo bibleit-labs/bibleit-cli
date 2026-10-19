@@ -8,9 +8,19 @@ HTTP resource commands return native REST data with `--format raw`. Their
 ```
 
 Field names and native JSON types come from the REST resource, including nested
-rights and attribution. Collections aggregate all pages and return `data` with
-`next_cursor:null`. No command-protocol records are generated. Local commands,
+rights and attribution. Paged library/token/Live collections aggregate all pages and return `data` with
+`next_cursor:null`. Personal organization directory results preserve one page and
+its opaque `next_cursor`; request the next page explicitly with `--cursor`. No command-protocol records are generated. Local commands,
 errors and SSH keep the schema-version-1 contract described below.
+
+HTTP whole-book reads fetch bounded pages internally and combine all verses,
+preserving the complete-book response shape without `next_cursor`. If any page
+fails, stdout remains empty: a partial traversal is never reported as a complete
+book. Use `read <translation> <book> --limit 1..500` and/or `--cursor <cursor>`
+to request exactly one page. Explicit page JSON/raw output includes
+`next_cursor` (an opaque string, or `null` on the final page). Human output shows
+the continuation cursor when another page exists. These flags require HTTP and
+a whole-book reference; chapter and verse reads retain their existing behavior.
 
 ## SSH and local commands, schema version 1
 
@@ -55,7 +65,7 @@ browser progress and fallback browser URLs are written to stderr.
 
 ## Subscription NDJSON
 
-Use `--format ndjson` only with an SSH `live <id> subscribe` command. Every
+For SSH `live <id> subscribe`, `--format ndjson` uses the schema below. Every
 acknowledgement/event is one compact JSON object followed by a newline:
 
 ```json
@@ -82,7 +92,7 @@ For json/ndjson, errors produce one JSON object on stderr and a nonzero exit:
 {"schema_version":1,"ok":false,"exit_code":7,"error":{"code":"rate_limited","message":"rate_limited","fields":{"retry_after_ms":"250"}}}
 ```
 
-Error fields preserve protocol strings or native HTTP JSON metadata. HTTP errors
+Error fields contain allowlisted safe retry metadata only. HTTP errors
 also include http_status. Generic codes match the documented exit category;
 server error codes remain intact. Failed finite commands write no success object.
 A stream can emit records before a later error. Local help/version bypass config
@@ -91,7 +101,7 @@ loading, so they still work when configuration is unreadable.
 SSH `raw` preserves wire records and framing; local auth/version/help actions
 use human output. Default Live subscriptions summarize state changes and show
 decoded verse references, translations and text. Sequence-only state updates are
-quiet. Default finite tables retain server column order, escape control
+quiet. Default finite tables use stable presentation columns, escape control
 characters, and keep verse text readable. Malformed output after a mutation does
 not imply rollback; the CLI never retries mutations. Existing prerelease JSON
 string fields are replaced by this documented, versioned typed contract.
@@ -110,3 +120,43 @@ successful command response or bypass server permissions.
 NDJSON reject script generation; `help completion --format json` remains a
 normal help record. The hidden `__complete` shell adapter emits newline-separated
 candidates, ignores network credentials and never contacts the server.
+
+## Updated human UX and HTTP watching
+
+Human Scripture rows share translation/reference/text columns; retained stacks
+add position. Numeric-only legacy SSH records retain a faithful fallback when
+localized metadata is unavailable; the client never infers missing verse numbers
+or parses coordinates out of arbitrary Scripture text. Terminal text wraps without
+truncation using Unicode display widths; native JSON/raw data are unchanged.
+Human receipts and empty states describe the action/resource; they do not echo
+search queries. Table labels use user terminology without renaming wire fields.
+
+HTTP Live watching performs bounded long polls and keeps the returned cursor
+opaque. `--format ndjson` emits one compact object per response:
+
+```json
+{"schema_version":2,"event":{"schema_version":1,"type":"stream.heartbeat","resource_type":"live","resource_id":"L1","sequence":1,"cursor":"opaque","data":null}}
+```
+
+The inner schema belongs to the REST event contract; it is independent of CLI
+schema 2. HTTP raw emits native event objects separated by newlines. Human output
+suppresses heartbeats. Finite JSON mode rejects a subscription and recommends
+NDJSON. Polls use a 40-second minimum client timeout to accommodate the 25-second
+wait; cancellation stops the loop. Errors stop watching without retries, cursor
+reset, replay or credential/transport fallback.
+
+Errors retain schema 1 and exit categories. Safe descriptions replace bare codes;
+only allowlisted numeric retry metadata is forwarded. Arbitrary server fields,
+Problem Details titles/URLs, raw SSH stderr and credential values are not copied
+into diagnostics. REST 412/428 require inspection and review before retrying.
+
+With `--secret-output <new-private-file>` on secret create/rotate, the secret is
+written once to a protected file and its output field becomes
+`written_to_private_file`, including raw/JSON. This explicit delivery option
+intentionally redacts that field while preserving its type and surrounding schema.
+Without the option, the authorized secret-generation result is the deliberate
+one-time delivery; avoid redirecting it into ordinary logs. Existing files are
+never overwritten; failed operations remove their empty reserved destination.
+
+Pop never prompts. Delete/clear and secret rotation/removal retain confirmation;
+routine prompts identify scope/consequence without transport or endpoint noise.

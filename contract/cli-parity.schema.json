@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CLI transport and credential parity evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "command", "transport", "credential", "layer", "status", "scenario"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "command": {"type": "string"},
+    "invocation": {"type": ["array", "null"], "items": {"type": "string"}, "description": "Optional synthetic/redacted invocation only; never real credentials, personal content or secrets."},
+    "transport": {"enum": ["local", "http", "ssh"]},
+    "credential": {"enum": ["none", "bt_", "oa_", "svc_", "registered-user-key"]},
+    "layer": {"enum": ["registry", "fixture", "server-functional", "native", "deployed-smoke"]},
+    "status": {"enum": ["pending", "passed", "failed", "inapplicable"]},
+    "scenario": {"type": "string"},
+    "operation": {"type": "string"},
+    "reason": {"type": "string"},
+    "cli_revision": {"type": "string"},
+    "sdk_revision": {"type": "string"},
+    "server_revision": {"type": "string"},
+    "exit_code": {"type": "integer", "minimum": 0},
+    "output_schema": {"type": "integer", "minimum": 1},
+    "assertion": {"type": "string"},
+    "cleanup": {"type": "string"}
+  },
+  "allOf": [
+    {"if": {"properties": {"status": {"const": "inapplicable"}}}, "then": {"required": ["reason"]}},
+    {"if": {"properties": {"status": {"const": "passed"}, "layer": {"const": "server-functional"}}}, "then": {"required": ["cli_revision", "sdk_revision", "server_revision", "exit_code", "output_schema", "assertion", "cleanup"]}}
+  ]
+}

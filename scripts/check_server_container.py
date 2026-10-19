@@ -45,6 +45,7 @@ def main():
     parser.add_argument('--server', type=Path, required=True, help='authorized private service checkout')
     parser.add_argument('--go-client', type=Path, default=ROOT.parent / 'bibleit-go')
     parser.add_argument('--baseline', type=Path)
+    parser.add_argument('--parity-evidence', type=Path, help='save redacted command-by-command parity assertions')
     parser.add_argument('--imports', action='store_true', help='include server import-access/publication suite cases')
     parser.add_argument('--catalog-only', action='store_true', help='only sparse catalogue/read/publication compatibility, without broad protocol repetition')
     parser.add_argument('--revision', help='exact assessed source revision for focused catalogue qualification')
@@ -59,6 +60,10 @@ def main():
         copy_sources(ROOT, sources / 'bibleit-cli')
         copy_sources(args.go_client.resolve(), sources / 'bibleit-go')
         (sources / 'bibleit-cli/go.work').write_text('go 1.27.1\n\nuse (\n .\n ../bibleit-go\n)\n')
+        # Resolve build dependencies before entering the egress-disabled fixture.
+        # The generated workspace vendor tree is temporary and never changes
+        # the user's checkout or module pins.
+        run(['go', 'work', 'vendor', '-o', str(sources / 'bibleit-cli/vendor')], cwd=ROOT)
         before = fingerprints(server)
         native = server / 'libbibleit'
         native_before = native_fingerprints(native)
@@ -106,6 +111,24 @@ def main():
                 if hashlib.sha256(committed).hexdigest() != digest:
                     raise RuntimeError('native input differs from assessed revision: ' + path)
             metadata['qualified_source_revision'] = revision
+        # Evidence identifies the exact dirty snapshot, rather than claiming the
+        # checked-out HEAD alone describes uncommitted implementation changes.
+        revisions = {}
+        for label, original_source, copied_source in (
+                ('cli', ROOT, sources / 'bibleit-cli'),
+                ('sdk', args.go_client.resolve(), sources / 'bibleit-go'),
+                ('server', server, snapshot)):
+            head = run(['git', '-C', str(original_source), 'rev-parse', 'HEAD'], capture_output=True).stdout.strip()
+            paths = sorted(p for p in copied_source.rglob('*') if p.is_file() and not p.is_symlink()
+                           and (p.suffix in ('.go', '.erl', '.json') or p.name in ('go.mod', 'go.sum'))
+                           and '_build' not in p.parts)
+            digest = hashlib.sha256()
+            for path in paths:
+                digest.update(str(path.relative_to(copied_source)).encode())
+                digest.update(b'\0')
+                digest.update(hashlib.sha256(path.read_bytes()).digest())
+            revisions[label] = head + '+snapshot.' + digest.hexdigest()
+        metadata['parity_revisions'] = revisions
         (sources / 'server-metadata.json').write_text(json.dumps(metadata))
         build = temporary / 'tools'
         build.mkdir()
@@ -148,6 +171,8 @@ ENV PATH="/usr/local/go/bin:$PATH" GOTOOLCHAIN=local GOCACHE=/tmp/go-cache GOMOD
                 raise RuntimeError('server/native inputs changed during validation')
             if args.baseline:
                 shutil.copy2(results / 'server-baseline.json', args.baseline)
+            if args.parity_evidence:
+                shutil.copy2(results / 'cli-parity.json', args.parity_evidence)
         finally:
             if started:
                 run(['docker', 'rm', '--force', name], stdout=subprocess.DEVNULL)

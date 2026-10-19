@@ -19,6 +19,7 @@ import (
 	"os/signal"
 	"path/filepath"
 	"runtime"
+	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -60,9 +61,11 @@ func run(args []string) int {
 	if len(args) > 0 && args[0] == "__complete" {
 		return completeCommand(args[1:])
 	}
-	previousFormat := activeFormat
-	defer func() { activeFormat = previousFormat }()
-	options, args, err := parseOptions(args, map[string]bool{"--format": true, "--identity": true, "--transport": true, "--yes": false})
+	previousFormat, previousCommand, previousTransport := activeFormat, activeCommand, activeTransport
+	defer func() {
+		activeFormat, activeCommand, activeTransport = previousFormat, previousCommand, previousTransport
+	}()
+	options, args, err := parseOptions(args, map[string]bool{"--format": true, "--identity": true, "--transport": true, "--cursor": true, "--limit": true, "--secret-output": true, "--yes": false})
 	format := options["--format"]
 	if format == "" {
 		format = "table"
@@ -72,7 +75,7 @@ func run(args []string) int {
 		return fail(exitUsage, "%v", err)
 	}
 	if !oneOf(format, "table", "raw", "json", "ndjson") {
-		return fail(exitUsage, "unsupported format %q (use table, raw, json, or ndjson)", format)
+		return fail(exitUsage, "unsupported format (use table, raw, json, or ndjson)")
 	}
 	if format == "ndjson" && !isLiveSubscribe(args) {
 		return fail(exitUsage, "ndjson is for Live subscriptions; use json for finite commands")
@@ -88,12 +91,16 @@ func run(args []string) int {
 		return help(nil)
 	}
 	if oneOf(args[0], "help", "--help", "-h") {
-		return help(args[1:])
+		topics := args[1:]
+		if len(topics) > 0 && oneOf(topics[len(topics)-1], "--help", "-h") {
+			topics = topics[:len(topics)-1]
+		}
+		return help(topics)
 	}
 	if oneOf(args[len(args)-1], "--help", "-h") || (args[len(args)-1] == "help" && args[0] != "server") {
-		return help([]string{args[0]})
+		return help(args[:len(args)-1])
 	}
-	if len(args) == 1 && oneOf(args[0], "auth", "live", "read", "search", "translation", "server", "account", "organization", "completion") {
+	if len(args) == 1 && oneOf(args[0], "auth", "live", "read", "search", "translation", "server", "account", "organization", "completion", "config") {
 		return help(args)
 	}
 	if args[0] == "completion" {
@@ -102,14 +109,58 @@ func run(args []string) int {
 	if args[0] == "profile" {
 		return fail(exitUsage, "named profiles are not supported")
 	}
+	if cursor := options["--cursor"]; cursor != "" {
+		if len(args) == 2 && args[0] == "organization" && args[1] == "list" {
+			args = append(args, cursor)
+		} else if args[0] != "read" {
+			return fail(exitUsage, "--cursor is only supported by organization list or a whole-book read")
+		}
+	}
+	args, err = normalizeCommand(args)
+	if err != nil {
+		return fail(exitUsage, "%v", err)
+	}
+	activeCommand = args
+	bookPage, err := bookPageOptions(args, options)
+	if err != nil {
+		return fail(exitUsage, "%v", err)
+	}
+	if path := options["--secret-output"]; path != "" {
+		if len(args) != 4 || args[0] != "live" || args[2] != "secret" || !oneOf(args[3], "create", "rotate") {
+			return fail(exitUsage, "--secret-output is only supported by secret create or secret rotate")
+		}
+		file, e := prepareSecretDestination(path)
+		if e != nil {
+			return fail(exitUsage, "%v", e)
+		}
+		oldFile, oldSaved := activeSecretFile, activeSecretSaved
+		activeSecretFile = file
+		activeSecretSaved = false
+		defer func() {
+			saved := activeSecretSaved
+			file.Close()
+			if !saved {
+				os.Remove(file.Name())
+			}
+			activeSecretFile, activeSecretSaved = oldFile, oldSaved
+		}()
+	}
+	if args[0] == "config" {
+		return configCommand(args[1:], format)
+	}
 	cfg, err := loadConfig()
 	if err != nil {
 		return fail(exitFailure, "read configuration: %v", err)
 	}
-	transport := options["--transport"]
-	if transport == "" {
-		transport = "http"
+	cfg, format, err = applyPreferences(cfg, options)
+	if err != nil {
+		return fail(exitUsage, "%v", err)
 	}
+	activeFormat = format
+	if format == "ndjson" && !isLiveSubscribe(args) {
+		return fail(exitUsage, "ndjson is for Live subscriptions; use json for finite commands")
+	}
+	transport := cfg.Transport
 	if !oneOf(transport, "http", "ssh") {
 		return fail(exitUsage, "transport must be http or ssh")
 	}
@@ -120,6 +171,10 @@ func run(args []string) int {
 		transport = "ssh"
 	}
 	cfg.Transport = transport
+	activeTransport = transport
+	if bookPage != nil && transport != "http" {
+		return fail(exitUsage, "whole-book pagination requires --transport http")
+	}
 	cfg.Endpoint = defaultWebURL
 	if transport == "ssh" {
 		cfg.Endpoint = defaultSSHServer
@@ -145,7 +200,7 @@ func run(args []string) int {
 		return fail(exitUsage, "%v", err)
 	}
 	if cfg.Transport == "http" {
-		return runHTTP(cfg, args, format, options["--yes"] == "true")
+		return runHTTPPage(cfg, args, format, options["--yes"] == "true", bookPage)
 	}
 	command, err := commandFor(args)
 	if err != nil {
@@ -224,17 +279,16 @@ func authCommand(cfg config, args []string, format string, explicitIdentity bool
 			if err != nil {
 				return protocolFailure(err)
 			}
+			if err := rememberTransport(cfg.Transport); err != nil {
+				return fail(exitFailure, "signed in, but preferences were not saved: %v", err)
+			}
 			return printLocal("auth", map[string]string{"identity": actor, "auth": "true", "transport": "http"}, format)
 		}
 		if len(args) > 2 || (len(args) == 2 && args[1] != "ssh") {
 			return usage()
 		}
-		if !explicitIdentity {
-			// A fresh SSH login without --identity deliberately asks OpenSSH
-			// to select from its config and agent, even if an earlier login
-			// cached an explicit identity path.
-			cfg.Identity = ""
-		}
+		// Saved preferences and legacy identity selection remain effective.
+		// Use `config unset identity` to return to OpenSSH agent selection.
 		lines, err := requestSSH(cfg, bibleit.IdentityCommand())
 		if err != nil {
 			return protocolFailure(err)
@@ -245,6 +299,9 @@ func authCommand(cfg config, args []string, format string, explicitIdentity bool
 		}
 		if err := saveConfig(cfg); err != nil {
 			return fail(exitFailure, "save configuration: %v", err)
+		}
+		if err := rememberTransport(cfg.Transport); err != nil {
+			return fail(exitFailure, "signed in, but preferences were not saved: %v", err)
 		}
 		return printLocal("auth", map[string]string{"identity": identityName, "auth": "true", "transport": "ssh"}, format)
 	case "ssh":
@@ -373,18 +430,7 @@ func commandFor(a []string) (bibleit.Command, error) {
 			return bibleit.LiveStackCommand(a[1], bibleit.StackAction(strings.ToUpper(a[3])))
 		}
 		if len(a) >= 5 && len(a) <= 8 && a[2] == "stack" && a[3] == "push" {
-			values := a[4:]
-			translation := ""
-			// A translation precedes the book when followed by a nonnumeric book,
-			// or when four reference components are supplied.
-			if len(values) > 1 {
-				_, numeric := strconv.Atoi(values[1])
-				if numeric != nil || len(values) == 4 {
-					translation = values[0]
-					values = values[1:]
-				}
-			}
-			ref, err := cliReference(translation, values)
+			ref, err := stackPushReference(a[4:])
 			if err != nil {
 				return bibleit.Command{}, err
 			}
@@ -395,7 +441,7 @@ func commandFor(a []string) (bibleit.Command, error) {
 			if len(a) == 5 {
 				var err error
 				count, err = strconv.Atoi(a[4])
-				if err != nil || count == 0 {
+				if err != nil || count <= 0 {
 					return bibleit.Command{}, errors.New("invalid pop count")
 				}
 			}
@@ -489,17 +535,13 @@ func sshCommand(cfg config, command bibleit.Command) (*exec.Cmd, string, error) 
 }
 
 func sshCommandError(identity, stderr string, commandErr error) error {
-	detail := strings.TrimSpace(stderr)
-	if detail == "" {
-		detail = commandErr.Error()
+	if strings.Contains(strings.ToLower(stderr), "permission denied") {
+		return authenticationError{message: "SSH public-key authentication was rejected. Register the matching public key in the dashboard and check the configured identity or SSH agent."}
 	}
-	if strings.Contains(strings.ToLower(detail), "permission denied") {
-		if identity == "" {
-			return authenticationError{message: fmt.Sprintf("SSH public-key authentication was rejected using your OpenSSH configuration and agent. Add the matching public key in the Bibleit dashboard. If OpenSSH did not select the intended key, retry with `bibleit auth login ssh --identity /path/to/private-key`. Server response: %s", detail)}
-		}
-		return authenticationError{message: fmt.Sprintf("SSH public-key authentication was rejected. Add %s.pub to your account in the Bibleit dashboard before retrying. Server response: %s", identity, detail)}
+	if strings.Contains(strings.ToLower(stderr), "host key") {
+		return userMessage{"SSH host verification failed. Verify the server fingerprint through a trusted channel before updating known_hosts."}
 	}
-	return fmt.Errorf("SSH command failed: %s", detail)
+	return userMessage{"SSH connection failed. Check your connection, registered key and OpenSSH configuration; a mutation may already have completed."}
 }
 
 func subscribeSSH(cfg config, command bibleit.Command, format string) error {
@@ -852,6 +894,10 @@ func parseRecords(lines []string) []outputRecord {
 	return records
 }
 func printTable(records []outputRecord) {
+	records = humanRecords(records)
+	if presentHuman(records) {
+		return
+	}
 	if len(records) == 0 {
 		return
 	}
@@ -863,6 +909,10 @@ func printTable(records []outputRecord) {
 		if _, event := rows[0].Fields["event"]; event {
 			return
 		}
+		printKeyValue(rows[0])
+		return
+	}
+	if len(rows) == 1 && len(activeCommand) > 1 && oneOf(activeCommand[len(activeCommand)-1], "info", "stats") {
 		printKeyValue(rows[0])
 		return
 	}
@@ -878,11 +928,11 @@ func printTable(records []outputRecord) {
 	}
 	widths := make([]int, len(headers))
 	for index, header := range headers {
-		widths[index] = len(strings.ToUpper(header))
+		widths[index] = cellWidth(strings.ToUpper(header))
 	}
 	for _, row := range rows {
 		for index, header := range headers {
-			widths[index] = max(widths[index], len(tableValue(row, header)))
+			widths[index] = max(widths[index], cellWidth(tableValue(row, header)))
 		}
 	}
 	printTableRow(headers, widths, true)
@@ -895,21 +945,32 @@ func printTable(records []outputRecord) {
 	}
 }
 func orderedHeaders(records []outputRecord) []string {
-	var headers []string
 	seen := map[string]bool{}
-	for _, record := range records {
-		for _, key := range record.order {
-			if !seen[key] {
-				headers, seen[key] = append(headers, key), true
-			}
+	for _, r := range records {
+		for key := range r.Fields {
+			seen[key] = true
 		}
 	}
-	return headers
+	headers := []string{}
+	for _, key := range []string{"position", "id", "name", "translation", "reference", "text", "status", "mode", "paused", "count"} {
+		if seen[key] {
+			headers = append(headers, key)
+			delete(seen, key)
+		}
+	}
+	rest := []string{}
+	for key := range seen {
+		rest = append(rest, key)
+	}
+	sort.Strings(rest)
+	return append(headers, rest...)
 }
+
 func printKeyValue(record outputRecord) {
+	record.order = orderedHeaders([]outputRecord{record})
 	width := 0
 	for _, key := range record.order {
-		width = max(width, len(strings.ToUpper(key)))
+		width = max(width, cellWidth(strings.ToUpper(key)))
 	}
 	for _, key := range record.order {
 		fmt.Printf("%-*s  %s\n", width, strings.ToUpper(key), tableValue(record, key))
@@ -923,11 +984,14 @@ func printTableRow(values []string, widths []int, header bool) {
 		if header {
 			value = strings.ToUpper(value)
 		}
-		fmt.Printf("%-*s", widths[index], value)
+		fmt.Print(value + strings.Repeat(" ", max(0, widths[index]-cellWidth(value))))
 	}
 	fmt.Println()
 }
 func protocolFailure(err error) int {
+	// Classify through the shared HTTP error codes without losing the original
+	// REST headers needed for safe Retry-After guidance in describeError.
+	displayErr := err
 	var problem *rest.ProblemError
 	if errors.As(err, &problem) {
 		err = &bibleit.HTTPError{StatusCode: problem.Status, Code: problem.Code, Fields: map[string]any{"request_id": problem.RequestID, "retry_after": problem.Header.Get("Retry-After")}}
@@ -947,6 +1011,8 @@ func protocolFailure(err error) int {
 	if errors.As(err, &httpErr) {
 		serverCode = httpErr.Code
 		switch httpErr.StatusCode {
+		case 400, 422:
+			code = exitUsage
 		case 401:
 			code = exitUnauthenticated
 		case 403:
@@ -964,14 +1030,14 @@ func protocolFailure(err error) int {
 		code = exitUnauthenticated
 	case "forbidden", "organization_pending_verification", "organization_suspended":
 		code = exitForbidden
-	case "not_found", "actor_not_found":
+	case "not_found", "actor_not_found", "user_not_found", "live_not_found", "translation_not_found", "book_not_found", "chapter_not_found", "verse_not_found":
 		code = exitNotFound
 	case "rate_limited":
 		code = exitRateLimited
-	case "actor_exists", "quota_exceeded":
+	case "actor_exists", "quota_exceeded", "conflict", "precondition_failed", "precondition_required":
 		code = exitConflict
 	}
-	return outputError(code, err)
+	return outputError(code, displayErr)
 }
 func takeOption(a []string, name string) (string, []string) {
 	for i := 0; i < len(a); i++ {
@@ -984,12 +1050,8 @@ func takeOption(a []string, name string) (string, []string) {
 	}
 	return "", a
 }
-func configPath() string {
-	if p := os.Getenv("BIBLEIT_CONFIG"); p != "" {
-		return p
-	}
-	return filepath.Join(homeDirectory(), ".bibleit", "config.json")
-}
+func configPath() string { return credentialPath() }
+
 func homeDirectory() string {
 	if home, err := os.UserHomeDir(); err == nil {
 		return home
@@ -999,61 +1061,10 @@ func homeDirectory() string {
 func usage() int {
 	return fail(exitUsage, "usage: bibleit [--transport http|ssh] [--identity path] [--format table|raw|json|ndjson] <command>\n\nRun \"bibleit help\" to list commands.")
 }
-func help(topic []string) int {
-	key := strings.Join(topic, " ")
-	var lines []string
-	switch key {
-	case "", "root":
-		lines = []string{
-			"Bibleit CLI: read Scripture, search translations, and manage Live sessions.", "",
-			"Usage:", "  bibleit [flags]", "  bibleit [command]", "",
-			"Reading Scripture", "  read         Read a verse, chapter, or book.", "  search       Search an enabled translation.", "  translation  Manage your account translation library.", "",
-			"Live sessions", "  live         Create, inspect, and control Lives you are allowed to manage.", "",
-			"Access control", "  auth         Authenticate and inspect your Bibleit account.", "  account      Inspect your account and effective quotas.", "  organization Inspect organization memberships and verification applications.", "",
-			"Service", "  server       Inspect the Bibleit service.", "",
-			"Additional Commands:", "  help         Help about any command.", "  version      Print the CLI version.", "  completion   Generate Bash, Zsh, or Fish completion.", "",
-			"Flags:", "      --transport http|ssh       Select transport (default http)", "      --identity path            Select a supported SSH private key", "      --format table|raw|json|ndjson  Output format (default \"table\")", "      --yes                      Confirm destructive commands without a prompt", "  -h, --help                      Help for bibleit.", "  -v, --version                   Print the CLI version.", "",
-			"Use \"bibleit [command] --help\" for more information about a command.",
-		}
-	case "completion":
-		lines = []string{"Generate shell completion without contacting the server.", "", "Usage:", "  bibleit completion bash|zsh|fish", "", "Source the generated Bash script, source Zsh after compinit, or save Fish output to ~/.config/fish/completions/bibleit.fish.", "Completes command words and flags; Live IDs, translations, references and secrets are not fetched."}
-	case "auth":
-		lines = []string{
-			"Authenticate Bibleit CLI through the dashboard or SSH.", "",
-			"`bibleit auth login` opens the dedicated CLI sign-in flow in your browser. `bibleit auth login ssh` first uses the SSH agent and identities selected by OpenSSH configuration. Pass --identity only when you need to choose a specific supported SSH key.", "",
-			"Usage:", "  bibleit auth login", "  bibleit auth login ssh [--identity <private-key>]", "  bibleit auth info|whoami|logout", "",
-			"Commands:", "  login       Authenticate and cache the saved credentials.", "  info        Show the authenticated actor and permissions.", "  whoami      Alias for auth info.", "  logout      Revoke cached web authentication and clear the saved credentials.", "",
-			"Examples:", "  bibleit auth login", "  bibleit auth login ssh", "  bibleit auth login ssh --identity ~/.ssh/bibleit_local_dev", "  bibleit live list",
-		}
-	case "live":
-		lines = []string{
-			"Create, inspect, and control Bibleit Live sessions.", "",
-			"Usage:", "  bibleit live [command]", "",
-			"Commands:", "  list                              List Lives visible to the authenticated actor.", "  create [name]                     Create an open Live.", "  delete all                        Delete every Live managed by the actor.", "  <id> info|stats                   Show Live details or connection statistics.", "  <id> start|stop                   Change the Live state.", "  <id> pause|resume                 Pause or resume its retained stack.", "  <id> clear                        Clear the stack.", "  <id> secret <value>               Authenticate a Live secret for this connection.", "  <id> secret create|rotate|delete  Manage a Live secret.", "  <id> set name|reference|translations <value...>", "                                    Change Live options.", "  <id> stack info                   Show the current Live stack.", "  <id> stack push [translation] <book> [chapter] [verse]", "                                    Push a reading onto the stack.", "  <id> stack pop [count]            Pop entries from the stack.", "  <id> stack clear                  Clear the stack.", "  <id> subscribe                    Subscribe to a Live.", "  <id> delete                       Delete a Live.", "", "HTTP Live creation requires a name. Stats, stack, secrets, bulk deletion and reference/translation settings require SSH.", "Deletion, stack clear/pop and secret rotation/removal require confirmation.", "Terminal prompts show the transport, endpoint and target; type yes (delete all for bulk deletion).", "Use --yes for automation or JSON output. Cancellation sends no request and exits 1; missing confirmation exits 2.",
-		}
-	case "read":
-		lines = []string{"Read a verse or chapter through REST, or a book through SSH.", "", "Usage:", "  bibleit read <translation> <book> [chapter] [verse]", "", "Examples:", "  bibleit read KJV John 3 16", "  bibleit read NVIPT Salmos 23"}
-	case "search":
-		lines = []string{"Search an installed translation.", "", "Usage:", "  bibleit search <translation> <query>", "", "Example:", "  bibleit search KJV \"love one another\""}
-	case "translation":
-		lines = []string{"Inspect translation metadata and references, and manage your account library.", "", "Usage:", "  bibleit translation list", "  bibleit translation add <translation>", "  bibleit translation remove <translation>", "  bibleit translation info <translation>", "  bibleit translation catalog <translation>", "", "HTTP add/remove requires a service token. Personal library edits require SSH.", "Physical translation installation and deletion are server operator tasks and are not exposed by this CLI."}
-	case "organization":
-		lines = []string{"HTTP service tokens inspect their own organization. Membership directories and verification applications require SSH.", "", "Usage:", "  bibleit organization list [cursor]", "  bibleit organization application <id> status", "", "List returns one page of at most 50 records. Pass the returned next cursor unchanged.", "Pending applications grant no operating rights. Organization approval is completed in Bibleit admin.", "Applications are read-only; corrections require cancellation and a new request in the browser.", "Organization membership is invitation-only. No request or join mutation commands are exposed."}
-	case "account":
-		lines = []string{"Inspect account details. Quotas and personal token metadata require SSH; service tokens can list organization credentials over HTTP.", "", "Usage:", "  bibleit account info", "  bibleit account quotas", "  bibleit account tokens"}
-	case "server":
-		lines = []string{"HTTP reports REST API metadata. SSH reports service and protocol versions. Server help requires SSH.", "", "Usage:", "  bibleit server info", "  bibleit server help [server|account|auth|translation|live|organization]"}
-	default:
-		return fail(exitUsage, "unknown help topic %q", key)
-	}
-	if activeFormat == "json" {
-		return printLocal("help", map[string]string{"topic": key, "text": strings.Join(lines, "\n")}, "json")
-	}
-	fmt.Println(strings.Join(lines, "\n"))
-	return exitOK
-}
+func help(topic []string) int { return registryHelp(topic) }
+
 func fail(code int, format string, args ...any) int {
-	return outputError(code, fmt.Errorf(format, args...))
+	return outputError(code, userMessage{fmt.Sprintf(format, args...)})
 }
 
 func sshEndpoint(c config) string {

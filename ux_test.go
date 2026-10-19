@@ -94,7 +94,7 @@ func TestInteractiveConfirmation(t *testing.T) {
 			}
 		}
 		if test.interactive && test.format != "json" {
-			if !strings.Contains(prompt.String(), "http") || !strings.Contains(prompt.String(), defaultWebURL) {
+			if !strings.Contains(prompt.String(), test.action) || strings.Contains(prompt.String(), defaultWebURL) {
 				t.Fatal("missing scope", prompt.String())
 			}
 		} else if prompt.Len() != 0 {

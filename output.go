@@ -57,6 +57,29 @@ func typedRecord(record outputRecord) (stableRecord, error) {
 	return result, nil
 }
 func printResponse(lines []string, format string) int {
+	if activeSecretFile != nil {
+		safe := append([]string(nil), lines...)
+		for i, line := range safe {
+			if line == "END" {
+				continue
+			}
+			r, e := bibleit.ParseRecord(line)
+			if e != nil {
+				return protocolFailure(e)
+			}
+			if secret := r.Fields["secret"]; secret != "" {
+				replacement, e := deliverSecret(secret)
+				if e != nil {
+					return protocolFailure(e)
+				}
+				safe[i] = strings.ReplaceAll(line, secret, replacement)
+			}
+		}
+		if !activeSecretSaved {
+			return outputError(exitFailure, userMessage{"The server did not supply a one-time secret; inspect the Live session before retrying."})
+		}
+		lines = safe
+	}
 	if format == "raw" {
 		fmt.Println(strings.Join(lines, "\n"))
 		return exitOK
@@ -124,6 +147,11 @@ func parseOptions(args []string, allowed map[string]bool) (map[string]string, []
 		name, value, inline := strings.Cut(args[i], "=")
 		takesValue, known := allowed[name]
 		if !known {
+			if strings.HasPrefix(name, "-") && !oneOf(name, "-h", "--help", "-v", "--version") {
+				if _, err := strconv.Atoi(name); err != nil {
+					return values, rest, fmt.Errorf("unknown option; run `bibleit help` for flags, or use -- before a literal value")
+				}
+			}
 			rest = append(rest, args[i])
 			continue
 		}
@@ -151,36 +179,18 @@ func parseOptions(args []string, allowed map[string]bool) (map[string]string, []
 	}
 	return values, rest, nil
 }
-func outputError(code int, err error) int {
+func outputError(exit int, err error) int {
+	code, message, fields, status := describeError(exit, err)
 	if activeFormat != "json" && activeFormat != "ndjson" {
-		fmt.Fprintf(os.Stderr, "bibleit: %v\n", err)
-		return code
+		fmt.Fprintln(os.Stderr, "bibleit: "+message)
+		return exit
 	}
-	names := []string{"ok", "failure", "usage", "unauthenticated", "forbidden", "not_found", "conflict", "rate_limited"}
-	detail := map[string]any{"code": names[code], "message": err.Error(), "fields": map[string]any{}}
-	var confirmation *confirmationError
-	if errors.As(err, &confirmation) {
-		detail["code"] = confirmation.code
+	detail := map[string]any{"code": code, "message": message, "fields": fields}
+	if status != 0 {
+		detail["http_status"] = status
 	}
-	var serverErr *bibleit.ServerError
-	var httpErr *bibleit.HTTPError
-	if errors.As(err, &serverErr) {
-		detail["code"] = serverErr.Code
-		if serverErr.Fields != nil {
-			detail["fields"] = serverErr.Fields
-		}
-	}
-	if errors.As(err, &httpErr) {
-		if httpErr.Code != "" {
-			detail["code"] = httpErr.Code
-		}
-		detail["http_status"] = httpErr.StatusCode
-		if httpErr.Fields != nil {
-			detail["fields"] = httpErr.Fields
-		}
-	}
-	_ = json.NewEncoder(os.Stderr).Encode(map[string]any{"schema_version": 1, "ok": false, "error": detail, "exit_code": code})
-	return code
+	_ = json.NewEncoder(os.Stderr).Encode(map[string]any{"schema_version": 1, "ok": false, "error": detail, "exit_code": exit})
+	return exit
 }
 
 func humanValue(value string) string {
