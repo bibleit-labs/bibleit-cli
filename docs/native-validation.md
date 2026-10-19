@@ -26,6 +26,19 @@ routes it to isolated loopback TLS with a fixture-only CA. Fixture trust is abse
 from production executables and is never installed in the host trust store.
 Passing these tests does not prove production availability or provider behavior.
 
+## Parallel CI scheduling
+
+Native validation runs once per pull request update and on pushes to `main`.
+Feature-branch pushes do not duplicate the PR checks, and tags use the release
+workflow's native validation. A new PR update cancels that PR's older native run;
+manual, main and release runs use separate concurrency groups.
+
+The three native platform jobs can run simultaneously. Candidate and public
+installer matrices allow all six platforms to run simultaneously, with no shared
+concurrency group between workflows. GitHub runner availability and account
+limits can still queue jobs. Release packaging waits for native tests, installer
+checks wait for their archives, and publication waits for all required checks.
+
 [Contract coverage](../contract/features.md) records supported client operations
 and limits. Maintainers keep local service integration procedures in private
 operations documentation; they are not part of public contributor setup.
