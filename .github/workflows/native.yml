@@ -2,6 +2,7 @@ name: Native CLI validation
 
 on:
   push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
   workflow_call:
@@ -9,11 +10,17 @@ on:
 permissions:
   contents: read
 
+# Replace stale PR checks without serializing independent workflow runs.
+concurrency:
+  group: native-cli-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   native:
     name: Native ${{ matrix.os }}
     strategy:
       fail-fast: false
+      max-parallel: 3
       matrix:
         os: [ubuntu-24.04, windows-2025, macos-15]
     runs-on: ${{ matrix.os }}
