@@ -109,6 +109,15 @@ cleanup. Collection deletion requires an initially empty scope containing only
 Lives created by that run. Preserve the original credential and translation library;
 test browser login/logout with a separately issued, subsequently revoked credential.
 
+The expanded [production qualification](releases/unreleased-cli-production-commands.json)
+covers all 53 supported command syntaxes plus the expected rejection of the
+deprecated connection-only secret form. HTTP and SSH runs passed 101 and 138
+checks respectively, with separate browser/SSH authentication and saved-identity
+checks. The runs respect production request and connection limits. All temporary
+Lives were removed, the translation library was restored, and the normal login
+and installed Homebrew v0.1.0 were preserved. The campaign found and fixed compact
+translated numeric stack references such as `stack push bpml 31 1:1`.
+
 Pagination checks compare every source verse from paged traversal with reference
 chapter reads for personal, delegated and service credentials. Cover default and explicit page sizes,
 continuation with a different limit, invalid/mismatched/stale cursors,
