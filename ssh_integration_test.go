@@ -29,7 +29,19 @@ func TestServerSSHSubscription(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 	t.Setenv("BIBLEIT_ENDPOINT", "https://other.example")
-	client, err := bibleit.NewClient(os.Getenv("BIBLEIT_INTEGRATION_TOKEN"))
+	fixtureKnownHosts := filepath.Join(t.TempDir(), "known_hosts")
+	client, err := bibleit.NewSSHClient(func(ctx context.Context, cmd bibleit.Command) (bibleit.Response, error) {
+		base, _, err := sshCommand(config{Identity: os.Getenv("BIBLEIT_INTEGRATION_IDENTITY")}, cmd)
+		if err != nil {
+			return bibleit.Response{}, err
+		}
+		args := append([]string{"-o", "UserKnownHostsFile=" + fixtureKnownHosts, "-o", "BatchMode=yes"}, base.Args[1:]...)
+		wire, err := exec.CommandContext(ctx, base.Path, args...).Output()
+		if err != nil && len(wire) == 0 {
+			return bibleit.Response{}, err
+		}
+		return bibleit.DecodeCommandResponse(cmd, bytes.NewReader(wire))
+	})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -80,16 +92,16 @@ func TestServerSSHSubscription(t *testing.T) {
 		if err := saveConfig(config{AccessToken: os.Getenv("BIBLEIT_INTEGRATION_TOKEN"), Identity: cfg.Identity}); err != nil {
 			t.Fatal(err)
 		}
-		var httpPing any
-		for _, args := range [][]string{{"ping"}, {"server", "info"}, {"server", "help", "account"}, {"account", "info"}, {"account", "quotas"}, {"account", "tokens"}, {"translation", "info", "web"}, {"translation", "catalog", "web"}, {"read", "web", "19", "23", "1"}, {"live", id, "info"}, {"live", id, "stats"}} {
+		var httpPing map[string]any
+		for _, args := range [][]string{{"ping"}, {"server", "info"}, {"account", "info"}, {"translation", "info", "web"}, {"translation", "catalog", "web"}, {"read", "web", "19", "23", "1"}, {"live", id, "info"}} {
 			commandArgs := append([]string{"--format", "json"}, args...)
 			code, stdout, stderr := captureCLI(t, func() int { return run(commandArgs) })
 			var result map[string]any
-			if code != exitOK || json.Unmarshal([]byte(stdout), &result) != nil || result["schema_version"] != float64(1) {
+			if code != exitOK || json.Unmarshal([]byte(stdout), &result) != nil || result["schema_version"] != float64(2) {
 				t.Fatalf("CLI %v failed: %s", args, stderr)
 			}
 			if len(args) == 1 {
-				httpPing = result
+				httpPing = result["data"].(map[string]any)
 			}
 		}
 		selected, err := loadConfig()
@@ -112,8 +124,12 @@ func TestServerSSHSubscription(t *testing.T) {
 			t.Fatal(err)
 		}
 		code, stdout, stderr := captureCLI(t, func() int { return printResponse(result.Lines, "json") })
-		var sshPing any
-		if code != exitOK || json.Unmarshal([]byte(stdout), &sshPing) != nil || !reflect.DeepEqual(httpPing, sshPing) {
+		var sshPing struct {
+			Records []struct {
+				Fields map[string]any `json:"fields"`
+			} `json:"records"`
+		}
+		if code != exitOK || json.Unmarshal([]byte(stdout), &sshPing) != nil || len(sshPing.Records) != 1 || !reflect.DeepEqual(httpPing, sshPing.Records[0].Fields) {
 			t.Fatalf("HTTP/SSH JSON mismatch: %s", stderr)
 		}
 	})

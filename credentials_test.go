@@ -160,10 +160,10 @@ func TestFixedServiceRejectsEndpointOverridesAndForeignCredentials(t *testing.T)
 	requests := 0
 	cliHTTPClient = &http.Client{Transport: roundTripFunc(func(r *http.Request) (*http.Response, error) {
 		requests++
-		if r.URL.String() != defaultWebURL+"/api/cli/command" {
+		if r.URL.String() != "https://api.bibleit.app/v1/openapi.json" {
 			t.Fatalf("unexpected destination: %s", r.URL)
 		}
-		return &http.Response{StatusCode: 200, Header: make(http.Header), Body: io.NopCloser(strings.NewReader("OK pong=true\n"))}, nil
+		return &http.Response{StatusCode: 200, Header: make(http.Header), Body: io.NopCloser(strings.NewReader(`{"openapi":"3.1.1","info":{"version":"1"}}`))}, nil
 	})}
 	for _, args := range [][]string{
 		{"--endpoint", "https://other.example", "ping"},
@@ -216,7 +216,7 @@ func TestSingleCredentialRoutingAndPreservation(t *testing.T) {
 	var bearer string
 	cliHTTPClient = &http.Client{Transport: roundTripFunc(func(r *http.Request) (*http.Response, error) {
 		bearer = r.Header.Get("Authorization")
-		return &http.Response{StatusCode: 200, Header: make(http.Header), Body: io.NopCloser(strings.NewReader("OK pong=true\n"))}, nil
+		return &http.Response{StatusCode: 200, Header: make(http.Header), Body: io.NopCloser(strings.NewReader(`{"openapi":"3.1.1","info":{"version":"1"}}`))}, nil
 	})}
 	for _, args := range [][]string{{"ping"}, {"--transport", "http", "ping"}} {
 		code, _, stderr := captureCLI(t, func() int { return run(args) })

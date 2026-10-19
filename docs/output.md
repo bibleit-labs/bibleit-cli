@@ -1,4 +1,18 @@
-# CLI output contract, schema version 1
+# CLI output contract
+
+HTTP resource commands return native REST data with `--format raw`. Their
+`--format json` output uses schema version 2:
+
+```json
+{"schema_version":2,"ok":true,"data":{"id":"live-id","paused":false,"sequence":3}}
+```
+
+Field names and native JSON types come from the REST resource, including nested
+rights and attribution. Collections aggregate all pages and return `data` with
+`next_cursor:null`. No command-protocol records are generated. Local commands,
+errors and SSH keep the schema-version-1 contract described below.
+
+## SSH and local commands, schema version 1
 
 Finite `--format json` commands write one object to stdout:
 
@@ -17,7 +31,7 @@ excluded. Fields use snake_case wire names. Object key order is not contractual.
 Missing fields remain absent; an explicit empty permission/translation list is
 `[]`. Unknown fields stay strings, even if their contents look like numbers.
 IDs, names, statuses, source names, references and verse texts remain strings.
-The envelope is identical for HTTP and SSH replies.
+This record envelope is used for SSH and local commands.
 
 Known field types:
 
@@ -74,7 +88,7 @@ server error codes remain intact. Failed finite commands write no success object
 A stream can emit records before a later error. Local help/version bypass config
 loading, so they still work when configuration is unreadable.
 
-`raw` preserves wire records and framing; local auth/version/help actions
+SSH `raw` preserves wire records and framing; local auth/version/help actions
 use human output. Default Live subscriptions summarize state changes and show
 decoded verse references, translations and text. Sequence-only state updates are
 quiet. Default finite tables retain server column order, escape control

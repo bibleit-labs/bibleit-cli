@@ -39,7 +39,7 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
     # Freeze source and runtime assets; exclude local credentials and data.
     original = server
     server = temporary/'snapshot'
-    for relative in ('src', 'test', 'priv/config', 'priv/sql', 'priv/i18n', 'priv/templates', 'priv/static'):
+    for relative in ('src', 'test', 'priv/config', 'priv/sql', 'priv/i18n', 'priv/templates', 'priv/static', 'priv/openapi'):
         shutil.copytree(original/relative, server/relative,
                         ignore=lambda folder, names: [name for name in names if (pathlib.Path(folder)/name).is_symlink()])
     shutil.copytree(original/'_build/default/lib', server/'_build/default/lib',
@@ -155,12 +155,12 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
               gen_server:stop(bibleit_rate_limit),
               application:set_env(bibleit_server,rate_limits,#{ssh_command=>#{limit=>100},ssh_search=>#{limit=>100}}),
               {ok,L}=bibleit_rate_limit:start_link(),unlink(L),
-              {ok,ManualId,Token}=bibleit_authorization:create_token(<<"security-owner">>,<<"security-owner">>,<<"Go integration">>,[]),
+              {ok,ManualId,Token}=bibleit_authorization:create_token(<<"security-owner">>,<<"security-owner">>,<<"Go integration">>,[],manual,erlang:system_time(second)+3600),
               {error,quota_exceeded}=bibleit_authorization:create_token(<<"security-owner">>,<<"security-owner">>,<<"Over quota">>,[]),
               {ok,ExpiredId,ExpiredToken}=bibleit_authorization:create_token(<<"security-other">>,<<"security-other">>,<<"Expired fixture">>,[],manual,erlang:system_time(second)+60),
               {ok,_}=bibleit_database:query(<<"UPDATE access_tokens SET expires_at=now()-interval '1 second' WHERE id=$1">>,[ExpiredId]),
               {ok,ScopedId,ScopedToken}=bibleit_authorization:create_token(<<"security-owner">>,<<"security-owner">>,<<"Scoped fixture\nlabel">>,[{token,get}],cli,erlang:system_time(second)+3600),
-              {ok,_,DeniedToken}=bibleit_authorization:create_token(<<"security-owner">>,<<"security-owner">>,<<"Restricted fixture">>,[{live,list}],cli,undefined),
+              {ok,_,DeniedToken}=bibleit_authorization:create_token(<<"security-owner">>,<<"security-owner">>,<<"Restricted fixture">>,[{live,list}],cli,erlang:system_time(second)+3600),
               {ok,OwnerExpiredId,_}=bibleit_authorization:create_token(<<"security-owner">>,<<"security-owner">>,<<"Owner expired fixture">>,[],cli,erlang:system_time(second)+60),
               {ok,_}=bibleit_database:query(<<"UPDATE access_tokens SET expires_at=now()-interval '1 second' WHERE id=$1">>,[OwnerExpiredId]),
               {ok,RevokedId,_}=bibleit_authorization:create_token(<<"security-owner">>,<<"security-owner">>,<<"Owner revoked fixture">>,[],cli,undefined),
@@ -179,6 +179,7 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
               Prefix=[io_lib:format("Book ~B 1:1 filler~n",[B]) || B<-lists:seq(1,18)],
               ok=file:write_file(BT,iolist_to_binary([Prefix,"Psalms 1:1 Fixture book opening.\nPsalms 23:1 The shepherd guides me.\nPsalms 23:2 The shepherd gives rest.\n"])),
               ok=bibleit_translation_nif:create_index(list_to_binary(BT),list_to_binary(Index)),
+              {ok,_}=bibleit_account:add_translation(<<"security-owner">>,<<"web">>),
 
               P=open_port({spawn_executable,os:getenv("BIBLEIT_GO_TEST_BIN")},[exit_status,use_stdio,stderr_to_stdout,
                 {args,["-test.run=^TestServerHTTPIntegration$","-test.v"]},
@@ -245,12 +246,13 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
     if args.baseline:
         baseline['verification'].update({
             'request_decoder_cases': len(json.loads(fixture.read_text())),
-            'fixed_http_endpoint': 'https://bibleit.app' if args.integration else None,
+            'fixed_http_endpoint': 'https://api.bibleit.app/v1' if args.integration else None,
+            'browser_auth_endpoint': 'https://bibleit.app' if args.integration else None,
             'fixed_ssh_endpoint': 'bibleit.app:22' if args.integration else None,
             'ssh_host_key_alias': None,
             'boot_configuration_cases': 1 if args.integration else 0,
-            'eunit_cases': 25 if args.integration else 0,
-            'direct_boot_eunit_cases': 1 if args.integration else 0,
+            'eunit_passed': args.integration,
+            'eunit_modules': ['bibleit_cli_auth_tests', 'bibleit_ssh_key_cb_tests', 'bibleit_protocol_request_tests', 'bibleit_http_canonical_host_tests', 'bibleit_turnstile_tests', 'bibleit_server_boot_tests'] if args.integration else [],
             'tls_boundary_cases': 3 if args.integration else 0,
             'egress_disabled_fixture': args.integration,
             'response_encoder_cases': sum('server_response_term' in case for case in json.loads((root/'contract/fixtures/responses-v1.json').read_text())),

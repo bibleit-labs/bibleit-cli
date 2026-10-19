@@ -1,8 +1,6 @@
 package main
 
 import (
-	"encoding/json"
-	"io"
 	"net/http"
 	"path/filepath"
 	"reflect"
@@ -36,41 +34,19 @@ func TestOrganizationHelpCompletion(t *testing.T) {
 	}
 }
 
-func TestOrganizationCapabilityGuardAndDeletedStatus(t *testing.T) {
-	for _, supported := range []bool{false, true} {
-		t.Run(map[bool]string{false: "old-server", true: "foundation-server"}[supported], func(t *testing.T) {
-			t.Setenv("BIBLEIT_CONFIG", filepath.Join(t.TempDir(), "config.json"))
-			t.Setenv("BIBLEIT_TOKEN", "bt_fixture")
-			previous := cliHTTPClient
-			defer func() { cliHTTPClient = previous }()
-			commands := []string{}
-			cliHTTPClient = &http.Client{Transport: roundTripFunc(func(r *http.Request) (*http.Response, error) {
-				var payload map[string]string
-				if err := json.NewDecoder(r.Body).Decode(&payload); err != nil {
-					t.Fatal(err)
-				}
-				commands = append(commands, payload["command"])
-				wire := "OK protocol_version=1 version=fixture capabilities=help,live\n"
-				if len(commands) == 1 && supported {
-					wire = "OK protocol_version=1 version=fixture capabilities=help,live,organization_status\n"
-				}
-				if len(commands) > 1 {
-					wire = "OK application_id=fixture name=Example domain=example.org state=organization_deleted next_action=none verification_url=/organizations/applications/fixture\n"
-				}
-				return &http.Response{StatusCode: 200, Header: make(http.Header), Body: io.NopCloser(strings.NewReader(wire))}, nil
-			})}
-			code, out, stderr := captureCLI(t, func() int {
-				return run([]string{"--format", "json", "organization", "application", "fixture", "status"})
-			})
-			if !supported {
-				if code != exitUsage || out != "" || !strings.Contains(stderr, "does not support organization_status") || !reflect.DeepEqual(commands, []string{"SERVER INFO"}) {
-					t.Fatalf("old server: %d %q %q %v", code, out, stderr, commands)
-				}
-			} else {
-				if code != exitOK || stderr != "" || !strings.Contains(out, "organization_deleted") || strings.Contains(out, "organization_id") || !reflect.DeepEqual(commands, []string{"SERVER INFO", "ORGANIZATION APPLICATION fixture STATUS"}) {
-					t.Fatalf("foundation: %d %q %q %v", code, out, stderr, commands)
-				}
-			}
-		})
+func TestOrganizationApplicationHasNoHTTPFallback(t *testing.T) {
+	t.Setenv("BIBLEIT_CONFIG", filepath.Join(t.TempDir(), "config.json"))
+	t.Setenv("BIBLEIT_TOKEN", "bt_fixture")
+	old := cliHTTPClient
+	defer func() { cliHTTPClient = old }()
+	cliHTTPClient = &http.Client{Transport: roundTripFunc(func(r *http.Request) (*http.Response, error) {
+		t.Fatal("unsupported command contacted server", r.URL)
+		return nil, nil
+	})}
+	code, out, stderr := captureCLI(t, func() int {
+		return run([]string{"--format", "json", "organization", "application", "fixture", "status"})
+	})
+	if code != exitUsage || out != "" || !strings.Contains(stderr, "no supported REST operation") {
+		t.Fatal(code, out, stderr)
 	}
 }

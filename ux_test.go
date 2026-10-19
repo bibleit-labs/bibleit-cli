@@ -23,11 +23,8 @@ func TestDestructiveRequestGuard(t *testing.T) {
 		requests++
 		return &http.Response{StatusCode: 403, Header: make(http.Header), Body: io.NopCloser(strings.NewReader(`{"error":"forbidden"}`))}, nil
 	})}
-	commands := [][]string{
-		{"live", "delete", "all"}, {"live", "L1", "delete"}, {"live", "L1", "clear"},
-		{"live", "L1", "stack", "clear"}, {"live", "L1", "stack", "pop"}, {"live", "L1", "stack", "pop", "2"},
-		{"live", "L1", "secret", "rotate"}, {"live", "L1", "secret", "delete"},
-	}
+	commands := [][]string{{"live", "L1", "delete"}, {"live", "L1", "clear"}}
+
 	for _, args := range commands {
 		t.Run(strings.Join(args, " "), func(t *testing.T) {
 			before := requests
@@ -54,7 +51,7 @@ func TestDestructiveRequestGuard(t *testing.T) {
 			}
 		})
 	}
-	for _, args := range [][]string{{"live", "L1", "pause"}, {"live", "L1", "secret", "create"}, {"translation", "remove", "KJV"}} {
+	for _, args := range [][]string{{"live", "L1", "pause"}} {
 		before := requests
 		code, _, stderr := captureCLI(t, func() int { return run(args) })
 		if code != exitForbidden || requests != before+1 {

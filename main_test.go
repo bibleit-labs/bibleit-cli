@@ -245,17 +245,17 @@ func TestSSHAuthenticationCanUseOpenSSHIdentitySelection(t *testing.T) {
 func TestHTTPRunsCommandsWithCachedBearerToken(t *testing.T) {
 	previous := cliHTTPClient
 	cliHTTPClient = &http.Client{Transport: roundTripFunc(func(r *http.Request) (*http.Response, error) {
-		if r.URL.Path != "/api/cli/command" || r.Header.Get("Authorization") != "Bearer bt_test" {
+		if r.URL.Path != "/v1/me" || r.Method != "GET" || r.URL.Host != "api.bibleit.app" || r.Header.Get("Authorization") != "Bearer bt_test" {
 			return &http.Response{StatusCode: http.StatusUnauthorized, Body: io.NopCloser(strings.NewReader("ERR unauthorized\n")), Header: make(http.Header)}, nil
 		}
-		return &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(strings.NewReader("OK actor=\"browser-user\" auth=true\n")), Header: make(http.Header)}, nil
+		return &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(strings.NewReader(`{"id":"browser-user","display_name":"Browser User","handle":"browser","personal_account_id":"account-1"}`)), Header: make(http.Header)}, nil
 	})}
 	t.Cleanup(func() {
 		cliHTTPClient = previous
 	})
-	lines, err := request(config{AccessToken: "bt_test"}, bibleit.IdentityCommand())
-	if err != nil || len(lines) != 1 || !strings.Contains(lines[0], "browser-user") {
-		t.Fatalf("got %#v, %v", lines, err)
+	code, out, stderr := captureCLI(t, func() int { return runHTTP(config{AccessToken: "bt_test"}, []string{"auth", "info"}, "json", false) })
+	if code != exitOK || !strings.Contains(out, "browser-user") {
+		t.Fatal(code, out, stderr)
 	}
 }
 
