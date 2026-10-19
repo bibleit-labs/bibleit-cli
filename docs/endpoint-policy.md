@@ -1,14 +1,15 @@
 # Service endpoint and credential policy
 
-The Go client and CLI target the project-managed service `https://bibleit.app`.
-SSH uses `bibleit.app:22`. Repository/download access and service authorization
-are separate. The server repository remains private.
+REST resources target the pinned `https://api.bibleit.app/v1` service. Browser
+approval, CLI code exchange and logout use `https://bibleit.app`. SSH uses
+`bibleit.app:22`. Repository/download access and service authorization are separate.
 
-The SDK declares ServerEndpoint in client.go. HTTP commands, browser approval,
-code exchange and revocation use that origin. HTTPS verification remains enabled
-and redirects are blocked. NewClient(apiToken) validates explicit credentials;
-NewClientWithHTTPClient customizes transport/timeouts without an endpoint option.
-The library does not read environment variables or CLI configuration.
+The SDK declares the REST endpoint in `rest/client.go` and the browser origin in
+`client.go`. HTTP resource clients use `rest.NewClient`; the parent credential
+client supports browser-issued token revocation only. Command execution requires
+an explicit SSH executor. There is no command-style HTTP transport or REST adapter.
+Custom HTTP clients change transport/timeouts while retaining the fixed origin,
+TLS verification and blocked redirects. The SDK does not load environment variables.
 
 The CLI defaults to HTTP; `--transport ssh` selects OpenSSH explicitly.
 `BIBLEIT_TOKEN` supplies an HTTP token; it is not an SSH credential. SSH identity

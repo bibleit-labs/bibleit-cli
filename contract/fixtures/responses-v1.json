@@ -82,7 +82,7 @@
   },
   {
     "name": "live-push",
-    "wire": "OK event=verse translations=1\nVERSE translation=\"web\" reference=\"\" text=\"John 3:16\"\nEND\n",
+    "wire": "OK event=verse translations=1\nVERSE translation=\"web\" reference=\"\" text=\"John 3:16\" attribution=\"\"\nEND\n",
     "records": [
       {
         "type": "ok",
@@ -96,7 +96,8 @@
         "fields": {
           "translation": "web",
           "text": "John 3:16",
-          "reference": ""
+          "reference": "",
+          "attribution": ""
         }
       }
     ],
@@ -334,7 +335,7 @@
   },
   {
     "name": "typed-live-stack",
-    "wire": "OK id=\"live\" count=1\nSTACK position=1 translation=\"web\" reference=\"Psalms 23:1\" text=\"Fixture verse\"\nEND\n",
+    "wire": "OK id=\"live\" count=1\nSTACK position=1 translation=\"web\" reference=\"Psalms 23:1\" text=\"Fixture verse\" attribution=\"\"\nEND\n",
     "records": [
       {
         "type": "ok",
@@ -349,7 +350,8 @@
           "position": "1",
           "translation": "web",
           "reference": "Psalms 23:1",
-          "text": "Fixture verse"
+          "text": "Fixture verse",
+          "attribution": ""
         }
       }
     ],

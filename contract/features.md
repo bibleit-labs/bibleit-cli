@@ -1,5 +1,9 @@
 # Customer operation and transport inventory
 
+Current HTTP CLI commands use REST exclusively. The command-era HTTP inventory
+below is historical; current transport availability is documented in
+[REST migration](../docs/rest-api.md). SSH retains the command protocol.
+
 Reviewed 2026-10-09 against the server working tree. See `server-baseline.json`
 for source fingerprints and `docs/status.md` for verification progress. Protocol
 availability is distinct from client implementation and integration coverage.
@@ -33,7 +37,7 @@ source. Browser presence alone does not imply a supported bearer API.
 
 ## Shared HTTP constraints
 
-- `/api/cli/command` carries a JSON command string; finite replies are protocol v1.
+- HTTP resource requests use versioned REST JSON. SSH exec uses protocol v1.
 - 8192 command bytes and 16384 JSON-body bytes; measure UTF-8 bytes, not characters.
 - Domain errors can use HTTP 200. Rate limiting uses HTTP 429 plus ERR metadata;
   malformed/oversized requests may return JSON errors with HTTP 400/413.

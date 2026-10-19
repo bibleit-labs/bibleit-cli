@@ -70,19 +70,19 @@ def terminal_checks(binary, env, requests):
         print("Windows process checks use redirected handles; real console detection is covered by TestWindowsConsoleHandles", flush=True)
         return
     import pty
-    for answer, code, delta in (("yes", 1, 0), ("", 1, 0), ("delete all", 0, 1)):
+    for answer, code, delta in (("no", 1, 0), ("", 1, 0), ("yes", 0, 2)):
         master, slave = pty.openpty()
         before = len(requests)
-        child = subprocess.Popen(command(binary, ["live", "delete", "all"]), env=env,
+        child = subprocess.Popen(command(binary, ["live", "L1", "delete"]), env=env,
                                  stdin=slave, stderr=slave, stdout=subprocess.PIPE)
         os.close(slave)
         try:
             output = b""
             deadline = time.monotonic() + 10
-            while b'Type "delete all" to confirm: ' not in output and time.monotonic() < deadline:
+            while b'Type "yes" to confirm: ' not in output and time.monotonic() < deadline:
                 if select.select([master], [], [], 0.5)[0]:
                     output += os.read(master, 4096)
-            assert b'Type "delete all" to confirm: ' in output, output
+            assert b'Type "yes" to confirm: ' in output, output
             assert b"http" in output and HOST.encode() in output and b"bt_runtime" not in output, output
             os.write(master, (answer + "\n").encode())
             stdout, _ = child.communicate(timeout=10)
@@ -94,7 +94,7 @@ def terminal_checks(binary, env, requests):
                 child.kill()
                 child.wait()
             os.close(master)
-    print("Native PTY: scoped bulk prompt, rejection, empty answer and confirmed dispatch pass", flush=True)
+    print("Native PTY: scoped deletion prompt, rejection, empty answer and confirmed dispatch pass", flush=True)
 
 
 def main():
@@ -116,20 +116,31 @@ def main():
         def log_message(self, *_):
             pass
 
-        def do_POST(self):
-            body = self.rfile.read(int(self.headers.get("Content-Length", "0")))
-            requests.append((self.path, self.headers.get("Authorization"), body))
-            command = json.loads(body).get("command")
-            if self.path != "/api/cli/command" or self.headers.get("Authorization") != "Bearer bt_runtime":
-                self.send_response(403)
-                self.end_headers()
-                return
-            reply = b"OK pong=true\n" if command == "PING" else b"OK event=deleted\n"
-            self.send_response(200)
-            self.send_header("Content-Type", "text/plain")
-            self.send_header("Content-Length", str(len(reply)))
+        def respond(self, status, payload=None):
+            body = json.dumps(payload).encode() if payload is not None else b""
+            self.send_response(status)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(body)))
+            self.send_header("ETag", '\"live:1\"')
             self.end_headers()
-            self.wfile.write(reply)
+            self.wfile.write(body)
+
+        def do_GET(self):
+            requests.append((self.path, self.headers.get("Authorization"), b""))
+            if self.headers.get("Authorization") != "Bearer bt_runtime":
+                return self.respond(403, {"code": "forbidden"})
+            if self.path == "/v1/openapi.json":
+                return self.respond(200, {"openapi": "3.1.1", "info": {"version": "1"}})
+            if self.path == "/v1/lives/L1":
+                return self.respond(200, {"id": "L1", "name": "Example"})
+            return self.respond(404, {"code": "not_found"})
+
+        def do_DELETE(self):
+            requests.append((self.path, self.headers.get("Authorization"), b""))
+            if (self.path != "/v1/lives/L1" or self.headers.get("Authorization") != "Bearer bt_runtime"
+                    or self.headers.get("If-Match") != '\"live:1\"'):
+                return self.respond(412, {"code": "precondition_failed"})
+            return self.respond(204)
 
     server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
     server.socket = server_context().wrap_socket(server.socket, server_side=True)
@@ -155,16 +166,16 @@ def main():
             assert store["version"] == 2 and "profiles" not in store
             assert "bt_runtime" not in config.read_text()
             response = json.loads(run(binary, ["ping", "--format", "json"], env).stdout)
-            assert response["schema_version"] == 1 and response["records"][0]["fields"]["pong"] is True
+            assert response["schema_version"] == 2 and response["data"]["pong"] is True
             before = len(requests)
-            result = run(binary, ["live", "delete", "all", "--format", "json"], env, code=2)
+            result = run(binary, ["live", "L1", "delete", "--format", "json"], env, code=2)
             assert result.stdout == "" and json.loads(result.stderr)["error"]["code"] == "confirmation_required"
             assert len(requests) == before
-            run(binary, ["live", "delete", "all"], env, code=2)
+            run(binary, ["live", "L1", "delete"], env, code=2)
             assert len(requests) == before
-            response = json.loads(run(binary, ["live", "delete", "all", "--yes", "--format", "json"], env).stdout)
-            assert response["ok"] is True and len(requests) == before + 1
-            assert json.loads(requests[-1][2])["command"] == "LIVE DELETE ALL"
+            response = json.loads(run(binary, ["live", "L1", "delete", "--yes", "--format", "json"], env).stdout)
+            assert response["ok"] is True and len(requests) == before + 2
+            assert requests[-1][0] == "/v1/lives/L1"
             print(f"Native {platform.system()}/{platform.machine()}: single configuration, spaced paths, fixed hostname with verified loopback TLS, JSON and destructive guards pass", flush=True)
             terminal_checks(binary, env, requests)
             before_config, before_requests = config.read_bytes(), len(requests)

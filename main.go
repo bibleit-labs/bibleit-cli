@@ -1,4 +1,4 @@
-// bibleit is a deliberately small, typed client for the Bibleit command protocol.
+// bibleit provides terminal access to Bibleit through REST and SSH.
 package main
 
 import (
@@ -20,10 +20,11 @@ import (
 	"path/filepath"
 	"runtime"
 	"strconv"
-
-	bibleit "github.com/bibleit-labs/bibleit-go"
 	"strings"
 	"time"
+
+	bibleit "github.com/bibleit-labs/bibleit-go"
+	"github.com/bibleit-labs/bibleit-go/rest"
 )
 
 const (
@@ -143,12 +144,15 @@ func run(args []string) int {
 	if err != nil {
 		return fail(exitUsage, "%v", err)
 	}
+	if cfg.Transport == "http" {
+		return runHTTP(cfg, args, format, options["--yes"] == "true")
+	}
 	command, err := commandFor(args)
 	if err != nil {
 		return fail(exitUsage, "%v", err)
 	}
 	if args[0] == "organization" || len(args) == 3 && args[0] == "server" && args[1] == "help" && args[2] == "organization" {
-		lines, err := request(cfg, bibleit.ServerInfoCommand())
+		lines, err := requestSSH(cfg, bibleit.ServerInfoCommand())
 		if err != nil {
 			return protocolFailure(err)
 		}
@@ -185,7 +189,7 @@ func run(args []string) int {
 		}
 		return exitOK
 	}
-	lines, err := request(cfg, command)
+	lines, err := requestSSH(cfg, command)
 	if err != nil {
 		return protocolFailure(err)
 	}
@@ -257,7 +261,10 @@ func authCommand(cfg config, args []string, format string, explicitIdentity bool
 		if len(args) != 1 {
 			return usage()
 		}
-		lines, err := request(cfg, bibleit.IdentityCommand())
+		if cfg.Transport == "http" {
+			return runHTTP(cfg, []string{"auth", args[0]}, format, false)
+		}
+		lines, err := requestSSH(cfg, bibleit.IdentityCommand())
 		if err != nil {
 			return protocolFailure(err)
 		}
@@ -435,12 +442,6 @@ func oneOf(s string, values ...string) bool {
 type authenticationError struct{ message string }
 
 func (e authenticationError) Error() string { return e.message }
-func request(cfg config, command bibleit.Command) ([]string, error) {
-	if cfg.Transport != "ssh" {
-		return requestHTTP(cfg, command)
-	}
-	return requestSSH(cfg, command)
-}
 
 func requestSSH(cfg config, command bibleit.Command) ([]string, error) {
 	ssh, identity, err := sshCommand(cfg, command)
@@ -621,22 +622,6 @@ func consumeSubscription(reader io.Reader, emit func(string, bool)) error {
 }
 
 func printSubscriptionLine(line, format string) { printResponse([]string{line}, format) }
-
-func requestHTTP(cfg config, command bibleit.Command) ([]string, error) {
-	if cfg.AccessToken == "" {
-		return nil, authenticationError{message: "web authentication is not configured; run `bibleit auth login`"}
-	}
-	client, err := bibleit.NewClientWithHTTPClient(cfg.AccessToken, cliHTTPClient)
-	if err != nil {
-		return nil, err
-	}
-	result, err := client.Execute(context.Background(), command)
-	var serverErr *bibleit.ServerError
-	if errors.As(err, &serverErr) && serverErr.Code == "unauthorized" {
-		return nil, authenticationError{message: "cached web authentication was rejected; run `bibleit auth login` again"}
-	}
-	return result.Lines, err
-}
 
 func browserAuthenticate(cfg *config) (string, error) {
 	if _, err := validatedWebURL(defaultWebURL); err != nil {
@@ -943,6 +928,11 @@ func printTableRow(values []string, widths []int, header bool) {
 	fmt.Println()
 }
 func protocolFailure(err error) int {
+	var problem *rest.ProblemError
+	if errors.As(err, &problem) {
+		err = &bibleit.HTTPError{StatusCode: problem.Status, Code: problem.Code, Fields: map[string]any{"request_id": problem.RequestID, "retry_after": problem.Header.Get("Retry-After")}}
+	}
+
 	code := exitFailure
 	var authentication authenticationError
 	if errors.As(err, &authentication) {
@@ -963,7 +953,7 @@ func protocolFailure(err error) int {
 			code = exitForbidden
 		case 404:
 			code = exitNotFound
-		case 409:
+		case 409, 412, 428:
 			code = exitConflict
 		case 429:
 			code = exitRateLimited
@@ -1039,20 +1029,20 @@ func help(topic []string) int {
 		lines = []string{
 			"Create, inspect, and control Bibleit Live sessions.", "",
 			"Usage:", "  bibleit live [command]", "",
-			"Commands:", "  list                              List Lives visible to the authenticated actor.", "  create [name]                     Create an open Live.", "  delete all                        Delete every Live managed by the actor.", "  <id> info|stats                   Show Live details or connection statistics.", "  <id> start|stop                   Change the Live state.", "  <id> pause|resume                 Pause or resume its retained stack.", "  <id> clear                        Clear the stack.", "  <id> secret <value>               Authenticate a Live secret for this connection.", "  <id> secret create|rotate|delete  Manage a Live secret.", "  <id> set name|reference|translations <value...>", "                                    Change Live options.", "  <id> stack info                   Show the current Live stack.", "  <id> stack push [translation] <book> [chapter] [verse]", "                                    Push a reading onto the stack.", "  <id> stack pop [count]            Pop entries from the stack.", "  <id> stack clear                  Clear the stack.", "  <id> subscribe                    Subscribe to a Live.", "  <id> delete                       Delete a Live.", "", "Deletion, stack clear/pop and secret rotation/removal require confirmation.", "Terminal prompts show the transport, endpoint and target; type yes (delete all for bulk deletion).", "Use --yes for automation or JSON output. Cancellation sends no request and exits 1; missing confirmation exits 2.",
+			"Commands:", "  list                              List Lives visible to the authenticated actor.", "  create [name]                     Create an open Live.", "  delete all                        Delete every Live managed by the actor.", "  <id> info|stats                   Show Live details or connection statistics.", "  <id> start|stop                   Change the Live state.", "  <id> pause|resume                 Pause or resume its retained stack.", "  <id> clear                        Clear the stack.", "  <id> secret <value>               Authenticate a Live secret for this connection.", "  <id> secret create|rotate|delete  Manage a Live secret.", "  <id> set name|reference|translations <value...>", "                                    Change Live options.", "  <id> stack info                   Show the current Live stack.", "  <id> stack push [translation] <book> [chapter] [verse]", "                                    Push a reading onto the stack.", "  <id> stack pop [count]            Pop entries from the stack.", "  <id> stack clear                  Clear the stack.", "  <id> subscribe                    Subscribe to a Live.", "  <id> delete                       Delete a Live.", "", "HTTP Live creation requires a name. Stats, stack, secrets, bulk deletion and reference/translation settings require SSH.", "Deletion, stack clear/pop and secret rotation/removal require confirmation.", "Terminal prompts show the transport, endpoint and target; type yes (delete all for bulk deletion).", "Use --yes for automation or JSON output. Cancellation sends no request and exits 1; missing confirmation exits 2.",
 		}
 	case "read":
-		lines = []string{"Read a verse, chapter, or book.", "", "Usage:", "  bibleit read <translation> <book> [chapter] [verse]", "", "Examples:", "  bibleit read KJV John 3 16", "  bibleit read NVIPT Salmos 23"}
+		lines = []string{"Read a verse or chapter through REST, or a book through SSH.", "", "Usage:", "  bibleit read <translation> <book> [chapter] [verse]", "", "Examples:", "  bibleit read KJV John 3 16", "  bibleit read NVIPT Salmos 23"}
 	case "search":
 		lines = []string{"Search an installed translation.", "", "Usage:", "  bibleit search <translation> <query>", "", "Example:", "  bibleit search KJV \"love one another\""}
 	case "translation":
-		lines = []string{"Inspect translation metadata and references, and manage your account library.", "", "Usage:", "  bibleit translation list", "  bibleit translation add <translation>", "  bibleit translation remove <translation>", "  bibleit translation info <translation>", "  bibleit translation catalog <translation>", "", "Physical translation installation and deletion are server operator tasks and are not exposed by this CLI."}
+		lines = []string{"Inspect translation metadata and references, and manage your account library.", "", "Usage:", "  bibleit translation list", "  bibleit translation add <translation>", "  bibleit translation remove <translation>", "  bibleit translation info <translation>", "  bibleit translation catalog <translation>", "", "HTTP add/remove requires a service token. Personal library edits require SSH.", "Physical translation installation and deletion are server operator tasks and are not exposed by this CLI."}
 	case "organization":
-		lines = []string{"Inspect organization memberships and your verification applications.", "", "Usage:", "  bibleit organization list [cursor]", "  bibleit organization application <id> status", "", "List returns one page of at most 50 records. Pass the returned next cursor unchanged.", "Pending applications grant no operating rights. Organization approval is completed in Bibleit admin.", "Applications are read-only; corrections require cancellation and a new request in the browser.", "Organization membership is invitation-only. No request or join mutation commands are exposed."}
+		lines = []string{"HTTP service tokens inspect their own organization. Membership directories and verification applications require SSH.", "", "Usage:", "  bibleit organization list [cursor]", "  bibleit organization application <id> status", "", "List returns one page of at most 50 records. Pass the returned next cursor unchanged.", "Pending applications grant no operating rights. Organization approval is completed in Bibleit admin.", "Applications are read-only; corrections require cancellation and a new request in the browser.", "Organization membership is invitation-only. No request or join mutation commands are exposed."}
 	case "account":
-		lines = []string{"Inspect your personal account, effective quotas and token metadata.", "", "Usage:", "  bibleit account info", "  bibleit account quotas", "  bibleit account tokens"}
+		lines = []string{"Inspect account details. Quotas and personal token metadata require SSH; service tokens can list organization credentials over HTTP.", "", "Usage:", "  bibleit account info", "  bibleit account quotas", "  bibleit account tokens"}
 	case "server":
-		lines = []string{"Inspect the Bibleit service. This reports the service and protocol versions, not the CLI version.", "", "Usage:", "  bibleit server info", "  bibleit server help [server|account|auth|translation|live|organization]"}
+		lines = []string{"HTTP reports REST API metadata. SSH reports service and protocol versions. Server help requires SSH.", "", "Usage:", "  bibleit server info", "  bibleit server help [server|account|auth|translation|live|organization]"}
 	default:
 		return fail(exitUsage, "unknown help topic %q", key)
 	}

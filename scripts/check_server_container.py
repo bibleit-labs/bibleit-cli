@@ -67,7 +67,7 @@ def main():
         # No .env, .git, databases, keys, uploaded data, or host-native binaries.
         for relative in ('src', 'test', 'c_src', 'libbibleit/src', 'libbibleit/include',
                          'libbibleit/config', 'priv/config', 'priv/sql', 'priv/i18n',
-                         'priv/templates', 'priv/static', '_build/default/lib'):
+                         'priv/templates', 'priv/static', 'priv/openapi', '_build/default/lib'):
             source = server / relative
             shutil.copytree(source, snapshot / relative, ignore=lambda folder, names: [
                 name for name in names if (Path(folder) / name).is_symlink()

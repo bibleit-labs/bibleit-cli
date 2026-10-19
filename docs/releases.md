@@ -1,15 +1,15 @@
 # Release maintenance
 
-The SDK, CLI and tap are public. CLI v0.0.6 is the latest stable release and its
-matching tap formula is available. All original v0.0.1 download assets were
-withdrawn for missing redistribution notices; its source and tag are preserved.
-[Public launch evidence](public-launch.md) records source, checksums, native public
-installation results and protections. Historical preparation records remain dated
-snapshots. Installation commands are in [the README](../README.md).
+The SDK, CLI and tap are public. CLI v0.1.0 is the REST migration release and
+pins bibleit-go v0.1.0. HTTP commands use REST resources directly, with native
+JSON under schema version 2; SSH output retains version 1. See the
+[release integration evidence](releases/v0.1.0-integration.json) and
+[REST migration guide](rest-api.md).
 
-Published v0.0.6 pins SDK v0.0.3 and retains organization directory and application status reads. The
-[completed release checklist](release-v0.0.6-readiness.md) records owner approval,
-exact asset verification, the protected tap merge and anonymous native results.
+All original v0.0.1 download assets remain withdrawn for missing redistribution
+notices; its source/tag and later published assets remain immutable. Historical
+readiness records apply only to their recorded versions. The tag workflow builds
+validated assets and creates a draft before publication.
 
 ## Prepare a candidate
 
@@ -20,8 +20,8 @@ Choose a fresh output directory; packaging refuses to overwrite an existing one.
 ```sh
 GOWORK=off go mod download
 GOWORK=off go mod verify
-GOWORK=off python3 scripts/package_release.py --version v0.0.6 --output build/releases/v0.0.6
-python3 scripts/check_release.py --assets build/releases/v0.0.6
+GOWORK=off python3 scripts/package_release.py --version v0.1.0 --output build/releases/v0.1.0
+python3 scripts/check_release.py --assets build/releases/v0.1.0
 ```
 
 The packager builds one native executable to generate completions, then six
@@ -50,18 +50,18 @@ to conceal a notice/content change.
 macOS/Linux:
 
 ```sh
-BIBLEIT_INSTALL_ASSETS="$PWD/build/releases/v0.0.6" \
-  BIBLEIT_INSTALL_DIR="$PWD/build/install-test" bash install.sh v0.0.6
+BIBLEIT_INSTALL_ASSETS="$PWD/build/releases/v0.1.0" \
+  BIBLEIT_INSTALL_DIR="$PWD/build/install-test" bash install.sh v0.1.0
 build/install-test/bibleit version
 ```
 
 Windows:
 
 ```powershell
-python scripts/check_release.py --assets build/releases/v0.0.6
-python scripts/check_release.py --assets build/releases/v0.0.6 --powershell powershell
-./scripts/check_powershell_installer.ps1 -AssetsDir ./build/releases/v0.0.6
-python scripts/check_scoop.py --assets build/releases/v0.0.6 --scoop-source ./scoop-source
+python scripts/check_release.py --assets build/releases/v0.1.0
+python scripts/check_release.py --assets build/releases/v0.1.0 --powershell powershell
+./scripts/check_powershell_installer.ps1 -AssetsDir ./build/releases/v0.1.0
+python scripts/check_scoop.py --assets build/releases/v0.1.0 --scoop-source ./scoop-source
 ```
 
 PowerShell 7 and 5.1 require native Windows installation/replacement checks.
@@ -72,7 +72,7 @@ It leaves persistent PATH and the user's real Scoop installation untouched.
 Homebrew:
 
 ```sh
-python3 scripts/check_homebrew.py --assets build/releases/v0.0.6
+python3 scripts/check_homebrew.py --assets build/releases/v0.1.0
 ```
 
 The fixture uses a disposable prefix, local archive URLs and normal Homebrew

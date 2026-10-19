@@ -25,8 +25,8 @@ def main():
     if not Path('/.dockerenv').exists() or any(line.split()[1] == '00000000' for line in Path('/proc/net/route').read_text().splitlines()[1:]):
         raise SystemExit('fixture requires an egress-disabled Docker namespace')
     with Path('/etc/hosts').open('a') as hosts:
-        hosts.write('\n127.0.0.1 ' + HOST + '\n')
-    if {item[4][0] for item in socket.getaddrinfo(HOST, 443)} != {'127.0.0.1'}:
+        hosts.write('\n127.0.0.1 ' + HOST + ' api.bibleit.app\n')
+    if any({item[4][0] for item in socket.getaddrinfo(host, 443)} != {'127.0.0.1'} for host in (HOST, 'api.bibleit.app')):
         raise SystemExit('fixed service hostname must resolve exclusively to fixture loopback')
     os.environ['SSL_CERT_FILE'] = str(MATERIAL / 'server.pem')
     os.environ['SSL_CERT_DIR'] = '/tmp/bibleit-empty-trust'

@@ -2,8 +2,16 @@
 
 Read and search Bible translations, manage Lives, and inspect your account from the terminal.
 The `bibleit` executable uses the [Bibleit Go client](https://github.com/bibleit-labs/bibleit-go)
-and connects to the project-managed service at `https://bibleit.app`.
+and uses the pinned REST service at `https://api.bibleit.app/v1`.
+Browser authentication uses `https://bibleit.app`.
 SSH commands connect to `bibleit.app:22`.
+
+## REST integration
+
+Existing HTTP commands use REST wherever a matching resource exists, with the
+CLI commands shown below. HTTP uses REST exclusively; commands without a REST
+operation fail locally. See [REST migration details](docs/rest-api.md) for
+transport availability, structured output and the coordinated SDK release.
 
 ## Installation
 
@@ -188,6 +196,12 @@ Use `bibleit help` or `bibleit <command> --help` for usage.
 | `live <id> clear\|delete`, `live delete all` | Clear or delete Lives |
 | `--transport ssh live <id> subscribe` | Stream Live events |
 
+HTTP requires a name for Live creation and a chapter for reading. Quotas, personal
+token metadata/library edits, organization applications, Live statistics, stack
+commands, secret management, bulk deletion and Live reference/translation settings
+are SSH-only. HTTP translation catalogues list reviewed book coverage; full
+chapter/verse catalogues remain available through SSH.
+
 Custom Live secrets are unsupported. Live subscriptions require SSH, start with a
 snapshot, and do not offer a replay cursor. Run the command again for a fresh snapshot
 after a disconnect. Ctrl+C closes the subscription.
@@ -198,8 +212,9 @@ Ordinary source builds report `dev`.
 
 ## Output and automation
 
-The default output is a human-readable table. Select `--format raw` for finite
-protocol replies or `--format json` for the versioned JSON envelope.
+The default output is a human-readable table. HTTP `--format raw` returns native
+REST JSON; `--format json` wraps that data in a schema-version-2 envelope. SSH
+retains protocol replies in raw mode and its schema-version-1 JSON envelope.
 SSH subscriptions support `--format ndjson`, with one event per line.
 Errors go to stderr and display control characters safely.
 See the [output contract](docs/output.md).
@@ -209,10 +224,10 @@ secrets require confirmation. Interactive prompts require a terminal;
 automation must explicitly supply `--yes`:
 
 ```sh
-bibleit --yes --format json live delete all
+bibleit --yes --format json live "$LIVE_ID" delete
 ```
 
-Use this command only when you intend to delete all your Lives. Confirmation does
+Use this command only when you intend to delete the selected Live. Confirmation does
 not bypass server permissions. Mutations are not retried automatically.
 Use `--` before literal arguments that resemble global options.
 

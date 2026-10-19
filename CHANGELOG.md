@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.1.0 — 2026-10-19
+
+- Migrate supported HTTP commands to pinned REST v1 with workspace discovery,
+  pagination, structured scripture and conditional Live writes.
+- Remove command HTTP fallback and command-to-REST adapters. HTTP commands use
+  REST resources directly; commands without REST equivalents are SSH-only.
+- Return native REST data in raw output and schema-version-2 HTTP JSON; keep
+  SSH output unchanged.
+- Pin bibleit-go v0.1.0 for the versioned REST and explicit SSH clients.
+
 ## v0.0.7 — 2026-10-14
 
 - Buffer multiline Live presentation fields during SSH subscriptions instead of
