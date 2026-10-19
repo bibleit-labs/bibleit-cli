@@ -7,6 +7,8 @@
   descriptive cursor errors and cancellation without partial successful output.
 
 - Unify command validation, offline help, completion and descriptive errors.
+- Accept translated numeric stack references with compact chapter:verse syntax
+  consistently across HTTP and SSH.
 - Add shared YAML preferences for transport, identity and output format.
 - Standardize Scripture tables and receipts; remove stack-pop confirmation and
   routine endpoint noise. Add protected one-time secret file delivery.

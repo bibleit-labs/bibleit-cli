@@ -279,7 +279,10 @@ func stackPushReference(values []string) (bibleit.Reference, error) {
 			_, v := strconv.Atoi(parts[1])
 			compact = c == nil && v == nil
 		}
-		if (numeric != nil && !compact) || len(values) == 4 {
+		// A final chapter:verse identifies the three-argument translated form,
+		// including numeric books: bpml 31 1:1.
+		translatedCompact := len(values) == 3 && strings.Contains(values[2], ":")
+		if (numeric != nil && !compact) || len(values) == 4 || translatedCompact {
 			translation = values[0]
 			values = values[1:]
 		}

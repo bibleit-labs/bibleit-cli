@@ -101,7 +101,13 @@ credential cells and one compatibility-only connection-secret form have separate
 proof. Validate local help/config/completion, browser authorization and logout,
 registered-key login, Scripture source metadata, retained-stack effects, actual
 settings, secret protection and cleanup. Test reads and mutations against isolated
-synthetic data. Keep production verification read-only.
+synthetic data. Production verification originally covered read-only commands.
+The user subsequently authorized production mutations on their account, including
+deletion of its existing Live to free the single available slot. Run this expanded
+campaign with temporary test Lives, explicit ownership checks, request pacing and
+cleanup. Collection deletion requires an initially empty scope containing only
+Lives created by that run. Preserve the original credential and translation library;
+test browser login/logout with a separately issued, subsequently revoked credential.
 
 Pagination checks compare every source verse from paged traversal with reference
 chapter reads for personal, delegated and service credentials. Cover default and explicit page sizes,

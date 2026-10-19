@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"strings"
@@ -105,6 +106,34 @@ func TestGeneratedCompletionMatchesRegistryLiterals(t *testing.T) {
 			if !found {
 				t.Errorf("%s at %s: %v", spec.Syntax, token, got)
 			}
+		}
+	}
+}
+
+func TestTranslatedNumericStackReferenceCompactMatchesExpandedAcrossTransports(t *testing.T) {
+	compact := []string{"live", "L1", "stack", "push", "bpml", "31", "1:1"}
+	expanded := []string{"live", "L1", "stack", "push", "bpml", "31", "1", "1"}
+	want, err := commandFor(expanded)
+	if err != nil {
+		t.Fatal(err)
+	}
+	got, err := commandFor(compact)
+	if err != nil || got.String() != want.String() {
+		t.Fatalf("compact SSH reference differs from expanded form: %v", err)
+	}
+	for _, service := range []bool{false, true} {
+		first, err := planHTTP(compact, service)
+		if err != nil {
+			t.Fatal(err)
+		}
+		second, err := planHTTP(expanded, service)
+		if err != nil {
+			t.Fatal(err)
+		}
+		firstJSON, _ := json.Marshal(first.options.JSON)
+		secondJSON, _ := json.Marshal(second.options.JSON)
+		if first.operation != second.operation || first.book != second.book || string(firstJSON) != string(secondJSON) {
+			t.Fatal("compact REST reference differs from expanded form")
 		}
 	}
 }

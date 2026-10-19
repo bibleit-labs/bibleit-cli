@@ -63,7 +63,7 @@
     "sdk_generation_twice": "passed; byte-identical",
     "cli_workspace_race_and_vet": "passed",
     "cli_standalone_published_sdk": "passed: GOWORK=off, SDK v0.2.0, no replacement, race/vet/module verification/native build",
-    "native_cli_and_six_target_installers": "pending published SDK pin",
+    "native_cli_and_six_target_installers": "passed on source 2a03e51f0a5732beb003aa82b06bb42f15f200f9 with published SDK v0.2.0",
     "production_readonly_cli_cases": 40,
     "production_mutations": false,
     "installed_homebrew_cli_version": "0.1.0; unchanged",
@@ -130,8 +130,8 @@
     "real_cli_streaming_coverage": "personal/service/delegated HTTP in human and NDJSON; registered-key SSH"
   },
   "remaining": [
-    "Run hosted native CLI CI and six-target installer qualification against the published SDK.",
-    "CLI binary publication and Homebrew upgrades are separate; keep installed Homebrew and existing v0.1.0 assets unchanged."
+    "Complete the newly authorized production mutation/SSH campaign and record outcomes.",
+    "CLI PR review/merge and binary publication are separate; keep installed Homebrew and existing v0.1.0 assets unchanged."
   ],
   "disposable_exit_code": 0,
   "previous_qualification": {
@@ -159,5 +159,29 @@
     "qualified_commit": "e2cd549ec5eb9650d671ce403cdf80354ec3d9c7",
     "release_commit": "1b7246a873e914cfe3de1c9992de28b95fac6bde",
     "git_trees_identical": true
+  },
+  "hosted_native_cli": {
+    "status": "passed",
+    "source_revision": "2a03e51f0a5732beb003aa82b06bb42f15f200f9",
+    "run": "https://github.com/bibleit-labs/bibleit-cli/actions/runs/39342599684",
+    "platforms": [
+      "ubuntu-24.04",
+      "macos-15",
+      "windows-2025"
+    ]
+  },
+  "hosted_installers": {
+    "status": "passed",
+    "source_revision": "2a03e51f0a5732beb003aa82b06bb42f15f200f9",
+    "run": "https://github.com/bibleit-labs/bibleit-cli/actions/runs/39342605737",
+    "targets": [
+      "ubuntu-24.04",
+      "ubuntu-24.04-arm",
+      "macos-15",
+      "macos-15-intel",
+      "windows-2025",
+      "windows-11-arm"
+    ],
+    "publication": false
   }
 }
