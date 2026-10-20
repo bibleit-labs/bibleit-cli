@@ -2,14 +2,14 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/bibleit-labs/bibleit-go/rest"
+	"github.com/bibleit-labs/bibleit-go"
 	"os"
 	"strings"
 	"testing"
 )
 
 func TestEveryRegistryResourceHasRESTBindingOrGenuineExclusion(t *testing.T) {
-	ops := rest.Operations()
+	ops := bibleit.Operations()
 	for _, spec := range commandRegistry {
 		if spec.Local || strings.Contains(spec.Syntax, "secret <value>") {
 			continue

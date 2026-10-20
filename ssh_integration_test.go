@@ -30,15 +30,15 @@ func TestServerSSHSubscription(t *testing.T) {
 	defer cancel()
 	t.Setenv("BIBLEIT_ENDPOINT", "https://other.example")
 	fixtureKnownHosts := filepath.Join(t.TempDir(), "known_hosts")
-	client, err := bibleit.NewSSHClient(func(ctx context.Context, cmd bibleit.Command) (bibleit.Response, error) {
+	client, err := bibleit.NewSSHClient(func(ctx context.Context, cmd bibleit.Command) (bibleit.CommandResponse, error) {
 		base, _, err := sshCommand(config{Identity: os.Getenv("BIBLEIT_INTEGRATION_IDENTITY")}, cmd)
 		if err != nil {
-			return bibleit.Response{}, err
+			return bibleit.CommandResponse{}, err
 		}
 		args := append([]string{"-o", "UserKnownHostsFile=" + fixtureKnownHosts, "-o", "BatchMode=yes"}, base.Args[1:]...)
 		wire, err := exec.CommandContext(ctx, base.Path, args...).Output()
 		if err != nil && len(wire) == 0 {
-			return bibleit.Response{}, err
+			return bibleit.CommandResponse{}, err
 		}
 		return bibleit.DecodeCommandResponse(cmd, bytes.NewReader(wire))
 	})

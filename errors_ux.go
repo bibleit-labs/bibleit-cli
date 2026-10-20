@@ -10,7 +10,6 @@ import (
 	"strings"
 
 	bibleit "github.com/bibleit-labs/bibleit-go"
-	"github.com/bibleit-labs/bibleit-go/rest"
 )
 
 type userMessage struct{ message string }
@@ -30,7 +29,7 @@ func describeError(exit int, err error) (string, string, map[string]any, int) {
 	status := 0
 	var server *bibleit.ServerError
 	var httpErr *bibleit.HTTPError
-	var problem *rest.ProblemError
+	var problem *bibleit.ProblemError
 	if errors.As(err, &server) {
 		code = server.Code
 		for k, v := range server.Fields {
@@ -126,7 +125,7 @@ func describeError(exit int, err error) (string, string, map[string]any, int) {
 	if errors.Is(err, errors.ErrUnsupported) {
 		message = "This operation is not supported by the selected service capability."
 	}
-	if errors.Is(err, rest.ErrInvalidBookPage) {
+	if errors.Is(err, bibleit.ErrInvalidBookPage) {
 		message = "The book pages could not be combined safely. No partial book was returned. Restart the read; if it fails again, report the problem."
 	}
 	if errors.Is(err, context.Canceled) {

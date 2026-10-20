@@ -5,20 +5,19 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/bibleit-labs/bibleit-go"
 	"net/url"
 	"os"
 	"os/signal"
 	"sort"
 	"strconv"
 	"strings"
-
-	"github.com/bibleit-labs/bibleit-go/rest"
 )
 
 type httpPlan struct {
 	operation, kind, book              string
 	params                             map[string]string
-	options                            rest.Options
+	options                            bibleit.Options
 	workspace, collection, conditional bool
 	discovery, helpTopic               string
 }
@@ -142,7 +141,7 @@ func planHTTP(args []string, service bool) (httpPlan, error) {
 
 		p.workspace = true
 		p.operation = pick("createPersonalLive", "createLive")
-		body := rest.CreateLive{}
+		body := bibleit.CreateLive{}
 		if name != "" {
 			body.Name = name
 		}
@@ -176,7 +175,7 @@ func planHTTP(args []string, service bool) (httpPlan, error) {
 				}
 				count = n
 			}
-			p.options.JSON = rest.LiveStackRemoval{Count: &count}
+			p.options.JSON = bibleit.LiveStackRemoval{Count: &count}
 		case "push":
 			ref, e := stackPushReference(args[4:])
 			if e != nil {
@@ -185,7 +184,7 @@ func planHTTP(args []string, service bool) (httpPlan, error) {
 			p.operation = "pushLiveStack"
 			p.conditional = true
 			p.book = ref.Book
-			body := rest.LiveStackPush{}
+			body := bibleit.LiveStackPush{}
 			if ref.Translation != "" {
 				body.Reference.Translation = &ref.Translation
 			}
@@ -220,7 +219,7 @@ func planHTTP(args []string, service bool) (httpPlan, error) {
 		p.params["live_id"] = args[1]
 		p.conditional = true
 		p.kind = "settings"
-		patch := rest.LiveSettingsPatch{}
+		patch := bibleit.LiveSettingsPatch{}
 		if args[3] == "reference" {
 			value := strings.Join(args[4:], " ")
 			patch.Reference = &value
@@ -256,7 +255,7 @@ func planHTTP(args []string, service bool) (httpPlan, error) {
 		p.operation = "updateLiveMetadata"
 		p.params["live_id"] = args[1]
 		p.conditional = true
-		p.options.JSON = rest.LiveMetadataPatch{Name: strings.Join(args[4:], " ")}
+		p.options.JSON = bibleit.LiveMetadataPatch{Name: strings.Join(args[4:], " ")}
 		p.kind = "live"
 	default:
 		return p, fmt.Errorf("invalid command; run `bibleit help` for supported syntax")
@@ -294,7 +293,7 @@ func runHTTPPage(cfg config, args []string, format string, yes bool, page url.Va
 		return runHTTPWatch(cfg, args[1], format)
 	}
 	if action := destructiveAction(args); action != "" && !yes {
-		cfg.Endpoint = rest.Endpoint
+		cfg.Endpoint = bibleit.Endpoint
 		if err := confirmAction(cfg, action, format, os.Stdin, os.Stderr, terminalInput(os.Stdin) && terminalInput(os.Stderr)); err != nil {
 			if e, ok := err.(*confirmationError); ok && e.code == "confirmation_required" {
 				return outputError(exitUsage, err)
@@ -330,13 +329,13 @@ func (d *httpData) UnmarshalJSON(body []byte) error {
 }
 
 type httpClient struct {
-	client  *rest.Client
+	client  *bibleit.Client
 	ctx     context.Context
 	service bool
 }
 
 func executeHTTP(ctx context.Context, token string, p httpPlan) (httpResult, error) {
-	c, err := rest.NewClient(token, cliHTTPClient)
+	c, err := bibleit.NewClient(token, cliHTTPClient)
 	if err != nil {
 		return httpResult{}, err
 	}
@@ -353,7 +352,7 @@ func executeHTTP(ctx context.Context, token string, p httpPlan) (httpResult, err
 		if err != nil {
 			return httpResult{}, err
 		}
-		if body, ok := p.options.JSON.(rest.LiveStackPush); ok {
+		if body, ok := p.options.JSON.(bibleit.LiveStackPush); ok {
 			n, e := strconv.ParseInt(id, 10, 64)
 			if e != nil {
 				return httpResult{}, fmt.Errorf("invalid resolved book ID")
@@ -410,7 +409,7 @@ func executeHTTP(ctx context.Context, token string, p httpPlan) (httpResult, err
 			}
 			data = map[string]any{"source": "local CLI registry with API discovery", "permission_filtered": false, "commands": commands, "note": "API contract discovery does not establish effective credential permissions."}
 		} else {
-			data = map[string]any{"endpoint": rest.Endpoint, "openapi": data["openapi"], "info": data["info"]}
+			data = map[string]any{"endpoint": bibleit.Endpoint, "openapi": data["openapi"], "info": data["info"]}
 		}
 	}
 	if data == nil {
@@ -421,7 +420,7 @@ func executeHTTP(ctx context.Context, token string, p httpPlan) (httpResult, err
 	}
 	return httpResult{data: data}, nil
 }
-func (a httpClient) call(op string, p map[string]string, o *rest.Options) (map[string]any, string, error) {
+func (a httpClient) call(op string, p map[string]string, o *bibleit.Options) (map[string]any, string, error) {
 	r, err := a.client.Call(a.ctx, op, p, o)
 	if err != nil {
 		return nil, "", err
@@ -461,7 +460,7 @@ func (a httpClient) rows(op string, p map[string]string) ([]any, error) {
 		if after != "" {
 			q.Set("after", after)
 		}
-		d, _, err := a.call(op, p, &rest.Options{Query: q})
+		d, _, err := a.call(op, p, &bibleit.Options{Query: q})
 		if err != nil {
 			return nil, err
 		}

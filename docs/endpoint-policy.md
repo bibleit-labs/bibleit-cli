@@ -4,9 +4,9 @@ REST resources target the pinned `https://api.bibleit.app/v1` service. Browser
 approval, CLI code exchange and logout use `https://bibleit.app`. SSH uses
 `bibleit.app:22`. Repository/download access and service authorization are separate.
 
-The SDK declares the REST endpoint in `rest/client.go` and the browser origin in
-`client.go`. HTTP resource clients use `rest.NewClient`; the parent credential
-client supports browser-issued token revocation only. Command execution requires
+The SDK declares the REST endpoint in `client.go` and the browser origin in
+`client.go`. HTTP resource clients use `bibleit.NewClient`; the resource
+client also supports browser-issued token revocation. Command execution requires
 an explicit SSH executor. There is no command-style HTTP transport or REST adapter.
 Custom HTTP clients change transport/timeouts while retaining the fixed origin,
 TLS verification and blocked redirects. The SDK does not load environment variables.

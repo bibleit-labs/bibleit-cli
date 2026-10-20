@@ -1,8 +1,8 @@
 github.com/RaveNoX/go-jsoncommentstrip v1.0.0/go.mod h1:78ihd09MekBnJnxpICcwzCMzGrKSKYe4AqU6PDYYpjk=
 github.com/apapsch/go-jsonmerge/v2 v2.0.0 h1:axGnT1gRIfimI7gJifB699GoE/oq+F2MU7Dml6nw9rQ=
 github.com/apapsch/go-jsonmerge/v2 v2.0.0/go.mod h1:lvDnEdqiQrp0O42VQGgmlKpxL1AP2+08jFMw88y4klk=
-github.com/bibleit-labs/bibleit-go v0.2.0 h1:vdVAZqsyAYJ32iz/mD/W3Q7MTU12ecy9KqI8xVGQoMI=
-github.com/bibleit-labs/bibleit-go v0.2.0/go.mod h1:ZB/0sg4MjY+AW1WxZVthU0ABubdM+YErWqpQEljQL1c=
+github.com/bibleit-labs/bibleit-go v0.3.0 h1:7HdO69QmQZIT5YbAm0XC+OTIpH4L/5LJsI4QOnqsK24=
+github.com/bibleit-labs/bibleit-go v0.3.0/go.mod h1:ZB/0sg4MjY+AW1WxZVthU0ABubdM+YErWqpQEljQL1c=
 github.com/bmatcuk/doublestar v1.1.1/go.mod h1:UD6OnuiIn0yFxxA2le/rnRU1G4RaI4UvFv1sNto9p6w=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=

@@ -4,11 +4,10 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/bibleit-labs/bibleit-go"
 	"os"
 	"os/signal"
 	"time"
-
-	"github.com/bibleit-labs/bibleit-go/rest"
 )
 
 func runHTTPWatch(cfg config, id, format string) int {
@@ -29,13 +28,13 @@ func watchHTTP(ctx context.Context, token, id, format string) error {
 	if h.Timeout < 40*time.Second {
 		h.Timeout = 40 * time.Second
 	}
-	client, err := rest.NewClient(token, &h)
+	client, err := bibleit.NewClient(token, &h)
 	if err != nil {
 		return err
 	}
 	return consumeHTTPWatch(ctx, client, id, format)
 }
-func consumeHTTPWatch(ctx context.Context, client *rest.Client, id, format string) error {
+func consumeHTTPWatch(ctx context.Context, client *bibleit.Client, id, format string) error {
 	cursor := ""
 	first := true
 	encoder := json.NewEncoder(os.Stdout)

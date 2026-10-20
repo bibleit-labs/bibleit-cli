@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	bibleit "github.com/bibleit-labs/bibleit-go"
-	"github.com/bibleit-labs/bibleit-go/rest"
 	"net/http"
 	"strings"
 	"testing"
@@ -14,7 +13,7 @@ func TestSafeErrorsAcrossFormats(t *testing.T) {
 	errs := []error{
 		&bibleit.ServerError{Code: "not_found", Fields: map[string]string{"owner": "PRIVATE_CANARY", "text": "RELIGIOUS_CANARY", "secret": "SECRET_CANARY"}},
 		&bibleit.HTTPError{StatusCode: 403, Code: "forbidden", Fields: map[string]any{"nested": map[string]any{"token": "SECRET_CANARY"}}},
-		&rest.ProblemError{Status: 429, Code: "rate_limited", Title: "PRIVATE_CANARY", Type: "https://example.invalid/SECRET_CANARY", Header: http.Header{"Retry-After": []string{"2"}}},
+		&bibleit.ProblemError{Status: 429, Code: "rate_limited", Title: "PRIVATE_CANARY", Type: "https://example.invalid/SECRET_CANARY", Header: http.Header{"Retry-After": []string{"2"}}},
 		errors.New("PRIVATE_CANARY SECRET_CANARY RELIGIOUS_CANARY"),
 	}
 	old := activeFormat
@@ -56,7 +55,7 @@ func TestMissingAndConcealedResourceErrorsRemainEquivalent(t *testing.T) {
 }
 
 func TestTemporaryServerFailureGivesAvailabilityGuidance(t *testing.T) {
-	err := &rest.ProblemError{Status: 503, Code: "temporarily_unavailable", Detail: "PRIVATE_CANARY"}
+	err := &bibleit.ProblemError{Status: 503, Code: "temporarily_unavailable", Detail: "PRIVATE_CANARY"}
 	_, message, _, status := describeError(exitFailure, err)
 	if status != 503 || !strings.Contains(message, "temporarily unavailable") || strings.Contains(message, "PRIVATE_CANARY") || strings.Contains(message, "command help") {
 		t.Fatal(message, status)
@@ -67,7 +66,7 @@ func TestRESTFailurePreservesSafeRetryAfterGuidance(t *testing.T) {
 	old := activeFormat
 	activeFormat = "json"
 	defer func() { activeFormat = old }()
-	err := &rest.ProblemError{Status: 429, Code: "rate_limited", Detail: "PRIVATE_CANARY", Header: http.Header{"Retry-After": {"2"}}}
+	err := &bibleit.ProblemError{Status: 429, Code: "rate_limited", Detail: "PRIVATE_CANARY", Header: http.Header{"Retry-After": {"2"}}}
 	code, out, stderr := captureCLI(t, func() int { return protocolFailure(err) })
 	var envelope struct {
 		Error struct {
