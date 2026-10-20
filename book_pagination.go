@@ -3,10 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/bibleit-labs/bibleit-go"
 	"net/url"
 	"strconv"
-
-	"github.com/bibleit-labs/bibleit-go/rest"
 )
 
 func bookPageOptions(args []string, options map[string]string) (url.Values, error) {
@@ -40,7 +39,7 @@ func (a httpClient) completeBook(plan httpPlan) (httpResult, error) {
 	if a.service {
 		pages = a.client.ReadBookPages(a.ctx, plan.params["organization_id"], plan.params["slug"], plan.params["book_id"], nil)
 	}
-	var complete rest.ScriptureBookRead
+	var complete bibleit.ScriptureBookRead
 	for page, err := range pages {
 		if err != nil {
 			return httpResult{}, err

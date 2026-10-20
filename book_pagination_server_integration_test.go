@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"github.com/bibleit-labs/bibleit-go"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -11,8 +12,6 @@ import (
 	"strconv"
 	"testing"
 	"time"
-
-	"github.com/bibleit-labs/bibleit-go/rest"
 )
 
 func TestServerBookPagination(t *testing.T) {
@@ -31,7 +30,7 @@ func TestServerBookPagination(t *testing.T) {
 			t.Setenv("BIBLEIT_TOKEN", credential.token)
 			ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 			defer cancel()
-			client, err := rest.NewClient(credential.token, cliHTTPClient)
+			client, err := bibleit.NewClient(credential.token, cliHTTPClient)
 			if err != nil {
 				t.Fatal("fixture client initialization failed")
 			}
@@ -76,11 +75,11 @@ func TestServerBookPagination(t *testing.T) {
 			if len(want) != 104 || !reflect.DeepEqual(defaultVerses, want[:50]) {
 				t.Fatal("default page differs from independently read source chapters")
 			}
-			pages := client.ReadPersonalBookPages(ctx, id, "web", "19", &rest.Options{Query: url.Values{"limit": {"7"}}})
+			pages := client.ReadPersonalBookPages(ctx, id, "web", "19", &bibleit.Options{Query: url.Values{"limit": {"7"}}})
 			if a.service {
-				pages = client.ReadBookPages(ctx, id, "web", "19", &rest.Options{Query: url.Values{"limit": {"7"}}})
+				pages = client.ReadBookPages(ctx, id, "web", "19", &bibleit.Options{Query: url.Values{"limit": {"7"}}})
 			}
-			var got []rest.Verse
+			var got []bibleit.Verse
 			count := 0
 			for page, err := range pages {
 				if err != nil || len(page.Verses) > 7 {
@@ -90,7 +89,7 @@ func TestServerBookPagination(t *testing.T) {
 				got = append(got, page.Verses...)
 			}
 			encoded, _ := json.Marshal(want)
-			var expected []rest.Verse
+			var expected []bibleit.Verse
 			if json.Unmarshal(encoded, &expected) != nil || count < 2 || !reflect.DeepEqual(got, expected) {
 				t.Fatal("paged traversal omitted, duplicated or changed a source verse")
 			}
@@ -127,7 +126,7 @@ func TestServerBookPagination(t *testing.T) {
 			if code != exitOK || json.Unmarshal([]byte(out), &defaultContinuation) != nil || !reflect.DeepEqual(defaultContinuation["verses"], want[1:51]) {
 				t.Fatal("cursor-only continuation did not use the default page size")
 			}
-			lastPage, _, err := a.call(operation, params, &rest.Options{Query: url.Values{"limit": {"500"}}})
+			lastPage, _, err := a.call(operation, params, &bibleit.Options{Query: url.Values{"limit": {"500"}}})
 			if err != nil || !reflect.DeepEqual(lastPage["verses"], want) {
 				t.Fatal("maximum-sized terminal page differs from source chapters")
 			}
@@ -135,15 +134,15 @@ func TestServerBookPagination(t *testing.T) {
 				t.Fatal("terminal page must contain an explicit null cursor")
 			}
 			for _, malformed := range []string{"", "not-a-cursor"} {
-				_, _, err := a.call(operation, params, &rest.Options{Query: url.Values{"after": {malformed}}})
-				var problem *rest.ProblemError
+				_, _, err := a.call(operation, params, &bibleit.Options{Query: url.Values{"after": {malformed}}})
+				var problem *bibleit.ProblemError
 				if !errors.As(err, &problem) || problem.Status != 422 || problem.Code != "invalid_cursor" {
 					t.Fatal("malformed cursor did not return a descriptive typed error")
 				}
 			}
 			otherBook := map[string]string{key: id, "slug": "web", "book_id": "18"}
-			_, _, err = a.call(operation, otherBook, &rest.Options{Query: url.Values{"after": {cursor}}})
-			var mismatch *rest.ProblemError
+			_, _, err = a.call(operation, otherBook, &bibleit.Options{Query: url.Values{"after": {cursor}}})
+			var mismatch *bibleit.ProblemError
 			if !errors.As(err, &mismatch) || mismatch.Status != 422 || mismatch.Code != "cursor_mismatch" {
 				t.Fatal("a cursor for a different book was not rejected descriptively")
 			}

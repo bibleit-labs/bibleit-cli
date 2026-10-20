@@ -25,7 +25,6 @@ import (
 	"time"
 
 	bibleit "github.com/bibleit-labs/bibleit-go"
-	"github.com/bibleit-labs/bibleit-go/rest"
 )
 
 const (
@@ -763,7 +762,7 @@ func exchangeBrowserCode(code, verifier string) (string, string, error) {
 
 func logout(cfg *config) error {
 	if cfg.AccessToken != "" {
-		client, err := bibleit.NewClientWithHTTPClient(cfg.AccessToken, cliHTTPClient)
+		client, err := bibleit.NewClient(cfg.AccessToken, cliHTTPClient)
 		if err != nil {
 			return err
 		}
@@ -984,7 +983,7 @@ func protocolFailure(err error) int {
 	// Classify through the shared HTTP error codes without losing the original
 	// REST headers needed for safe Retry-After guidance in describeError.
 	displayErr := err
-	var problem *rest.ProblemError
+	var problem *bibleit.ProblemError
 	if errors.As(err, &problem) {
 		err = &bibleit.HTTPError{StatusCode: problem.Status, Code: problem.Code, Fields: map[string]any{"request_id": problem.RequestID, "retry_after": problem.Header.Get("Retry-After")}}
 	}

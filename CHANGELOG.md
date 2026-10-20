@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v0.2.3 — 2026-10-20
+
+- Use the root `bibleit.Client` API for HTTP resources, polling, pagination,
+  errors and generated models. SSH integration uses `bibleit.CommandResponse`.
+- Pin bibleit-go v0.3.0; command behavior and HTTP/SSH output schemas remain unchanged.
+
 ## v0.2.2 — 2026-10-20
 
 - Group help by command family with aligned descriptions, focused subcommand

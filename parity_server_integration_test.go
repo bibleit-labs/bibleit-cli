@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/bibleit-labs/bibleit-go/rest"
+	"github.com/bibleit-labs/bibleit-go"
 	"net"
 	"os"
 	"path/filepath"
@@ -379,7 +379,7 @@ func TestServerCommandParity(t *testing.T) {
 										ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 										_, err = executeHTTP(ctx, credential.token, probe)
 										cancel()
-										var problem *rest.ProblemError
+										var problem *bibleit.ProblemError
 										if !errors.As(err, &problem) || problem.Status != 409 || problem.Code != wantCode {
 											t.Fatal("secret protection did not persist")
 										}
