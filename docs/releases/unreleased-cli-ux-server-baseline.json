@@ -1,0 +1,22 @@
+{
+  "reviewed_on": "2026-10-20",
+  "server_revision": "9d4ed4d6fc96d03a7b38344f91deadc664e8cee9",
+  "source_working_tree_changes": true,
+  "source_files_verified": 252,
+  "private_manifest_sha256": "c87f869dd02a60d1cb27cdfd3cd06c94dbd416d4bb067cc1ee2712d928c7a8d4",
+  "verification": {
+    "integration": true,
+    "request_decoder_cases": 38,
+    "fixed_http_endpoint": "https://api.bibleit.app/v1",
+    "browser_auth_endpoint": "https://bibleit.app",
+    "fixed_ssh_endpoint": "bibleit.app:22",
+    "ssh_host_key_alias": null,
+    "boot_configuration_cases": 1,
+    "eunit_passed": true,
+    "tls_boundary_cases": 3,
+    "egress_disabled_fixture": true,
+    "response_encoder_cases": 18,
+    "import_suite_cases": true
+  },
+  "detail_policy": "Detailed private service source manifests are retained outside public client source."
+}

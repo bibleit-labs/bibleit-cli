@@ -6,7 +6,6 @@ import (
 	"errors"
 	"io"
 	"os"
-	"path/filepath"
 	"strings"
 )
 
@@ -20,12 +19,15 @@ type configDocument struct {
 }
 
 func loadConfig() (config, error) {
+	if err := validateCredentialFile(configPath()); err != nil {
+		return config{}, err
+	}
 	data, err := os.ReadFile(configPath())
 	if os.IsNotExist(err) {
 		return config{Transport: "http", Endpoint: defaultWebURL}, nil
 	}
 	if err != nil {
-		return config{}, err
+		return config{}, errors.New("cannot read credential file; check file permissions")
 	}
 	var d configDocument
 	dec := json.NewDecoder(bytes.NewReader(data))
@@ -66,23 +68,5 @@ func saveConfig(c config) error {
 	if err != nil {
 		return err
 	}
-	path := configPath()
-	if err = os.MkdirAll(filepath.Dir(path), 0700); err != nil {
-		return err
-	}
-	file, err := os.CreateTemp(filepath.Dir(path), ".config-*.json")
-	if err != nil {
-		return err
-	}
-	defer os.Remove(file.Name())
-	if err = restrictConfigFile(file); err == nil {
-		_, err = file.Write(append(data, '\n'))
-	}
-	if closeErr := file.Close(); err == nil {
-		err = closeErr
-	}
-	if err != nil {
-		return err
-	}
-	return os.Rename(file.Name(), path)
+	return writePrivateDocument(configPath(), append(data, '\n'))
 }

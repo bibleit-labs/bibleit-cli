@@ -1,0 +1,21 @@
+{
+  "reviewed_on": "2026-10-20",
+  "canonical_openapi_sha256": "d989d155bf61ee18c571acef482741a23ce51cb2935b72106e12a16a0e106424",
+  "previous_canonical_openapi_sha256": "66a13c96892183ceb04ae40df6091c0fb4040d46e042a63b3865fd2e1b289f73",
+  "generator": "oapi-codegen v2.8.0",
+  "functional_contract_unchanged": false,
+  "contract_change": "Whole-book endpoints always return bounded cursor pages: default 50, max 500, 3 MiB serialized cap, required next_cursor. Chapter/verse and atomic Live responses retain their behavior.",
+  "generation_deterministic": true,
+  "generated_files_first": {
+    "rest/models.gen.go": "b4f740bb884682a9d5fdbe55cf50d020457d37848079573fbf4250856ec7c354",
+    "rest/operations.gen.go": "2acb6efcef77a17f11663e2b58cee2e399b5ae86c7bdca0ec4b4df0661193987"
+  },
+  "generated_files_second": {
+    "rest/models.gen.go": "b4f740bb884682a9d5fdbe55cf50d020457d37848079573fbf4250856ec7c354",
+    "rest/operations.gen.go": "2acb6efcef77a17f11663e2b58cee2e399b5ae86c7bdca0ec4b4df0661193987"
+  },
+  "schema_models": 105,
+  "resource_operations": 88,
+  "canonical_operations": 95,
+  "python_generator_removed": true
+}

@@ -11,7 +11,8 @@ an explicit SSH executor. There is no command-style HTTP transport or REST adapt
 Custom HTTP clients change transport/timeouts while retaining the fixed origin,
 TLS verification and blocked redirects. The SDK does not load environment variables.
 
-The CLI defaults to HTTP; `--transport ssh` selects OpenSSH explicitly.
+The CLI defaults to HTTP; saved YAML preferences can select SSH, and explicit
+`--transport` overrides them. HTTP and SSH never fall back to each other.
 `BIBLEIT_TOKEN` supplies an HTTP token; it is not an SSH credential. SSH identity
 selection and host verification use OpenSSH, including the user's SSH config.
 The CLI exposes no endpoint/hostname overrides or named profiles.

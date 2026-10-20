@@ -1,0 +1,192 @@
+{
+  "reviewed_on": "2026-10-20",
+  "environment": "disposable egress-disabled Linux fixture; synthetic data; fixed production names mapped to loopback only",
+  "result": "passed",
+  "source_revisions": {
+    "cli_revision": "2a03e51f0a5732beb003aa82b06bb42f15f200f9+snapshot.6ec8f4fc33a74d824194b196ccb20c0a048661e838dfecb9555ed1f89896e70c",
+    "sdk_revision": "e2cd549ec5eb9650d671ce403cdf80354ec3d9c7+snapshot.9987deabd43cd96a6f7ecacd4f9338f08f2ceb335a6934ca8e03665cf095da12",
+    "server_revision": "9d4ed4d6fc96d03a7b38344f91deadc664e8cee9+snapshot.820f7654de5205f2e684f1ae7b563e6095a972c3607851929c1d501d048ebdfa"
+  },
+  "command_cells": 216,
+  "status_counts": {
+    "passed": 204,
+    "inapplicable": 12
+  },
+  "by_transport_and_credential": [
+    {
+      "transport": "http",
+      "credential": "bt_",
+      "passed": 54
+    },
+    {
+      "transport": "ssh",
+      "credential": "registered-user-key",
+      "passed": 54
+    },
+    {
+      "transport": "http",
+      "credential": "oa_",
+      "passed": 45,
+      "inapplicable": 9
+    },
+    {
+      "transport": "http",
+      "credential": "svc_",
+      "passed": 51,
+      "inapplicable": 3
+    }
+  ],
+  "evidence_schema": "../../contract/cli-parity.schema.json",
+  "evidence": "unreleased-cli-ux-parity.json",
+  "evidence_schema_validation": "Draft 2020-12; all 216 rows valid",
+  "additional_checks": {
+    "request_decoder_cases": 38,
+    "response_encoder_cases": 18,
+    "security_integration_cases": 7,
+    "sdk_http_integration": "passed",
+    "cli_local_browser_login_logout_and_registered_ssh_login": "passed",
+    "scripture_consistency_and_noninteractive_pop": "passed",
+    "book_pagination_credentials": 3,
+    "book_pagination_reference_verses": 104,
+    "book_pagination_default": 50,
+    "book_pagination_maximum": 500,
+    "http_watch_format_and_credential_cases": 6,
+    "ssh_subscription_and_changed_host_key_rejection": "passed",
+    "boot_unit_cases": 36,
+    "import_cases": 26,
+    "sdk_standalone_race_vet_and_modules": "passed",
+    "sdk_native_platforms": [
+      "Linux",
+      "macOS",
+      "Windows"
+    ],
+    "sdk_generation_twice": "passed; byte-identical",
+    "cli_workspace_race_and_vet": "passed",
+    "cli_standalone_published_sdk": "passed: GOWORK=off, SDK v0.2.0, no replacement, race/vet/module verification/native build",
+    "native_cli_and_six_target_installers": "passed on runtime fix 42f7e368f25f26c93bebb8e879700030b9feef16 with published SDK v0.2.0",
+    "production_readonly_cli_cases": 40,
+    "production_mutations": true,
+    "installed_homebrew_cli_version": "0.1.0; unchanged",
+    "macos_native_process_pty_bash_zsh": "passed",
+    "production_http_suite_checks": 101,
+    "production_ssh_suite_checks": 138,
+    "production_authentication_checks": 12
+  },
+  "pagination": {
+    "scope": "personal and organization whole-book REST reads only",
+    "default": 50,
+    "maximum": 500,
+    "serialized_response_max_bytes": 3145728,
+    "completion": "next_cursor null; short pages may have continuation",
+    "cli_complete_read": "aggregate every page; preserve complete-book output without a cursor",
+    "cli_explicit_page": "HTTP book --limit and/or --cursor; native page cursor retained",
+    "errors": [
+      "invalid_cursor",
+      "cursor_mismatch",
+      "stale_cursor",
+      "verse_too_large"
+    ],
+    "partial_traversal_success": false
+  },
+  "sdk_sync": {
+    "reviewed_on": "2026-10-20",
+    "canonical_openapi_sha256": "d989d155bf61ee18c571acef482741a23ce51cb2935b72106e12a16a0e106424",
+    "previous_canonical_openapi_sha256": "66a13c96892183ceb04ae40df6091c0fb4040d46e042a63b3865fd2e1b289f73",
+    "generator": "oapi-codegen v2.8.0",
+    "functional_contract_unchanged": false,
+    "contract_change": "Whole-book endpoints always return bounded cursor pages: default 50, max 500, 3 MiB serialized cap, required next_cursor. Chapter/verse and atomic Live responses retain their behavior.",
+    "generation_deterministic": true,
+    "generated_files_first": {
+      "rest/models.gen.go": "b4f740bb884682a9d5fdbe55cf50d020457d37848079573fbf4250856ec7c354",
+      "rest/operations.gen.go": "2acb6efcef77a17f11663e2b58cee2e399b5ae86c7bdca0ec4b4df0661193987"
+    },
+    "generated_files_second": {
+      "rest/models.gen.go": "b4f740bb884682a9d5fdbe55cf50d020457d37848079573fbf4250856ec7c354",
+      "rest/operations.gen.go": "2acb6efcef77a17f11663e2b58cee2e399b5ae86c7bdca0ec4b4df0661193987"
+    },
+    "schema_models": 105,
+    "resource_operations": 88,
+    "canonical_operations": 95,
+    "python_generator_removed": true
+  },
+  "sdk_merged_commit": "1b7246a873e914cfe3de1c9992de28b95fac6bde",
+  "production_readonly_evidence": "unreleased-cli-production-readonly.json",
+  "api_documentation": {
+    "operations": 95,
+    "guides": 7,
+    "canonical_sha256": "d989d155bf61ee18c571acef482741a23ce51cb2935b72106e12a16a0e106424",
+    "published": true,
+    "deployed": true,
+    "hosted_navigation_links": 100,
+    "deployed_source": "e85c976647617fecc675b9e140f5b1fae8ffb0f7",
+    "server_ci": "passed",
+    "unit_cases": 156,
+    "common_test_cases": 759,
+    "captured_http_exchanges": 1064
+  },
+  "inventory_scope": {
+    "registered_cells": 236,
+    "server_command_matrix_cells": 216,
+    "local_or_auth_forms_outside_matrix": 15,
+    "legacy_connection_only_secret_form_outside_matrix": 1,
+    "subscription_credential_cells_outside_matrix": 4,
+    "real_cli_streaming_coverage": "personal/service/delegated HTTP in human and NDJSON; registered-key SSH"
+  },
+  "remaining": [
+    "CLI PR review/merge and any separately authorized CLI binary release. Keep installed Homebrew and existing v0.1.0 assets unchanged."
+  ],
+  "disposable_exit_code": 0,
+  "previous_qualification": {
+    "source_revisions": {
+      "cli_revision": "d54b527327fcffd10226232e6139335a15b7c42d+snapshot.d6424d6d11a8fbb50bb8ca0253359fc30b587441ffa73c7dc5193b04fd6cd1e0",
+      "sdk_revision": "315ab35bd8e4ce7af99b803b8725a338fd98ef85+snapshot.06656a945b1537ad4b8d1d663bffd5444a1935fbdc32ce2696a3ff207c584f91",
+      "server_revision": "2f757c4aa286b5aa0844dbd89596edfa838d8a9e+snapshot.bb18f1d090b33b4634a079160618c114e5c4c550254896a261ee8d9438cf4cd0"
+    },
+    "note": "Earlier pre-pagination qualification is historical; this report qualifies the corrected deployed-source snapshot."
+  },
+  "sdk_release": {
+    "version": "v0.2.0",
+    "url": "https://github.com/bibleit-labs/bibleit-go/releases/tag/v0.2.0",
+    "Path": "github.com/bibleit-labs/bibleit-go",
+    "Version": "v0.2.0",
+    "Sum": "h1:vdVAZqsyAYJ32iz/mD/W3Q7MTU12ecy9KqI8xVGQoMI=",
+    "GoModSum": "h1:ZB/0sg4MjY+AW1WxZVthU0ABubdM+YErWqpQEljQL1c=",
+    "origin_commit": "1b7246a873e914cfe3de1c9992de28b95fac6bde",
+    "public_proxy": "https://proxy.golang.org",
+    "checksum_database": "sum.golang.org",
+    "sumdb_record_verified": true,
+    "canonical_contract_matches": true
+  },
+  "sdk_source_equivalence": {
+    "qualified_commit": "e2cd549ec5eb9650d671ce403cdf80354ec3d9c7",
+    "release_commit": "1b7246a873e914cfe3de1c9992de28b95fac6bde",
+    "git_trees_identical": true
+  },
+  "hosted_native_cli": {
+    "status": "passed",
+    "source_revision": "42f7e368f25f26c93bebb8e879700030b9feef16",
+    "run": "https://github.com/bibleit-labs/bibleit-cli/actions/runs/39343890801",
+    "platforms": [
+      "ubuntu-24.04",
+      "macos-15",
+      "windows-2025"
+    ]
+  },
+  "hosted_installers": {
+    "status": "passed",
+    "source_revision": "42f7e368f25f26c93bebb8e879700030b9feef16",
+    "run": "https://github.com/bibleit-labs/bibleit-cli/actions/runs/39343888208",
+    "targets": [
+      "ubuntu-24.04",
+      "ubuntu-24.04-arm",
+      "macos-15",
+      "macos-15-intel",
+      "windows-2025",
+      "windows-11-arm"
+    ],
+    "publication": false
+  },
+  "runtime_fix_commit": "42f7e368f25f26c93bebb8e879700030b9feef16",
+  "runtime_fix": "Compact translated numeric stack chapter:verse matches expanded references; fresh disposable campaign exit 0 and production HTTP 101 checks passed.",
+  "production_command_evidence": "unreleased-cli-production-commands.json"
+}

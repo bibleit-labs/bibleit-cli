@@ -1,0 +1,295 @@
+{
+  "environment": "production; read-only HTTP requests using existing credential selection",
+  "contract_sha256": "d989d155bf61ee18c571acef482741a23ce51cb2935b72106e12a16a0e106424",
+  "contract_matches_finalized_sdk": true,
+  "canonical_operations": 95,
+  "checks": [
+    {
+      "client": "legacy-v0.1.0",
+      "command": "ping",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "legacy-v0.1.0",
+      "command": "server info",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "legacy-v0.1.0",
+      "command": "auth info",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "legacy-v0.1.0",
+      "command": "account info",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "legacy-v0.1.0",
+      "command": "translation list",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "legacy-v0.1.0",
+      "command": "translation info <translation>",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "legacy-v0.1.0",
+      "command": "translation catalog <translation>",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "legacy-v0.1.0",
+      "command": "read <translation> <book> <chapter> <verse>",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "legacy-v0.1.0",
+      "command": "search <translation> <query>",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "legacy-v0.1.0",
+      "command": "live list",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "candidate",
+      "command": "ping",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "candidate",
+      "command": "server info",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "candidate",
+      "command": "auth info",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "candidate",
+      "command": "account info",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "candidate",
+      "command": "server help",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "candidate",
+      "command": "translation list",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "candidate",
+      "command": "translation info <translation>",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "candidate",
+      "command": "translation catalog <translation>",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "candidate",
+      "command": "read <translation> <book> <chapter> <verse>",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "candidate",
+      "command": "search <translation> <query>",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "candidate",
+      "command": "live list",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "candidate",
+      "command": "read <translation> <book> [chapter] [verse]",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "candidate",
+      "command": "read <translation> <book> [chapter] [verse]",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "candidate",
+      "command": "read <translation> <book> [chapter] [verse]",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "candidate",
+      "command": "read <translation> <book> [chapter] [verse]",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "candidate",
+      "command": "read <translation> <book> --limit 5",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "candidate",
+      "command": "read <translation> <book> --limit 3 --cursor <opaque-cursor>",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "candidate",
+      "command": "read <translation> <book> --limit 3 --cursor <opaque-cursor>",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "candidate",
+      "command": "read <translation> <book> --limit 3 --cursor <opaque-cursor>",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "candidate",
+      "command": "read <translation> <book> --limit 3 --cursor <opaque-cursor>",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "candidate",
+      "command": "read <translation> <book> --limit 3 --cursor <opaque-cursor>",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "candidate",
+      "command": "read <translation> <book> --limit 3 --cursor <opaque-cursor>",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "candidate",
+      "command": "read <translation> <book> --cursor <invalid-cursor>",
+      "exit_code": 2,
+      "error_code": "invalid_cursor",
+      "status": "passed"
+    },
+    {
+      "client": "candidate",
+      "command": "read <translation> <different-book> --cursor <opaque-cursor>",
+      "exit_code": 2,
+      "error_code": "cursor_mismatch",
+      "status": "passed"
+    },
+    {
+      "client": "candidate",
+      "command": "account quotas",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "candidate",
+      "command": "account tokens",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "candidate",
+      "command": "organization list",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "candidate",
+      "command": "live <id> info",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "candidate",
+      "command": "live <id> stats",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    },
+    {
+      "client": "candidate",
+      "command": "live <id> stack info",
+      "exit_code": 0,
+      "output_schema": 2,
+      "status": "passed"
+    }
+  ],
+  "passed": 40,
+  "mutations_invoked": false,
+  "credentials_or_user_content_recorded": false,
+  "homebrew_modified": false,
+  "reviewed_on": "2026-10-20",
+  "sdk_version": "v0.2.0",
+  "workspace_disabled": true
+}

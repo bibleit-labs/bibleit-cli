@@ -196,15 +196,20 @@ Use `bibleit help` or `bibleit <command> --help` for usage.
 | `live <id> clear\|delete`, `live delete all` | Clear or delete Lives |
 | `--transport ssh live <id> subscribe` | Stream Live events |
 
-HTTP requires a name for Live creation and a chapter for reading. Quotas, personal
-token metadata/library edits, organization applications, Live statistics, stack
-commands, secret management, bulk deletion and Live reference/translation settings
-are SSH-only. HTTP translation catalogues list reviewed book coverage; full
-chapter/verse catalogues remain available through SSH.
+HTTP uses versioned REST resources for quotas, token metadata, library changes,
+book reads, Live settings/statistics, retained stacks and scoped bulk deletion.
+Personal organization membership/application commands require personal credentials;
+a service organization identity is not a membership listing. Personal library
+writes use `bt_` authority and quotas; delegated `oa_` credentials do not gain a
+write scope from read consent. Server and SDK support for these operations is
+required; see the [implementation status](docs/cli-ux-plan.md).
 
-Custom Live secrets are unsupported. Live subscriptions require SSH, start with a
-snapshot, and do not offer a replay cursor. Run the command again for a fresh snapshot
-after a disconnect. Ctrl+C closes the subscription.
+`live <id> subscribe` watches REST snapshots/heartbeats over bounded long polls
+with HTTP, and streams connection events with explicit SSH. Neither promises
+replay. Ctrl+C stops watching. Custom Live secrets and ineffective standalone
+connection-secret authentication are unsupported by this CLI. Secret creation or
+rotation returns a one-time secret: use `--secret-output <new-private-file>` to
+keep it out of terminal/pipeline output. The file must not already exist.
 
 The CLI version, server version, and protocol version are independent.
 Use `bibleit version` for the CLI and `bibleit server info` for the service.
@@ -215,11 +220,13 @@ Ordinary source builds report `dev`.
 The default output is a human-readable table. HTTP `--format raw` returns native
 REST JSON; `--format json` wraps that data in a schema-version-2 envelope. SSH
 retains protocol replies in raw mode and its schema-version-1 JSON envelope.
-SSH subscriptions support `--format ndjson`, with one event per line.
+Subscriptions support `--format ndjson`: HTTP uses a schema-2 envelope around
+the native REST event; SSH retains its schema-1 stream contract.
 Errors go to stderr and display control characters safely.
 See the [output contract](docs/output.md).
 
-Commands that delete Lives, clear content, pop stack entries, or rotate/delete
+Stack pop accepts a positive count (default 1) and never prompts. Commands that
+delete Lives, clear content, or rotate/delete
 secrets require confirmation. Interactive prompts require a terminal;
 automation must explicitly supply `--yes`:
 
@@ -327,3 +334,53 @@ by the service.
 
 For contributions and bug reports, see [CONTRIBUTING.md](CONTRIBUTING.md).
 Report vulnerabilities privately as described in [SECURITY.md](SECURITY.md).
+
+## Preferences and offline configuration
+
+Save reusable nonsecret defaults in `~/.bibleit/config.yaml`:
+
+```yaml
+version: 1
+transport: ssh
+identity: ~/.ssh/bibleit
+format: table
+```
+
+Use `bibleit config path`, `config show`, `config get <key>`,
+`config set <key> <value>`, and `config unset <key>`. Only `transport`, `identity`,
+and `format` are accepted. `config unset identity` explicitly returns to OpenSSH
+agent/config selection without reviving an old cached identity. Flags override
+`BIBLEIT_TRANSPORT`, `BIBLEIT_IDENTITY`, and `BIBLEIT_FORMAT`, which override YAML
+and then built-in defaults. Set NDJSON explicitly for a subscription rather than
+as a default for finite commands. A successful login remembers its transport.
+
+Tokens remain in the protected, service-bound version-2 `config.json` credential
+file; YAML never contains token values. `BIBLEIT_CONFIG` continues to select a
+legacy JSON credential file; selecting a YAML path instead selects preferences
+with sibling `config.json` credentials. `BIBLEIT_PREFERENCES` and
+`BIBLEIT_CREDENTIALS` explicitly select separate files for isolated automation.
+Unix credential files must be owned by the current user, regular and private
+(`chmod 600`); writes use private permissions or a protected Windows DACL.
+Credential files are protected plaintext, not an OS credential vault. No token
+copies or service rebinding are performed. Help, version and completion work even
+when configuration is broken. No transport fallback changes the selected account.
+
+Use `organization list --cursor <cursor>` for the next personal directory page.
+
+HTTP whole-book reads follow bounded pages automatically and still return the
+complete book. To inspect a single page, use:
+
+```sh
+bibleit read bpml Salmos --limit 50 --format json
+bibleit read bpml Salmos --limit 50 --cursor '<next_cursor>' --format json
+```
+
+`--limit` accepts 1–500 verses. `--cursor` alone uses the server's default page
+size of 50. Keep the same account, translation and book when continuing; page
+size may change. A 3 MiB response cap can make pages smaller than the requested
+verse limit. The final page returns `next_cursor: null`. If the translation
+edition changes, restart without `--cursor`. Chapter and verse reads, SSH, and
+Live snapshots keep their existing behavior.
+`account quota list` and `account token list` are aliases for `account quotas` and
+`account tokens`; `live <id> clear` remains an alias for stack clear. Human output
+uses user terminology; machine schemas keep their documented transport fields.

@@ -1,0 +1,2040 @@
+{
+  "reviewed_on": "2026-10-20",
+  "environment": "production; explicitly authorized personal HTTP credential and registered SSH identity",
+  "runtime_source_revision": "42f7e368f25f26c93bebb8e879700030b9feef16",
+  "sdk_version": "v0.2.0",
+  "workspace_disabled": true,
+  "all_supported_cli_command_syntaxes_passed": true,
+  "registered_syntaxes": 54,
+  "supported_syntaxes_passed": 53,
+  "deprecated_syntaxes_correctly_rejected": 1,
+  "scope": "All current CLI syntaxes and documented optional variants; personal HTTP and registered-user SSH. Local commands use temporary preferences. This does not claim all API operations or delegated/service credentials were exercised in production.",
+  "coverage": [
+    {
+      "syntax": "help [topic...]",
+      "status": "passed",
+      "layer": "isolated local configuration/help/completion",
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "--version",
+      "status": "passed",
+      "layer": "isolated local configuration/help/completion",
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "-v",
+      "status": "passed",
+      "layer": "isolated local configuration/help/completion",
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "ping",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "version",
+      "status": "passed",
+      "layer": "isolated local configuration/help/completion",
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "server info",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "server help [topic]",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "auth login [ssh]",
+      "status": "passed",
+      "layer": "production authentication",
+      "evidence": "authentication_checks"
+    },
+    {
+      "syntax": "auth info",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "auth whoami",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "auth logout",
+      "status": "passed",
+      "layer": "production authentication",
+      "evidence": "authentication_checks"
+    },
+    {
+      "syntax": "account quota list",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "account token list",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "account info",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "account quotas",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "account tokens",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "organization list [cursor]",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "organization application <id> status",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "translation list",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "translation info <translation>",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "translation catalog <translation>",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "translation add <translation>",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "translation remove <translation>",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "read <translation> <book> [chapter] [verse]",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "search <translation> <query>",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "live list",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "live create [name...]",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "live delete all",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "live <id> info",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "live <id> stats",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "live <id> start",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "live <id> stop",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "live <id> pause",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "live <id> resume",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "live <id> delete",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "live <id> subscribe",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "live <id> clear",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "live <id> set name <value...>",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "live <id> set reference <value...>",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "live <id> set translations <value...>",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "live <id> stack info",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "live <id> stack push [translation] <book> [chapter] [verse]",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "live <id> stack pop [count]",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "live <id> stack clear",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "live <id> secret create",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "live <id> secret rotate",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "live <id> secret delete",
+      "status": "passed",
+      "layer": "production server",
+      "transports": [
+        "http",
+        "ssh"
+      ],
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "live <id> secret <value>",
+      "status": "passed_expected_rejection",
+      "layer": "local validation",
+      "error_code": "usage",
+      "reason": "Deprecated standalone authorization cannot persist across connections."
+    },
+    {
+      "syntax": "completion <shell>",
+      "status": "passed",
+      "layer": "isolated local configuration/help/completion",
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "config path",
+      "status": "passed",
+      "layer": "isolated local configuration/help/completion",
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "config show",
+      "status": "passed",
+      "layer": "isolated local configuration/help/completion",
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "config get <key>",
+      "status": "passed",
+      "layer": "isolated local configuration/help/completion",
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "config set <key> <value>",
+      "status": "passed",
+      "layer": "isolated local configuration/help/completion",
+      "evidence": "http_suite and ssh_suite"
+    },
+    {
+      "syntax": "config unset <key>",
+      "status": "passed",
+      "layer": "isolated local configuration/help/completion",
+      "evidence": "http_suite and ssh_suite"
+    }
+  ],
+  "http_suite": {
+    "counts": {
+      "passed": 101
+    },
+    "checks": [
+      {
+        "command": "help",
+        "transport": "local",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "help read",
+        "transport": "local",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "help live stack pop",
+        "transport": "local",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "version",
+        "transport": "local",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "--version",
+        "transport": "local",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "-v",
+        "transport": "local",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "completion bash",
+        "transport": "local",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "completion zsh",
+        "transport": "local",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "completion fish",
+        "transport": "local",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "config path",
+        "transport": "local",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "config show",
+        "transport": "local",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "config get transport",
+        "transport": "local",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "config set transport http",
+        "transport": "local",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "config unset identity",
+        "transport": "local",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "missing Live ID returns usage guidance",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 2,
+        "error_code": "usage"
+      },
+      {
+        "command": "missing Live returns safe not_found",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 5,
+        "error_code": "not_found"
+      },
+      {
+        "command": "live <id> secret <value>",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 2,
+        "error_code": "usage"
+      },
+      {
+        "command": "live list",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "translation list",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "ping",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "server info",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "server help",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "server help live",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "server help account",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "auth info",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "auth whoami",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "account info",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "account quotas",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "account tokens",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "account quota list",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "account token list",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "organization list",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "organization list o:00000000-0000-0000-0000-000000000000",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "translation info <translation>",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "translation catalog <translation>",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "organization list",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "organization application <id> status",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "derive bounded search query from source verse",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "read <translation> <book> [chapter] [verse]",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "read <translation> <book> [chapter] [verse]",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "read <translation> <book> [chapter] [verse]",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "read <translation> <book> [chapter] [verse]",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "read <translation> <book> [chapter] [verse]",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "search <translation> <query>",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "translation add <translation>",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "translation list",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "translation remove <translation>",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "translation list",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live create [name...]",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> delete",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live create [name...]",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> info",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stats",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> start",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> info",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stop",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> info",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> start",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> info",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> pause",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> info",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> resume",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> info",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> set name",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> set reference",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> set translations",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> info",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack push",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack push",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack push",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack push",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack push",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack push",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack push",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack info",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack pop",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack info",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack pop",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack info",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack clear",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack info",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack push",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> clear",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack info",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> secret create",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "protected audience secret delivery",
+        "transport": "local",
+        "status": "passed"
+      },
+      {
+        "command": "live <id> secret rotate",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "protected audience secret delivery",
+        "transport": "local",
+        "status": "passed"
+      },
+      {
+        "command": "live <id> secret delete",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> secret synthetic-legacy-secret",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 2,
+        "error_code": "usage"
+      },
+      {
+        "command": "live <id> pause",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> subscribe",
+        "transport": "http",
+        "format": "ndjson",
+        "status": "passed"
+      },
+      {
+        "command": "live <id> resume",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> pause",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> subscribe",
+        "transport": "http",
+        "format": "table",
+        "status": "passed"
+      },
+      {
+        "command": "live <id> resume",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live list",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live delete all",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live list",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "initial Live resources preserved; no test Lives remain",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "initial translation library restored",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      }
+    ]
+  },
+  "ssh_suite": {
+    "counts": {
+      "passed": 138
+    },
+    "checks": [
+      {
+        "command": "help",
+        "transport": "local",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "help read",
+        "transport": "local",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "help live stack pop",
+        "transport": "local",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "version",
+        "transport": "local",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "--version",
+        "transport": "local",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "-v",
+        "transport": "local",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "completion bash",
+        "transport": "local",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "completion zsh",
+        "transport": "local",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "completion fish",
+        "transport": "local",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "config path",
+        "transport": "local",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "config show",
+        "transport": "local",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "config get transport",
+        "transport": "local",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "config set transport http",
+        "transport": "local",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "config unset identity",
+        "transport": "local",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "missing Live ID returns usage guidance",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 2,
+        "error_code": "usage"
+      },
+      {
+        "command": "missing Live returns safe not_found",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 5,
+        "error_code": "not_found"
+      },
+      {
+        "command": "live <id> secret <value>",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 2,
+        "error_code": "usage"
+      },
+      {
+        "command": "live list",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "translation list",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "ping",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "server info",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "server help",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "server help live",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "server help account",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "auth info",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "auth whoami",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "account info",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "account quotas",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "account tokens",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "account quota list",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "account token list",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "organization list",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "organization list o:00000000-0000-0000-0000-000000000000",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "translation info <translation>",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "translation catalog <translation>",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "organization list",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "organization application <id> status",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "derive bounded search query from source verse",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "ping",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "server info",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "server help",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "server help",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "server help",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "auth info",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "auth whoami",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "account info",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "account quotas",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "account tokens",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "account quota",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "account token",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "organization list",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "organization list",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "translation list",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live list",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "translation info",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "translation catalog",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "read <translation> <reference-or-query>",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "read <translation> <reference-or-query>",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "read <translation> <reference-or-query>",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "read <translation> <reference-or-query>",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "read <translation> <reference-or-query>",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "search <translation> <reference-or-query>",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "organization application <id> status",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "read <translation> <book> [chapter] [verse]",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "read <translation> <book> [chapter] [verse]",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "read <translation> <book> [chapter] [verse]",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "read <translation> <book> [chapter] [verse]",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "read <translation> <book> [chapter] [verse]",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "search <translation> <query>",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "translation add <translation>",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "translation list",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "translation remove <translation>",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "translation list",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live create [name...]",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> delete",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live create [name...]",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> info",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> info HTTP domain readback",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stats",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> start",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> info",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> info HTTP domain readback",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stop",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> info",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> info HTTP domain readback",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> start",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> info",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> info HTTP domain readback",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> pause",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> info",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> info HTTP domain readback",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> resume",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> info",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> info HTTP domain readback",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> set name",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> set reference",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> set translations",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> info",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> info HTTP domain readback",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack push",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack push",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack push",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack push",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack push",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack push",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack push",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack info",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack info HTTP domain readback",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack pop",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack info",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack info HTTP domain readback",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack pop",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack info",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack info HTTP domain readback",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack clear",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack info",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack info HTTP domain readback",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack push",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> clear",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack info",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> stack info HTTP domain readback",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> secret create",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "protected audience secret delivery",
+        "transport": "local",
+        "status": "passed"
+      },
+      {
+        "command": "live <id> secret rotate",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "protected audience secret delivery",
+        "transport": "local",
+        "status": "passed"
+      },
+      {
+        "command": "live <id> secret delete",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> secret synthetic-legacy-secret",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 2,
+        "error_code": "usage"
+      },
+      {
+        "command": "live <id> pause",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> subscribe",
+        "transport": "ssh",
+        "format": "ndjson",
+        "status": "passed"
+      },
+      {
+        "command": "live <id> resume",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> pause",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live <id> subscribe",
+        "transport": "ssh",
+        "format": "table",
+        "status": "passed"
+      },
+      {
+        "command": "live <id> resume",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live list",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live delete all",
+        "transport": "ssh",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "live list",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "initial Live resources preserved; no test Lives remain",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "command": "initial translation library restored",
+        "transport": "http",
+        "status": "passed",
+        "exit_code": 0
+      }
+    ]
+  },
+  "authentication_checks": [
+    {
+      "command": "auth login ssh",
+      "exit_code": 0,
+      "status": "passed"
+    },
+    {
+      "command": "persisted SSH auth info",
+      "exit_code": 0,
+      "status": "passed"
+    },
+    {
+      "command": "isolated SSH logout",
+      "exit_code": 0,
+      "status": "passed"
+    },
+    {
+      "command": "auth login (browser)",
+      "exit_code": 0,
+      "status": "passed"
+    },
+    {
+      "command": "new browser credential auth info",
+      "exit_code": 0,
+      "status": "passed"
+    },
+    {
+      "command": "revoke isolated browser credential and logout",
+      "exit_code": 0,
+      "status": "passed"
+    },
+    {
+      "command": "config transport ssh used by subsequent commands",
+      "exit_code": 0,
+      "status": "passed"
+    },
+    {
+      "command": "config YAML identity used by login",
+      "exit_code": 0,
+      "status": "passed"
+    },
+    {
+      "command": "auth login ssh without transport or identity flags",
+      "exit_code": 0,
+      "status": "passed"
+    },
+    {
+      "command": "auth login ssh persists identity path in credential document",
+      "status": "passed",
+      "private_key_copied": false
+    },
+    {
+      "command": "saved credential identity used without identity preference or flags",
+      "exit_code": 0,
+      "status": "passed"
+    },
+    {
+      "command": "isolated SSH logout clears saved identity",
+      "exit_code": 0,
+      "status": "passed"
+    }
+  ],
+  "production_mutations_authorized": true,
+  "preexisting_lives_deleted_with_explicit_user_authorization": 1,
+  "temporary_lives_remaining": 0,
+  "original_translation_library_restored": true,
+  "original_credentials_preserved": true,
+  "authentication_test_storage": "Temporary credential/preferences documents removed after test; private keys were never copied.",
+  "initial_findings": [
+    {
+      "finding": "Live creation quota was full (1 allowed, 1 used).",
+      "resolution": "User explicitly authorized deleting the existing Live; all subsequent Live resources were test-owned and removed."
+    },
+    {
+      "finding": "Rapid test calls exceeded HTTP request and SSH connection admission budgets.",
+      "resolution": "Cleaned up the test Live using explicitly selected SSH, paced HTTP calls and SSH connections, and reran to zero failures; no client transport fallback or mutation retry was added."
+    },
+    {
+      "finding": "Translated numeric stack chapter:verse was rejected.",
+      "resolution": "Fixed parsing and verified expanded/compact parity through regression tests and actual HTTP/SSH production calls."
+    }
+  ],
+  "credentials_cursors_or_user_content_recorded": false,
+  "homebrew_version": "0.1.0",
+  "homebrew_binary_unchanged": true
+}

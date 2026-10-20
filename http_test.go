@@ -102,12 +102,12 @@ func TestHTTPCollectionsFollowOpaqueCursors(t *testing.T) {
 		t.Fatal(res, err, pages)
 	}
 }
-func TestHTTPUnsupportedCommandsNeverUseLegacyAPI(t *testing.T) {
+func TestHTTPInvalidInputsNeverReachAnyAPI(t *testing.T) {
 	httpFixture(t, "bt_test", func(r *http.Request) (*http.Response, error) {
 		t.Fatal("unsupported command contacted server", r.URL)
 		return nil, nil
 	})
-	for _, args := range [][]string{{"server", "help"}, {"account", "quotas"}, {"account", "tokens"}, {"translation", "add", "web"}, {"read", "web", "John"}, {"live", "create"}, {"live", "delete", "all"}, {"live", "L1", "stats"}, {"live", "L1", "stack", "pop"}, {"live", "L1", "secret", "rotate"}} {
+	for _, args := range [][]string{{"live", "stack", "info"}, {"live", "L1", "stack", "pop", "0"}, {"read", "web", "John", "invalid"}, {"live", "L1", "secret", "synthetic-secret"}} {
 		code, _, _ := captureCLI(t, func() int { return run(append([]string{"--yes"}, args...)) })
 		if code != exitUsage {
 			t.Fatal(args, code)
@@ -129,6 +129,61 @@ func TestHTTPJSONUsesNativeResourceData(t *testing.T) {
 		Records       json.RawMessage            `json:"records"`
 	}
 	if code != exitOK || json.Unmarshal([]byte(out), &envelope) != nil || envelope.SchemaVersion != 2 || string(envelope.Data["sequence"]) != "9007199254740993" || string(envelope.Data["paused"]) != "false" || envelope.Records != nil {
+		t.Fatal(code, out, stderr)
+	}
+}
+
+func TestHTTPPopUsesActualAffectedCountWithoutConfirmation(t *testing.T) {
+	calls := 0
+	httpFixture(t, "bt_fixture", func(r *http.Request) (*http.Response, error) {
+		calls++
+		if r.URL.Host != "api.bibleit.app" {
+			t.Fatal("legacy or foreign origin", r.URL)
+		}
+		if calls == 1 {
+			if r.Method != "GET" || r.URL.Path != "/v1/lives/L1" {
+				t.Fatal(r.Method, r.URL)
+			}
+			res := httpReply(200, `{"id":"L1","sequence":1}`)
+			res.Header.Set("ETag", `"live-1"`)
+			return res, nil
+		}
+		b, _ := io.ReadAll(r.Body)
+		if r.Method != "POST" || r.URL.Path != "/v1/lives/L1/stack/removals" || r.Header.Get("If-Match") != `"live-1"` || string(b) != `{"count":2}` {
+			t.Fatal(r.Method, r.URL, string(b))
+		}
+		return httpReply(200, `{"live_id":"L1","sequence":2,"affected":1,"data":[]}`), nil
+	})
+	code, out, stderr := captureCLI(t, func() int { return run([]string{"live", "L1", "stack", "pop", "2"}) })
+	if code != exitOK || calls != 2 || stderr != "" || !strings.Contains(out, "Popped 1 stack entries") {
+		t.Fatal(code, calls, out, stderr)
+	}
+}
+func TestPersonalOrganizationCursorAndCredentialBoundary(t *testing.T) {
+	calls := 0
+	httpFixture(t, "bt_fixture", func(r *http.Request) (*http.Response, error) {
+		calls++
+		if r.URL.Path != "/v1/me/organizations" || r.URL.Query().Get("after") != "opaque / +" || r.URL.Query().Has("limit") {
+			t.Fatal(r.URL)
+		}
+		return httpReply(200, `{"data":[],"next_cursor":null}`), nil
+	})
+	code, out, stderr := captureCLI(t, func() int { return run([]string{"organization", "list", "--cursor", "opaque / +", "--format", "json"}) })
+	if code != exitOK || calls != 1 || stderr != "" || !strings.Contains(out, `"schema_version": 2`) {
+		t.Fatal(code, calls, out, stderr)
+	}
+	if _, e := planHTTP([]string{"organization", "list"}, true); e == nil {
+		t.Fatal("service identity substituted for personal directory")
+	}
+}
+
+func TestDelegatedLibraryMutationDoesNotGainWriteConsent(t *testing.T) {
+	httpFixture(t, "oa_fixture", func(r *http.Request) (*http.Response, error) {
+		t.Fatal("unconsented mutation sent", r.URL)
+		return nil, nil
+	})
+	code, out, stderr := captureCLI(t, func() int { return run([]string{"translation", "add", "web"}) })
+	if code != exitForbidden || out != "" || !strings.Contains(stderr, "consented") {
 		t.Fatal(code, out, stderr)
 	}
 }

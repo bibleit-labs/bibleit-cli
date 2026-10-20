@@ -83,7 +83,7 @@ def terminal_checks(binary, env, requests):
                 if select.select([master], [], [], 0.5)[0]:
                     output += os.read(master, 4096)
             assert b'Type "yes" to confirm: ' in output, output
-            assert b"http" in output and HOST.encode() in output and b"bt_runtime" not in output, output
+            assert b'Delete Live "L1"' in output and HOST.encode() not in output and b"bt_runtime" not in output, output
             os.write(master, (answer + "\n").encode())
             stdout, _ = child.communicate(timeout=10)
             assert child.returncode == code and len(requests) == before + delta, (answer, child.returncode, requests)
@@ -158,6 +158,7 @@ def main():
                    "BIBLEIT_RUNTIME_ADDRESS": f"127.0.0.1:{server.server_port}",
                    "BIBLEIT_TOKEN": "bt_runtime", "BIBLEIT_ENDPOINT": "https://other.example", "PATH": str(directory) + os.pathsep + os.environ["PATH"]}
             config.write_text(json.dumps({"version": 2, "endpoint": "https://" + HOST, "ssh_server": HOST + ":22", "access_token": "bt_saved"}))
+            config.chmod(0o600)
             before = len(requests)
             for invalid_args in (["profile", "list"], ["--profile", "old", "ping"], ["--endpoint", "https://other.example", "ping"]):
                 run(binary, invalid_args, env, code=2)

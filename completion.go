@@ -72,7 +72,7 @@ func completionCandidates(words []string) []string {
 	}
 	prefix := words[len(words)-1]
 	previous := words[:len(words)-1]
-	valueOptions := map[string]bool{"--format": true, "--identity": true, "--transport": true}
+	valueOptions := map[string]bool{"--format": true, "--identity": true, "--transport": true, "--cursor": true, "--limit": true, "--secret-output": true}
 	optionValues := func(option string) []string {
 		switch option {
 		case "--format":
@@ -121,77 +121,13 @@ func completionCandidates(words []string) []string {
 			return filter(optionValues(name), value, name+"=")
 		}
 		options := []string{}
-		for _, option := range []string{"--transport", "--format", "--identity", "--yes", "--help"} {
+		for _, option := range []string{"--transport", "--format", "--identity", "--yes", "--help", "--version", "-v", "--cursor", "--limit", "--secret-output"} {
 			if !used[option] {
 				options = append(options, option)
 			}
 		}
 		return filter(options, prefix, "")
 	}
-	candidates := []string{}
-	if len(args) == 0 {
-		candidates = []string{"ping", "server", "account", "auth", "translation", "read", "search", "live", "organization", "completion", "help", "version"}
-	} else {
-		switch args[0] {
-		case "help":
-			if len(args) == 1 {
-				candidates = []string{"server", "account", "auth", "translation", "read", "search", "live", "organization", "completion"}
-			}
-		case "organization":
-			if len(args) == 1 {
-				candidates = []string{"list", "application"}
-			}
-			if len(args) == 3 && args[1] == "application" {
-				candidates = []string{"status"}
-			}
-		case "completion":
-			if len(args) == 1 {
-				candidates = []string{"bash", "zsh", "fish"}
-			}
-		case "auth":
-			if len(args) == 1 {
-				candidates = []string{"login", "logout", "info", "whoami"}
-			}
-			if len(args) == 2 && args[1] == "login" {
-				candidates = []string{"ssh"}
-			}
-		case "server":
-			if len(args) == 1 {
-				candidates = []string{"info", "help"}
-			}
-			if len(args) == 2 && args[1] == "help" {
-				candidates = []string{"server", "account", "auth", "translation", "live", "organization"}
-			}
-		case "account":
-			if len(args) == 1 {
-				candidates = []string{"info", "quotas", "tokens"}
-			}
-		case "translation":
-			if len(args) == 1 {
-				candidates = []string{"list", "add", "remove", "info", "catalog"}
-			}
-		case "live":
-			if len(args) == 1 {
-				candidates = []string{"list", "create", "delete"}
-			}
-			if len(args) == 2 {
-				if args[1] == "delete" {
-					candidates = []string{"all"}
-				} else if !oneOf(args[1], "list", "create") {
-					candidates = []string{"info", "stats", "start", "stop", "pause", "resume", "delete", "subscribe", "clear", "secret", "set", "stack"}
-				}
-			}
-			if len(args) == 3 && !oneOf(args[1], "list", "create", "delete") {
-				switch args[2] {
-				case "secret":
-					candidates = []string{"create", "rotate", "delete"}
-				case "set":
-					candidates = []string{"name", "reference", "translations"}
-				case "stack":
-					candidates = []string{"info", "clear", "push", "pop"}
-				}
-			}
-		}
-	}
+	candidates := registryCandidates(args)
 	return filter(candidates, prefix, "")
 }

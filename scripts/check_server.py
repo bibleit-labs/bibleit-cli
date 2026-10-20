@@ -83,6 +83,9 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
     run(['erlc', *paths, '-o', str(ebin), *map(str,sources)], cwd=temporary)
     fixture = root/'contract/fixtures/requests-v1.json'
     env = dict(os.environ, BIBLEIT_REQUEST_FIXTURES=str(fixture), BIBLEIT_RESPONSE_FIXTURES=str(root/"contract/fixtures/responses-v1.json"))
+    if args.integration:
+        # Public synthetic key for this isolated fixture; never copy a real key.
+        env['BIBLEIT_CURSOR_SIGNING_KEY'] = 'bibleit-disposable-cursor-signing-key-only'
     check = '''
       {ok, Body} = file:read_file(os:getenv("BIBLEIT_REQUEST_FIXTURES")),
       Cases = json:decode(Body),
@@ -105,15 +108,20 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
     '''
     run(['erl','-noshell','-pa',str(ebin),'-eval',check],env=env,cwd=temporary)
     if args.integration:
-        go_env = dict(os.environ, GOCACHE='/tmp/bibleit-go127-cache', GOMODCACHE='/tmp/bibleit-native-modcache', GOTOOLCHAIN='local')
+        go_env = dict(os.environ, GOCACHE='/tmp/bibleit-go127-cache', GOMODCACHE='/tmp/bibleit-native-modcache', GOTOOLCHAIN='local', GOWORK=str(root/'go.work'), GOPROXY='off')
         binary=temporary/'client-integration.test'
         run(['go','test','-c','-o',str(binary),'.'],cwd=args.go_client.resolve(),env=go_env)
         env['BIBLEIT_GO_TEST_BIN']=str(binary)
         cli_binary=temporary/'cli-integration.test'
         run(['go','test','-c','-o',str(cli_binary),'.'],cwd=root,env=go_env)
         env['BIBLEIT_CLI_TEST_BIN']=str(cli_binary)
+        if args.source_metadata:
+            revisions=json.loads(args.source_metadata.read_text()).get('parity_revisions', {})
+            for label, revision in revisions.items():
+                env['BIBLEIT_PARITY_' + label.upper() + '_REVISION'] = revision
+
         shutil.copy(server/'_build/default/lib/bibleit_server/ebin/bibleit_server.app', ebin)
-        suites = [server/'test/bibleit_test_database.erl', server/'test/bibleit_security_SUITE.erl', server/'test/http/bibleit_cli_auth_tests.erl', server/'test/ssh/bibleit_ssh_key_cb_tests.erl', server/'test/unit/bibleit_protocol_request_tests.erl', server/'test/bibleit_security_review_SUITE.erl', server/'test/unit/bibleit_http_canonical_host_tests.erl', server/'test/unit/bibleit_turnstile_tests.erl', server/'test/unit/bibleit_server_boot_tests.erl']
+        suites = [server/'test/bibleit_test_database.erl', server/'test/bibleit_test_protocol.erl', server/'test/bibleit_security_SUITE.erl', server/'test/http/bibleit_cli_auth_tests.erl', server/'test/ssh/bibleit_ssh_key_cb_tests.erl', server/'test/unit/bibleit_protocol_request_tests.erl', server/'test/bibleit_security_review_SUITE.erl', server/'test/unit/bibleit_http_canonical_host_tests.erl', server/'test/unit/bibleit_turnstile_tests.erl', server/'test/unit/bibleit_server_boot_tests.erl']
         if args.imports:
             suites += [server/'test/bibleit_import_access_SUITE.erl', server/'test/bibleit_import_publication_SUITE.erl']
         run(['erlc', *paths,'-o',str(ebin),*map(str,suites)],cwd=temporary)
@@ -139,11 +147,12 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
               ok=bibleit_security_review_SUITE:optional_configuration([]),
               io:format("Server boot configuration: canonical Turnstile hostname/default/normalization/rejection passed~n"),
               Config=bibleit_security_SUITE:init_per_suite([{priv_dir,os:getenv("BIBLEIT_TEST_PRIV")}]),
+              application:set_env(bibleit_server,cursor_signing_key,unicode:characters_to_binary(os:getenv("BIBLEIT_CURSOR_SIGNING_KEY"))),
               Results=try lists:foreach(fun(Case)->
                 C=bibleit_security_SUITE:init_per_testcase(Case,Config),
                 try apply(bibleit_security_SUITE,Case,[C]), io:format("Server integration: ~p passed~n",[Case])
                 after bibleit_security_SUITE:end_per_testcase(Case,C) end
-              end,[cli_rate_limit,scoped_token_cannot_escalate,revoked_credentials,concurrent_code_exchange,oversized_cli_input,search_shares_budget,ssh_revocation]),
+              end,[rest_rate_limit,scoped_token_cannot_escalate,revoked_credentials,concurrent_code_exchange,oversized_shell_input,search_shares_budget,ssh_revocation]),
               _=bibleit_security_SUITE:init_per_testcase(go_client,Config),
               ok=gen_server:stop(bibleit_http_listener),
               application:set_env(bibleit_server,http,#{port=>8080,host=>{127,0,0,1}}),
@@ -153,7 +162,7 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
               8080=ranch:get_port(bibleit_http),
               io:format("Fixed service integration: https://bibleit.app (verified fixture TLS, no client endpoint override)~n"),
               gen_server:stop(bibleit_rate_limit),
-              application:set_env(bibleit_server,rate_limits,#{ssh_command=>#{limit=>100},ssh_search=>#{limit=>100}}),
+              application:set_env(bibleit_server,rate_limits,#{http_global=>#{limit=>100000},http_request_ip=>#{limit=>100000},ssh_connection_global=>#{limit=>10000},ssh_connection_ip=>#{limit=>10000},ssh_command=>#{limit=>10000},ssh_search=>#{limit=>10000},rest_service=>#{limit=>100000},reader_actor=>#{limit=>100000}}),
               {ok,L}=bibleit_rate_limit:start_link(),unlink(L),
               {ok,ManualId,Token}=bibleit_authorization:create_token(<<"security-owner">>,<<"security-owner">>,<<"Go integration">>,[],manual,erlang:system_time(second)+3600),
               {error,quota_exceeded}=bibleit_authorization:create_token(<<"security-owner">>,<<"security-owner">>,<<"Over quota">>,[]),
@@ -177,9 +186,27 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
               Directory=os:getenv("BIBLEIT_TEST_PRIV"),
               BT=filename:join(Directory,"web.bt"), Index=filename:join(Directory,"web.bidx"),
               Prefix=[io_lib:format("Book ~B 1:1 filler~n",[B]) || B<-lists:seq(1,18)],
-              ok=file:write_file(BT,iolist_to_binary([Prefix,"Psalms 1:1 Fixture book opening.\nPsalms 23:1 The shepherd guides me.\nPsalms 23:2 The shepherd gives rest.\n"])),
+              PageVerses=[io_lib:format("Psalms 24:~B Pagination fixture verse.~n",[V]) || V<-lists:seq(1,101)],
+              ok=file:write_file(BT,iolist_to_binary([Prefix,"Psalms 1:1 Fixture book opening.\nPsalms 23:1 The shepherd guides me.\nPsalms 23:2 The shepherd gives rest.\n",PageVerses])),
               ok=bibleit_translation_nif:create_index(list_to_binary(BT),list_to_binary(Index)),
               {ok,_}=bibleit_account:add_translation(<<"security-owner">>,<<"web">>),
+
+              ok=bibleit_authorization:set_quota(<<"security-owner">>,{live,create},10),
+              {ok,ParityOrg}=bibleit_test_database:organization_with_handle(<<"parity-workspace">>,<<"Parity workspace">>,<<"security-owner">>,3,#{}),
+              {ok,1}=bibleit_database:query(<<"INSERT INTO account_limit_overrides(account_id,resource,action,limit_count) VALUES($1,'live','create',10) ON CONFLICT(account_id,resource,action) DO UPDATE SET limit_count=10">>,[ParityOrg]),
+              ok=bibleit_organizations:add_translation(ParityOrg,<<"security-owner">>,<<"web">>),
+              {ok,_,ParityService}=bibleit_organization_credentials:create(ParityOrg,<<"security-owner">>,<<"Parity service fixture">>,[{organization,get},{token,get},{live,get},{live,list},{live,create},{live,update},{live,delete},{translation,get},{translation,list},{translation,read},{translation,search},{translation,enable}],never),
+              {ok,1,_,[{ParityApplication}]}=bibleit_database:query(<<"INSERT INTO organization_applications(requester_user_id,name,handle,domain,email,capacity,authority,intended_use,statement_version,dns_token) SELECT id,'Parity application','parity-application','fixture.example.org','owner@fixture.example.org','owner','Fixture authority','Fixture usage',1,'synthetic-dns-value' FROM users WHERE principal_key='security-owner' RETURNING id::text">>,[]),
+
+              ParityClient= <<"parity_cli">>,ParityRedirect= <<"https://fixture.example.org/callback">>,
+              ParityScopes=[<<"identity.read">>,<<"translation.list">>,<<"translation.get">>,<<"translation.read">>,<<"translation.search">>,<<"live.list">>,<<"live.get">>,<<"live.create">>,<<"live.update">>,<<"live.delete">>],
+              ok=bibleit_delegated_oauth:register(ParityClient,<<"Parity CLI fixture">>,[ParityRedirect],ParityScopes),
+              {ok,ParitySession,_}=bibleit_http_session:login_actor(<<"security-owner">>),
+              {ok,ParityRequest}=bibleit_delegated_oauth:begin_authorization(#{<<"response_type">>=><<"code">>,<<"client_id">>=>ParityClient,<<"redirect_uri">>=>ParityRedirect,<<"scope">>=>iolist_to_binary(lists:join(<<" ">>,ParityScopes)),<<"state">>=><<"synthetic-parity-state">>,<<"code_challenge_method">>=><<"S256">>,<<"code_challenge">>=>AuthChallenge}),
+              {ok,_ParityConsent}=bibleit_delegated_oauth:consent(ParityRequest,ParitySession),
+              {ok,ParityLocation}=bibleit_delegated_oauth:decide(ParityRequest,ParitySession,true),
+              ParityCode=maps:get(<<"code">>,maps:from_list(cow_qs:parse_qs(maps:get(query,uri_string:parse(ParityLocation))))),
+              {ok,#{access_token:=ParityOAuth}}=bibleit_delegated_oauth:token(#{<<"grant_type">>=><<"authorization_code">>,<<"client_id">>=>ParityClient,<<"redirect_uri">>=>ParityRedirect,<<"code">>=>ParityCode,<<"code_verifier">>=>AuthVerifier}),
 
               P=open_port({spawn_executable,os:getenv("BIBLEIT_GO_TEST_BIN")},[exit_status,use_stdio,stderr_to_stdout,
                 {args,["-test.run=^TestServerHTTPIntegration$","-test.v"]},
@@ -202,12 +229,17 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
                 {ok,SSHInfo}=ssh:daemon_info(Daemon),
                 22=proplists:get_value(port,SSHInfo),
                 CLI=open_port({spawn_executable,os:getenv("BIBLEIT_CLI_TEST_BIN")},[exit_status,use_stdio,stderr_to_stdout,
-                  {args,["-test.run=^TestServerSSHSubscription$","-test.v"]},
+                  {args,["-test.run=^TestServer(SSHSubscription|CommandParity|RESTWatch|CLILocalAndAuth|ScriptureUX|BookPagination)$","-test.v"]},
                   {env,[{"BIBLEIT_CLIENT_TEST_DISPOSABLE","1"},
                         {"BIBLEIT_INTEGRATION_TOKEN",binary_to_list(Token)},
+                        {"BIBLEIT_SERVICE_TOKEN",binary_to_list(ParityService)},
+                        {"BIBLEIT_OAUTH_TOKEN",binary_to_list(ParityOAuth)},
+                        {"BIBLEIT_INTEGRATION_BROWSER_SESSION",binary_to_list(ParitySession)},
+                        {"BIBLEIT_PARITY_APPLICATION_ID",binary_to_list(ParityApplication)},
+                        {"BIBLEIT_PARITY_EVIDENCE","/results/cli-parity.json"},
                         {"BIBLEIT_INTEGRATION_IDENTITY",Identity}]}]),
                 CLIWait=fun F()->receive {CLI,{data,Data}}->io:put_chars(Data),F();{CLI,{exit_status,0}}->ok;
-                  {CLI,{exit_status,Status}}->{error,{cli_subscription_failed,Status}} after 30000->error(cli_subscription_timeout) end end,
+                  {CLI,{exit_status,Status}}->{error,{cli_subscription_failed,Status}} after 120000->error(cli_subscription_timeout) end end,
                 {GoResult,CLIWait()}
               after bibleit_ssh_listener:terminate(normal,SSHListener) end
               after application:unset_env(bibleit_server,http_public_origin),
@@ -222,7 +254,7 @@ with tempfile.TemporaryDirectory(prefix='bibleit-contract-') as directory:
                 Failures->io:format("Integration failure summary: ~p~n",[Failures]),halt(1)
               end.
             '''
-            run(['erl','-noshell',*paths,'-pa',str(ebin),'-eval',integration],env=env,cwd=temporary,timeout=120)
+            run(['erl','-noshell',*paths,'-pa',str(ebin),'-eval',integration],env=env,cwd=temporary,timeout=300)
             if args.imports:
                 # Execute the actual suite cases and setup/teardown callbacks.
                 # This is focused case execution, not a full Common Test campaign.
