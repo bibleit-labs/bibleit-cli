@@ -5,3 +5,5 @@ package main
 import "os"
 
 func terminalInput(file *os.File) bool { return false }
+
+func terminalColumns(file *os.File) int { return 0 }

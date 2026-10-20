@@ -70,6 +70,38 @@ def terminal_checks(binary, env, requests):
         print("Windows process checks use redirected handles; real console detection is covered by TestWindowsConsoleHandles", flush=True)
         return
     import pty
+    import fcntl
+    import struct
+    import termios
+    master, slave = pty.openpty()
+    fcntl.ioctl(slave, termios.TIOCSWINSZ, struct.pack("HHHH", 24, 40, 0, 0))
+    narrow_env = dict(env)
+    narrow_env.pop("COLUMNS", None)
+    child = subprocess.Popen(command(binary, ["live", "stack", "--help"]), env=narrow_env,
+                             stdout=slave, stderr=subprocess.PIPE, stdin=subprocess.DEVNULL)
+    os.close(slave)
+    try:
+        output = b""
+        while True:
+            try:
+                part = os.read(master, 65536)
+            except OSError as error:
+                import errno
+                if error.errno != errno.EIO:
+                    raise
+                break
+            if not part:
+                break
+            output += part
+        child.wait(timeout=10)
+        assert child.returncode == 0 and not child.stderr.read()
+        assert all(len(line) <= 40 for line in output.decode().splitlines()), output
+    finally:
+        if child.poll() is None:
+            child.kill()
+            child.wait()
+        os.close(master)
+    print("Native PTY: help detects and fits 40 columns without COLUMNS", flush=True)
     for answer, code, delta in (("no", 1, 0), ("", 1, 0), ("yes", 0, 2)):
         master, slave = pty.openpty()
         before = len(requests)

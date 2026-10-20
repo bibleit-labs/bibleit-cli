@@ -174,7 +174,10 @@ See the [endpoint and credential policy](docs/endpoint-policy.md) for binding an
 
 ## Commands
 
-Use `bibleit help` or `bibleit <command> --help` for usage.
+Use `bibleit help` for a grouped command overview. Drill into a family with
+`bibleit live --help` or `bibleit live stack --help`; use
+`bibleit <command> --help` for its syntax and description. Help is plain text,
+with aligned descriptions and wrapping for narrow terminals.
 
 | Command | Purpose |
 | --- | --- |

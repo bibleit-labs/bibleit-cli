@@ -64,7 +64,6 @@ var commandRegistry = []commandSpec{
 	{"live <id> secret create", "Generate a protected audience secret.", "live L1 secret create", false, ""},
 	{"live <id> secret rotate", "Replace the audience secret; confirmation required.", "live L1 secret rotate", false, ""},
 	{"live <id> secret delete", "Remove audience protection; confirmation required.", "live L1 secret delete", false, ""},
-	{"live <id> secret <value>", "Legacy connection-only authorization; cannot authorize a later invocation.", "live L1 secret synthetic-secret", false, ""},
 	{"completion <shell>", "Generate Bash, Zsh, or Fish completion without network access.", "completion bash", true, ""},
 	{"config show", "Show configuration and its file location, with credentials hidden.", "config show", true, ""},
 	{"config get <key>", "Read a nonsecret preference.", "config get transport", true, ""},
@@ -177,30 +176,15 @@ func helpPath(args []string) []string {
 	return out
 }
 func registryHelp(topic []string) int {
-	if spec := commandSpecFor(topic); spec != nil {
-		topic = helpPath(strings.Fields(spec.Syntax))
-	}
-	// An explicit target is allowed in `live L1 stack pop --help`.
-	if len(topic) > 1 && topic[0] == "live" && !oneOf(topic[1], "list", "create", "delete", "stack", "set", "secret", "info", "stats", "start", "stop", "pause", "resume", "subscribe", "clear") {
-		topic = append([]string{"live"}, topic[2:]...)
-	}
-	lines := []string{"Bibleit CLI: read Scripture and manage Live sessions.", "", "Usage:"}
-	found := false
-	for _, spec := range commandRegistry {
-		path := helpPath(strings.Fields(spec.Syntax))
-		if len(topic) > len(path) || strings.Join(path[:len(topic)], " ") != strings.Join(topic, " ") {
-			continue
-		}
-		found = true
-		lines = append(lines, "  bibleit "+spec.Syntax, "    "+spec.Summary)
-	}
-	if !found {
-		return fail(exitUsage, "unknown help topic; run `bibleit help` to list commands")
+	text, err := commandHelp(topic, outputWidth())
+	if err != nil {
+		return fail(exitUsage, "%v", err)
 	}
 	if activeFormat == "json" {
-		return printLocal("help", map[string]string{"topic": strings.Join(topic, " "), "text": strings.Join(lines, "\n")}, "json")
+		topic, _ = canonicalHelpTopic(topic)
+		return printLocal("help", map[string]string{"topic": strings.Join(topic, " "), "text": text}, "json")
 	}
-	fmt.Println(strings.Join(lines, "\n"))
+	fmt.Println(text)
 	return exitOK
 }
 func registryCandidates(args []string) []string {
