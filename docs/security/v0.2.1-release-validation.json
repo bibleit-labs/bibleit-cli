@@ -59,6 +59,17 @@
     "windows_arm64"
   ],
   "public_manifest_matches_candidate": true,
-  "public_installer_validation": "pending",
-  "published_assets_match_validated_candidate": true
+  "public_installer_validation": {
+    "workflow": 39352694637,
+    "url": "https://github.com/bibleit-labs/bibleit-cli/actions/runs/39352694637"
+  },
+  "published_assets_match_validated_candidate": true,
+  "homebrew_release_validation": {
+    "workflow": 39352642650,
+    "url": "https://github.com/bibleit-labs/homebrew-tap/actions/runs/39352642650"
+  },
+  "public_homebrew_validation": {
+    "workflow": 39352640113,
+    "url": "https://github.com/bibleit-labs/homebrew-tap/actions/runs/39352640113"
+  }
 }
