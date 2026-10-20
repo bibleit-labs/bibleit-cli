@@ -112,12 +112,13 @@ The organization foundation adds read-only commands over bearer HTTP and SSH:
 Both require an active authenticated personal principal and `server.get`.
 `organization.create` is not required to inspect existing requests. These reads
 remain available when new application submission is disabled. Authenticated
-`SERVER INFO` advertises `organization_status`; permission-aware
+`SERVER INFO` advertises `organization`; permission-aware
 `HELP ORGANIZATION` describes the two commands. An old server without the
 capability does not support these reads. SDK command builders and typed directory/status methods support these reads.
 The CLI exposes `organization list [cursor]` and
-`organization application <id> status`; it discovers `organization_status`
-before sending a read and gives upgrade/browser guidance when absent.
+`organization application <id> status`; it checks for `organization` before
+sending a read. Exact capability names are required; similar names and substrings
+do not match. When the capability is absent, it gives upgrade/browser guidance.
 
 A directory reply uses `OK count=N`, then `ORGANIZATION` and/or `APPLICATION`
 records, then `END`. A page contains at most 50 records. A nonfinal page has

@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+## v0.2.1 — 2026-10-20
+
+- Store preferences and credentials in one protected `config.yaml`, selected by
+  `BIBLEIT_CONFIG`, without importing or merging separate legacy files. Existing
+  SSH defaults continue to work; HTTP users must sign in again to save a token
+  in YAML. Separate `config.json` files are ignored.
+- Simplify command help to syntax and descriptions. Show the configuration file
+  location in `config show` and remove `config path`.
+- Require the canonical SSH `organization` capability and remove the obsolete
+  `organization_status` name.
+
+## v0.2.0
+
 - Read HTTP books through bounded cursor pages without changing complete-book
   CLI output. Add HTTP whole-book `--limit` and `--cursor` for explicit pages,
   descriptive cursor errors and cancellation without partial successful output.

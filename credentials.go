@@ -1,51 +1,20 @@
 package main
 
 import (
-	"bytes"
-	"encoding/json"
 	"errors"
-	"io"
-	"os"
 	"strings"
 )
 
 type config struct{ Transport, Endpoint, Identity, AccessToken string }
-type configDocument struct {
-	Version     int    `json:"version"`
-	Endpoint    string `json:"endpoint"`
-	SSHServer   string `json:"ssh_server"`
-	Identity    string `json:"identity,omitempty"`
-	AccessToken string `json:"access_token,omitempty"`
-}
 
 func loadConfig() (config, error) {
-	if err := validateCredentialFile(configPath()); err != nil {
+	p, err := loadPreferences()
+	if err != nil {
 		return config{}, err
 	}
-	data, err := os.ReadFile(configPath())
-	if os.IsNotExist(err) {
-		return config{Transport: "http", Endpoint: defaultWebURL}, nil
-	}
-	if err != nil {
-		return config{}, errors.New("cannot read credential file; check file permissions")
-	}
-	var d configDocument
-	dec := json.NewDecoder(bytes.NewReader(data))
-	dec.DisallowUnknownFields()
-	if err = dec.Decode(&d); err != nil {
-		return config{}, errors.New("unsupported configuration; back up the old file and sign in using a fresh config")
-	}
-	if dec.Decode(new(any)) != io.EOF || d.Version != 2 {
-		return config{}, errors.New("unsupported configuration version; back up the old file and sign in using a fresh config")
-	}
-	if d.Endpoint != defaultWebURL || d.SSHServer != defaultSSHServer {
-		return config{}, errors.New("configuration does not match the project-managed service; back up the old file and sign in using a fresh config")
-	}
-	if strings.ContainsAny(d.AccessToken, "\r\n\x00") || strings.ContainsAny(d.Identity, "\r\n\x00") {
-		return config{}, errors.New("invalid configuration credential")
-	}
-	return config{Transport: "http", Endpoint: d.Endpoint, Identity: d.Identity, AccessToken: d.AccessToken}, nil
+	return config{Transport: "http", Endpoint: defaultWebURL, Identity: p.Identity, AccessToken: p.AccessToken}, nil
 }
+
 func saveConfig(c config) error {
 	if c.Transport != "" && c.Transport != "http" && c.Transport != "ssh" {
 		return errors.New("transport must be http or ssh")
@@ -60,13 +29,15 @@ func saveConfig(c config) error {
 	if strings.ContainsAny(c.AccessToken, "\r\n\x00") || strings.ContainsAny(c.Identity, "\r\n\x00") {
 		return errors.New("invalid configuration credential")
 	}
-	if _, err := loadConfig(); err != nil {
-		return err
-	}
-	d := configDocument{Version: 2, Endpoint: defaultWebURL, SSHServer: defaultSSHServer, Identity: c.Identity, AccessToken: c.AccessToken}
-	data, err := json.MarshalIndent(d, "", "  ")
+	p, err := loadPreferences()
 	if err != nil {
 		return err
 	}
-	return writePrivateDocument(configPath(), append(data, '\n'))
+	p.AccessToken = c.AccessToken
+	p.Identity = c.Identity
+	p.IdentitySet = true
+	if c.Transport != "" {
+		p.Transport = c.Transport
+	}
+	return savePreferences(p)
 }

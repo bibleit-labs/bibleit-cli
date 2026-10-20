@@ -46,8 +46,7 @@ func TestServerCommandParity(t *testing.T) {
 	for _, credential := range credentials {
 		t.Run(credential.name, func(t *testing.T) {
 			directory := t.TempDir()
-			t.Setenv("BIBLEIT_CONFIG", filepath.Join(directory, "credentials.json"))
-			t.Setenv("BIBLEIT_PREFERENCES", filepath.Join(directory, "config.yaml"))
+			t.Setenv("BIBLEIT_CONFIG", filepath.Join(directory, "config.yaml"))
 			t.Setenv("BIBLEIT_TOKEN", "")
 			t.Setenv("BIBLEIT_PROFILE", "")
 			if err := saveConfig(config{AccessToken: credential.token, Identity: os.Getenv("BIBLEIT_INTEGRATION_IDENTITY")}); err != nil {

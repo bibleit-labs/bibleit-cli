@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"context"
-	"encoding/json"
 	"io"
 	"net"
 	"net/http"
@@ -16,6 +15,8 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"gopkg.in/yaml.v3"
 )
 
 // The browser fixture starts with an already authenticated synthetic browser
@@ -45,9 +46,8 @@ func requireDisposableCLIIntegration(t *testing.T) {
 func TestServerCLILocalAndAuth(t *testing.T) {
 	requireDisposableCLIIntegration(t)
 	directory := t.TempDir()
-	credentials, preferences := filepath.Join(directory, "credentials.json"), filepath.Join(directory, "config.yaml")
-	t.Setenv("BIBLEIT_CONFIG", credentials)
-	t.Setenv("BIBLEIT_PREFERENCES", preferences)
+	configuration := filepath.Join(directory, "config.yaml")
+	t.Setenv("BIBLEIT_CONFIG", configuration)
 	t.Setenv("BIBLEIT_TOKEN", "")
 	t.Setenv("BIBLEIT_PROFILE", "")
 	for _, spec := range commandRegistry {
@@ -172,9 +172,9 @@ func TestServerCLILocalAndAuth(t *testing.T) {
 		case <-ctx.Done():
 			t.Fatal("CLI login timed out")
 		}
-		raw, e := os.ReadFile(credentials)
-		var cfg configDocument
-		if e != nil || json.Unmarshal(raw, &cfg) != nil || !strings.HasPrefix(cfg.AccessToken, "bt_") || validateCredentialFile(credentials) != nil {
+		raw, e := os.ReadFile(configuration)
+		var cfg preferences
+		if e != nil || yaml.Unmarshal(raw, &cfg) != nil || !strings.HasPrefix(cfg.AccessToken, "bt_") || validateCredentialFile(configuration) != nil {
 			t.Fatal("CLI login did not persist protected credentials")
 		}
 		if strings.Contains(stdout.String(), cfg.AccessToken) || strings.Contains(stderr.String(), cfg.AccessToken) {
@@ -184,9 +184,9 @@ func TestServerCLILocalAndAuth(t *testing.T) {
 		if e := logout.Run(); e != nil {
 			t.Fatal("CLI logout failed")
 		}
-		raw, e = os.ReadFile(credentials)
-		cfg = configDocument{}
-		if e != nil || json.Unmarshal(raw, &cfg) != nil || cfg.AccessToken != "" {
+		raw, e = os.ReadFile(configuration)
+		cfg = preferences{}
+		if e != nil || yaml.Unmarshal(raw, &cfg) != nil || cfg.AccessToken != "" {
 			t.Fatal("CLI logout retained its web credential")
 		}
 	})
@@ -201,7 +201,7 @@ func TestServerCLILocalAndAuth(t *testing.T) {
 		if e := child.Run(); e != nil {
 			t.Fatal("CLI SSH login failed")
 		}
-		raw, e := os.ReadFile(preferences)
+		raw, e := os.ReadFile(configuration)
 		if e != nil || !strings.Contains(string(raw), "transport: ssh") {
 			t.Fatal("CLI SSH login did not remember its selected transport")
 		}

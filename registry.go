@@ -23,8 +23,8 @@ var commandRegistry = []commandSpec{
 	{"ping", "Check service availability.", "ping", false, ""},
 	{"version", "Print the CLI version.", "version", true, ""},
 	{"server info", "Show service information and selected transport.", "server info", false, ""},
-	{"server help [topic]", "Discover server commands and capabilities (transport dependent).", "server help live", false, ""},
-	{"auth login [ssh]", "Sign in through the browser or a registered SSH key.", "auth login", true, ""},
+	{"server help [topic]", "Show server command help.", "server help live", false, ""},
+	{"auth login [ssh]", "Sign in to your account.", "auth login", true, ""},
 	{"auth info", "Show the authenticated user or service identity.", "auth info", false, ""},
 	{"auth whoami", "Show the authenticated identity.", "auth whoami", false, "auth info"},
 	{"auth logout", "Revoke saved web authentication and clear local credentials.", "auth logout", true, ""},
@@ -52,7 +52,7 @@ var commandRegistry = []commandSpec{
 	{"live <id> pause", "Pause playback.", "live L1 pause", false, ""},
 	{"live <id> resume", "Resume playback.", "live L1 resume", false, ""},
 	{"live <id> delete", "Delete a Live session; confirmation required.", "live L1 delete", false, ""},
-	{"live <id> subscribe", "Watch current state; REST snapshots differ from SSH events.", "live L1 subscribe", false, ""},
+	{"live <id> subscribe", "Watch Live session changes.", "live L1 subscribe", false, ""},
 	{"live <id> clear", "Clear the retained stack; confirmation required.", "live L1 clear", false, "live <id> stack clear"},
 	{"live <id> set name <value...>", "Change the name.", "live L1 set name Sunday", false, ""},
 	{"live <id> set reference <value...>", "Change the reference.", "live L1 set reference John 3:16", false, ""},
@@ -66,8 +66,7 @@ var commandRegistry = []commandSpec{
 	{"live <id> secret delete", "Remove audience protection; confirmation required.", "live L1 secret delete", false, ""},
 	{"live <id> secret <value>", "Legacy connection-only authorization; cannot authorize a later invocation.", "live L1 secret synthetic-secret", false, ""},
 	{"completion <shell>", "Generate Bash, Zsh, or Fish completion without network access.", "completion bash", true, ""},
-	{"config path", "Show the preferences file path.", "config path", true, ""},
-	{"config show", "Show effective nonsecret preferences and their sources.", "config show", true, ""},
+	{"config show", "Show configuration and its file location, with credentials hidden.", "config show", true, ""},
 	{"config get <key>", "Read a nonsecret preference.", "config get transport", true, ""},
 	{"config set <key> <value>", "Save a validated nonsecret preference.", "config set transport ssh", true, ""},
 	{"config unset <key>", "Remove a saved preference.", "config unset identity", true, ""},
@@ -137,6 +136,9 @@ func normalizeCommand(args []string) ([]string, error) {
 	if len(a) == 4 && a[0] == "live" && a[2] == "secret" && !oneOf(a[3], "create", "rotate", "delete") {
 		return nil, fmt.Errorf("standalone Live secret authentication does not persist between CLI invocations; use an audience workflow that authenticates and subscribes on the same connection")
 	}
+	if len(a) == 2 && a[0] == "config" && a[1] == "path" {
+		return nil, fmt.Errorf("`bibleit config path` was removed; use `bibleit config show`")
+	}
 	spec := commandSpecFor(a)
 	if spec == nil {
 		return nil, fmt.Errorf("invalid command or arguments; run `bibleit help` or `bibleit help <command>` for usage")
@@ -190,19 +192,11 @@ func registryHelp(topic []string) int {
 			continue
 		}
 		found = true
-		label := spec.supportLabel()
-		lines = append(lines, "  bibleit "+spec.Syntax, "    "+spec.Summary, "    "+label)
-		if len(topic) > 0 {
-			lines = append(lines, "    Example: bibleit "+spec.Example)
-		}
-		if spec.Alias != "" {
-			lines = append(lines, "    Alias for: "+spec.Alias)
-		}
+		lines = append(lines, "  bibleit "+spec.Syntax, "    "+spec.Summary)
 	}
 	if !found {
 		return fail(exitUsage, "unknown help topic; run `bibleit help` to list commands")
 	}
-	lines = append(lines, "", "Flags: --transport http|ssh --identity path --format table|raw|json|ndjson --yes", "Preferences: bibleit config set transport ssh", "HTTP book reads follow all pages by default. --limit 1..500 and/or --cursor <opaque-cursor> return one book page.", "Organization pages: --cursor <opaque-cursor>. One-time secret delivery: --secret-output <new-private-file>.", "HTTP: native REST schema 2; SSH/local/errors: schema 1. No automatic transport fallback.", "Use -- before literal values that start with a dash. Audience-secret authorization requires the same SSH connection; standalone authorization does not persist.")
 	if activeFormat == "json" {
 		return printLocal("help", map[string]string{"topic": strings.Join(topic, " "), "text": strings.Join(lines, "\n")}, "json")
 	}
@@ -292,39 +286,6 @@ func stackPushReference(values []string) (bibleit.Reference, error) {
 		return ref, fmt.Errorf("invalid stack reference; use [translation] <book> [chapter] [verse]")
 	}
 	return ref, nil
-}
-
-func (spec commandSpec) supportLabel() string {
-	if strings.HasPrefix(spec.Syntax, "auth login") || spec.Syntax == "auth logout" {
-		return "Authentication flow; browser authorization or explicitly selected SSH."
-	}
-	if spec.Local {
-		return "Local; no server connection."
-	}
-	if strings.Contains(spec.Syntax, "secret <value>") {
-		return "Legacy connection-only syntax; standalone CLI authorization is unavailable."
-	}
-	a, e := normalizeCommand(strings.Fields(spec.Example))
-	if e != nil {
-		return "See command requirements."
-	}
-	supported := []string{}
-	for _, c := range []struct {
-		name    string
-		service bool
-	}{{"personal", false}, {"service", true}} {
-		if _, e := planHTTP(a, c.service); e == nil {
-			supported = append(supported, c.name)
-		}
-	}
-	label := "HTTP (" + strings.Join(supported, ", ") + "); SSH (registered user key). Current scopes and server capabilities apply."
-	if strings.HasPrefix(spec.Syntax, "translation add") || strings.HasPrefix(spec.Syntax, "translation remove") {
-		label += " Personal bt_: translation.list plus enable quota; service: translation.enable; delegated oa_: no consented write scope."
-	}
-	if strings.HasPrefix(spec.Syntax, "account quotas") || strings.HasPrefix(spec.Syntax, "account tokens") || strings.HasPrefix(spec.Syntax, "account quota ") || strings.HasPrefix(spec.Syntax, "account token ") || strings.HasPrefix(spec.Syntax, "organization ") {
-		label += " Delegated oa_ consent does not include required metadata scopes."
-	}
-	return label
 }
 
 // Public invocation variants cover optional grammar and aliases, independently

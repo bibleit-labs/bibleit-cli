@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"errors"
 	"io"
 	"net/http"
@@ -12,6 +11,8 @@ import (
 	"testing"
 
 	bibleit "github.com/bibleit-labs/bibleit-go"
+
+	"gopkg.in/yaml.v3"
 )
 
 func TestCommandForAllowsOnlyTypedCommands(t *testing.T) {
@@ -274,18 +275,18 @@ func TestConfigPersistsSingleCredentialPrivately(t *testing.T) {
 	if err != nil || got.AccessToken != want.AccessToken || got.Identity != "" {
 		t.Fatalf("got %#v, %v", got, err)
 	}
-	raw, err := os.ReadFile(path)
-	var persisted configDocument
-	decodeErr := json.Unmarshal(raw, &persisted)
+	raw, err := os.ReadFile(configPath())
+	var persisted preferences
+	decodeErr := yaml.Unmarshal(raw, &persisted)
 	if err != nil || decodeErr != nil || persisted.Version != 2 || persisted.Endpoint != defaultWebURL || persisted.AccessToken != "bt_secret" {
 		t.Fatalf("unexpected persisted config %q, %v", raw, err)
 	}
-	assertPrivateConfig(t, path)
+	assertPrivateConfig(t, configPath())
 	want.AccessToken = "bt_replaced"
 	if err := saveConfig(want); err != nil {
 		t.Fatal(err)
 	}
-	assertPrivateConfig(t, path)
+	assertPrivateConfig(t, configPath())
 	got, err = loadConfig()
 	if err != nil || got.AccessToken != want.AccessToken {
 		t.Fatal("replacement did not preserve credential", err)
@@ -298,9 +299,9 @@ func TestSSHConfigContainsOnlyIdentity(t *testing.T) {
 	if err := saveConfig(config{Identity: "/tmp/dev-key"}); err != nil {
 		t.Fatal(err)
 	}
-	raw, err := os.ReadFile(path)
-	var persisted configDocument
-	decodeErr := json.Unmarshal(raw, &persisted)
+	raw, err := os.ReadFile(configPath())
+	var persisted preferences
+	decodeErr := yaml.Unmarshal(raw, &persisted)
 	if err != nil || decodeErr != nil || persisted.Identity != "/tmp/dev-key" || persisted.AccessToken != "" {
 		t.Fatalf("unexpected persisted SSH config %q, %v", raw, err)
 	}

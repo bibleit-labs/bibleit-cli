@@ -211,16 +211,8 @@ func run(args []string) int {
 		if err != nil {
 			return protocolFailure(err)
 		}
-		supported := false
-		for _, record := range parseRecords(lines) {
-			for _, capability := range strings.Split(record.Fields["capabilities"], ",") {
-				if capability == "organization_status" {
-					supported = true
-				}
-			}
-		}
-		if !supported {
-			return fail(exitUsage, "this server does not support organization_status; upgrade the server or use the organization page in your browser")
+		if err := requireOrganizationCapability(lines); err != nil {
+			return fail(exitUsage, "%v", err)
 		}
 	}
 	if action := destructiveAction(args); action != "" && options["--yes"] != "true" {
