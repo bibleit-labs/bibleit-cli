@@ -19,6 +19,9 @@ func outputWidth() int {
 		if n, e := strconv.Atoi(os.Getenv("COLUMNS")); e == nil && n >= 32 && n <= 500 {
 			return n
 		}
+		if n := terminalColumns(os.Stdout); n >= 32 {
+			return min(n, 500)
+		}
 	}
 	return 100
 }

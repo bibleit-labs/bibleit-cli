@@ -234,6 +234,9 @@ func configCommand(args []string, format string) int {
 		p.Identity = value
 		p.IdentitySet = true
 	}
+	if e = validatePreferences(p); e != nil {
+		return fail(exitUsage, "%v", e)
+	}
 	if e = savePreferences(p); e != nil {
 		return fail(exitFailure, "save preferences: %v", e)
 	}

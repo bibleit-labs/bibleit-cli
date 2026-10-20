@@ -22,21 +22,15 @@ func TestRegistryEveryLeafHasOfflineHelpAndValidatedExample(t *testing.T) {
 			seen[spec.Syntax] = true
 			args := strings.Fields(spec.Example)
 			got, err := normalizeCommand(args)
-			legacySecret := strings.Contains(spec.Syntax, "secret <value>")
-			if legacySecret {
-				if err == nil {
-					t.Fatal("ineffective secret authorization accepted")
-				}
-			} else {
-				if err != nil {
-					t.Fatal(err)
-				}
-				if !spec.Local && args[0] != "auth" {
-					if _, err = commandFor(got); err != nil {
-						t.Fatal("registry/SSH grammar drift", err)
-					}
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !spec.Local && args[0] != "auth" {
+				if _, err = commandFor(got); err != nil {
+					t.Fatal("registry/SSH grammar drift", err)
 				}
 			}
+
 			code, out, stderr := captureCLI(t, func() int { return run(append(args, "--help", "--format", "json")) })
 			if code != exitOK || stderr != "" || !strings.Contains(out, "schema_version") {
 				t.Fatalf("offline leaf help: %d %s %s", code, out, stderr)

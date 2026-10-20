@@ -29,6 +29,9 @@ func TestWindowsConsoleHandles(t *testing.T) {
 	if !terminalInput(input) || !terminalInput(output) {
 		t.Fatal("real console handles were not recognized")
 	}
+	if terminalColumns(output) <= 0 {
+		t.Fatal("console width was not detected")
+	}
 	var prompt bytes.Buffer
 	err = confirmAction(config{Transport: "http", Endpoint: "https://example.invalid"}, "Delete Live L1", "table", strings.NewReader("yes\r\n"), &prompt, terminalInput(input) && terminalInput(output))
 	if err != nil || !strings.Contains(prompt.String(), "Type") {

@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## v0.2.2 — 2026-10-20
+
+- Group help by command family with aligned descriptions, focused subcommand
+  listings and wrapping for narrow terminals, without emojis or protocol noise.
+- Return usage errors for invalid config values and stop advertising unsupported
+  standalone secret authentication. Clarify that raw output omits `END`.
+
 ## v0.2.1 — 2026-10-20
 
 - Store preferences and credentials in one protected `config.yaml`, selected by

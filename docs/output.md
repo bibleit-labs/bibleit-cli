@@ -98,8 +98,9 @@ server error codes remain intact. Failed finite commands write no success object
 A stream can emit records before a later error. Local help/version bypass config
 loading, so they still work when configuration is unreadable.
 
-SSH `raw` preserves wire records and framing; local auth/version/help actions
-use human output. Default Live subscriptions summarize state changes and show
+SSH `raw` prints the decoded native protocol records. The SDK validates reply
+framing and consumes the terminating `END`; that marker is not printed. Local
+auth/version/help actions use human output. Default Live subscriptions summarize state changes and show
 decoded verse references, translations and text. Sequence-only state updates are
 quiet. Default finite tables use stable presentation columns, escape control
 characters, and keep verse text readable. Malformed output after a mutation does
