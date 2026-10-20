@@ -1,0 +1,136 @@
+{
+  "version": "v0.2.1",
+  "checks": [
+    {
+      "command": "version",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "config show",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "config get transport",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "config get identity",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "help",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "help read",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "help config",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "config path",
+      "status": "passed",
+      "exit_code": 2
+    },
+    {
+      "command": "live stack info",
+      "status": "passed",
+      "exit_code": 2
+    },
+    {
+      "command": "ping",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "auth info",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "server info",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "organization list",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "translation list",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "translation info bpml",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "translation catalog bpml",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "read bpml Salmos 23 1",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "read bpml Salmos 23 1",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "config set format raw",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "config unset format",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "auth login ssh",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "auth info",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "auth logout",
+      "status": "passed",
+      "exit_code": 0
+    }
+  ],
+  "counts": {
+    "passed": 23
+  },
+  "transport_and_identity_flags_used": false,
+  "default_transport": "ssh",
+  "single_active_config": "~/.bibleit/config.yaml",
+  "real_configuration_unchanged": true,
+  "temporary_auth_config_single_file": true,
+  "credentials_or_user_content_recorded": false,
+  "production_mutations": false,
+  "source_commit": "000acd31a9db199e2b74379026499316cdf7fffa",
+  "upgraded_from": "v0.2.0",
+  "homebrew_tap_commit": "33ee7ff2e7ea678b64a37b1ccc577924057ead51",
+  "brew_test": "passed",
+  "preexisting_tap_conflicts_preserved_in_private_backup": true,
+  "cli_organization_capability": "organization"
+}
