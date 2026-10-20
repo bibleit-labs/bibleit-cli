@@ -12,8 +12,7 @@ import (
 func TestServerScriptureUX(t *testing.T) {
 	requireDisposableCLIIntegration(t)
 	directory := t.TempDir()
-	t.Setenv("BIBLEIT_CONFIG", filepath.Join(directory, "credentials.json"))
-	t.Setenv("BIBLEIT_PREFERENCES", filepath.Join(directory, "config.yaml"))
+	t.Setenv("BIBLEIT_CONFIG", filepath.Join(directory, "config.yaml"))
 	t.Setenv("BIBLEIT_TOKEN", "")
 	token := os.Getenv("BIBLEIT_INTEGRATION_TOKEN")
 	if token == "" {

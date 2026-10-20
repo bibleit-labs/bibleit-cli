@@ -152,19 +152,19 @@ def main():
             directory = Path(tmp)
             binary = directory / ("bibleit.exe" if os.name == "nt" else "bibleit")
             shutil.copy2(source_binary, binary)
-            config = directory / "credentials with spaces.json"
+            config = directory / "config with spaces.yaml"
             env = {**os.environ, "BIBLEIT_CONFIG": str(config), "BIBLEIT_PROFILE": "",
                    "BIBLEIT_RUNTIME_FIXTURE": "1", "BIBLEIT_RUNTIME_CA": str(MATERIAL / "server.pem"),
                    "BIBLEIT_RUNTIME_ADDRESS": f"127.0.0.1:{server.server_port}",
                    "BIBLEIT_TOKEN": "bt_runtime", "BIBLEIT_ENDPOINT": "https://other.example", "PATH": str(directory) + os.pathsep + os.environ["PATH"]}
-            config.write_text(json.dumps({"version": 2, "endpoint": "https://" + HOST, "ssh_server": HOST + ":22", "access_token": "bt_saved"}))
+            config.write_text(f"version: 2\ntransport: http\nendpoint: https://{HOST}\nssh_server: {HOST}:22\naccess_token: bt_saved\n")
             config.chmod(0o600)
             before = len(requests)
             for invalid_args in (["profile", "list"], ["--profile", "old", "ping"], ["--endpoint", "https://other.example", "ping"]):
                 run(binary, invalid_args, env, code=2)
             assert len(requests) == before
-            store = json.loads(config.read_text())
-            assert store["version"] == 2 and "profiles" not in store
+            store = config.read_text()
+            assert "version: 2" in store and "profiles" not in store
             assert "bt_runtime" not in config.read_text()
             response = json.loads(run(binary, ["ping", "--format", "json"], env).stdout)
             assert response["schema_version"] == 2 and response["data"]["pong"] is True

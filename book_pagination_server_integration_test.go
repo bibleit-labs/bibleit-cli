@@ -27,8 +27,7 @@ func TestServerBookPagination(t *testing.T) {
 				t.Fatal("fixture credential missing")
 			}
 			directory := t.TempDir()
-			t.Setenv("BIBLEIT_CONFIG", filepath.Join(directory, "credentials.json"))
-			t.Setenv("BIBLEIT_PREFERENCES", filepath.Join(directory, "config.yaml"))
+			t.Setenv("BIBLEIT_CONFIG", filepath.Join(directory, "config.yaml"))
 			t.Setenv("BIBLEIT_TOKEN", credential.token)
 			ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 			defer cancel()

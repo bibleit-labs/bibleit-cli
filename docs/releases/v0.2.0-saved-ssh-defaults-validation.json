@@ -1,0 +1,1726 @@
+{
+  "environment": "production SSH using saved config.yaml defaults; installed CLI v0.2.0",
+  "checks": [
+    {
+      "command": "config path",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "config path JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "config show",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "config show JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "saved defaults selected from real config.yaml",
+      "status": "passed"
+    },
+    {
+      "command": "help",
+      "status": "passed",
+      "format": "table",
+      "exit_code": 0
+    },
+    {
+      "command": "help nonempty output",
+      "status": "passed"
+    },
+    {
+      "command": "help read",
+      "status": "passed",
+      "format": "table",
+      "exit_code": 0
+    },
+    {
+      "command": "help read nonempty output",
+      "status": "passed"
+    },
+    {
+      "command": "help live stack",
+      "status": "passed",
+      "format": "table",
+      "exit_code": 0
+    },
+    {
+      "command": "help live nonempty output",
+      "status": "passed"
+    },
+    {
+      "command": "version",
+      "status": "passed",
+      "format": "table",
+      "exit_code": 0
+    },
+    {
+      "command": "version nonempty output",
+      "status": "passed"
+    },
+    {
+      "command": "--version",
+      "status": "passed",
+      "format": "table",
+      "exit_code": 0
+    },
+    {
+      "command": "--version nonempty output",
+      "status": "passed"
+    },
+    {
+      "command": "-v",
+      "status": "passed",
+      "format": "table",
+      "exit_code": 0
+    },
+    {
+      "command": "-v nonempty output",
+      "status": "passed"
+    },
+    {
+      "command": "completion bash",
+      "status": "passed",
+      "format": "table",
+      "exit_code": 0
+    },
+    {
+      "command": "completion bash nonempty output",
+      "status": "passed"
+    },
+    {
+      "command": "completion zsh",
+      "status": "passed",
+      "format": "table",
+      "exit_code": 0
+    },
+    {
+      "command": "completion zsh nonempty output",
+      "status": "passed"
+    },
+    {
+      "command": "completion fish",
+      "status": "passed",
+      "format": "table",
+      "exit_code": 0
+    },
+    {
+      "command": "completion fish nonempty output",
+      "status": "passed"
+    },
+    {
+      "command": "config get identity",
+      "status": "passed",
+      "format": "table",
+      "exit_code": 0
+    },
+    {
+      "command": "config get nonempty output",
+      "status": "passed"
+    },
+    {
+      "command": "config get transport",
+      "status": "passed",
+      "format": "table",
+      "exit_code": 0
+    },
+    {
+      "command": "config get nonempty output",
+      "status": "passed"
+    },
+    {
+      "command": "config set <key> <value>",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "config set <key> <value> JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "config unset <key>",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "config unset <key> JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "config mutation tests retain copied connection defaults",
+      "status": "passed"
+    },
+    {
+      "command": "auth login with copied defaults",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "auth login with copied defaults JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "auth login ssh with copied defaults",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "auth login ssh with copied defaults JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "auth info with copied defaults",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "auth info with copied defaults JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "auth logout isolated test login",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "auth logout isolated test login JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "logout cleared only temporary credentials",
+      "status": "passed"
+    },
+    {
+      "command": "live list",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live list JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "translation list",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "translation list JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "ping",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "ping JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "server info",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "server info JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "server help",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "server help JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "server help",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "server help JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "server help",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "server help JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "auth info",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "auth info JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "auth whoami",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "auth whoami JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "account info",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "account info JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "account quotas",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "account quotas JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "account tokens",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "account tokens JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "account quota",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "account quota JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "account token",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "account token JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "organization list",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "organization list JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "organization list",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "organization list JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "organization list application discovery",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "organization list application discovery JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "organization application <id> status",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "organization application <id> status JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "translation info <translation>",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "translation info <translation> JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "translation catalog <translation>",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "translation catalog <translation> JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "read numeric verse",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "read numeric verse JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "read <translation> <book> [chapter] [verse]",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "read <translation> <book> [chapter] [verse] JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "Scripture result contains source content",
+      "status": "passed"
+    },
+    {
+      "command": "read <translation> <book> [chapter] [verse]",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "read <translation> <book> [chapter] [verse] JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "Scripture result contains source content",
+      "status": "passed"
+    },
+    {
+      "command": "read <translation> <book> [chapter] [verse]",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "read <translation> <book> [chapter] [verse] JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "Scripture result contains source content",
+      "status": "passed"
+    },
+    {
+      "command": "read <translation> <book> [chapter] [verse]",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "read <translation> <book> [chapter] [verse] JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "Scripture result contains source content",
+      "status": "passed"
+    },
+    {
+      "command": "search <translation> <query>",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "search <translation> <query> JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "translation add <translation>",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "translation add <translation> JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "translation list",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "translation list JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "translation add domain readback",
+      "status": "passed"
+    },
+    {
+      "command": "translation remove <translation>",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "translation remove <translation> JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "translation list",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "translation list JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "translation remove domain readback",
+      "status": "passed"
+    },
+    {
+      "command": "live create [name...]",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live create [name...] JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> delete",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> delete JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "live create [name...]",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live create [name...] JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> info",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> info JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> stats",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> stats JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> start",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> start JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> info",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> info JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "start domain readback",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> stop",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> stop JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> info",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> info JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "stop domain readback",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> start",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> start JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> info",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> info JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "start domain readback",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> pause",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> pause JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> info",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> info JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "pause domain readback",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> resume",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> resume JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> info",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> info JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "resume domain readback",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> set name",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> set name JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> set reference",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> set reference JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> set translations",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> set translations JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> info",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> info JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "name update persisted",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> stack push",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> stack push JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> stack push",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> stack push JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> stack push",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> stack push JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> stack push",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> stack push JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> stack push",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> stack push JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> stack push",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> stack push JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> stack push",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> stack push JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> stack info",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> stack info JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> stack pop",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> stack pop JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> stack info",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> stack info JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "default pop removed one without confirmation",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> stack pop",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> stack pop JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> stack info",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> stack info JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "explicit pop removed two without confirmation",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> stack clear",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> stack clear JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> stack info",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> stack info JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "stack clear persisted",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> stack push",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> stack push JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "human Scripture read",
+      "status": "passed",
+      "format": "table",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> stack info",
+      "status": "passed",
+      "format": "table",
+      "exit_code": 0
+    },
+    {
+      "command": "read consistent human Scripture columns",
+      "status": "passed"
+    },
+    {
+      "command": "read no endpoint or prompt noise",
+      "status": "passed"
+    },
+    {
+      "command": "stack consistent human Scripture columns",
+      "status": "passed"
+    },
+    {
+      "command": "stack no endpoint or prompt noise",
+      "status": "passed"
+    },
+    {
+      "command": "human read/stack use same reference",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> stack info",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> stack info JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "stack/read preserve same source text",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> clear",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> clear JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> stack info",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> stack info JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "clear alias persisted",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> secret create",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> secret create JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "secret create protected delivery",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> secret rotate",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> secret rotate JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "secret rotate protected delivery",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> secret delete",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> secret delete JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> pause",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> pause JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> subscribe",
+      "status": "passed",
+      "format": "table"
+    },
+    {
+      "command": "live <id> resume",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> resume JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> pause",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> pause JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "live <id> subscribe",
+      "status": "passed",
+      "format": "ndjson"
+    },
+    {
+      "command": "live <id> resume",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live <id> resume JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "destructive action requires confirmation",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 2,
+      "expected_error": "confirmation_required"
+    },
+    {
+      "command": "destructive action requires confirmation",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 2,
+      "expected_error": "confirmation_required"
+    },
+    {
+      "command": "live list",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live list JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "live delete all only owned test Lives",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live delete all only owned test Lives JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "error: usage",
+      "status": "passed",
+      "format": "table",
+      "exit_code": 2,
+      "expected_error": "usage"
+    },
+    {
+      "command": "error: usage",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 2,
+      "expected_error": "usage"
+    },
+    {
+      "command": "human/JSON error message and exit code agree",
+      "status": "passed"
+    },
+    {
+      "command": "error: not_found",
+      "status": "passed",
+      "format": "table",
+      "exit_code": 5,
+      "expected_error": "not_found"
+    },
+    {
+      "command": "error: not_found",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 5,
+      "expected_error": "not_found"
+    },
+    {
+      "command": "human/JSON error message and exit code agree",
+      "status": "passed"
+    },
+    {
+      "command": "error: usage",
+      "status": "passed",
+      "format": "table",
+      "exit_code": 2,
+      "expected_error": "usage"
+    },
+    {
+      "command": "error: usage",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 2,
+      "expected_error": "usage"
+    },
+    {
+      "command": "human/JSON error message and exit code agree",
+      "status": "passed"
+    },
+    {
+      "command": "error: usage",
+      "status": "passed",
+      "format": "table",
+      "exit_code": 2,
+      "expected_error": "usage"
+    },
+    {
+      "command": "error: usage",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 2,
+      "expected_error": "usage"
+    },
+    {
+      "command": "human/JSON error message and exit code agree",
+      "status": "passed"
+    },
+    {
+      "command": "error: usage",
+      "status": "passed",
+      "format": "table",
+      "exit_code": 2,
+      "expected_error": "usage"
+    },
+    {
+      "command": "error: usage",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 2,
+      "expected_error": "usage"
+    },
+    {
+      "command": "human/JSON error message and exit code agree",
+      "status": "passed"
+    },
+    {
+      "command": "error: usage",
+      "status": "passed",
+      "format": "table",
+      "exit_code": 2,
+      "expected_error": "usage"
+    },
+    {
+      "command": "error: usage",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 2,
+      "expected_error": "usage"
+    },
+    {
+      "command": "human/JSON error message and exit code agree",
+      "status": "passed"
+    },
+    {
+      "command": "error: usage",
+      "status": "passed",
+      "format": "table",
+      "exit_code": 2,
+      "expected_error": "usage"
+    },
+    {
+      "command": "error: usage",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 2,
+      "expected_error": "usage"
+    },
+    {
+      "command": "human/JSON error message and exit code agree",
+      "status": "passed"
+    },
+    {
+      "command": "error: usage",
+      "status": "passed",
+      "format": "table",
+      "exit_code": 2,
+      "expected_error": "usage"
+    },
+    {
+      "command": "error: usage",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 2,
+      "expected_error": "usage"
+    },
+    {
+      "command": "human/JSON error message and exit code agree",
+      "status": "passed"
+    },
+    {
+      "command": "live list",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "live list JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "original Live scope restored; test Lives removed",
+      "status": "passed"
+    },
+    {
+      "command": "translation list",
+      "status": "passed",
+      "format": "json",
+      "exit_code": 0
+    },
+    {
+      "command": "translation list JSON envelope",
+      "status": "passed"
+    },
+    {
+      "command": "original library restored",
+      "status": "passed"
+    },
+    {
+      "command": "real preferences and credentials unchanged",
+      "status": "passed"
+    }
+  ],
+  "counts": {
+    "passed": 254
+  },
+  "transport_or_identity_flags_passed": false,
+  "remote_preferences_overridden": false,
+  "auth_and_config_write_tests": "isolated copies of actual preferences; empty temporary credentials",
+  "remaining_test_lives": 0,
+  "normal_preferences_and_credentials_unchanged": true,
+  "private_content_credentials_and_resource_ids_recorded": false,
+  "reviewed_on": "2026-10-20",
+  "installed_version": "bibleit CLI version 0.2.0",
+  "supported_command_syntaxes_exercised": 53,
+  "legacy_standalone_secret_correctly_rejected": true,
+  "inventory": [
+    {
+      "syntax": "help [topic...]",
+      "outcome": "passed",
+      "context": "local"
+    },
+    {
+      "syntax": "--version",
+      "outcome": "passed",
+      "context": "local"
+    },
+    {
+      "syntax": "-v",
+      "outcome": "passed",
+      "context": "local"
+    },
+    {
+      "syntax": "ping",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "version",
+      "outcome": "passed",
+      "context": "local"
+    },
+    {
+      "syntax": "server info",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "server help [topic]",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "auth login [ssh]",
+      "outcome": "passed",
+      "context": "isolated copy of actual preferences"
+    },
+    {
+      "syntax": "auth info",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "auth whoami",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "auth logout",
+      "outcome": "passed",
+      "context": "isolated copy of actual preferences"
+    },
+    {
+      "syntax": "account quota list",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "account token list",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "account info",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "account quotas",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "account tokens",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "organization list [cursor]",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "organization application <id> status",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "translation list",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "translation info <translation>",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "translation catalog <translation>",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "translation add <translation>",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "translation remove <translation>",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "read <translation> <book> [chapter] [verse]",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "search <translation> <query>",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "live list",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "live create [name...]",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "live delete all",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "live <id> info",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "live <id> stats",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "live <id> start",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "live <id> stop",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "live <id> pause",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "live <id> resume",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "live <id> delete",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "live <id> subscribe",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "live <id> clear",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "live <id> set name <value...>",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "live <id> set reference <value...>",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "live <id> set translations <value...>",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "live <id> stack info",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "live <id> stack push [translation] <book> [chapter] [verse]",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "live <id> stack pop [count]",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "live <id> stack clear",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "live <id> secret create",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "live <id> secret rotate",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "live <id> secret delete",
+      "outcome": "passed",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "live <id> secret <value>",
+      "outcome": "expected usage rejection",
+      "context": "production SSH with actual preferences"
+    },
+    {
+      "syntax": "completion <shell>",
+      "outcome": "passed",
+      "context": "local"
+    },
+    {
+      "syntax": "config path",
+      "outcome": "passed",
+      "context": "local"
+    },
+    {
+      "syntax": "config show",
+      "outcome": "passed",
+      "context": "local"
+    },
+    {
+      "syntax": "config get <key>",
+      "outcome": "passed",
+      "context": "local"
+    },
+    {
+      "syntax": "config set <key> <value>",
+      "outcome": "passed",
+      "context": "isolated copy of actual preferences"
+    },
+    {
+      "syntax": "config unset <key>",
+      "outcome": "passed",
+      "context": "isolated copy of actual preferences"
+    }
+  ],
+  "targeted_error_guidance_checks": [
+    {
+      "command": "live invalid input",
+      "format": "table",
+      "status": "passed",
+      "exit_code": 2
+    },
+    {
+      "command": "live invalid input",
+      "format": "json",
+      "status": "passed",
+      "exit_code": 2
+    },
+    {
+      "command": "human and JSON guidance identical",
+      "status": "passed"
+    },
+    {
+      "command": "live invalid input",
+      "format": "table",
+      "status": "passed",
+      "exit_code": 2
+    },
+    {
+      "command": "live invalid input",
+      "format": "json",
+      "status": "passed",
+      "exit_code": 2
+    },
+    {
+      "command": "human and JSON guidance identical",
+      "status": "passed"
+    },
+    {
+      "command": "unknown-command invalid input",
+      "format": "table",
+      "status": "passed",
+      "exit_code": 2
+    },
+    {
+      "command": "unknown-command invalid input",
+      "format": "json",
+      "status": "passed",
+      "exit_code": 2
+    },
+    {
+      "command": "human and JSON guidance identical",
+      "status": "passed"
+    },
+    {
+      "command": "auth invalid input",
+      "format": "table",
+      "status": "passed",
+      "exit_code": 2
+    },
+    {
+      "command": "auth invalid input",
+      "format": "json",
+      "status": "passed",
+      "exit_code": 2
+    },
+    {
+      "command": "human and JSON guidance identical",
+      "status": "passed"
+    },
+    {
+      "command": "live invalid input",
+      "format": "table",
+      "status": "passed",
+      "exit_code": 2
+    },
+    {
+      "command": "live invalid input",
+      "format": "json",
+      "status": "passed",
+      "exit_code": 2
+    },
+    {
+      "command": "human and JSON guidance identical",
+      "status": "passed"
+    },
+    {
+      "command": "read invalid input",
+      "format": "table",
+      "status": "passed",
+      "exit_code": 2
+    },
+    {
+      "command": "read invalid input",
+      "format": "json",
+      "status": "passed",
+      "exit_code": 2
+    },
+    {
+      "command": "human and JSON guidance identical",
+      "status": "passed"
+    },
+    {
+      "command": "read invalid input",
+      "format": "table",
+      "status": "passed",
+      "exit_code": 2
+    },
+    {
+      "command": "read invalid input",
+      "format": "json",
+      "status": "passed",
+      "exit_code": 2
+    },
+    {
+      "command": "human and JSON guidance identical",
+      "status": "passed"
+    },
+    {
+      "command": "config invalid input",
+      "format": "table",
+      "status": "passed",
+      "exit_code": 2
+    },
+    {
+      "command": "config invalid input",
+      "format": "json",
+      "status": "passed",
+      "exit_code": 2
+    },
+    {
+      "command": "human and JSON guidance identical",
+      "status": "passed"
+    }
+  ],
+  "human_read_no_flags": {
+    "checks": [
+      {
+        "check": "human read with no flags",
+        "passed": true
+      },
+      {
+        "check": "shared Scripture headings",
+        "passed": true
+      },
+      {
+        "check": "no endpoint noise",
+        "passed": true
+      }
+    ],
+    "no_flags_passed": true
+  },
+  "large_book_read": {
+    "command": "large whole-book read with saved SSH defaults",
+    "passed": true,
+    "source_characters_received": 221873,
+    "source_recorded": false,
+    "transport_or_identity_flags_passed": false
+  },
+  "yaml_without_credentials_json": {
+    "check": "saved YAML identity works with no credential JSON document",
+    "passed": true,
+    "transport_or_identity_flags_passed": false,
+    "normal_credentials_untouched": true
+  },
+  "additional_targeted_checks_passed": 29,
+  "configuration_layout_finding": {
+    "code": "split_configuration",
+    "detail": "Preferences use config.yaml; auth login ssh still persists identity in config.json. Ordinary SSH requests work with only config.yaml and the existing key.",
+    "application_behavior_changed": false
+  }
+}

@@ -9,17 +9,17 @@ import (
 
 func isolatedPreferences(t *testing.T) {
 	t.Helper()
-	t.Setenv("BIBLEIT_CONFIG", filepath.Join(t.TempDir(), "config.json"))
+	t.Setenv("BIBLEIT_CONFIG", filepath.Join(t.TempDir(), "config.yaml"))
 	for _, v := range []string{"BIBLEIT_PREFERENCES", "BIBLEIT_CREDENTIALS", "BIBLEIT_IDENTITY", "BIBLEIT_FORMAT", "BIBLEIT_TRANSPORT"} {
 		t.Setenv(v, "")
 	}
 }
-func TestPreferencesPrecedenceAndCredentialSeparation(t *testing.T) {
+func TestUnifiedPreferencesPrecedenceAndCredentialPreservation(t *testing.T) {
 	isolatedPreferences(t)
 	if e := saveConfig(config{AccessToken: "bt_CREDENTIAL_CANARY", Identity: "/legacy/key"}); e != nil {
 		t.Fatal(e)
 	}
-	before, _ := os.ReadFile(configPath())
+
 	for _, a := range [][]string{{"config", "set", "transport", "ssh"}, {"config", "set", "identity", "~/private-key"}, {"config", "set", "format", "json"}} {
 		code, _, err := captureCLI(t, func() int { return run(a) })
 		if code != exitOK {
@@ -27,9 +27,9 @@ func TestPreferencesPrecedenceAndCredentialSeparation(t *testing.T) {
 		}
 	}
 	data, _ := os.ReadFile(preferencesPath())
-	after, _ := os.ReadFile(configPath())
-	if string(before) != string(after) || strings.Contains(string(data), "CREDENTIAL_CANARY") {
-		t.Fatal("preferences duplicated or modified credentials")
+	stored, err := loadConfig()
+	if err != nil || stored.AccessToken != "bt_CREDENTIAL_CANARY" || strings.Count(string(data), "bt_CREDENTIAL_CANARY") != 1 || configPath() != preferencesPath() {
+		t.Fatal("unified configuration lost or duplicated credentials")
 	}
 	assertPrivateConfig(t, preferencesPath())
 	c, e := loadConfig()
@@ -66,13 +66,12 @@ func TestInvalidYAMLDoesNotLeakValuesAndLocalHelpSurvives(t *testing.T) {
 		}
 	}
 }
-func TestConfigPathCompatibilityAndUnset(t *testing.T) {
+func TestSingleConfigPathOverrideAndUnset(t *testing.T) {
 	isolatedPreferences(t)
-	legacy := configPath()
-	yaml := preferencesPath()
-	t.Setenv("BIBLEIT_CONFIG", yaml)
-	if configPath() != legacy || preferencesPath() != yaml {
-		t.Fatal("YAML selection reinterpreted credential path")
+	selected := filepath.Join(t.TempDir(), "custom.yaml")
+	t.Setenv("BIBLEIT_CONFIG", selected)
+	if configPath() != selected || preferencesPath() != selected {
+		t.Fatal("configuration override must select the same sole file")
 	}
 	for _, a := range [][]string{{"config", "set", "transport", "ssh"}, {"config", "unset", "transport"}} {
 		code, _, e := captureCLI(t, func() int { return run(a) })

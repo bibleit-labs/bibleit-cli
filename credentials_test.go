@@ -246,7 +246,7 @@ func TestSingleCredentialRoutingAndPreservation(t *testing.T) {
 	if c.Transport != "http" || c.Identity != "/tmp/key" || c.AccessToken != "bt_cached" {
 		t.Fatal("SSH persistence lost HTTP credentials or changed default")
 	}
-	for _, args := range [][]string{{"profile", "list"}, {"--profile", "old", "ping"}, {"--transport", "invalid", "ping"}, {"--identity", "/tmp/key", "ping"}, {"--transport", "http", "auth", "login", "ssh"}} {
+	for _, args := range [][]string{{"profile", "list"}, {"--profile", "old", "ping"}, {"--transport", "invalid", "ping"}, {"--transport", "http", "--identity", "/tmp/key", "ping"}, {"--transport", "http", "auth", "login", "ssh"}} {
 		code, _, _ := captureCLI(t, func() int { return run(args) })
 		if code != exitUsage {
 			t.Fatal("accepted removed/conflicting option", args, code)

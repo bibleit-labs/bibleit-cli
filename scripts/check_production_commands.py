@@ -44,9 +44,13 @@ def main():
     syntax = re.findall(r'^\s*\{"([^"\n]+)",', (Path(__file__).resolve().parents[1] / 'registry.go').read_text(), re.M)
 
     with tempfile.TemporaryDirectory(prefix='bibleit-production-commands-') as directory:
-        env = dict(os.environ, BIBLEIT_PREFERENCES=str(Path(directory) / 'config.yaml'))
+        config = Path(directory) / 'config.yaml'
+        source = args.credentials or Path(os.environ.get('BIBLEIT_CONFIG', str(Path.home() / '.bibleit/config.yaml')))
+        if source.exists():
+            config.write_bytes(source.read_bytes())
+            config.chmod(0o600)
+        env = dict(os.environ, BIBLEIT_CONFIG=str(config))
         if args.credentials:
-            env['BIBLEIT_CREDENTIALS'] = str(args.credentials.resolve())
             env.pop('BIBLEIT_TOKEN', None)
         last_call = 0.0
         last_ssh = 0.0
@@ -141,7 +145,7 @@ def main():
         # operator's saved preferences. Offline commands have native local output.
         for command in [['help'], ['help', 'read'], ['help', 'live', 'stack', 'pop'], ['version'],
                         ['--version'], ['-v'], ['completion', 'bash'], ['completion', 'zsh'],
-                        ['completion', 'fish'], ['config', 'path'], ['config', 'show'],
+                        ['completion', 'fish'], ['config', 'show'],
                         ['config', 'get', 'transport'], ['config', 'set', 'transport', 'http'],
                         ['config', 'unset', 'identity']]:
             result = subprocess.run([binary, *command], env=env, capture_output=True, text=True,

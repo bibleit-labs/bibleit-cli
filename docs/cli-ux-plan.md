@@ -47,11 +47,13 @@ commands require the documented explicit confirmation option where applicable.
 
 ## Shared preferences and private delivery
 
-`~/.bibleit/config.yaml` stores versioned nonsecret transport, identity and format
-preferences. Explicit flags override environment values, then YAML, then defaults.
-Keep credentials in their existing protected, service-bound file. Reject unknown
-YAML keys/types and malformed documents. An explicitly cleared identity must not
-resurrect an older credential-file identity.
+`~/.bibleit/config.yaml` stores transport, identity, format and saved credentials
+in one protected, service-bound YAML file. `BIBLEIT_CONFIG` selects an alternative
+file. Explicit flags override environment values, then YAML, then defaults. Reject
+unknown YAML keys/types and malformed documents. Do not import or merge separate
+legacy files. `config show` includes the location and hides credentials; the
+separate `config path` command is removed. Command help shows syntax and a concise
+description without per-command transport or protocol notes.
 
 `--secret-output <new-private-file>` delivers a server-issued secret once, using
 exclusive creation and platform-appropriate private permissions. Never overwrite

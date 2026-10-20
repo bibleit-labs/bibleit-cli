@@ -124,7 +124,7 @@ are not reused; OpenSSH records a newly encountered key and rejects changed keys
 HTTP and SSH credentials may belong to different accounts; `auth info` reports the identity for the selected transport.
 `BIBLEIT_TOKEN` applies only to HTTP. There is no automatic transport fallback.
 
-The CLI stores one credential configuration at `~/.bibleit/config.json`.
+The CLI stores preferences and saved credentials together at `~/.bibleit/config.yaml`.
 `BIBLEIT_CONFIG` selects another configuration file. Unix permissions and Windows
 ACLs restrict saved credentials to the current user. SSH private keys stay in their original files.
 
@@ -140,15 +140,15 @@ silently reusing credentials from an older format or a different service address
 For the default configuration on macOS/Linux, keep a protected backup and sign in:
 
 ```sh
-mv -n ~/.bibleit/config.json \
-  ~/.bibleit/config.json.backup.$(date +%Y%m%d-%H%M%S)
+mv -n ~/.bibleit/config.yaml \
+  ~/.bibleit/config.yaml.backup.$(date +%Y%m%d-%H%M%S)
 bibleit auth login
 ```
 
 On Windows PowerShell:
 
 ```powershell
-$config = Join-Path $HOME '.bibleit/config.json'
+$config = Join-Path $HOME '.bibleit/config.yaml'
 Move-Item -LiteralPath $config -Destination "$config.backup.$(Get-Date -Format yyyyMMdd-HHmmss)"
 bibleit auth login
 ```
@@ -182,7 +182,7 @@ Use `bibleit help` or `bibleit <command> --help` for usage.
 | `auth login`, `auth info`, `auth whoami`, `auth logout` | Manage and inspect authentication |
 | `ping`, `server info`, `server help [topic]` | Inspect service availability and capabilities |
 | `account info`, `account quotas`, `account tokens` | Inspect account details and active token metadata |
-| `organization list [cursor]`, `organization application <id> status` | Inspect memberships and private verification applications; requires organization_status capability |
+| `organization list [cursor]`, `organization application <id> status` | Inspect memberships and private verification applications; requires organization capability |
 | `translation list` | List account translations |
 | `translation add\|remove\|info\|catalog <translation>` | Manage translations and inspect metadata/references |
 | `read <translation> <book> [chapter] [verse]` | Read a reference |
@@ -337,16 +337,17 @@ Report vulnerabilities privately as described in [SECURITY.md](SECURITY.md).
 
 ## Preferences and offline configuration
 
-Save reusable nonsecret defaults in `~/.bibleit/config.yaml`:
+Save reusable defaults in `~/.bibleit/config.yaml`:
 
 ```yaml
-version: 1
+version: 2
 transport: ssh
 identity: ~/.ssh/bibleit
 format: table
 ```
 
-Use `bibleit config path`, `config show`, `config get <key>`,
+Use `bibleit config show` to see the file location and effective defaults without
+revealing credentials. Use `config get <key>`,
 `config set <key> <value>`, and `config unset <key>`. Only `transport`, `identity`,
 and `format` are accepted. `config unset identity` explicitly returns to OpenSSH
 agent/config selection without reviving an old cached identity. Flags override
@@ -354,11 +355,10 @@ agent/config selection without reviving an old cached identity. Flags override
 and then built-in defaults. Set NDJSON explicitly for a subscription rather than
 as a default for finite commands. A successful login remembers its transport.
 
-Tokens remain in the protected, service-bound version-2 `config.json` credential
-file; YAML never contains token values. `BIBLEIT_CONFIG` continues to select a
-legacy JSON credential file; selecting a YAML path instead selects preferences
-with sibling `config.json` credentials. `BIBLEIT_PREFERENCES` and
-`BIBLEIT_CREDENTIALS` explicitly select separate files for isolated automation.
+Login saves credentials in this same YAML file. `BIBLEIT_CONFIG` selects a single
+alternative file for all configuration. Separate JSON credential files are ignored;
+there is no automatic import or merge. Sign in again if you need to save an HTTP
+credential in the YAML file. `config path` has been removed; use `config show`.
 Unix credential files must be owned by the current user, regular and private
 (`chmod 600`); writes use private permissions or a protected Windows DACL.
 Credential files are protected plaintext, not an OS credential vault. No token
@@ -366,6 +366,7 @@ copies or service rebinding are performed. Help, version and completion work eve
 when configuration is broken. No transport fallback changes the selected account.
 
 Use `organization list --cursor <cursor>` for the next personal directory page.
+SSH organization commands require the `organization` server capability.
 
 HTTP whole-book reads follow bounded pages automatically and still return the
 complete book. To inspect a single page, use:

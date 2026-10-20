@@ -17,63 +17,68 @@ type preferences struct {
 	Transport   string `yaml:"transport,omitempty"`
 	Identity    string `yaml:"identity,omitempty"`
 	Format      string `yaml:"format,omitempty"`
+	AccessToken string `yaml:"access_token,omitempty"`
+	Endpoint    string `yaml:"endpoint,omitempty"`
+	SSHServer   string `yaml:"ssh_server,omitempty"`
 }
 
+// BIBLEIT_CONFIG selects the single YAML document for every CLI command.
 func preferencesPath() string {
-	if p := os.Getenv("BIBLEIT_PREFERENCES"); p != "" {
-		return p
-	}
 	if p := os.Getenv("BIBLEIT_CONFIG"); p != "" {
-		if oneOf(strings.ToLower(filepath.Ext(p)), ".yaml", ".yml") {
-			return p
-		}
-		return filepath.Join(filepath.Dir(p), "config.yaml")
+		return p
 	}
 	return filepath.Join(homeDirectory(), ".bibleit", "config.yaml")
 }
-func loadPreferences() (preferences, error) {
-	p := preferences{Version: 1}
+func loadPreferences() (preferences, error) { p, _, err := readPreferencesFile(); return p, err }
+func readPreferencesFile() (preferences, bool, error) {
+	p := preferences{Version: 2}
+	if e := validateCredentialFile(preferencesPath()); e != nil {
+		return p, false, e
+	}
 	f, e := os.Open(preferencesPath())
 	if os.IsNotExist(e) {
-		return p, nil
+		return p, false, nil
 	}
 	if e != nil {
-		return p, errors.New("cannot read preferences file; check `bibleit config path`")
+		return p, false, errors.New("cannot read configuration; check BIBLEIT_CONFIG or ~/.bibleit/config.yaml")
 	}
 	defer f.Close()
-	data, readErr := io.ReadAll(io.LimitReader(f, 16385))
-	if readErr != nil || len(data) > 16384 {
-		return p, errors.New("preferences file exceeds 16 KiB or could not be read")
+	data, e := io.ReadAll(io.LimitReader(f, 16385))
+	if e != nil || len(data) > 16384 {
+		return p, true, errors.New("configuration exceeds 16 KiB or could not be read")
 	}
 	d := yaml.NewDecoder(strings.NewReader(string(data)))
 	d.KnownFields(true)
 	if e = d.Decode(&p); e != nil {
-		return p, preferenceYAMLError(e)
+		return p, true, preferenceYAMLError(e)
 	}
 	var nodes map[string]yaml.Node
-	if e := yaml.Unmarshal(data, &nodes); e != nil {
-		return p, preferenceYAMLError(e)
+	if e = yaml.Unmarshal(data, &nodes); e != nil {
+		return p, true, preferenceYAMLError(e)
 	}
 	if _, ok := nodes["version"]; !ok {
-		return p, errors.New("preferences must be a YAML mapping with version: 1")
+		return p, true, errors.New("configuration must be a YAML mapping with version: 2")
 	}
 	for key, node := range nodes {
 		if key == "version" {
 			if node.Tag != "!!int" {
-				return p, errors.New("preferences version must be an integer")
+				return p, true, errors.New("configuration version must be an integer")
 			}
 		} else if node.Tag != "!!str" {
-			return p, fmt.Errorf("preferences %s must be a string", key)
+			return p, true, fmt.Errorf("configuration %s must be a string", key)
 		}
 	}
 	_, p.IdentitySet = nodes["identity"]
 	if d.Decode(new(any)) != io.EOF {
-		return p, errors.New("preferences must contain one YAML document")
+		return p, true, errors.New("configuration must contain one YAML document")
 	}
-	if p.Version != 1 {
-		return p, errors.New("unsupported preferences version; use version: 1")
+	if p.Version != 1 && p.Version != 2 {
+		return p, true, errors.New("unsupported configuration version; use version: 2")
 	}
-	return p, validatePreferences(p)
+	if p.Version == 1 && (p.AccessToken != "" || p.Endpoint != "" || p.SSHServer != "") {
+		return p, true, errors.New("legacy preferences cannot contain credentials; use version: 2")
+	}
+	return p, true, validatePreferences(p)
 }
 func preferenceYAMLError(err error) error {
 	// YAML diagnostics can quote arbitrary user values, including accidentally
@@ -86,7 +91,7 @@ func preferenceYAMLError(err error) error {
 			break
 		}
 	}
-	return fmt.Errorf("invalid preferences YAML%s; allowed keys: version, transport, identity, format", line)
+	return fmt.Errorf("invalid preferences YAML%s; allowed keys: version, transport, identity, format, access_token, endpoint, ssh_server", line)
 }
 func validatePreferences(p preferences) error {
 	if p.Transport != "" && !oneOf(p.Transport, "http", "ssh") {
@@ -98,14 +103,31 @@ func validatePreferences(p preferences) error {
 	if strings.ContainsAny(p.Identity, "\r\n\x00") {
 		return errors.New("preferences identity must be a single-line path")
 	}
+	if strings.ContainsAny(p.AccessToken, "\r\n\x00") {
+		return errors.New("invalid configuration credential")
+	}
+	if p.Endpoint != "" && p.Endpoint != defaultWebURL || p.SSHServer != "" && p.SSHServer != defaultSSHServer {
+		return errors.New("configuration does not match the project-managed service")
+	}
+	if p.AccessToken != "" && (p.Endpoint != defaultWebURL || p.SSHServer != defaultSSHServer) {
+		return errors.New("saved credentials require the project-managed service binding")
+	}
 	return nil
 }
 func savePreferences(p preferences) error {
+	if p.AccessToken != "" {
+		if p.Endpoint == "" {
+			p.Endpoint = defaultWebURL
+		}
+		if p.SSHServer == "" {
+			p.SSHServer = defaultSSHServer
+		}
+	}
 	if e := validatePreferences(p); e != nil {
 		return e
 	}
-	p.Version = 1
-	values := map[string]any{"version": 1}
+	p.Version = 2
+	values := map[string]any{"version": 2}
 	if p.Transport != "" {
 		values["transport"] = p.Transport
 	}
@@ -114,6 +136,11 @@ func savePreferences(p preferences) error {
 	}
 	if p.IdentitySet || p.Identity != "" {
 		values["identity"] = p.Identity
+	}
+	if p.AccessToken != "" {
+		values["access_token"] = p.AccessToken
+		values["endpoint"] = p.Endpoint
+		values["ssh_server"] = p.SSHServer
 	}
 	b, e := yaml.Marshal(values)
 	if e != nil {
@@ -154,12 +181,9 @@ func writePrivateDocument(path string, data []byte) error {
 	}
 	return nil
 }
-func effectivePreferences(p preferences, legacy config) (map[string]string, map[string]string) {
-	v := map[string]string{"transport": "http", "format": "table", "identity": legacy.Identity}
+func effectivePreferences(p preferences) (map[string]string, map[string]string) {
+	v := map[string]string{"transport": "http", "format": "table", "identity": ""}
 	src := map[string]string{"transport": "default", "format": "default", "identity": "default"}
-	if legacy.Identity != "" {
-		src["identity"] = "legacy credentials"
-	}
 	for k, x := range map[string]string{"transport": p.Transport, "format": p.Format, "identity": p.Identity} {
 		if x != "" || k == "identity" && p.IdentitySet {
 			v[k] = x
@@ -175,18 +199,14 @@ func effectivePreferences(p preferences, legacy config) (map[string]string, map[
 	return v, src
 }
 func configCommand(args []string, format string) int {
-	if len(args) == 1 && args[0] == "path" {
-		return printLocal("config", map[string]string{"path": preferencesPath()}, format)
-	}
 	p, e := loadPreferences()
 	if e != nil {
 		return fail(exitFailure, "%v", e)
 	}
 	if len(args) == 1 && args[0] == "show" {
-		// Only the nonsecret legacy identity is projected; tokens never enter output.
-		legacy, _ := loadConfig()
-		v, src := effectivePreferences(p, legacy)
-		fields := map[string]string{}
+		// Show preferences and file location without projecting stored secrets.
+		v, src := effectivePreferences(p)
+		fields := map[string]string{"path": preferencesPath()}
 		for k, x := range v {
 			fields[k] = x
 			fields[k+"_source"] = src[k]
@@ -197,8 +217,7 @@ func configCommand(args []string, format string) int {
 		return fail(exitUsage, "config key must be transport, identity, or format; credentials cannot be read with config commands")
 	}
 	key := args[1]
-	legacy, _ := loadConfig()
-	v, _ := effectivePreferences(p, legacy)
+	v, _ := effectivePreferences(p)
 	if args[0] == "get" {
 		return printLocal("config", map[string]string{key: v[key]}, format)
 	}
@@ -225,7 +244,7 @@ func applyPreferences(cfg config, options map[string]string) (config, string, er
 	if e != nil {
 		return cfg, "", e
 	}
-	values, _ := effectivePreferences(p, cfg)
+	values, _ := effectivePreferences(p)
 	for k := range values {
 		if x := options["--"+k]; x != "" {
 			values[k] = x
@@ -242,21 +261,8 @@ func applyPreferences(cfg config, options map[string]string) (config, string, er
 	return cfg, values["format"], nil
 }
 
-// Preserve the service-bound version-2 credential document in its existing
-// location. Preferences never duplicate tokens or rebind them to the REST host.
-func credentialPath() string {
-	if p := os.Getenv("BIBLEIT_CREDENTIALS"); p != "" {
-		return p
-	}
-	if p := os.Getenv("BIBLEIT_CONFIG"); p != "" {
-		if oneOf(strings.ToLower(filepath.Ext(p)), ".yaml", ".yml") {
-			return filepath.Join(filepath.Dir(p), "config.json")
-		}
-		return p
-	}
-	return filepath.Join(homeDirectory(), ".bibleit", "config.json")
-}
-
+// Kept internally for existing callers; the sole persisted document is YAML.
+func credentialPath() string { return preferencesPath() }
 func rememberTransport(transport string) error {
 	p, e := loadPreferences()
 	if e != nil {
