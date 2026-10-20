@@ -1,0 +1,157 @@
+{
+  "version": "v0.2.2",
+  "source_commit": "af0db289e8da578022ee255401a99d34adb7ccd3",
+  "upgraded_from": "v0.2.1",
+  "checks": [
+    {
+      "command": "version",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "--help",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "live --help",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "live L1 stack --help",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "live L1 secret --help",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "read --help",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "auth --help",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "live --help",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "config show --format json",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "config path",
+      "status": "passed",
+      "exit_code": 2
+    },
+    {
+      "command": "live stack info",
+      "status": "passed",
+      "exit_code": 2
+    },
+    {
+      "command": "live L1 secret PRIVATE_TEST_CANARY",
+      "status": "passed",
+      "exit_code": 2
+    },
+    {
+      "command": "--help in 40-column PTY without COLUMNS",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "config set transport invalid --format table",
+      "status": "passed",
+      "exit_code": 2
+    },
+    {
+      "command": "config set transport invalid --format raw",
+      "status": "passed",
+      "exit_code": 2
+    },
+    {
+      "command": "config set transport invalid --format json",
+      "status": "passed",
+      "exit_code": 2
+    },
+    {
+      "command": "config set format invalid --format table",
+      "status": "passed",
+      "exit_code": 2
+    },
+    {
+      "command": "config set format invalid --format raw",
+      "status": "passed",
+      "exit_code": 2
+    },
+    {
+      "command": "config set format invalid --format json",
+      "status": "passed",
+      "exit_code": 2
+    },
+    {
+      "command": "config set format ndjson --format table",
+      "status": "passed",
+      "exit_code": 2
+    },
+    {
+      "command": "config set format ndjson --format raw",
+      "status": "passed",
+      "exit_code": 2
+    },
+    {
+      "command": "config set format ndjson --format json",
+      "status": "passed",
+      "exit_code": 2
+    },
+    {
+      "command": "ping",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "auth info",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "server info",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "organization list",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "read bpml Salmos 23 1",
+      "status": "passed",
+      "exit_code": 0
+    }
+  ],
+  "counts": {
+    "passed": 27
+  },
+  "transport_and_identity_flags_used": false,
+  "default_transport": "ssh",
+  "single_active_config": "~/.bibleit/config.yaml",
+  "real_configuration_unchanged": true,
+  "credentials_or_user_content_recorded": false,
+  "production_mutations": false,
+  "brew_test": "passed",
+  "actual_terminal_width_without_columns": "passed",
+  "invalid_config_edits_leave_file_unchanged": true,
+  "binary_sha256": "3d723b92970fbf360b434e9e7a0ec5fe4e8de8d07a4a4dbfb635a533567adaeb",
+  "homebrew_tap_commit": "89ea664f818e6d88b2786d49bcc4b394be35cd60",
+  "installed_binary_matches_published_archive": true
+}
