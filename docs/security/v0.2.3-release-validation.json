@@ -51,5 +51,17 @@
     "windows_arm64"
   ],
   "public_manifest_matches_candidate": true,
-  "published_assets_match_validated_candidate": true
+  "published_assets_match_validated_candidate": true,
+  "binary_sha256": {
+    "darwin_amd64": "86389817311781ed94f7bac769bcc9bdc8c73c36f527079527e733c849952cab",
+    "darwin_arm64": "8eb5b51d71cc218ac3976db67adae60eb9329b0b344704d860190814a3f78929",
+    "linux_amd64": "7d5b5660464ffd68bae08a8f31c0811d8404e9c42575cd88c094086ccc3fd74a",
+    "linux_arm64": "2d1d6a9eee347dfdf8f21c2d89301d28b2ae52e5b98d01feaf7f663083251226",
+    "windows_amd64": "235e4e49de765a9b33083ec0d272506f5ffb958c304c5bb76e33b1119e8d96bf",
+    "windows_arm64": "bdcd1a9aa8778218605bd14f9546cdf831e755165864a5cdab3a19d3a2957705"
+  },
+  "homebrew_release_validation": {
+    "workflow": 39407252797,
+    "url": "https://github.com/bibleit-labs/homebrew-tap/actions/runs/39407252797"
+  }
 }
