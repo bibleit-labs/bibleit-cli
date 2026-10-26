@@ -3,7 +3,7 @@ module github.com/bibleit-labs/bibleit-cli
 go 1.27.1
 
 require (
-	github.com/bibleit-labs/bibleit-go v0.3.0
+	github.com/bibleit-labs/bibleit-go v0.3.1
 	github.com/mattn/go-runewidth v0.0.16
 	gopkg.in/yaml.v3 v3.0.1
 )

@@ -40,7 +40,8 @@ func consumeHTTPWatch(ctx context.Context, client *bibleit.Client, id, format st
 	encoder := json.NewEncoder(os.Stdout)
 	for {
 		started := time.Now()
-		event, err := client.PollLiveEvents(ctx, id, cursor, 25)
+		params := bibleit.GetLiveEventsParams{}.WithAfter(cursor)
+		event, err := client.PollLiveEventsWithOptions(ctx, id, &params)
 		if ctx.Err() != nil {
 			return nil
 		}

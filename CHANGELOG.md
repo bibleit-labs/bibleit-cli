@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Pin bibleit-go v0.3.1 and use its typed query helpers and default options
+  for Live polling and whole-book iteration. CLI behavior and output schemas
+  remain unchanged.
+
 ## v0.2.3 — 2026-10-20
 
 - Use the root `bibleit.Client` API for HTTP resources, polling, pagination,

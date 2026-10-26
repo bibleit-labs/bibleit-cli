@@ -35,9 +35,9 @@ func bookPageOptions(args []string, options map[string]string) (url.Values, erro
 }
 
 func (a httpClient) completeBook(plan httpPlan) (httpResult, error) {
-	pages := a.client.ReadPersonalBookPages(a.ctx, plan.params["account_id"], plan.params["slug"], plan.params["book_id"], nil)
+	pages := a.client.ReadPersonalBookPages(a.ctx, plan.params["account_id"], plan.params["slug"], plan.params["book_id"])
 	if a.service {
-		pages = a.client.ReadBookPages(a.ctx, plan.params["organization_id"], plan.params["slug"], plan.params["book_id"], nil)
+		pages = a.client.ReadBookPages(a.ctx, plan.params["organization_id"], plan.params["slug"], plan.params["book_id"])
 	}
 	var complete bibleit.ScriptureBookRead
 	for page, err := range pages {
