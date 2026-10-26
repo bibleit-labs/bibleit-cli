@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v0.2.4 — 2026-10-26
+
 - Pin bibleit-go v0.3.1 and use its typed query helpers and default options
   for Live polling and whole-book iteration. CLI behavior and output schemas
   remain unchanged.
