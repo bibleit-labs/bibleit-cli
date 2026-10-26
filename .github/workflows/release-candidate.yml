@@ -33,7 +33,7 @@ jobs:
         with:
           go-version: '1.27.1'
           cache: false
-      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: '3.13'
       - name: Download and verify public SDK
@@ -73,7 +73,7 @@ jobs:
           ref: e6aa3b366bdee8ed138c1e0f7b85192ebdd35d0f
           path: .ci-scoop
           persist-credentials: false
-      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: '3.13'
       - name: Require native Windows ARM64 execution
