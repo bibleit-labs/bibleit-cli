@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Pin bibleit-go v0.4.0 for separate OAuth grant response scopes and updated
+  REST metadata. CLI commands and output schemas remain unchanged.
+
 ## v0.2.4 — 2026-10-26
 
 - Pin bibleit-go v0.3.1 and use its typed query helpers and default options
