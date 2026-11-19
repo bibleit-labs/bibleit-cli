@@ -1,20 +1,23 @@
 # Bibleit CLI v0.3.0
 
-Broadcast Studio now has an SSH command family for an explicit workspace.
+Broadcast Studio now has matching HTTP and SSH controls for an explicit workspace.
 Operators can list/export/create/save/duplicate saved Setups, inspect the connected
 YouTube channel and events, and request testing, live, end and publisher stop.
 Owners/admins can also delete saved Setups. Source capture and Google authorization
 continue to require Studio in the browser.
 
-Commands use registered personal SSH keys and existing server workspace permissions.
-They negotiate read/write/lifecycle capabilities and report an actionable error on
-older or unconfigured servers. Setups use revisions and private retained request
+HTTP commands require a personal `bt_` token with the relevant broadcast scope;
+SSH commands use registered personal keys. Both retain existing workspace role
+checks. SSH negotiates read/write/lifecycle capabilities and reports an actionable
+error on older or unconfigured servers. Setups use revisions and private retained request
 files; retries reconcile the original signed ticket before uploading again. Event
 controls require retained operation UUIDs. One SSH connection is reused throughout
 an invocation, including multipart export and upload.
 
-The release pins bibleit-go v0.4.0. Existing HTTP commands and output schemas stay
-compatible. Packages include macOS, Linux and Windows amd64/arm64 executables,
+Release publication is pending a published bibleit-go version containing the
+broadcast contract; the current source uses the sibling SDK only for local
+integration checks. The final release must pin that public version and pass
+standalone `GOWORK=off` validation. Existing output schemas remain compatible. Packages include macOS, Linux and Windows amd64/arm64 executables,
 completions, installers, checksums and required redistribution notices.
 
 ```sh

@@ -4,12 +4,12 @@
 
 ## v0.3.0 — 2026-11-19
 
-- Add capability-negotiated Broadcast Studio SSH Setup reads/exports/writes and
-  YouTube lifecycle controls with explicit workspace, revisions and request IDs.
+- Add matching Broadcast Studio REST and SSH Setup and YouTube lifecycle
+  controls with reusable SDK grammar, explicit workspaces, revisions and request IDs.
 - Retain private write tickets before persistent uploads and reconcile lost
   replies without issuing duplicate mutations.
-- Pin bibleit-go v0.4.0 for separate OAuth grant response scopes and updated
-  REST metadata. Existing command behavior and output schemas remain unchanged.
+- Stage the reusable SDK broadcast integration pending its public version pin
+  and fresh standalone release validation. Existing output schemas stay compatible.
 
 ## v0.2.4 — 2026-10-26
 

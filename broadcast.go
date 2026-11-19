@@ -32,7 +32,7 @@ func broadcastRegistry() []commandSpec {
 		{"profiles", "Inspect the supported output profile.", "profiles"},
 		{"setup list [limit] [after]", "List saved Setups with explicit workspace pagination.", "setup list"},
 		{"setup <id> show", "Inspect a saved Setup revision and document hash.", "setup " + id + " show"},
-		{"setup <id> export <file>", "Export a revision-bound Setup after verifying its complete SHA256.", "setup " + id + " export setup.json"},
+		{"setup <id> export <file>", "Export a verified, revision-bound Setup to a private file.", "setup " + id + " export setup.json"},
 		{"setup create <file> <request-file>", "Create a Setup; persist its request ticket before uploading.", "setup create setup.json request.json"},
 		{"setup <id> save <revision> <file> <request-file>", "Save a Setup using a required current revision and durable request file.", "setup " + id + " save 1 setup.json request.json"},
 		{"setup <id> duplicate <revision> <name> <request-file>", "Duplicate the given Setup revision with a new name.", "setup " + id + " duplicate 1 Copy request.json"},
@@ -137,7 +137,10 @@ func validateBroadcastArgs(a []string) error {
 				return bad
 			}
 		case "attach":
-			if len(p) != 4 || !broadcastUUID.MatchString(p[2]) || !regexp.MustCompile(`^[A-Za-z0-9_-]{11}$`).MatchString(p[3]) {
+			if len(p) != 4 {
+				return bad
+			}
+			if _, err := bibleit.AttachBroadcastEventCommand(a[1], p[2], p[3]); err != nil {
 				return bad
 			}
 		default:
@@ -185,16 +188,14 @@ func requireBroadcastCapability(lines []string, capability string) error {
 }
 
 func broadcastWire(parts ...string) (string, error) {
-	for _, s := range parts {
-		if s == "" || strings.ContainsAny(s, "\r\n\x00\" \t") {
-			return "", errors.New("invalid broadcast wire argument")
-		}
+	if len(parts) < 3 || !strings.EqualFold(parts[0], "broadcast") {
+		return "", errors.New("invalid broadcast command")
 	}
-	wire := strings.Join(parts, " ")
-	if len(wire) > 8192 {
-		return "", errors.New("broadcast command exceeds the SSH line limit")
+	command, err := bibleit.BroadcastCommand(parts[1], parts[2:]...)
+	if err != nil {
+		return "", err
 	}
-	return wire, nil
+	return command.String(), nil
 }
 
 func broadcastSSHCommand(ctx context.Context, cfg config, wire string, shell bool) (*exec.Cmd, string, error) {
@@ -264,8 +265,11 @@ func broadcastFields(lines []string) (map[string]string, error) {
 }
 
 func runBroadcast(cfg config, a []string, format string, yes bool) int {
+	if cfg.Transport == "http" {
+		return runBroadcastHTTP(cfg, a, format, yes)
+	}
 	if cfg.Transport != "ssh" {
-		return fail(exitUsage, "Broadcast Studio control requires --transport ssh and a registered personal SSH key")
+		return fail(exitUsage, "Broadcast Studio requires http or ssh transport")
 	}
 	session, e := openBroadcastShell(cfg)
 	if e != nil {
@@ -469,25 +473,7 @@ func loadBroadcastRequest(path string) (broadcastWriteRequest, error) {
 	}
 	return r, nil
 }
-func broadcastWrite(cfg config, org string, p []string) ([]string, error) {
-	if cfg.broadcastSession == nil {
-		s, e := openBroadcastShell(cfg)
-		if e != nil {
-			return nil, e
-		}
-		defer s.close()
-		cfg.broadcastSession = s
-	}
-	if p[0] == "write" {
-		r, e := loadBroadcastRequest(p[2])
-		if e != nil {
-			return nil, e
-		}
-		if r.Organization != org {
-			return nil, errors.New("request file belongs to another workspace")
-		}
-		return broadcastRequest(cfg, org, "write", "status", r.RequestID)
-	}
+func broadcastWriteInput(org string, p []string) (broadcastWriteRequest, []byte, string, error) {
 	var op, target, revision, path string
 	var body []byte
 	var e error
@@ -509,10 +495,35 @@ func broadcastWrite(cfg config, org string, p []string) ([]string, error) {
 		}
 	}
 	if e != nil {
-		return nil, e
+		return broadcastWriteRequest{}, nil, "", e
 	}
 	sum := sha256.Sum256(body)
-	expected := broadcastWriteRequest{1, org, op, target, revision, hex.EncodeToString(sum[:]), ""}
+	return broadcastWriteRequest{1, org, op, target, revision, hex.EncodeToString(sum[:]), ""}, body, path, nil
+}
+func broadcastWrite(cfg config, org string, p []string) ([]string, error) {
+	if cfg.broadcastSession == nil {
+		s, e := openBroadcastShell(cfg)
+		if e != nil {
+			return nil, e
+		}
+		defer s.close()
+		cfg.broadcastSession = s
+	}
+	if p[0] == "write" {
+		r, e := loadBroadcastRequest(p[2])
+		if e != nil {
+			return nil, e
+		}
+		if r.Organization != org {
+			return nil, errors.New("request file belongs to another workspace")
+		}
+		return broadcastRequest(cfg, org, "write", "status", r.RequestID)
+	}
+	expected, body, path, e := broadcastWriteInput(org, p)
+	if e != nil {
+		return nil, e
+	}
+	op, target, revision := expected.Operation, expected.Target, expected.Revision
 	retained, e := loadBroadcastRequest(path)
 	if e == nil {
 		expected.RequestID = retained.RequestID

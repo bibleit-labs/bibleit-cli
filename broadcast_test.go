@@ -154,7 +154,7 @@ func TestBroadcastPersistentWriteLostReplyReconcilesSameTicket(t *testing.T) {
 		t.Fatal("reused ticket for changed bytes")
 	}
 }
-func TestBroadcastOutputModesAndSSHOnly(t *testing.T) {
+func TestBroadcastOutputModesAndAuthentication(t *testing.T) {
 	for _, format := range []string{"table", "raw", "json"} {
 		code, out, stderr := captureCLI(t, func() int {
 			return printResponse([]string{`OK result_state="applied" applied=true revision=3`}, format)
@@ -166,8 +166,8 @@ func TestBroadcastOutputModesAndSSHOnly(t *testing.T) {
 	code, _, _ := captureCLI(t, func() int {
 		return runBroadcast(config{Transport: "http"}, []string{"broadcast", broadcastTestOrg, "profiles"}, "json", false)
 	})
-	if code != exitUsage {
-		t.Fatal("accepted HTTP broadcast mutation")
+	if code != exitUnauthenticated {
+		t.Fatal("HTTP broadcast accepted missing authentication")
 	}
 	if _, e := bibleit.DecodeResponse(strings.NewReader("ERR forbidden\n")); e == nil {
 		t.Fatal("fixture decoder ignored denial")
