@@ -1,6 +1,7 @@
 # v0.3.0 release readiness
 
-Source branch: `broadcast-studio-cli`. The candidate pins the published
+Released source: [`v0.3.0`](https://github.com/bibleit-labs/bibleit-cli/releases/tag/v0.3.0),
+commit `3e23adf6fe10a118c71b3da5583b37ae9b41ee91`. The release pins the published
 `github.com/bibleit-labs/bibleit-go v0.5.0` with public proxy/checksum verification.
 No development workspace or local replacement is a release input.
 
@@ -38,14 +39,30 @@ Scoop and notice/checksum retention. Review the workflow results and immutable
 candidate manifest for the exact source commit; earlier v0.4.0/SSH-only candidate
 results do not qualify a new source build for publication.
 
-Remaining release gates:
+Verified release evidence:
 
-- Green native and installer validation for the reviewed final source.
-- Source merged normally to main, a fresh immutable v0.3.0 tag and validated
-  draft assets; publication requires the coordinated release greenlight.
-- Anonymous CLI archive/install verification and distribution follow-up after
-  publication.
+- [Final main native checks](https://github.com/bibleit-labs/bibleit-cli/actions/runs/44559973164)
+  passed Linux, macOS and Windows. [Final main installer qualification](https://github.com/bibleit-labs/bibleit-cli/actions/runs/44559973291)
+  passed all six targets.
+- The annotated immutable `v0.3.0` tag targets the released source above. Its
+  [release workflow](https://github.com/bibleit-labs/bibleit-cli/actions/runs/44560568088)
+  passed the three native platforms and six installer targets before creating
+  the draft. All 12 uploaded draft files matched the verified tag candidate.
+- [CLI v0.3.0](https://github.com/bibleit-labs/bibleit-cli/releases/tag/v0.3.0)
+  was published on 2026-11-19. Anonymous retrieval verified all 12 public assets,
+  all eight advertised checksums, source/toolchain and public SDK provenance.
+- Actual explicit-version and latest online installs returned `bibleit CLI
+  version 0.3.0` and working broadcast help. They used a private temporary prefix
+  without credentials, leaving the existing user CLI and configuration untouched.
+- The tag's eight archives/installers exactly match the candidate used for the
+  production read-only SSH table smoke. Preflight, channel and output profiles
+  were readable, while schema-version-1 JSON and raw output remained compatible.
+- Machine-readable results are recorded in
+  [the v0.3.0 release evidence](releases/v0.3.0-integration.json).
+
+The maintained Homebrew tap has a separate formula/public-download qualification
+and normal merge gate. Its distribution cutover does not replace the checks above.
 
 Physical Windows/USB Broadcast Studio tests remain deferred; native CLI installer
-and SDK runtime validation are separate release checks. No CLI tag or release
-publication is authorized by candidate packaging alone.
+and SDK runtime validation are separate release checks. The published tag and assets remain immutable; future code or packaged-content
+changes require a new release.
