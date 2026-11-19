@@ -1,5 +1,7 @@
 package main
 
+import "strings"
+
 // ParityEvidence separates binding/fixture checks from successful server-domain
 // assertions. The coordinating real-server runner can emit one record per cell.
 type ParityEvidence struct {
@@ -29,6 +31,18 @@ func parityInventory() []ParityEvidence {
 	for _, spec := range commandRegistry {
 		for _, invocation := range commandInvocations(spec) {
 			base := ParityEvidence{SchemaVersion: 1, Command: spec.Syntax, Invocation: invocation, Layer: "server-functional", Status: "pending", Scenario: "synthetic successful domain lifecycle"}
+			if strings.HasPrefix(spec.Syntax, "broadcast ") {
+				base.Transport = "ssh"
+				base.Credential = "registered-user-key"
+				base.Scenario = "capability-negotiated Broadcast Studio control"
+				out = append(out, base)
+				base.Transport = "http"
+				base.Credential = "none"
+				base.Status = "inapplicable"
+				base.Reason = "Broadcast Studio CLI commands require the authenticated SSH control-plane contract"
+				out = append(out, base)
+				continue
+			}
 			if spec.Local {
 				base.Transport = "local"
 				base.Credential = "none"

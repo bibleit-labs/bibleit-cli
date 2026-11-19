@@ -105,6 +105,52 @@ from the catalogue also work. Quote arguments containing spaces.
 For automation, provide an **API token** through your secret store as `BIBLEIT_TOKEN`.
 The CLI uses it for HTTP commands without saving or printing it.
 
+## Broadcast Studio over SSH
+
+Broadcast controls require a registered personal SSH key and a server advertising
+`broadcast.read.v1`, `broadcast.write.v1`, and/or `broadcast.lifecycle.v1`. Older
+servers return an actionable capability error. Setup changes require a current
+revision, and lifecycle mutations require an explicitly retained request UUID.
+The CLI controls an existing browser publisher; camera capture and takeover
+continue in Broadcast Studio.
+
+```sh
+bibleit --transport ssh broadcast WORKSPACE_UUID profiles
+bibleit --transport ssh broadcast WORKSPACE_UUID setup list
+bibleit --transport ssh broadcast WORKSPACE_UUID setup SETUP_UUID show
+bibleit --transport ssh broadcast WORKSPACE_UUID setup SETUP_UUID export setup.json
+bibleit --transport ssh broadcast WORKSPACE_UUID setup create setup.json request.json
+bibleit --transport ssh broadcast WORKSPACE_UUID setup SETUP_UUID save 3 setup.json save-request.json
+bibleit --transport ssh broadcast WORKSPACE_UUID write status save-request.json
+bibleit --transport ssh broadcast WORKSPACE_UUID preflight
+bibleit --transport ssh broadcast WORKSPACE_UUID channel
+bibleit --transport ssh broadcast WORKSPACE_UUID events
+bibleit --transport ssh broadcast WORKSPACE_UUID event EVENT_UUID get
+bibleit --transport ssh broadcast WORKSPACE_UUID event EVENT_UUID test 2 REQUEST_UUID
+bibleit --transport ssh broadcast WORKSPACE_UUID operation REQUEST_UUID get
+```
+
+Replace uppercase placeholders with canonical lowercase UUIDs. Use `bibleit help
+broadcast` for duplicate, delete, event creation, go-live, end and publisher stop.
+Delete, end and stop require interactive confirmation or `--yes`. Setup JSON is
+bounded to 1 MiB; event metadata JSON is bounded to 3072 bytes. Exports verify
+the revision, contiguous chunks and SHA256 before creating a private file.
+Existing export and request files are never overwritten.
+
+Writes save a mode-600 request file before beginning a persistent SSH upload.
+Keep that file and the **exact input bytes** until the result is resolved. If a
+connection fails, inspect `write status`; rerun the same command and request file
+to recover the same operation. The CLI never creates a replacement intent when
+a retained request exists and never retries lifecycle actions automatically.
+Inspect the current event/publisher and reconcile its operation UUID after an
+uncertain lifecycle response. A stale revision requires review, not a blind retry.
+Request files contain opaque signed tickets and input hashes; keep them private.
+
+Table, raw and JSON output are supported. JSON retains schema version 1 for SSH
+and decodes lifecycle JSON into each record's `payload`; raw preserves the wire
+records. Finite commands do not support NDJSON. Broadcast controls have no CLI
+HTTP/token fallback; an SSH identity never grants workspace membership.
+
 ## Authentication and service address
 
 HTTP is the default transport. Browser login saves an HTTP credential; an environment

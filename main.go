@@ -99,7 +99,7 @@ func run(args []string) int {
 	if oneOf(args[len(args)-1], "--help", "-h") || (args[len(args)-1] == "help" && args[0] != "server") {
 		return help(args[:len(args)-1])
 	}
-	if len(args) == 1 && oneOf(args[0], "auth", "live", "read", "search", "translation", "server", "account", "organization", "completion", "config") {
+	if len(args) == 1 && oneOf(args[0], "auth", "live", "read", "search", "translation", "server", "account", "organization", "broadcast", "completion", "config") {
 		return help(args)
 	}
 	if args[0] == "completion" {
@@ -197,6 +197,9 @@ func run(args []string) int {
 	cfg, err = automationCredential(cfg)
 	if err != nil {
 		return fail(exitUsage, "%v", err)
+	}
+	if args[0] == "broadcast" {
+		return runBroadcast(cfg, args, format, options["--yes"] == "true")
 	}
 	if cfg.Transport == "http" {
 		return runHTTPPage(cfg, args, format, options["--yes"] == "true", bookPage)
@@ -1025,8 +1028,10 @@ func protocolFailure(err error) int {
 		code = exitNotFound
 	case "rate_limited":
 		code = exitRateLimited
-	case "actor_exists", "quota_exceeded", "conflict", "precondition_failed", "precondition_required":
+	case "actor_exists", "quota_exceeded", "conflict", "precondition_failed", "precondition_required", "request_expired", "request_mismatch", "unknown_after_recovery":
 		code = exitConflict
+	case "bad_command", "invalid_document", "invalid_studio_setup", "invalid_metadata", "invalid_request_ticket", "input_mismatch", "invalid_offset", "document_too_large":
+		code = exitUsage
 	}
 	return outputError(code, displayErr)
 }

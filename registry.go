@@ -16,7 +16,7 @@ type commandSpec struct {
 	Alias                    string
 }
 
-var commandRegistry = []commandSpec{
+var commandRegistry = append(broadcastRegistry(), []commandSpec{
 	{"help [topic...]", "Show offline command help.", "help read", true, ""},
 	{"--version", "Print the CLI version.", "--version", true, "version"},
 	{"-v", "Print the CLI version.", "-v", true, "version"},
@@ -69,7 +69,7 @@ var commandRegistry = []commandSpec{
 	{"config get <key>", "Read a nonsecret preference.", "config get transport", true, ""},
 	{"config set <key> <value>", "Save a validated nonsecret preference.", "config set transport ssh", true, ""},
 	{"config unset <key>", "Remove a saved preference.", "config unset identity", true, ""},
-}
+}...)
 
 func placeholder(s string) bool { return strings.HasPrefix(s, "<") || strings.HasPrefix(s, "[") }
 func matchPattern(pattern []string, args []string) bool {
@@ -163,6 +163,11 @@ func normalizeCommand(args []string) ([]string, error) {
 	}
 	if len(a) == 3 && a[0] == "auth" && a[1] == "login" && a[2] != "ssh" {
 		return nil, fmt.Errorf("usage: bibleit auth login [ssh]")
+	}
+	if a[0] == "broadcast" {
+		if err := validateBroadcastArgs(a); err != nil {
+			return nil, err
+		}
 	}
 	return a, nil
 }

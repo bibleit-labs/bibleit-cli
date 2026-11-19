@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Add capability-negotiated Broadcast Studio SSH Setup reads/exports/writes and
+  YouTube lifecycle controls with explicit workspace, revisions and request IDs.
+- Retain private write tickets before persistent uploads and reconcile lost
+  replies without issuing duplicate mutations.
+
 ## v0.2.4 — 2026-10-26
 
 - Pin bibleit-go v0.3.1 and use its typed query helpers and default options

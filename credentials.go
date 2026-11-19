@@ -5,7 +5,11 @@ import (
 	"strings"
 )
 
-type config struct{ Transport, Endpoint, Identity, AccessToken string }
+type config struct {
+	Transport, Endpoint, Identity, AccessToken string
+	// Runtime-only control channel; never persisted with credentials.
+	broadcastSession *broadcastShell
+}
 
 func loadConfig() (config, error) {
 	p, err := loadPreferences()
