@@ -2,12 +2,14 @@
 
 ## Unreleased
 
+## v0.3.0 — 2026-11-19
+
 - Add capability-negotiated Broadcast Studio SSH Setup reads/exports/writes and
   YouTube lifecycle controls with explicit workspace, revisions and request IDs.
 - Retain private write tickets before persistent uploads and reconcile lost
   replies without issuing duplicate mutations.
 - Pin bibleit-go v0.4.0 for separate OAuth grant response scopes and updated
-  REST metadata. CLI commands and output schemas remain unchanged.
+  REST metadata. Existing command behavior and output schemas remain unchanged.
 
 ## v0.2.4 — 2026-10-26
 
