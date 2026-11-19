@@ -2,8 +2,14 @@
 
 ## Unreleased
 
-- Pin bibleit-go v0.4.0 for separate OAuth grant response scopes and updated
-  REST metadata. CLI commands and output schemas remain unchanged.
+## v0.3.0 — 2026-11-19
+
+- Add matching Broadcast Studio REST and SSH Setup and YouTube lifecycle
+  controls with reusable SDK grammar, explicit workspaces, revisions and request IDs.
+- Retain private write tickets before persistent uploads and reconcile lost
+  replies without issuing duplicate mutations.
+- Pin published bibleit-go v0.5.0 for reusable broadcast commands, signed-body
+  helpers and the REST contract. Existing output schemas stay compatible.
 
 ## v0.2.4 — 2026-10-26
 

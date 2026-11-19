@@ -99,7 +99,7 @@ func run(args []string) int {
 	if oneOf(args[len(args)-1], "--help", "-h") || (args[len(args)-1] == "help" && args[0] != "server") {
 		return help(args[:len(args)-1])
 	}
-	if len(args) == 1 && oneOf(args[0], "auth", "live", "read", "search", "translation", "server", "account", "organization", "completion", "config") {
+	if len(args) == 1 && oneOf(args[0], "auth", "live", "read", "search", "translation", "server", "account", "organization", "broadcast", "completion", "config") {
 		return help(args)
 	}
 	if args[0] == "completion" {
@@ -197,6 +197,9 @@ func run(args []string) int {
 	cfg, err = automationCredential(cfg)
 	if err != nil {
 		return fail(exitUsage, "%v", err)
+	}
+	if args[0] == "broadcast" {
+		return runBroadcast(cfg, args, format, options["--yes"] == "true")
 	}
 	if cfg.Transport == "http" {
 		return runHTTPPage(cfg, args, format, options["--yes"] == "true", bookPage)
@@ -1023,10 +1026,12 @@ func protocolFailure(err error) int {
 		code = exitForbidden
 	case "not_found", "actor_not_found", "user_not_found", "live_not_found", "translation_not_found", "book_not_found", "chapter_not_found", "verse_not_found":
 		code = exitNotFound
-	case "rate_limited":
+	case "rate_limited", "upload_capacity", "commit_capacity", "receipt_capacity_exceeded":
 		code = exitRateLimited
-	case "actor_exists", "quota_exceeded", "conflict", "precondition_failed", "precondition_required":
+	case "actor_exists", "quota_exceeded", "conflict", "precondition_failed", "precondition_required", "request_expired", "request_mismatch", "unknown_after_recovery", "browser_required", "publisher_not_ready", "operation_conflict", "incomplete_upload", "request_in_progress", "commit_in_progress":
 		code = exitConflict
+	case "bad_command", "invalid_document", "invalid_studio_setup", "invalid_metadata", "invalid_request_ticket", "input_mismatch", "invalid_offset", "document_too_large", "invalid_request", "invalid_asset", "invalid_revision", "invalid_broadcast", "invalid_schedule", "invalid_thumbnail", "invalid_youtube_defaults":
+		code = exitUsage
 	}
 	return outputError(code, displayErr)
 }

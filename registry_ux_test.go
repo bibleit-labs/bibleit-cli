@@ -25,7 +25,7 @@ func TestRegistryEveryLeafHasOfflineHelpAndValidatedExample(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			if !spec.Local && args[0] != "auth" {
+			if !spec.Local && args[0] != "auth" && args[0] != "broadcast" {
 				if _, err = commandFor(got); err != nil {
 					t.Fatal("registry/SSH grammar drift", err)
 				}

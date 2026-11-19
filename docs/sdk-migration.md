@@ -1,6 +1,6 @@
 # Root SDK API migration
 
-CLI v0.2.3 pins bibleit-go v0.3.0 and imports only
+CLI v0.3.0 pins bibleit-go v0.5.0 and imports only
 `github.com/bibleit-labs/bibleit-go`. Resource operations, models, errors,
 pagination and Live polling derive from `bibleit.NewClient`. SSH executors use
 `bibleit.NewSSHClient` and `bibleit.CommandResponse`.
@@ -23,3 +23,16 @@ uses the published SDK with `GOWORK=off` and no replacements.
 
 After publishing CLI artifacts, update the Homebrew tap with its verified
 release manifest and checksums using `scripts/update_formula.py` in the tap.
+
+## Broadcast controls
+
+The CLI delegates SSH broadcast wire validation to `bibleit.BroadcastCommand`
+and uses the generated REST methods for the same operations. Setup mutations
+retain a server-signed request ticket and exact JSON bytes;
+`NewBroadcastWriteIntentInput` and `BroadcastWriteOptions` bind their checksum,
+revision and raw body without re-encoding. Lost replies are reconciled with
+the original ticket. No helper restarts capture or grants workspace authority.
+
+The v0.5.0 public module is verified through the normal Go proxy and checksum
+database. Release builds use `GOWORK=off`; local sibling workspaces and replacement
+modules are not release inputs.

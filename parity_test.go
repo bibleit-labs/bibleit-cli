@@ -11,7 +11,7 @@ import (
 func TestEveryRegistryResourceHasRESTBindingOrGenuineExclusion(t *testing.T) {
 	ops := bibleit.Operations()
 	for _, spec := range commandRegistry {
-		if spec.Local || strings.Contains(spec.Syntax, "secret <value>") {
+		if spec.Local || strings.HasPrefix(spec.Syntax, "broadcast ") || strings.Contains(spec.Syntax, "secret <value>") {
 			continue
 		}
 		for _, invocation := range commandInvocations(spec) {

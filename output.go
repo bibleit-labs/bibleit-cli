@@ -33,12 +33,12 @@ func typedRecord(record outputRecord) (stableRecord, error) {
 	result := stableRecord{Type: record.Type, Fields: map[string]any{}}
 	for key, value := range record.Fields {
 		switch {
-		case oneOf(key, "paused", "owned", "protected", "retiring", "pong") || key == "auth" && record.Type == "ok" || key == "auth" && record.Type == "auth":
+		case oneOf(key, "paused", "owned", "protected", "retiring", "pong", "applied", "replay", "terminal", "eof") || key == "auth" && record.Type == "ok" || key == "auth" && record.Type == "auth":
 			if value != "true" && value != "false" {
 				return result, fmt.Errorf("invalid boolean output field %s", key)
 			}
 			result.Fields[key] = value == "true"
-		case oneOf(key, "protocol_version", "count", "verses", "chapters", "results", "books", "commands", "connections", "actor_connections", "anonymous_connections", "running_for_seconds", "revision", "stack_entries", "position", "issued_at", "created_at", "last_used_at", "expires_at", "connected_at", "connected_for_seconds", "plan_activated_at", "lives", "tokens", "keys", "used", "book", "chapter", "verse") || key == "translations" && (record.Fields["event"] == "verse" || record.Fields["lives"] != "") || key == "limit" && value != "unlimited":
+		case oneOf(key, "protocol_version", "count", "verses", "chapters", "results", "books", "commands", "connections", "actor_connections", "anonymous_connections", "running_for_seconds", "revision", "stack_entries", "position", "issued_at", "created_at", "last_used_at", "expires_at", "connected_at", "connected_for_seconds", "plan_activated_at", "lives", "tokens", "keys", "used", "book", "chapter", "verse", "document_bytes", "chunk_bytes", "offset", "bytes", "next_offset", "received_bytes", "payload_bytes", "deleted_revision", "idle_expires_at", "hard_expires_at") || key == "translations" && (record.Fields["event"] == "verse" || record.Fields["lives"] != "") || key == "limit" && value != "unlimited":
 			n, err := strconv.ParseInt(value, 10, 64)
 			if err != nil || n < 0 {
 				return result, fmt.Errorf("invalid numeric output field %s", key)
@@ -53,6 +53,14 @@ func typedRecord(record outputRecord) (stableRecord, error) {
 		default:
 			result.Fields[key] = value
 		}
+	}
+	if record.Fields["document_format"] == "broadcast-lifecycle-json-v1" && record.Fields["data_base64"] != "" {
+		payload, err := base64.StdEncoding.Strict().DecodeString(record.Fields["data_base64"])
+		if err != nil || len(payload) > broadcastMaxDocument || !json.Valid(payload) {
+			return result, errors.New("invalid Broadcast Studio JSON payload")
+		}
+		result.Payload = json.RawMessage(payload)
+		delete(result.Fields, "data_base64")
 	}
 	return result, nil
 }

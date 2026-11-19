@@ -91,6 +91,14 @@ func describeError(exit int, err error) (string, string, map[string]any, int) {
 		message = "The translation edition changed during pagination. Restart the book read without --cursor to read the current edition."
 	case "verse_too_large":
 		message = "A source verse exceeds the service's response-size limit. The book could not be returned completely; report the translation and reference."
+	case "outcome_unknown":
+		message = "The write outcome is uncertain. Keep the request file and exact input bytes, then inspect its Broadcast Studio write status. No replacement request was created."
+	case "request_expired", "unknown_after_recovery", "request_mismatch":
+		message = "The retained Broadcast Studio request cannot be resumed safely. Inspect its status and the current Setup before explicitly starting a new operation."
+	case "write_unavailable":
+		message = "The server has not enabled the Broadcast Studio write contract. Ask its operator to configure the signing key and database recovery epoch, or use Broadcast Studio in your browser."
+	case "browser_required":
+		message = "This action requires fresh browser capture permission. Open Broadcast Studio and reconnect the device or take over there; publishing will not restart automatically."
 	case "database_timeout", "database_unavailable", "service_unavailable", "temporarily_unavailable":
 		message = "The service is temporarily unavailable. A mutation may already have completed; inspect its state before retrying."
 	}

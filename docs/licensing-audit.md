@@ -174,3 +174,16 @@ licensing changes; the tap review branch now includes the corrected formula
 and notice validation.
 Private visibility was rechecked after this work; all three remain private.
 
+
+## CLI v0.3.0 dependency refresh — 19 November 2026
+
+The candidate pins the public Go SDK v0.5.0. Its MIT license text is byte-identical
+to v0.4.0; the SDK notice version is updated. The module dependency declarations
+are unchanged, and this refresh changes no other dependency version, compiler
+version or CGO-disabled release target. Existing license texts remain in the
+redistribution bundle and must remain in every archive and installer.
+
+The CLI/SDK sources and released dependencies are public; earlier private-visibility
+statements above are historical snapshots. Final candidate checks verify exact
+notice bytes and checksum/installer retention before publication. Software licensing
+does not grant API, workspace, Google channel or translation permissions.
