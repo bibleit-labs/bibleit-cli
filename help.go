@@ -21,7 +21,7 @@ var helpNamespaces = map[string]helpNamespace{
 	"organization":             {"organization", "Inspect organizations and applications."},
 	"organization application": {"organization application <id>", "Inspect an organization application."},
 	"translation":              {"translation", "Manage your translation library."},
-	"broadcast":                {"broadcast <organization-uuid>", "Manage Broadcast Studio over SSH; browser publishing remains required."},
+	"broadcast":                {"broadcast <organization-uuid>", "Manage Broadcast Studio over HTTP or SSH; browser publishing remains required."},
 	"live":                     {"live", "Create and manage Live sessions."},
 	"live set":                 {"live <id> set", "Update Live settings."},
 	"live stack":               {"live <id> stack", "Manage retained Scripture."},
