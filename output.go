@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/base64"
 	"encoding/json"
 	"errors"
@@ -118,7 +119,11 @@ func printResponse(lines []string, format string) int {
 }
 func printOutputRecords(records []outputRecord, format string) int {
 	if format != "json" {
-		printTable(records)
+		human, err := broadcastHumanRecords(records)
+		if err != nil {
+			return protocolFailure(err)
+		}
+		printTable(human)
 		return exitOK
 	}
 	values := []stableRecord{}
@@ -136,6 +141,58 @@ func printOutputRecords(records []outputRecord, format string) int {
 	}
 	return exitOK
 }
+
+// Lifecycle JSON stays native in machine output; the default table displays
+// its public value instead of exposing the transport's base64 envelope.
+func broadcastHumanRecords(records []outputRecord) ([]outputRecord, error) {
+	out := make([]outputRecord, 0, len(records))
+	for _, record := range records {
+		if record.Fields["document_format"] != "broadcast-lifecycle-json-v1" {
+			out = append(out, record)
+			continue
+		}
+		typed, err := typedRecord(record)
+		if err != nil || len(typed.Payload) == 0 {
+			return nil, errors.New("invalid Broadcast Studio JSON payload")
+		}
+		var envelope map[string]json.RawMessage
+		if json.Unmarshal(typed.Payload, &envelope) != nil || len(envelope) != 1 || envelope["value"] == nil {
+			return nil, errors.New("invalid Broadcast Studio value envelope")
+		}
+		var value map[string]any
+		decoder := json.NewDecoder(bytes.NewReader(envelope["value"]))
+		decoder.UseNumber()
+		if decoder.Decode(&value) != nil {
+			return nil, errors.New("invalid Broadcast Studio value")
+		}
+		fields := make(map[string]string, len(value))
+		if value == nil {
+			fields["status"] = "No result"
+			if record.Fields["record_type"] == "channel" {
+				fields["status"] = "No connected channel"
+			}
+		}
+		for key, item := range value {
+			switch v := item.(type) {
+			case nil:
+				fields[key] = "-"
+			case string:
+				fields[key] = v
+			case map[string]any, []any:
+				body, err := json.Marshal(v)
+				if err != nil {
+					return nil, errors.New("invalid Broadcast Studio value")
+				}
+				fields[key] = string(body)
+			default:
+				fields[key] = fmt.Sprint(v)
+			}
+		}
+		out = append(out, outputRecord{Type: record.Type, Fields: fields})
+	}
+	return out, nil
+}
+
 func printLocal(kind string, fields map[string]string, format string) int {
 	order := []string{}
 	for key := range fields {

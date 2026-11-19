@@ -19,6 +19,14 @@ Completed checks:
   request retries/status and lifecycle reads; REST also checked browser-required
   takeover. All temporary Setups and publisher/transfer resources were removed.
   The published SDK retains the tested transport contract and exact-byte helpers.
+- Scoped production REST and SSH smoke checks passed after the server deployment:
+  Setup CRUD, exact-input replay/status, revision-bound exports, stale and
+  cross-workspace denial, and browser-required takeover. No event or publisher
+  was started; owned Setups, temporary credential and private request files were
+  cleaned up. Admission remained Mittel-only with both publisher caps at one.
+- Default SSH lifecycle tables now show public fields instead of transport
+  base64. Native JSON/raw envelopes retain their existing shape; malformed and
+  oversized payloads fail without displaying their contents.
 - SDK MIT license text is unchanged; the notice bundle now records v0.5.0.
   Other dependency versions, Go 1.27.1 and the six CGO-disabled targets are unchanged.
 - Go, Lua and Java SDKs share the canonical broadcast operation/model contract.
@@ -32,8 +40,6 @@ results do not qualify a new source build for publication.
 
 Remaining release gates:
 
-- Production REST deployment and scoped token/permission smoke checks, followed
-  by the server release sign-off (the prior production SSH CRUD smoke passed).
 - Green native and installer validation for the reviewed final source.
 - Source merged normally to main, a fresh immutable v0.3.0 tag and validated
   draft assets; publication requires the coordinated release greenlight.
