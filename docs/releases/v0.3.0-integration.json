@@ -1,0 +1,66 @@
+{
+  "release_date": "2026-11-19",
+  "cli_release": "v0.3.0",
+  "cli_release_commit": "3e23adf6fe10a118c71b3da5583b37ae9b41ee91",
+  "cli_release_url": "https://github.com/bibleit-labs/bibleit-cli/releases/tag/v0.3.0",
+  "published_at": "2026-11-19T16:12:59Z",
+  "sdk_release": "v0.5.0",
+  "sdk_sum": "h1:ulGxMkTliMhIpJ3uHzIyM0Gr8vBpLJAISRka03PqMiA=",
+  "openapi_sha256": "42ded551e537273d1749c5b4a0e2f8ecf6db7eebfdc6938a1e7e8f5fd1e2ed02",
+  "native_ci": "https://github.com/bibleit-labs/bibleit-cli/actions/runs/44559973164",
+  "candidate_ci": "https://github.com/bibleit-labs/bibleit-cli/actions/runs/44559973291",
+  "release_ci": "https://github.com/bibleit-labs/bibleit-cli/actions/runs/44560568088",
+  "tag_candidate_artifact_id": 14549516771,
+  "tag_candidate_artifact_digest": "sha256:cc61739b4d9018d015959acbe6b0ba6bc3c1ef273e1605ea433e396ad7172d36",
+  "native_platforms_passed": 3,
+  "installer_targets_passed": 6,
+  "draft_files_identical_to_verified_candidate": 12,
+  "public_assets_anonymously_downloaded": 12,
+  "public_artifact_checksums_verified": 8,
+  "explicit_and_latest_online_install": true,
+  "installation_isolation": {
+    "private_temporary_prefix": true,
+    "user_cli_modified": false,
+    "user_credentials_modified": false,
+    "credential_environment_removed": true
+  },
+  "production_parity": {
+    "rest_and_ssh": true,
+    "setup_crud": true,
+    "retained_replay_and_status": true,
+    "stale_revision_rejected": true,
+    "cross_workspace_denied": true,
+    "browser_required_takeover": true,
+    "owned_setups_removed": true,
+    "ephemeral_credential_revoked": true,
+    "private_credential_and_ticket_files_removed": true,
+    "event_mutations": 0,
+    "publisher_mutations": 0,
+    "admission": "mittel-only",
+    "host_publisher_cap": 1,
+    "workspace_publisher_cap": 1
+  },
+  "human_output": {
+    "production_read_only_checks": 5,
+    "native_artifact_matches_production_read_test_candidate": true,
+    "json_schema_1_preserved": true,
+    "raw_ssh_preserved": true
+  },
+  "artifact_sha256": {
+    "bibleit_0.3.0_darwin_amd64.tar.gz": "454352503525a687cb268de780d56ce544b48725234b270e028135377fb3228e",
+    "bibleit_0.3.0_darwin_arm64.tar.gz": "d22bf2bfbc4da3ff95133f3066cfd4a9f1b41dca37108614abb83b5447d71d5d",
+    "bibleit_0.3.0_linux_amd64.tar.gz": "15a71c1e49117a69369203ecfd6c732ae43199ef8b6a167906b826ae68caa3fa",
+    "bibleit_0.3.0_linux_arm64.tar.gz": "1d1f3e95c7333e23acd84b4b28a20a2671920f191e7603d22b0a49b9b48bfb9f",
+    "bibleit_0.3.0_windows_amd64.zip": "19b19065daf96d903b106926150b4d81fb33fe33b0bf563c3023f379a3155219",
+    "bibleit_0.3.0_windows_arm64.zip": "2e7b56a34124a5ee8a78dc115eea84efe98da325f1c952fa52f017166712888d",
+    "install.sh": "0e01b88839185faa985fd578c16c0c57c71cdb17e4520f27d75bac8e7b184b61",
+    "install.ps1": "9d8d4fa8a0464e5edaccd561390b4f49c6254c203e5ef5eaa72021e77627b091"
+  },
+  "deferred_studio_tests": [
+    "physical USB",
+    "Windows browser/device tests"
+  ],
+  "separate_distribution_followup": [
+    "maintained Homebrew tap formula and public-download qualification"
+  ]
+}

@@ -1,10 +1,11 @@
 # Release maintenance
 
-The SDK, CLI and tap are public. The v0.3.0 candidate pins bibleit-go v0.5.0 and
+The SDK, CLI and tap are public. The published v0.3.0 release pins bibleit-go v0.5.0 and
 uses its root `bibleit.NewClient` API. See the [SDK migration](sdk-migration.md).
 CLI v0.1.0 introduced the REST migration. HTTP commands use REST resources directly, with native
 JSON under schema version 2; SSH output retains version 1. See the
-[release integration evidence](releases/v0.1.0-integration.json) and
+[v0.3.0 release evidence](releases/v0.3.0-integration.json) and the historical
+[v0.1.0 integration evidence](releases/v0.1.0-integration.json) and
 [REST migration guide](rest-api.md).
 
 All original v0.0.1 download assets remain withdrawn for missing redistribution
