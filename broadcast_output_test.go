@@ -77,3 +77,11 @@ func TestBroadcastHumanProjectionRejectsMalformedPayload(t *testing.T) {
 		}
 	}
 }
+
+func TestBroadcastHumanProjectionEscapesTerminalControls(t *testing.T) {
+	record := broadcastOutputRecord("channel", `{"title":"Mittel\u001b[2J\nname","state":"connected"}`)
+	code, out, stderr := captureCLI(t, func() int { return printOutputRecords([]outputRecord{record}, "table") })
+	if code != 0 || stderr != "" || strings.Contains(out, "\x1b") || !strings.Contains(out, `Mittel\u001b[2J\nname`) {
+		t.Fatalf("unsafe table output: %q", out)
+	}
+}

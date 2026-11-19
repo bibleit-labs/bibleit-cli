@@ -19,7 +19,7 @@ Completed checks:
   request retries/status and lifecycle reads; REST also checked browser-required
   takeover. All temporary Setups and publisher/transfer resources were removed.
   The published SDK retains the tested transport contract and exact-byte helpers.
-- Scoped production REST and SSH smoke checks passed after the server deployment: 
+- Scoped production REST and SSH smoke checks passed after the server deployment:
   Setup CRUD, exact-input replay/status, revision-bound exports, stale and
   cross-workspace denial, and browser-required takeover. No event or publisher
   was started; owned Setups, temporary credential and private request files were
