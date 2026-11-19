@@ -1,6 +1,6 @@
 # Release maintenance
 
-The SDK, CLI and tap are public. The v0.3.0 candidate pins bibleit-go v0.4.0 and
+The SDK, CLI and tap are public. The v0.3.0 candidate pins bibleit-go v0.5.0 and
 uses its root `bibleit.NewClient` API. See the [SDK migration](sdk-migration.md).
 CLI v0.1.0 introduced the REST migration. HTTP commands use REST resources directly, with native
 JSON under schema version 2; SSH output retains version 1. See the
@@ -21,8 +21,8 @@ Choose a fresh output directory; packaging refuses to overwrite an existing one.
 ```sh
 GOWORK=off go mod download
 GOWORK=off go mod verify
-GOWORK=off python3 scripts/package_release.py --version v0.1.0 --output build/releases/v0.1.0
-python3 scripts/check_release.py --assets build/releases/v0.1.0
+GOWORK=off python3 scripts/package_release.py --version v0.3.0 --output build/releases/v0.3.0
+python3 scripts/check_release.py --assets build/releases/v0.3.0
 ```
 
 The packager builds one native executable to generate completions, then six
@@ -51,18 +51,18 @@ to conceal a notice/content change.
 macOS/Linux:
 
 ```sh
-BIBLEIT_INSTALL_ASSETS="$PWD/build/releases/v0.1.0" \
-  BIBLEIT_INSTALL_DIR="$PWD/build/install-test" bash install.sh v0.1.0
+BIBLEIT_INSTALL_ASSETS="$PWD/build/releases/v0.3.0" \
+  BIBLEIT_INSTALL_DIR="$PWD/build/install-test" bash install.sh v0.3.0
 build/install-test/bibleit version
 ```
 
 Windows:
 
 ```powershell
-python scripts/check_release.py --assets build/releases/v0.1.0
-python scripts/check_release.py --assets build/releases/v0.1.0 --powershell powershell
-./scripts/check_powershell_installer.ps1 -AssetsDir ./build/releases/v0.1.0
-python scripts/check_scoop.py --assets build/releases/v0.1.0 --scoop-source ./scoop-source
+python scripts/check_release.py --assets build/releases/v0.3.0
+python scripts/check_release.py --assets build/releases/v0.3.0 --powershell powershell
+./scripts/check_powershell_installer.ps1 -AssetsDir ./build/releases/v0.3.0
+python scripts/check_scoop.py --assets build/releases/v0.3.0 --scoop-source ./scoop-source
 ```
 
 PowerShell 7 and 5.1 require native Windows installation/replacement checks.
@@ -73,7 +73,7 @@ It leaves persistent PATH and the user's real Scoop installation untouched.
 Homebrew:
 
 ```sh
-python3 scripts/check_homebrew.py --assets build/releases/v0.1.0
+python3 scripts/check_homebrew.py --assets build/releases/v0.3.0
 ```
 
 The fixture uses a disposable prefix, local archive URLs and normal Homebrew

@@ -14,10 +14,9 @@ files; retries reconcile the original signed ticket before uploading again. Even
 controls require retained operation UUIDs. One SSH connection is reused throughout
 an invocation, including multipart export and upload.
 
-Release publication is pending a published bibleit-go version containing the
-broadcast contract; the current source uses the sibling SDK only for local
-integration checks. The final release must pin that public version and pass
-standalone `GOWORK=off` validation. Existing output schemas remain compatible. Packages include macOS, Linux and Windows amd64/arm64 executables,
+The release pins publicly available bibleit-go v0.5.0 and builds without a
+development workspace or replacement modules. REST and SSH retain their existing
+output schemas. Packages include macOS, Linux and Windows amd64/arm64 executables,
 completions, installers, checksums and required redistribution notices.
 
 ```sh

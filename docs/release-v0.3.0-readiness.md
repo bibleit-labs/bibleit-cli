@@ -1,49 +1,45 @@
 # v0.3.0 release readiness
 
-Source branch: `broadcast-studio-cli` (no branch prefix). Includes the current main
-SDK v0.4.0 update and the Broadcast Studio integration originally staged at c0c6e30.
+Source branch: `broadcast-studio-cli`. The candidate pins the published
+`github.com/bibleit-labs/bibleit-go v0.5.0` with public proxy/checksum verification.
+No development workspace or local replacement is a release input.
 
-Completed source checks:
+The source supports the same Broadcast Studio controls through REST and SSH.
+Current workspace roles remain authoritative; personal REST token scopes add a
+credential ceiling. Browser capture and Google consent remain browser actions.
+Production admission must remain Mittel-only, with one publisher per host and
+workspace.
 
-- Full Go 1.27.1 pinned-SDK race tests and `go vet ./...` passed.
-- Disposable real-SSH staging passed 1 MiB upload, hash/revision export, CRUD,
-  same-ticket retries/status, stale revision rejection and lifecycle reads.
-- Server staging passed 31 integration and 41 unit/authentication checks,
-  including synthetic-provider testing/live/end and resource cleanup.
-- No dependency or redistribution-notice change beyond the already-merged SDK
-  update; packaging retains LICENSE and THIRD_PARTY_NOTICES.
+Completed checks:
 
-Publication gates still to record:
+- Standalone Go 1.27.1 `GOWORK=off` race tests, vet and build passed with the public
+  SDK. Native macOS runtime, TLS, PTY, confirmation and completion checks passed.
+- Disposable real REST and SSH rehearsal at `12da155` passed full 1 MiB input,
+  create/get/export/save, stale revision rejection, duplicate/delete, retained
+  request retries/status and lifecycle reads; REST also checked browser-required
+  takeover. All temporary Setups and publisher/transfer resources were removed.
+  The published SDK retains the tested transport contract and exact-byte helpers.
+- SDK MIT license text is unchanged; the notice bundle now records v0.5.0.
+  Other dependency versions, Go 1.27.1 and the six CGO-disabled targets are unchanged.
+- Go, Lua and Java SDKs share the canonical broadcast operation/model contract.
+  The three SDK releases precede CLI publication.
 
-- Updated production REST deployment and token/permission smoke checks (the
-  earlier production SSH permission/CRUD smoke check passed).
-- Six-target candidate packaging and native installer workflow checks.
-- Release source merged into main, fresh v0.3.0 tag and validated draft assets.
-- Public release, anonymous archive retrieval, and distribution follow-up.
+Frozen candidate validation uses the existing three-OS native workflow and
+six-target installer workflow, including both Windows PowerShell versions,
+Scoop and notice/checksum retention. Review the workflow results and immutable
+candidate manifest for the exact source commit; earlier v0.4.0/SSH-only candidate
+results do not qualify a new source build for publication.
 
-Production admission must remain Mittel-only and host/workspace publisher limits
-must remain one. Physical Windows/USB Broadcast Studio tests stay deferred; native
-CLI installer workflow checks are separate release packaging checks.
+Remaining release gates:
 
-## REST and reusable SDK parity gate
+- Production REST deployment and scoped token/permission smoke checks, followed
+  by the server release sign-off (the prior production SSH CRUD smoke passed).
+- Green native and installer validation for the reviewed final source.
+- Source merged normally to main, a fresh immutable v0.3.0 tag and validated
+  draft assets; publication requires the coordinated release greenlight.
+- Anonymous CLI archive/install verification and distribution follow-up after
+  publication.
 
-The user expanded v0.3.0 to include REST, SSH and reusable Go/Lua/Java SDK parity.
-The CLI source now includes HTTP broadcast controls with the same command grammar,
-explicit revisions, private request files and status-before-retry behavior as SSH.
-HTTP sends exact signed body bytes; it does not re-encode Setup JSON. SSH wire
-construction now delegates to bibleit-go rather than maintaining a second grammar.
-
-These additions are tested against an ignored temporary workspace containing the
-SDK feature branch. Publication remains blocked until that SDK is publicly
-released, the CLI pins the public version without replacements, and fresh
-standalone race/vet/native packaging checks pass. Earlier v0.4.0 validation does
-not qualify the new REST implementation for release.
-
-The real disposable REST and SSH CLI adapter rehearsal now passes on the local
-SDK workspace with race instrumentation. Both transports exercised full 1 MiB
-input, create/get/export/save, stale revision rejection, duplicate/delete, retained
-request retries/status and lifecycle reads; REST also checked browser-required
-takeover. All temporary Setups were deleted. The REST test rewrites routing only
-inside the opt-in fixture, preserves the pinned API virtual host, and accepts
-only a disposable IPv4 loopback endpoint. This does not replace the public SDK
-pin, standalone checks or production REST deployment gates.
+Physical Windows/USB Broadcast Studio tests remain deferred; native CLI installer
+and SDK runtime validation are separate release checks. No CLI tag or release
+publication is authorized by candidate packaging alone.

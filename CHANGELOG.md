@@ -8,8 +8,8 @@
   controls with reusable SDK grammar, explicit workspaces, revisions and request IDs.
 - Retain private write tickets before persistent uploads and reconcile lost
   replies without issuing duplicate mutations.
-- Stage the reusable SDK broadcast integration pending its public version pin
-  and fresh standalone release validation. Existing output schemas stay compatible.
+- Pin published bibleit-go v0.5.0 for reusable broadcast commands, signed-body
+  helpers and the REST contract. Existing output schemas stay compatible.
 
 ## v0.2.4 — 2026-10-26
 
