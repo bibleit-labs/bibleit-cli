@@ -38,3 +38,12 @@ SDK feature branch. Publication remains blocked until that SDK is publicly
 released, the CLI pins the public version without replacements, and fresh
 standalone race/vet/native packaging checks pass. Earlier v0.4.0 validation does
 not qualify the new REST implementation for release.
+
+The real disposable REST and SSH CLI adapter rehearsal now passes on the local
+SDK workspace with race instrumentation. Both transports exercised full 1 MiB
+input, create/get/export/save, stale revision rejection, duplicate/delete, retained
+request retries/status and lifecycle reads; REST also checked browser-required
+takeover. All temporary Setups were deleted. The REST test rewrites routing only
+inside the opt-in fixture, preserves the pinned API virtual host, and accepts
+only a disposable IPv4 loopback endpoint. This does not replace the public SDK
+pin, standalone checks or production REST deployment gates.

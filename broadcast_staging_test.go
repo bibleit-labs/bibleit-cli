@@ -3,11 +3,16 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
+	"fmt"
 	"net"
+	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 )
 
 // Only a disposable loopback SSH daemon is accepted. The fixture owner creates
@@ -144,4 +149,131 @@ func TestBroadcastStagingSSHContract(t *testing.T) {
 		}
 	}
 	t.Log("Passed actual SSH full-1MiB create/get/export/save/stale-conflict/duplicate/delete, durable retries/status and lifecycle reads; disposable Setups deleted")
+}
+
+// This opt-in adapter changes routing only inside this test. The production SDK
+// and CLI retain their fixed HTTPS origin and never accept endpoint overrides.
+func TestBroadcastStagingHTTPContract(t *testing.T) {
+	if os.Getenv("BIBLEIT_BROADCAST_TEST_DISPOSABLE") != "1" {
+		t.Skip("requires the isolated Broadcast Studio HTTP staging fixture")
+	}
+	endpoint, e := url.Parse(os.Getenv("BIBLEIT_BROADCAST_TEST_HTTP_ENDPOINT"))
+	if e != nil || endpoint.Scheme != "http" || endpoint.Hostname() != "127.0.0.1" || endpoint.Port() == "" || endpoint.Path != "" || endpoint.User != nil || endpoint.RawQuery != "" || endpoint.Fragment != "" {
+		t.Fatal("disposable HTTP endpoint must be plain IPv4 loopback with an explicit port")
+	}
+	org := os.Getenv("BIBLEIT_BROADCAST_TEST_ORG")
+	token := os.Getenv("BIBLEIT_BROADCAST_TEST_TOKEN")
+	if !broadcastUUID.MatchString(org) || !strings.HasPrefix(token, "bt_") {
+		t.Fatal("missing disposable workspace or personal token")
+	}
+	transport := http.DefaultTransport.(*http.Transport).Clone()
+	defer transport.CloseIdleConnections()
+	old := cliHTTPClient
+	cliHTTPClient = &http.Client{Timeout: 45 * time.Second, Transport: roundTripFunc(func(request *http.Request) (*http.Response, error) {
+		if request.URL.Scheme != "https" || request.URL.Host != "api.bibleit.app" {
+			return nil, errors.New("unexpected fixed-origin fixture request")
+		}
+		clone := request.Clone(request.Context())
+		target := *request.URL
+		target.Scheme = "http"
+		target.Host = endpoint.Host
+		clone.URL = &target
+		clone.Host = request.URL.Host
+		return transport.RoundTrip(clone)
+	}), CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }}
+	defer func() { cliHTTPClient = old }()
+	cfg := config{Transport: "http", AccessToken: token}
+	invoke := func(expected int, parts ...string) map[string]any {
+		t.Helper()
+		args := append([]string{"broadcast", org}, parts...)
+		code, out, stderr := captureCLI(t, func() int { return runBroadcast(cfg, args, "raw", true) })
+		if code != expected {
+			t.Fatalf("%s: exit=%d expected=%d stderr=%s", strings.Join(parts, " "), code, expected, stderr)
+		}
+		if expected != exitOK {
+			return nil
+		}
+		var data httpData
+		if e := json.Unmarshal([]byte(out), &data); e != nil {
+			t.Fatalf("invalid native response for %s", strings.Join(parts, " "))
+		}
+		return map[string]any(data)
+	}
+	dir := t.TempDir()
+	input := filepath.Join(dir, "input.json")
+	raw, e := os.ReadFile(os.Getenv("BIBLEIT_BROADCAST_TEST_DOCUMENT"))
+	if e != nil {
+		t.Fatal("missing disposable Setup input")
+	}
+	var doc map[string]any
+	if json.Unmarshal(raw, &doc) != nil {
+		t.Fatal("invalid fixture document")
+	}
+	doc["name"] = "CLI isolated HTTP staging"
+	body, _ := json.Marshal(doc)
+	body = append(body, bytes.Repeat([]byte(" "), broadcastMaxDocument-len(body))...)
+	if e = os.WriteFile(input, body, 0600); e != nil {
+		t.Fatal(e)
+	}
+	request := filepath.Join(dir, "create-request.json")
+	created := invoke(exitOK, "setup", "create", input, request)
+	id, _ := created["id"].(string)
+	if !broadcastUUID.MatchString(id) || fmt.Sprint(created["revision"]) != "1" || created["applied"] != true {
+		t.Fatal("invalid created receipt")
+	}
+	deleted := false
+	defer func() {
+		if !deleted {
+			current := invoke(exitOK, "setup", id, "show")
+			invoke(exitOK, "setup", id, "delete", fmt.Sprint(current["revision"]), filepath.Join(dir, "cleanup-request.json"))
+		}
+	}()
+	replay := invoke(exitOK, "setup", "create", input, request)
+	if replay["id"] != id {
+		t.Fatal("same-ticket retry duplicated Setup")
+	}
+	status := invoke(exitOK, "write", "status", request)
+	if status["id"] != id || status["applied"] != true {
+		t.Fatal("create status did not reconcile")
+	}
+	invoke(exitOK, "setup", id, "show")
+	export := filepath.Join(dir, "export.json")
+	invoke(exitOK, "setup", id, "export", export)
+	exported, e := readBroadcastJSON(export, broadcastMaxDocument)
+	if e != nil {
+		t.Fatal(e)
+	}
+	var value map[string]any
+	if json.Unmarshal(exported, &value) != nil || value["name"] != "CLI isolated HTTP staging" {
+		t.Fatal("export content mismatch")
+	}
+	doc["name"] = "CLI isolated HTTP edited"
+	body, _ = json.Marshal(doc)
+	if e = os.WriteFile(input, body, 0600); e != nil {
+		t.Fatal(e)
+	}
+	saved := invoke(exitOK, "setup", id, "save", "1", input, filepath.Join(dir, "save-request.json"))
+	if fmt.Sprint(saved["revision"]) != "2" {
+		t.Fatal("save failed")
+	}
+	conflict := filepath.Join(dir, "conflict-request.json")
+	invoke(exitConflict, "setup", id, "save", "1", input, conflict)
+	invoke(exitConflict, "write", "status", conflict)
+	duplicate := invoke(exitOK, "setup", id, "duplicate", "2", "CLI HTTP copy", filepath.Join(dir, "duplicate-request.json"))
+	copyID, _ := duplicate["id"].(string)
+	if !broadcastUUID.MatchString(copyID) || copyID == id {
+		t.Fatal("duplicate failed")
+	}
+	invoke(exitOK, "setup", copyID, "delete", "1", filepath.Join(dir, "copy-delete-request.json"))
+	deletedRequest := filepath.Join(dir, "delete-request.json")
+	invoke(exitOK, "setup", id, "delete", "2", deletedRequest)
+	deleted = true
+	if invoke(exitOK, "write", "status", deletedRequest)["id"] != id {
+		t.Fatal("deleted receipt lost")
+	}
+	for _, parts := range [][]string{{"profiles"}, {"setup", "list"}, {"channel"}, {"events"}, {"publishers"}, {"preflight"}} {
+		invoke(exitOK, parts...)
+	}
+	invoke(exitConflict, "takeover")
+	t.Log("Passed actual REST full-1MiB exact-byte create/get/export/save/stale-conflict/duplicate/delete, durable retries/status, lifecycle reads and browser-required takeover; disposable Setups deleted")
 }
