@@ -6,6 +6,8 @@
 
 - Add matching Broadcast Studio REST and SSH Setup and YouTube lifecycle
   controls with reusable SDK grammar, explicit workspaces, revisions and request IDs.
+- Show decoded public Broadcast Studio lifecycle fields in default SSH tables,
+  while preserving native JSON and raw transport output.
 - Retain private write tickets before persistent uploads and reconcile lost
   replies without issuing duplicate mutations.
 - Pin published bibleit-go v0.5.0 for reusable broadcast commands, signed-body
