@@ -442,3 +442,22 @@ Live snapshots keep their existing behavior.
 `account quota list` and `account token list` are aliases for `account quotas` and
 `account tokens`; `live <id> clear` remains an alias for stack clear. Human output
 uses user terminology; machine schemas keep their documented transport fields.
+
+## Live overlay controls (candidate)
+
+```sh
+bibleit live L1 overlay get
+bibleit live L1 overlay set builtin-translation 7
+bibleit live L1 overlay clear 8
+```
+
+Both HTTP and SSH use the same explicit expected sequence. A stale selection
+fails without retrying or fetching a replacement validator. Clearing an overlay
+restores normal output; it does not clear Scripture or start a stopped Live.
+The built-in `builtin-youtube-stream-link` follows the workspace's authorized
+active YouTube event and has no URL when that event is unavailable. These commands
+require the matching server candidate and have not been published in a CLI release.
+
+REST overlay writes require an organization-bound credential with `live.update`;
+personal REST Lives cannot select the organization design library. SSH continues
+to enforce the actor’s current organization authority.

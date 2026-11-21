@@ -404,6 +404,27 @@ func commandFor(a []string) (bibleit.Command, error) {
 		if len(a) == 3 && oneOf(a[2], "info", "stats", "start", "stop", "pause", "resume", "delete", "subscribe", "clear") {
 			return bibleit.LiveCommand(a[1], bibleit.LiveAction(strings.ToUpper(a[2])))
 		}
+		if len(a) >= 4 && a[2] == "overlay" {
+			if len(a) == 4 && a[3] == "get" {
+				return bibleit.GetLiveOverlayCommand(a[1])
+			}
+			if len(a) == 6 && a[3] == "set" {
+				sequence, err := strconv.ParseInt(a[5], 10, 64)
+				if err != nil || sequence < 0 {
+					return bibleit.Command{}, errors.New("expected sequence must be a non-negative int64")
+				}
+				return bibleit.SetLiveOverlayCommand(a[1], a[4], sequence)
+			}
+			if len(a) == 5 && a[3] == "clear" {
+				sequence, err := strconv.ParseInt(a[4], 10, 64)
+				if err != nil || sequence < 0 {
+					return bibleit.Command{}, errors.New("expected sequence must be a non-negative int64")
+				}
+				return bibleit.ClearLiveOverlayCommand(a[1], sequence)
+			}
+			return bibleit.Command{}, errors.New("use live <id> overlay get, set <design-id> <sequence>, or clear <sequence>")
+		}
+
 		if len(a) == 4 && a[2] == "secret" {
 			if oneOf(a[3], "create", "rotate", "delete") {
 				return bibleit.LiveSecretCommand(a[1], bibleit.SecretAction(strings.ToUpper(a[3])), "")

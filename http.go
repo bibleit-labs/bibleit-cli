@@ -155,6 +155,35 @@ func planHTTP(args []string, service bool) (httpPlan, error) {
 		p.operation = "getLiveStatistics"
 		p.params["live_id"] = args[1]
 		p.kind = "statistics"
+	case len(args) >= 4 && args[0] == "live" && args[2] == "overlay":
+		p.params["live_id"] = args[1]
+		p.kind = "live_overlay"
+		if len(args) == 4 && args[3] == "get" {
+			p.operation = "getLiveOverlay"
+			break
+		}
+		var sequenceText string
+		var design any
+		switch {
+		case len(args) == 6 && args[3] == "set":
+			sequenceText = args[5]
+			design = args[4]
+			if _, e := bibleit.SetLiveOverlayCommand(args[1], args[4], 0); e != nil {
+				return p, e
+			}
+		case len(args) == 5 && args[3] == "clear":
+			sequenceText = args[4]
+		default:
+			return p, fmt.Errorf("use overlay get, set <design-id> <sequence>, or clear <sequence>")
+		}
+		sequence, e := strconv.ParseInt(sequenceText, 10, 64)
+		if e != nil || sequence < 0 {
+			return p, fmt.Errorf("expected sequence must be a non-negative int64")
+		}
+		p.operation = "setLiveOverlay"
+		p.options.JSON = map[string]any{"design_id": design}
+		p.options.IfMatch = fmt.Sprintf("\"live-%d\"", sequence)
+
 	case len(args) >= 4 && args[0] == "live" && args[2] == "stack":
 		p.params["live_id"] = args[1]
 		p.kind = "stack"

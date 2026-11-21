@@ -24,6 +24,7 @@ var helpNamespaces = map[string]helpNamespace{
 	"broadcast":                {"broadcast <organization-uuid>", "Manage Broadcast Studio over HTTP or SSH; browser publishing remains required."},
 	"live":                     {"live", "Create and manage Live sessions."},
 	"live set":                 {"live <id> set", "Update Live settings."},
+	"live overlay":             {"live <id> overlay", "Select artwork without changing playback or the retained queue."},
 	"live stack":               {"live <id> stack", "Manage retained Scripture."},
 	"live secret":              {"live <id> secret", "Manage audience protection."},
 	"config":                   {"config", "Manage saved CLI settings."},
@@ -53,7 +54,7 @@ func canonicalHelpTopic(topic []string) ([]string, *commandSpec) {
 		topic = helpPath(strings.Fields(selected.Syntax))
 	}
 	// Help accepts either `live stack` or `live <actual-id> stack`.
-	if len(topic) > 1 && topic[0] == "live" && !oneOf(topic[1], "list", "create", "delete", "stack", "set", "secret", "info", "stats", "start", "stop", "pause", "resume", "subscribe", "clear") {
+	if len(topic) > 1 && topic[0] == "live" && !oneOf(topic[1], "list", "create", "delete", "stack", "overlay", "set", "secret", "info", "stats", "start", "stop", "pause", "resume", "subscribe", "clear") {
 		topic = append([]string{"live"}, topic[2:]...)
 	}
 	if len(topic) > 2 && topic[0] == "organization" && topic[1] == "application" && topic[2] != "status" {

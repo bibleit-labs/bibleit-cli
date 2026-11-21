@@ -57,6 +57,10 @@ var commandRegistry = append(broadcastRegistry(), []commandSpec{
 	{"live <id> set name <value...>", "Change the name.", "live L1 set name Sunday", false, ""},
 	{"live <id> set reference <value...>", "Change the reference.", "live L1 set reference John 3:16", false, ""},
 	{"live <id> set translations <value...>", "Change enabled playback translations.", "live L1 set translations web", false, ""},
+	{"live <id> overlay get", "Show the selected overlay and conditional sequence.", "live L1 overlay get", false, ""},
+	{"live <id> overlay set <design-id> <sequence>", "Select a saved overlay without starting playback.", "live L1 overlay set builtin-translation 7", false, ""},
+	{"live <id> overlay clear <sequence>", "Restore normal output without clearing the retained queue.", "live L1 overlay clear 7", false, ""},
+
 	{"live <id> stack info", "Show retained Scripture entries.", "live L1 stack info", false, ""},
 	{"live <id> stack push [translation] <book> [chapter] [verse]", "Push Scripture; omit translation to use Live settings.", "live L1 stack push web John 3 16", false, ""},
 	{"live <id> stack pop [count]", "Pop a positive count (default 1), without confirmation.", "live L1 stack pop", false, ""},
